@@ -1,0 +1,202 @@
+export default function CikguStemHomepage() {
+  const projects = [
+    {
+      title: "Seni Smart Lab",
+      description:
+        "Sistem tempahan eksperimen makmal yang dibangunkan untuk memudahkan pengurusan penggunaan makmal, eksperimen, dan jadual guru.",
+      link: "https://senismartlab.cikgustem.com",
+      cta: "Buka Sistem",
+    },
+    {
+      title: "Inovasi STEM",
+      description:
+        "Pembangunan idea dan prototaip berasaskan STEM seperti Micro:bit, projek terapung banjir, dan penyelesaian pembelajaran hands-on.",
+      link: "#projects",
+      cta: "Lihat Projek",
+    },
+    {
+      title: "Perkongsian Pendidikan",
+      description:
+        "Ruang untuk berkongsi idea pengajaran sains, aktiviti STEM, bahan bantu mengajar, dan inspirasi inovasi pendidikan.",
+      link: "#about",
+      cta: "Kenali Saya",
+    },
+  ];
+
+  const highlights = [
+    "Guru Sains yang aktif membangunkan pengalaman pembelajaran yang lebih bermakna.",
+    "Berminat dalam inovasi STEM, integrasi teknologi, dan pembangunan sistem digital pendidikan.",
+    "Membina platform yang menyokong guru, pelajar, dan ekosistem pembelajaran masa depan.",
+  ];
+
+  const featuredProjects = [
+    {
+      title: "Sistem Tempahan Makmal",
+      text: "Platform digital untuk tempahan eksperimen dan pengurusan penggunaan makmal secara lebih teratur, kemas, dan profesional.",
+    },
+    {
+      title: "Projek Micro:bit & Inovasi",
+      text: "Eksplorasi projek STEM yang menggabungkan kreativiti, penyelesaian masalah, dan aplikasi dunia sebenar dalam pendidikan.",
+    },
+    {
+      title: "Perkongsian Sains & STEM",
+      text: "Ruang untuk idea pengajaran, demonstrasi sains, dan pembangunan aktiviti yang menjadikan pembelajaran lebih hidup.",
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-100">
+      <section className="relative overflow-hidden border-b border-white/10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(56,189,248,0.18),transparent_30%),radial-gradient(circle_at_left,rgba(59,130,246,0.15),transparent_25%)]" />
+        <div className="relative mx-auto grid max-w-7xl gap-10 px-6 py-16 md:px-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:py-24">
+          <div>
+            <div className="mb-5 inline-flex items-center rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-1 text-sm text-cyan-200">
+              CIKGUSTEM.COM • Profil Profesional
+            </div>
+            <h1 className="max-w-4xl text-4xl font-semibold tracking-tight text-white md:text-6xl">
+              Najib Jaafar
+            </h1>
+            <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl">
+              Guru Sains, pendidik STEM, dan pencetus inovasi pendidikan yang
+              membina pengalaman pembelajaran lebih tersusun, praktikal, dan
+              bermakna melalui teknologi.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <a
+                href="https://senismartlab.cikgustem.com"
+                className="rounded-2xl bg-cyan-400 px-6 py-3 font-medium text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:-translate-y-0.5"
+              >
+                Buka Seni Smart Lab
+              </a>
+              <a
+                href="#about"
+                className="rounded-2xl border border-white/15 bg-white/5 px-6 py-3 font-medium text-white transition hover:bg-white/10"
+              >
+                Kenali Saya
+              </a>
+            </div>
+            <div className="mt-10 grid gap-4 md:grid-cols-3">
+              {projects.map((item) => (
+                <a
+                  key={item.title}
+                  href={item.link}
+                  className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur transition hover:-translate-y-1 hover:border-cyan-400/40 hover:bg-white/10"
+                >
+                  <div className="text-lg font-semibold text-white">{item.title}</div>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">{item.description}</p>
+                  <div className="mt-4 text-sm font-medium text-cyan-300">{item.cta} →</div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="lg:justify-self-end">
+            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-5 shadow-2xl shadow-cyan-950/30 backdrop-blur">
+              <div className="aspect-[4/5] overflow-hidden rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-slate-800 to-slate-900">
+                <div className="flex h-full items-center justify-center px-8 text-center text-slate-400">
+                  Letak gambar profesional Najib di sini
+                </div>
+              </div>
+              <div className="mt-5 rounded-2xl border border-white/10 bg-slate-900/80 p-5">
+                <div className="text-sm uppercase tracking-[0.2em] text-cyan-300">Peranan</div>
+                <div className="mt-2 text-2xl font-semibold text-white">Science & STEM Educator</div>
+                <p className="mt-3 text-sm leading-6 text-slate-300">
+                  Fokus kepada pembelajaran sains yang aktif, sistematik, dan
+                  berimpak melalui inovasi digital dan projek STEM yang relevan.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" className="mx-auto max-w-7xl px-6 py-16 md:px-10 lg:py-24">
+        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <p className="text-sm font-medium uppercase tracking-[0.25em] text-cyan-300">
+              Tentang Saya
+            </p>
+            <h2 className="mt-4 text-3xl font-semibold text-white md:text-4xl">
+              Profil profesional yang menekankan pendidikan, inovasi, dan masa depan STEM.
+            </h2>
+          </div>
+          <div className="grid gap-4">
+            {highlights.map((item) => (
+              <div
+                key={item}
+                className="rounded-3xl border border-white/10 bg-white/5 p-6 text-slate-300"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" className="mx-auto max-w-7xl px-6 pb-16 md:px-10 lg:pb-24">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-sm font-medium uppercase tracking-[0.25em] text-cyan-300">
+              Fokus Utama
+            </p>
+            <h2 className="mt-3 text-3xl font-semibold text-white md:text-4xl">
+              Bidang yang sedang dibangunkan melalui CikguSTEM
+            </h2>
+          </div>
+          <a
+            href="https://senismartlab.cikgustem.com"
+            className="w-fit rounded-2xl border border-cyan-400/30 bg-cyan-400/10 px-5 py-3 font-medium text-cyan-200 transition hover:bg-cyan-400/20"
+          >
+            Lawati Seni Smart Lab
+          </a>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          {featuredProjects.map((project) => (
+            <div
+              key={project.title}
+              className="rounded-[1.75rem] border border-white/10 bg-gradient-to-b from-white/8 to-white/4 p-6 shadow-xl shadow-black/10"
+            >
+              <div className="text-xl font-semibold text-white">{project.title}</div>
+              <p className="mt-3 text-sm leading-7 text-slate-300">{project.text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 pb-16 md:px-10 lg:pb-24">
+        <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8 md:p-10">
+          <div className="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-center">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-[0.25em] text-cyan-300">
+                Hubungi & Jaringan
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold text-white md:text-4xl">
+                Terbuka untuk kolaborasi pendidikan, inovasi STEM, dan perkongsian idea.
+              </h2>
+              <p className="mt-4 max-w-2xl text-slate-300">
+                Halaman ini boleh menjadi pusat identiti profesional Najib —
+                tempat orang mengenali latar belakang, melihat projek utama,
+                dan mengakses sistem yang dibangunkan di bawah CikguSTEM.
+              </p>
+            </div>
+            <div className="grid gap-4 rounded-[1.5rem] border border-white/10 bg-slate-950/60 p-6">
+              <div>
+                <div className="text-sm uppercase tracking-[0.2em] text-slate-400">Nama</div>
+                <div className="mt-1 text-lg font-medium text-white">Najib Jaafar</div>
+              </div>
+              <div>
+                <div className="text-sm uppercase tracking-[0.2em] text-slate-400">Bidang</div>
+                <div className="mt-1 text-lg font-medium text-white">Sains • STEM • Inovasi Pendidikan</div>
+              </div>
+              <div>
+                <div className="text-sm uppercase tracking-[0.2em] text-slate-400">Portal</div>
+                <div className="mt-1 text-lg font-medium text-cyan-300">cikgustem.com</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

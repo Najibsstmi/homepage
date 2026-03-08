@@ -1,16 +1,214 @@
+import "./App.css";
+
 export default function App() {
+  const cards = [
+    {
+      title: "Seni Smart Lab",
+      text: "Sistem tempahan eksperimen makmal untuk pengurusan aktiviti makmal sains secara lebih teratur dan profesional.",
+      link: "https://senismartlab.cikgustem.com",
+      button: "Buka Sistem",
+    },
+    {
+      title: "Inovasi STEM",
+      text: "Pembangunan projek STEM, idea inovasi, Micro:bit dan penyelesaian pendidikan yang relevan dengan dunia sebenar.",
+      link: "#focus",
+      button: "Lihat Fokus",
+    },
+    {
+      title: "Portfolio Pendidikan",
+      text: "Ruang profesional untuk mempamerkan perjalanan Najib Jaafar sebagai guru, tech educator dan inovator pendidikan.",
+      link: "#about",
+      button: "Kenali Saya",
+    },
+  ];
+
+  const focusAreas = [
+    "Teknologi dalam pendidikan sains",
+    "Pembangunan inovasi STEM dan projek sekolah",
+    "Sistem digital untuk guru dan murid",
+    "Perkongsian amalan terbaik PdP abad ke-21",
+  ];
+
+  const achievements = [
+    "Johan pertandingan Inovasi cetakan 3D Malaysia Techlympics Zon Selatan Peringkat Kebangsaan 2022",
+    "Johan Pertandingan Inovasi Sungai Kim Kim Peringkat Kebangsaan 2022",
+    "Pingat Emas Karnival Kreatif dan Inovasi PdPc Kebangsaan 2019",
+    "Google Certified Educator Level 2",
+    "Anugerah Perkhidmatan Cemerlang 2017",
+    "Panel ICT Bengkel Pembinaan Bahan Tambahan Digital Buku Teks Peringkat Kebangsaan",
+  ];
+
+  const gallery = [
+    "/gallery1.jpg",
+    "/gallery2.jpg",
+    "/gallery3.jpg",
+    "/gallery4.jpg",
+  ];
+
   return (
-    <div style={{ padding: "40px", fontFamily: "Arial" }}>
-      <h1>Najib Jaafar</h1>
-      <p>Tech Educator • Portfolio Educator • STEM Innovator</p>
-      <img
-        src="/najib.jpg"
-        alt="Najib Jaafar"
-        style={{ width: "220px", borderRadius: "12px", marginTop: "20px" }}
-      />
-      <p style={{ marginTop: "20px", maxWidth: "700px", lineHeight: "1.7" }}>
-        Ini ialah homepage cikgustem.com yang sedang dibangunkan menggunakan React.
-      </p>
+    <div className="page">
+      <nav className="navbar">
+        <div className="navbar__brand">CIKGUSTEM</div>
+        <div className="navbar__links">
+          <a href="#about">Tentang</a>
+          <a href="#focus">Fokus</a>
+          <a href="#achievements">Pencapaian</a>
+          <a href="#gallery">Galeri</a>
+          <a href="https://senismartlab.cikgustem.com">Smart Lab</a>
+        </div>
+      </nav>
+
+      <section className="hero">
+        <div className="hero__content">
+          <div className="badge">CIKGUSTEM.COM • Profil Profesional</div>
+
+          <h1>Najib Jaafar</h1>
+
+          <p className="subtitle">
+            Tech Educator • Portfolio Educator • STEM Innovator
+          </p>
+
+          <p className="intro">
+            Guru Sains yang memberi fokus kepada inovasi STEM, pembangunan
+            sistem digital pendidikan dan pembinaan pengalaman pembelajaran
+            yang lebih bermakna untuk guru serta pelajar.
+          </p>
+
+          <div className="hero__buttons">
+            <a
+              href="https://senismartlab.cikgustem.com"
+              className="btn btn--primary"
+            >
+              Buka Seni Smart Lab
+            </a>
+            <a href="#about" className="btn btn--secondary">
+              Kenali Saya
+            </a>
+          </div>
+        </div>
+
+        <div className="hero__imageWrap">
+          <img src="/najib.jpg" alt="Najib Jaafar" className="hero__image" />
+          <div className="hero__card">
+            <span>Peranan</span>
+            <h3>Guru Sains & Tech Educator</h3>
+            <p>
+              Menggabungkan pendidikan, teknologi dan inovasi STEM untuk
+              membina ekosistem pembelajaran yang lebih tersusun, kreatif dan
+              berimpak.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section cards">
+        {cards.map((card) => (
+          <div className="card" key={card.title}>
+            <h3>{card.title}</h3>
+            <p>{card.text}</p>
+            <a href={card.link}>{card.button} →</a>
+          </div>
+        ))}
+      </section>
+
+      <section id="about" className="section about">
+        <div className="section__header">
+          <p className="section__label">Tentang Saya</p>
+          <h2>
+            Profil profesional yang menggabungkan pendidikan, teknologi dan
+            inovasi.
+          </h2>
+        </div>
+
+        <div className="about__grid">
+          <div className="about__box">
+            Saya merupakan seorang guru sains yang berminat dalam inovasi STEM,
+            pembangunan teknologi pendidikan dan penciptaan pengalaman
+            pembelajaran yang lebih berkesan untuk murid.
+          </div>
+
+          <div className="about__box">
+            Melalui cikgustem.com, saya menghimpunkan portfolio profesional,
+            projek pendidikan, inovasi sekolah dan aplikasi digital yang dibina
+            untuk menyokong komuniti guru.
+          </div>
+
+          <div className="about__box">
+            Laman ini juga menjadi pusat kepada projek-projek utama seperti
+            Seni Smart Lab serta inisiatif masa depan dalam bidang STEM dan
+            EdTech.
+          </div>
+        </div>
+      </section>
+
+      <section id="focus" className="section focus">
+        <div className="section__header">
+          <p className="section__label">Fokus Utama</p>
+          <h2>Bidang yang sedang dibangunkan melalui CikguSTEM</h2>
+        </div>
+
+        <div className="focus__grid">
+          {focusAreas.map((item) => (
+            <div className="focus__item" key={item}>
+              {item}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="achievements" className="section achievements">
+        <div className="section__header">
+          <p className="section__label">Pencapaian</p>
+          <h2>Antara pengalaman dan pencapaian profesional</h2>
+        </div>
+
+        <div className="achievement__list">
+          {achievements.map((item) => (
+            <div className="achievement__item" key={item}>
+              {item}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="gallery" className="section gallery">
+        <div className="section__header">
+          <p className="section__label">Galeri Aktiviti</p>
+          <h2>Aktiviti STEM, inovasi dan penglibatan pendidikan</h2>
+        </div>
+
+        <div className="gallery__grid">
+          {gallery.map((img, index) => (
+            <div className="gallery__item" key={img}>
+              <img src={img} alt={`Galeri ${index + 1}`} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="section cta">
+        <div className="cta__box">
+          <div>
+            <p className="section__label">Portal Utama</p>
+            <h2>
+              cikgustem.com dibina sebagai pusat identiti profesional dan
+              ekosistem digital pendidikan.
+            </h2>
+            <p>
+              Dari sini, pelawat boleh mengenali latar belakang Najib Jaafar,
+              melihat projek utama dan mengakses aplikasi seperti Seni Smart
+              Lab.
+            </p>
+          </div>
+
+          <a
+            href="https://senismartlab.cikgustem.com"
+            className="btn btn--primary"
+          >
+            Lawati Seni Smart Lab
+          </a>
+        </div>
+      </section>
     </div>
   );
 }

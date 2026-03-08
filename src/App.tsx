@@ -4,7 +4,7 @@ export default function App() {
   const cards = [
     {
       title: "Seni Smart Lab",
-      text: "Sistem tempahan eksperimen makmal untuk pengurusan aktiviti makmal sains secara lebih teratur dan profesional.",
+      text: "Sistem tempahan eksperimen makmal untuk pengurusan aktiviti makmal sains secara lebih teratur, cekap dan profesional.",
       link: "https://senismartlab.cikgustem.com",
       button: "Buka Sistem",
     },
@@ -54,7 +54,13 @@ export default function App() {
           <a href="#focus">Fokus</a>
           <a href="#achievements">Pencapaian</a>
           <a href="#gallery">Galeri</a>
-          <a href="https://senismartlab.cikgustem.com">Smart Lab</a>
+          <a
+            href="https://senismartlab.cikgustem.com"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Smart Lab
+          </a>
         </div>
       </nav>
 
@@ -71,13 +77,15 @@ export default function App() {
           <p className="intro">
             Guru Sains yang memberi fokus kepada inovasi STEM, pembangunan
             sistem digital pendidikan dan pembinaan pengalaman pembelajaran
-            yang lebih bermakna untuk guru serta pelajar.
+            yang lebih bermakna untuk guru serta pelajar di era digital.
           </p>
 
           <div className="hero__buttons">
             <a
               href="https://senismartlab.cikgustem.com"
               className="btn btn--primary"
+              target="_blank"
+              rel="noreferrer"
             >
               Buka Seni Smart Lab
             </a>
@@ -95,7 +103,7 @@ export default function App() {
             <p>
               Menggabungkan pendidikan, teknologi dan inovasi STEM untuk
               membina ekosistem pembelajaran yang lebih tersusun, kreatif dan
-              berimpak.
+              berimpak tinggi.
             </p>
           </div>
         </div>
@@ -106,7 +114,14 @@ export default function App() {
           <div className="card" key={card.title}>
             <h3>{card.title}</h3>
             <p>{card.text}</p>
-            <a href={card.link}>{card.button} →</a>
+            <a
+              href={card.link}
+              {...(card.link.startsWith("http")
+                ? { target: "_blank", rel: "noreferrer" }
+                : {})}
+            >
+              {card.button} →
+            </a>
           </div>
         ))}
       </section>
@@ -135,8 +150,8 @@ export default function App() {
 
           <div className="about__box">
             Laman ini juga menjadi pusat kepada projek-projek utama seperti
-            Seni Smart Lab serta inisiatif masa depan dalam bidang STEM dan
-            EdTech.
+            Seni Smart Lab serta inisiatif masa depan dalam bidang STEM, EdTech
+            dan pembangunan pendidikan digital.
           </div>
         </div>
       </section>
@@ -204,6 +219,8 @@ export default function App() {
           <a
             href="https://senismartlab.cikgustem.com"
             className="btn btn--primary"
+            target="_blank"
+            rel="noreferrer"
           >
             Lawati Seni Smart Lab
           </a>

@@ -47,10 +47,26 @@ a {
 }
 
 .navbar__links a {
-  color: #dbeafe;
-  font-size: 15px;
+  position: relative;
+  text-decoration: none;
+  color: white;
   font-weight: 500;
-  transition: 0.2s ease;
+  padding-bottom: 4px;
+}
+
+.navbar__links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background: #22d3ee;
+  transition: width 0.3s ease;
+}
+
+.navbar__links a:hover::after {
+  width: 100%;
 }
 
 .navbar__links a:hover {

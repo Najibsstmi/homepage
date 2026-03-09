@@ -65,49 +65,70 @@ export default function App() {
       </nav>
 
       <section className="hero">
-        <div className="hero__content">
-          <div className="badge">CIKGUSTEM.COM • Profil Profesional</div>
+  <div className="hero__glow hero__glow--one"></div>
+  <div className="hero__glow hero__glow--two"></div>
 
-          <h1>Najib Jaafar</h1>
+  <div className="hero__content">
+    <div className="badge">CIKGUSTEM.COM • Profil Profesional</div>
 
-          <p className="subtitle">
-            Tech Educator • Portfolio Educator • STEM Innovator
-          </p>
+    <h1>Najib Jaafar</h1>
 
-          <p className="intro">
-            Guru Sains yang memberi fokus kepada inovasi STEM, pembangunan
-            sistem digital pendidikan dan pembinaan pengalaman pembelajaran
-            yang lebih bermakna untuk guru serta pelajar di era digital.
-          </p>
+    <p className="subtitle">
+      Tech Educator • Portfolio Educator • STEM Innovator
+    </p>
 
-          <div className="hero__buttons">
-            <a
-              href="https://senismartlab.cikgustem.com"
-              className="btn btn--primary"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Buka Seni Smart Lab
-            </a>
-            <a href="#about" className="btn btn--secondary">
-              Kenali Saya
-            </a>
-          </div>
-        </div>
+    <p className="intro">
+      Guru Sains yang memberi fokus kepada inovasi STEM, pembangunan
+      sistem digital pendidikan dan pembinaan pengalaman pembelajaran
+      yang lebih bermakna untuk guru serta pelajar di era digital.
+    </p>
 
-        <div className="hero__imageWrap">
-          <img src="/najib.jpg" alt="Najib Jaafar" className="hero__image" />
-          <div className="hero__card">
-            <span>Peranan</span>
-            <h3>Guru Sains & Tech Educator</h3>
-            <p>
-              Menggabungkan pendidikan, teknologi dan inovasi STEM untuk
-              membina ekosistem pembelajaran yang lebih tersusun, kreatif dan
-              berimpak tinggi.
-            </p>
-          </div>
-        </div>
-      </section>
+    <div className="hero__buttons">
+      <a
+        href="https://senismartlab.cikgustem.com"
+        className="btn btn--primary"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Buka Seni Smart Lab
+      </a>
+      <a href="#about" className="btn btn--secondary">
+        Kenali Saya
+      </a>
+    </div>
+
+    <div className="hero__stats">
+      <div className="hero__stat">
+        <h3>STEM</h3>
+        <p>Inovasi pendidikan & projek sekolah</p>
+      </div>
+      <div className="hero__stat">
+        <h3>EdTech</h3>
+        <p>Pembangunan sistem digital untuk guru</p>
+      </div>
+      <div className="hero__stat">
+        <h3>Portfolio</h3>
+        <p>Perkongsian pencapaian dan amalan terbaik</p>
+      </div>
+    </div>
+  </div>
+
+  <div className="hero__imageWrap">
+    <div className="hero__imageFrame">
+      <img src="/najib.jpg" alt="Najib Jaafar" className="hero__image" />
+    </div>
+
+    <div className="hero__card hero__card--floating">
+      <span>Peranan</span>
+      <h3>Guru Sains & Tech Educator</h3>
+      <p>
+        Menggabungkan pendidikan, teknologi dan inovasi STEM untuk
+        membina ekosistem pembelajaran yang lebih tersusun, kreatif dan
+        berimpak tinggi.
+      </p>
+    </div>
+  </div>
+</section>
 
       <section className="section cards">
         {cards.map((card) => (

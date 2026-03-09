@@ -76,6 +76,11 @@ export default function App() {
     <p className="subtitle">
       Tech Educator • Portfolio Educator • STEM Innovator
     </p>
+    <div className="hero__badges">
+  <span>Google Certified Educator</span>
+  <span>National Innovation Award</span>
+  <span>STEM Innovator</span>
+</div>
 
     <p className="intro">
       Guru Sains yang memberi fokus kepada inovasi STEM, pembangunan
@@ -128,6 +133,45 @@ export default function App() {
       </p>
     </div>
   </div>
+</section>
+<section className="section projects">
+
+  <div className="section__header">
+    <p className="section__label">Projek Utama</p>
+    <h2>Platform dan inovasi yang dibangunkan melalui CikguSTEM</h2>
+  </div>
+
+  <div className="cards">
+
+    <div className="card">
+      <h3>Seni Smart Lab</h3>
+      <p>
+        Sistem tempahan eksperimen makmal yang membantu guru merancang
+        penggunaan makmal secara lebih sistematik dan teratur.
+      </p>
+      <a href="https://senismartlab.cikgustem.com">
+        Buka Sistem →
+      </a>
+    </div>
+
+    <div className="card">
+      <h3>Inovasi STEM Sekolah</h3>
+      <p>
+        Projek STEM yang menggabungkan teknologi, eksperimen dan
+        penyelesaian dunia sebenar untuk murid.
+      </p>
+    </div>
+
+    <div className="card">
+      <h3>EdTech Builder</h3>
+      <p>
+        Pembangunan aplikasi digital pendidikan untuk memudahkan
+        pengurusan makmal, PdP dan inovasi sekolah.
+      </p>
+    </div>
+
+  </div>
+
 </section>
 
       <section className="section cards">
@@ -247,6 +291,15 @@ export default function App() {
           </a>
         </div>
       </section>
+      <footer className="footer">
+
+  <p>© 2026 Najib Jaafar • cikgustem.com</p>
+
+  <p>
+    STEM Educator • Innovation • Education Technology
+  </p>
+
+</footer>
     </div>
   );
 }

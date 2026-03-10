@@ -1,6 +1,36 @@
 import "./App.css";
+import { useState } from "react";
+import emailjs from "@emailjs/browser";
 
 export default function App() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        "service_geh40rw",
+        "template_0j2wfq8",
+        e.target,
+        "FORdocXs1Pm5WQ8zT"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          alert("Mesej berjaya dihantar!");
+          setName("");
+          setEmail("");
+          setMessage("");
+        },
+        (error) => {
+          console.log(error.text);
+          alert("Ralat menghantar mesej. Sila cuba lagi.");
+        }
+      );
+  };
   const cards = [
     {
       title: "Seni Smart Lab",
@@ -54,6 +84,7 @@ export default function App() {
           <a href="#focus">Fokus</a>
           <a href="#achievements">Pencapaian</a>
           <a href="#gallery">Galeri</a>
+          <a href="#contact">Hubungi</a>
           <a
             href="https://senismartlab.cikgustem.com"
             target="_blank"
@@ -76,6 +107,7 @@ export default function App() {
     <p className="subtitle">
       Tech Educator • Portfolio Educator • STEM Innovator
     </p>
+    <p className="handle">•sciencelabproduction• </p>
     <div className="hero__badges">
   <span>Google Certified Educator</span>
   <span>National Innovation Award</span>
@@ -291,6 +323,72 @@ export default function App() {
           </a>
         </div>
       </section>
+
+      <section id="contact" className="section contact">
+        <div className="section__header">
+          <p className="section__label">Hubungi Saya</p>
+          <h2>Untuk kerjasama, pertanyaan atau perkongsian idea</h2>
+        </div>
+
+        <div className="contact__grid">
+          <div className="contact__info">
+            <div className="contact__item">
+              <h3>Email</h3>
+              <p>najibnoor87@gmail.com</p>
+            </div>
+            <div className="contact__item">
+              <h3>YouTube</h3>
+              <p>Science Lab Production</p>
+            </div>
+            <div className="contact__item">
+              <h3>Laman Web</h3>
+              <p>cikgustem.com</p>
+            </div>
+          </div>
+
+          <div className="contact__form">
+            <form onSubmit={sendEmail}>
+              <div className="form__group">
+                <label htmlFor="name">Nama</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="from_name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form__group">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="from_email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form__group">
+                <label htmlFor="message">Mesej</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={5}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" className="btn btn--primary">
+                Hantar Mesej
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
       <footer className="footer">
 
   <p>© 2026 Najib Jaafar • cikgustem.com</p>

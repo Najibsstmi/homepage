@@ -7,14 +7,14 @@ export default function App() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const sendEmail = (e) => {
+  const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     emailjs
       .sendForm(
         "service_geh40rw",
         "template_0j2wfq8",
-        e.target,
+        e.currentTarget,
         "FORdocXs1Pm5WQ8zT"
       )
       .then(

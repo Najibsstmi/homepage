@@ -6,6 +6,7 @@ export default function App() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -79,16 +80,25 @@ export default function App() {
     <div className="page">
       <nav className="navbar">
         <div className="navbar__brand">CIKGUSTEM</div>
-        <div className="navbar__links">
-          <a href="#about">Tentang</a>
-          <a href="#focus">Fokus</a>
-          <a href="#achievements">Pencapaian</a>
-          <a href="#gallery">Galeri</a>
-          <a href="#contact">Hubungi</a>
+        <button
+          className="navbar__toggle"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div className={`navbar__links ${mobileMenuOpen ? "navbar__links--active" : ""}`}>
+          <a href="#about" onClick={() => setMobileMenuOpen(false)}>Tentang</a>
+          <a href="#focus" onClick={() => setMobileMenuOpen(false)}>Fokus</a>
+          <a href="#achievements" onClick={() => setMobileMenuOpen(false)}>Pencapaian</a>
+          <a href="#gallery" onClick={() => setMobileMenuOpen(false)}>Galeri</a>
+          <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Hubungi</a>
           <a
             href="https://senismartlab.cikgustem.com"
             target="_blank"
             rel="noreferrer"
+            onClick={() => setMobileMenuOpen(false)}
           >
             Smart Lab
           </a>

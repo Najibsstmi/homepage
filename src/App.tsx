@@ -359,24 +359,24 @@ export default function App() {
                     </ol>
                   </article>
                 </div>
+
+                <div className="eduslot__grid">
+                  <article className="eduslot__card">
+                    <h3>Kenapa EduSlot sesuai untuk semua sekolah</h3>
+                    <ul>
+                      <li>Mudah digunakan tanpa latihan teknikal kompleks</li>
+                      <li>Boleh diakses melalui komputer, tablet dan telefon</li>
+                      <li>Setiap sekolah boleh ada pentadbir sendiri</li>
+                      <li>Membantu pengurusan bilik jadi lebih telus</li>
+                    </ul>
+                  </article>
+                </div>
               </div>
 
               <div className="eduslot__showcase">
                 <img src="/eduslot-1.png" alt="EduSlot Paparan Sistem" />
                 <span>Paparan sistem EduSlot</span>
               </div>
-            </div>
-
-            <div className="eduslot__grid">
-              <article className="eduslot__card">
-                <h3>Kenapa EduSlot sesuai untuk semua sekolah</h3>
-                <ul>
-                  <li>Mudah digunakan tanpa latihan teknikal kompleks</li>
-                  <li>Boleh diakses melalui komputer, tablet dan telefon</li>
-                  <li>Setiap sekolah boleh ada pentadbir sendiri</li>
-                  <li>Membantu pengurusan bilik jadi lebih telus</li>
-                </ul>
-              </article>
             </div>
 
             <div className="eduslot__features">

@@ -1096,10 +1096,11 @@ a {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   gap: 24px;
-  align-items: center;
+  align-items: start;
 }
 .eduslot__hero {
   max-width: 100%;
+  align-self: start;
 }
 .eduslot__hero h2 {
   margin: 10px 0 14px;
@@ -1130,6 +1131,9 @@ a {
 
 .eduslot__showcase {
   margin-top: 0;
+  justify-self: end;
+  max-width: 520px;
+  width: 100%;
 }
 .eduslot__showcase img {
   width: 100%;
@@ -1142,6 +1146,7 @@ a {
   margin-top: 9px;
   color: #64748b;
   font-size: 0.84rem;
+  text-align: right;
 }
 
 .eduslot__grid {
@@ -1230,6 +1235,13 @@ a {
   .eduslot__top {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+  .eduslot__showcase {
+    justify-self: stretch;
+    max-width: none;
+  }
+  .eduslot__showcase span {
+    text-align: left;
   }
   .eduslot__grid {
     grid-template-columns: 1fr;

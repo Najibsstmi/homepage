@@ -1,9 +1,24 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import emailjs from "@emailjs/browser";
 
 export default function App() {
   type SharePlatform = "facebook" | "whatsapp" | "telegram" | "x";
+  const smartLabSectionIds = new Set([
+    "smartlab-hero",
+    "smartlab-pengenalan",
+    "smartlab-pengguna",
+    "smartlab-cara",
+    "smartlab-status",
+    "smartlab-falsafah",
+    "smartlab-pengiktirafan",
+  ]);
+  const eduSlotSectionIds = new Set(["eduslot-post"]);
+  const smartLabHiddenSectionIds = new Set([
+    "smartlab-cara",
+    "smartlab-status",
+    "smartlab-falsafah",
+  ]);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -12,6 +27,47 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<"home" | "inovasi">("home");
   const [readMore, setReadMore] = useState(false);
   const [eduSlotReadMore, setEduSlotReadMore] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const hashTarget = window.location.hash.replace(/^#/, "");
+    const shouldOpenInovasi =
+      params.get("page") === "inovasi" ||
+      smartLabSectionIds.has(hashTarget) ||
+      eduSlotSectionIds.has(hashTarget);
+
+    if (shouldOpenInovasi) {
+      setCurrentPage("inovasi");
+    }
+
+    if (smartLabHiddenSectionIds.has(hashTarget)) {
+      setReadMore(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const hashTarget = window.location.hash.replace(/^#/, "");
+    if (!hashTarget) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      document.getElementById(hashTarget)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 180);
+
+    return () => window.clearTimeout(timer);
+  }, [currentPage, readMore, eduSlotReadMore]);
 
   const navigateTo = (page: "home" | "inovasi") => {
     setCurrentPage(page);
@@ -56,7 +112,28 @@ export default function App() {
       return anchor;
     }
 
-    return `${window.location.origin}${window.location.pathname}${anchor}`;
+    const targetId = anchor.replace(/^#/, "");
+    const appUrl = new URL(window.location.href);
+    appUrl.hash = "";
+    appUrl.search = "";
+    appUrl.searchParams.set("page", "inovasi");
+    if (targetId) {
+      appUrl.hash = targetId;
+    }
+
+    const shareLandingUrl = new URL(window.location.href);
+    shareLandingUrl.hash = "";
+    shareLandingUrl.search = "";
+    shareLandingUrl.pathname =
+      shareLandingUrl.pathname.replace(/\/[^/]*$/, "/") +
+      (eduSlotSectionIds.has(targetId) ? "share-eduslot.html" : "share-smartlab.html");
+    shareLandingUrl.searchParams.set("target", targetId);
+
+    if (smartLabSectionIds.has(targetId) || eduSlotSectionIds.has(targetId)) {
+      return shareLandingUrl.toString();
+    }
+
+    return appUrl.toString();
   };
 
   const openSocialShare = (platform: SharePlatform, title: string, anchor: string) => {

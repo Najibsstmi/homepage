@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ms">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartLab | Inovasi CikguSTEM</title>
+    <meta
+      name="description"
+      content="SmartLab ialah inovasi CikguSTEM untuk pengurusan eksperimen makmal yang lebih teratur dan mudah digunakan di sekolah."
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="SmartLab | Inovasi CikguSTEM" />
+    <meta
+      property="og:description"
+      content="Lihat penulisan SmartLab dalam halaman Inovasi CikguSTEM."
+    />
+    <meta property="og:image" content="/dashboard%20utama.jpg" />
+    <meta property="og:url" content="/share-smartlab.html" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SmartLab | Inovasi CikguSTEM" />
+    <meta
+      name="twitter:description"
+      content="Lihat penulisan SmartLab dalam halaman Inovasi CikguSTEM."
+    />
+    <meta name="twitter:image" content="/dashboard%20utama.jpg" />
+
+    <meta http-equiv="refresh" content="0; url=/?page=inovasi#smartlab-hero" />
+    <script>
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        var target = params.get("target") || "smartlab-hero";
+        var safeTarget = /^[a-z0-9-]+$/i.test(target) ? target : "smartlab-hero";
+        var basePath = window.location.pathname.replace(/\/[^/]*$/, "/");
+        window.location.replace(basePath + "?page=inovasi#" + safeTarget);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Mengarahkan ke halaman Inovasi SmartLab...</p>
+    <p>
+      Jika tidak bergerak automatik,
+      <a href="/?page=inovasi#smartlab-hero">klik di sini</a>.
+    </p>
+  </body>
+</html>

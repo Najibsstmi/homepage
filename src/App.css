@@ -1082,6 +1082,115 @@ a {
   line-height: 1.5;
 }
 
+/* ─── INOVASI KEDUA: EDUSLOT ───────────────────── */
+.eduslot {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 64px 32px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.eduslot__hero {
+  max-width: 860px;
+}
+.eduslot__hero h2 {
+  margin: 10px 0 14px;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.1;
+  color: #f8fafc;
+}
+.eduslot__tagline {
+  margin: 0;
+  color: #67e8f9;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.eduslot__intro {
+  margin-top: 14px;
+  color: #cbd5e1;
+  line-height: 1.8;
+}
+
+.eduslot__showcase {
+  margin-top: 26px;
+}
+.eduslot__showcase img {
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 22px 56px rgba(0,0,0,0.35);
+}
+.eduslot__showcase span {
+  display: block;
+  margin-top: 9px;
+  color: #64748b;
+  font-size: 0.84rem;
+}
+
+.eduslot__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 28px;
+}
+.eduslot__card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 20px;
+}
+.eduslot__card h3 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  color: #f8fafc;
+  line-height: 1.45;
+}
+.eduslot__card ul,
+.eduslot__card ol {
+  margin: 0;
+  padding-left: 18px;
+  color: #cbd5e1;
+  line-height: 1.65;
+}
+.eduslot__card li + li {
+  margin-top: 8px;
+}
+
+.eduslot__features {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.eduslot__feature-pill {
+  background: rgba(34,211,238,0.08);
+  border: 1px solid rgba(34,211,238,0.24);
+  color: #a5f3fc;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+}
+
+.eduslot__toggleWrap {
+  margin-top: 20px;
+}
+
+.eduslot__more {
+  margin-top: 16px;
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.06);
+  animation: fadeSlideDown 0.35s ease;
+}
+.eduslot__more p {
+  margin: 0;
+  color: #cbd5e1;
+  line-height: 1.8;
+}
+.eduslot__more p + p {
+  margin-top: 10px;
+}
+
 /* ─── RESPONSIVE (story + awards) ───────────────── */
 @media (max-width: 900px) {
   .inovasi-story {
@@ -1096,6 +1205,12 @@ a {
     grid-template-columns: 1fr;
     max-width: 380px;
     margin: 0 auto;
+  }
+  .eduslot {
+    padding: 44px 20px;
+  }
+  .eduslot__grid {
+    grid-template-columns: 1fr;
   }
 }
 @media (max-width: 600px) {

@@ -9,6 +9,7 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<"home" | "inovasi">("home");
   const [readMore, setReadMore] = useState(false);
+  const [eduSlotReadMore, setEduSlotReadMore] = useState(false);
 
   const navigateTo = (page: "home" | "inovasi") => {
     setCurrentPage(page);
@@ -308,6 +309,105 @@ export default function App() {
               </div>
             </div>
           </div>
+
+          {/* ── INOVASI KEDUA: EDUSLOT ── */}
+          <section className="eduslot">
+            <div className="eduslot__hero">
+              <p className="section__label">Inovasi Kedua</p>
+              <h2>EduSlot</h2>
+              <p className="eduslot__tagline">
+                Sistem tempahan bilik khas sekolah yang lebih mudah, teratur dan telus.
+              </p>
+              <p className="eduslot__intro">
+                EduSlot dibangunkan untuk menyusun tempahan bilik khas sekolah secara
+                digital supaya tiada pertindihan jadual, tiada kekeliruan tempahan,
+                dan semua pihak dapat melihat penggunaan bilik dengan jelas.
+              </p>
+            </div>
+
+            <div className="eduslot__showcase">
+              <img src="/dashboard utama.jpg" alt="EduSlot Dashboard Utama" />
+              <span>Paparan dashboard utama EduSlot</span>
+            </div>
+
+            <div className="eduslot__grid">
+              <article className="eduslot__card">
+                <h3>Masalah yang selalu berlaku di sekolah</h3>
+                <ul>
+                  <li>Pertindihan tempahan bilik tanpa disedari</li>
+                  <li>Jadual tidak jelas antara guru dan pentadbir</li>
+                  <li>Rekod penggunaan bilik sukar disemak semula</li>
+                  <li>Maklumat tempahan tidak sampai kepada semua pihak</li>
+                </ul>
+              </article>
+
+              <article className="eduslot__card">
+                <h3>Bagaimana EduSlot berfungsi dalam 3 langkah</h3>
+                <ol>
+                  <li>Pilih bilik khas yang ingin digunakan.</li>
+                  <li>Pilih tarikh dan masa berdasarkan slot tersedia.</li>
+                  <li>Hantar tempahan untuk rekod dan pemantauan pentadbir.</li>
+                </ol>
+              </article>
+
+              <article className="eduslot__card">
+                <h3>Kenapa EduSlot sesuai untuk semua sekolah</h3>
+                <ul>
+                  <li>Mudah digunakan tanpa latihan teknikal kompleks</li>
+                  <li>Boleh diakses melalui komputer, tablet dan telefon</li>
+                  <li>Setiap sekolah boleh ada pentadbir sendiri</li>
+                  <li>Membantu pengurusan bilik jadi lebih telus</li>
+                </ul>
+              </article>
+            </div>
+
+            <div className="eduslot__features">
+              {[
+                "Elak pertindihan tempahan bilik",
+                "Paparan jadual penggunaan bilik secara real-time",
+                "Pentadbir boleh memantau semua tempahan",
+                "Sistem ringkas dan mesra guru",
+                "Rekod penggunaan bilik lebih teratur",
+              ].map((feature) => (
+                <span className="eduslot__feature-pill" key={feature}>
+                  {feature}
+                </span>
+              ))}
+            </div>
+
+            <div className="eduslot__toggleWrap">
+              <button
+                className="inovasi-readmore__btn"
+                onClick={() => setEduSlotReadMore((prev) => !prev)}
+              >
+                {eduSlotReadMore ? "Lihat Ringkas" : "Baca Penuh EduSlot"}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  {eduSlotReadMore ? <polyline points="18 15 12 9 6 15" /> : <polyline points="6 9 12 15 18 9" />}
+                </svg>
+              </button>
+            </div>
+
+            {eduSlotReadMore && (
+              <div className="eduslot__more">
+                <p>
+                  Di kebanyakan sekolah, tempahan bilik khas masih menggunakan cara
+                  manual seperti buku log, papan putih, atau pesanan WhatsApp. Dari
+                  situ lahirnya EduSlot sebagai satu sistem yang lebih kemas dan telus.
+                </p>
+                <p>
+                  Pengurusan bilik khas melibatkan banyak perkara kecil yang boleh
+                  jadi rumit jika tidak diurus dengan baik: siapa menempah, bilik mana
+                  tersedia, waktu penggunaan, kelulusan pentadbir dan rekod penggunaan.
+                </p>
+                <p>
+                  EduSlot boleh digunakan untuk makmal komputer, makmal sains, bilik
+                  mesyuarat, auditorium, studio muzik, studio seni dan bilik khas mata
+                  pelajaran. Matlamatnya jelas: guru kurang terbeban dengan isu jadual,
+                  dan lebih fokus kepada pengajaran serta pembelajaran murid.
+                </p>
+              </div>
+            )}
+          </section>
 
           <footer className="footer">
             <p>© 2026 Najib Jaafar • cikgustem.com</p>

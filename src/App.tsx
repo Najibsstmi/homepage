@@ -185,40 +185,43 @@ export default function App() {
             </div>
           </div>
 
-          {/* ── BLOK 3: Bagaimana ia berfungsi (Borang Tempahan) ── */}
-          <div className="inovasi-story">
-            <div className="inovasi-story__text">
-              <p className="section__label">Cara Penggunaan</p>
-              <h2>Pilih eksperimen. Sistem uruskan selebihnya.</h2>
-              <p>
-                Melalui SmartLab, guru memilih eksperimen yang ingin dijalankan dan
-                sistem akan menyediakan senarai bahan serta radas yang diperlukan secara
-                automatik.
-              </p>
-              <p>
-                Permintaan dihantar terus kepada pembantu makmal — tiada salah faham,
-                tiada kekurangan bahan.
-              </p>
-            </div>
-            <div className="inovasi-story__image">
-              <img src="/eksperiemen dan aktiviti.jpg" alt="SmartLab — Eksperimen dan Aktiviti" />
-              <span className="inovasi-story__caption">Pilihan eksperimen dan aktiviti dalam SmartLab</span>
-            </div>
+          {/* ── BUTANG TOGGLE ── */}
+          <div className="inovasi-readmore">
+            <button
+              className={`inovasi-readmore__btn${readMore ? " inovasi-readmore__btn--collapse" : ""}`}
+              onClick={() => setReadMore((prev) => !prev)}
+            >
+              {readMore ? "Lihat Kurang" : "Baca Seterusnya"}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                {readMore ? <polyline points="18 15 12 9 6 15" /> : <polyline points="6 9 12 15 18 9" />}
+              </svg>
+            </button>
           </div>
-
-          {/* ── BUTANG BACA SETERUSNYA ── */}
-          {!readMore && (
-            <div className="inovasi-readmore">
-              <button className="inovasi-readmore__btn" onClick={() => setReadMore(true)}>
-                Baca Seterusnya
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-            </div>
-          )}
 
           {/* ── KANDUNGAN LANJUTAN ── */}
           {readMore && (
             <div className="inovasi-expanded">
+              {/* Blok 3: Eksperimen dan Aktiviti */}
+              <div className="inovasi-story">
+                <div className="inovasi-story__text">
+                  <p className="section__label">Cara Penggunaan</p>
+                  <h2>Pilih eksperimen. Sistem uruskan selebihnya.</h2>
+                  <p>
+                    Melalui SmartLab, guru memilih eksperimen yang ingin dijalankan dan
+                    sistem akan menyediakan senarai bahan serta radas yang diperlukan secara
+                    automatik.
+                  </p>
+                  <p>
+                    Permintaan dihantar terus kepada pembantu makmal — tiada salah faham,
+                    tiada kekurangan bahan.
+                  </p>
+                </div>
+                <div className="inovasi-story__image">
+                  <img src="/eksperiemen dan aktiviti.jpg" alt="SmartLab — Eksperimen dan Aktiviti" />
+                  <span className="inovasi-story__caption">Pilihan eksperimen dan aktiviti dalam SmartLab</span>
+                </div>
+              </div>
+
               {/* Blok 4: Senarai Tempahan */}
               <div className="inovasi-story inovasi-story--reverse inovasi-story--alt">
                 <div className="inovasi-story__image">
@@ -266,12 +269,6 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="inovasi-readmore inovasi-readmore--collapse">
-                <button className="inovasi-readmore__btn inovasi-readmore__btn--collapse" onClick={() => { setReadMore(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-                  Tutup
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-                </button>
-              </div>
             </div>
           )}
 

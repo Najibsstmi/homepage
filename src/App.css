@@ -678,6 +678,441 @@ a {
   color: #94a3b8;
   font-size: 14px;
 }
+
+/* ─── NAVBAR: BUTANG INOVASI ─────────────────── */
+.navbar__inovasi-btn {
+  background: linear-gradient(135deg, #22d3ee, #38bdf8);
+  color: #082f49;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.22s ease;
+  letter-spacing: 0.04em;
+}
+.navbar__inovasi-btn:hover,
+.navbar__inovasi-btn--active {
+  background: linear-gradient(135deg, #67e8f9, #22d3ee);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(34, 211, 238, 0.3);
+}
+
+/* ─── PAGE INOVASI ───────────────────────────── */
+.inovasi-page {
+  min-height: 100vh;
+}
+
+/* Hero */
+.inovasi-page__hero {
+  position: relative;
+  overflow: hidden;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 100px 32px 80px;
+  text-align: center;
+}
+.inovasi-page__hero-glow {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(100px);
+  opacity: 0.35;
+  pointer-events: none;
+}
+.inovasi-page__hero-glow--one {
+  width: 420px;
+  height: 420px;
+  background: rgba(34, 211, 238, 0.22);
+  top: -60px;
+  right: 10%;
+}
+.inovasi-page__hero-glow--two {
+  width: 300px;
+  height: 300px;
+  background: rgba(59, 130, 246, 0.18);
+  bottom: 0;
+  left: 8%;
+}
+.inovasi-page__hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 860px;
+  margin: 0 auto;
+}
+.inovasi-page__hero-content h1 {
+  font-size: clamp(3rem, 7vw, 5.6rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #f8fafc;
+  margin: 16px 0 0;
+}
+.inovasi-page__tagline {
+  margin-top: 20px;
+  font-size: 1.3rem;
+  color: #67e8f9;
+  font-weight: 600;
+}
+.inovasi-page__desc {
+  margin-top: 20px;
+  color: #cbd5e1;
+  font-size: 1.15rem;
+  line-height: 1.85;
+}
+.inovasi-page__hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 36px;
+}
+
+/* Section wrapper */
+.inovasi-section {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 72px 32px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.inovasi-section--alt {
+  background: rgba(255,255,255,0.02);
+}
+.inovasi-section--cta {
+  border-top: none;
+}
+
+/* Intro grid */
+.inovasi-intro__grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 48px;
+  margin-top: 40px;
+  align-items: start;
+}
+.inovasi-intro__text p {
+  color: #cbd5e1;
+  font-size: 1.1rem;
+  line-height: 1.85;
+  margin: 0 0 18px;
+}
+.inovasi-intro__text strong {
+  color: #67e8f9;
+}
+
+/* Award badges */
+.inovasi-intro__badges {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.inovasi-badge {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.18);
+}
+.inovasi-badge__icon {
+  font-size: 1.8rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.inovasi-badge strong {
+  display: block;
+  color: #f8fafc;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+.inovasi-badge p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* Features grid */
+.inovasi-features__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+.inovasi-feature {
+  padding: 28px 24px;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  backdrop-filter: blur(10px);
+  transition: 0.22s ease;
+}
+.inovasi-feature:hover {
+  border-color: rgba(34, 211, 238, 0.28);
+  background: rgba(34, 211, 238, 0.06);
+  transform: translateY(-3px);
+}
+.inovasi-feature__icon {
+  font-size: 2.2rem;
+  display: block;
+  margin-bottom: 14px;
+}
+.inovasi-feature h3 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  color: #f8fafc;
+}
+.inovasi-feature p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* Gallery */
+.inovasi-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 40px;
+}
+.inovasi-gallery__item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  aspect-ratio: 4/3;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+.inovasi-gallery__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.inovasi-gallery__item:hover img {
+  transform: scale(1.06);
+}
+.inovasi-gallery__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(2,6,23,0.75) 0%, transparent 55%);
+  display: flex;
+  align-items: flex-end;
+  padding: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.inovasi-gallery__item:hover .inovasi-gallery__overlay {
+  opacity: 1;
+}
+.inovasi-gallery__overlay span {
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* CTA buttons row */
+.inovasi-cta__btns {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.inovasi-cta__btns .btn--secondary {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.18);
+  cursor: pointer;
+}
+
+/* ─── STORY BLOCK (selang-seli teks + gambar) ──────── */
+.inovasi-story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 72px 32px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.inovasi-story--reverse {
+  direction: rtl;
+}
+.inovasi-story--reverse > * {
+  direction: ltr;
+}
+.inovasi-story--alt {
+  background: rgba(255,255,255,0.015);
+}
+.inovasi-story__text h2 {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  color: #f8fafc;
+  line-height: 1.25;
+  margin: 10px 0 20px;
+}
+.inovasi-story__text p {
+  color: #cbd5e1;
+  font-size: 1.05rem;
+  line-height: 1.85;
+  margin: 0 0 16px;
+}
+.inovasi-story__text strong {
+  color: #67e8f9;
+}
+.inovasi-story__image {
+  position: relative;
+}
+.inovasi-story__image img {
+  width: 100%;
+  border-radius: 18px;
+  display: block;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+}
+.inovasi-story__caption {
+  display: block;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 0.82rem;
+  color: #64748b;
+  letter-spacing: 0.02em;
+}
+
+/* ─── USER PILLS ────────────────────────────────── */
+.inovasi-users {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0 22px;
+}
+.inovasi-user-pill {
+  background: rgba(34,211,238,0.09);
+  border: 1px solid rgba(34,211,238,0.22);
+  color: #a5f3fc;
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* ─── BACA SETERUSNYA ───────────────────────────── */
+.inovasi-readmore {
+  display: flex;
+  justify-content: center;
+  padding: 8px 32px 56px;
+}
+.inovasi-readmore--collapse {
+  padding-top: 12px;
+  padding-bottom: 28px;
+}
+.inovasi-readmore__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1.5px solid rgba(34,211,238,0.4);
+  color: #67e8f9;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.22s ease;
+  letter-spacing: 0.04em;
+}
+.inovasi-readmore__btn:hover {
+  background: rgba(34,211,238,0.1);
+  border-color: #67e8f9;
+  transform: translateY(-1px);
+}
+.inovasi-readmore__btn--collapse {
+  color: #94a3b8;
+  border-color: rgba(255,255,255,0.15);
+}
+.inovasi-readmore__btn--collapse:hover {
+  background: rgba(255,255,255,0.05);
+  color: #cbd5e1;
+}
+
+/* ─── KANDUNGAN LANJUTAN ────────────────────────── */
+.inovasi-expanded {
+  animation: fadeSlideDown 0.4s ease;
+}
+@keyframes fadeSlideDown {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── ANUGERAH ──────────────────────────────────── */
+.inovasi-awards {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 64px 32px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.inovasi-awards__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 0;
+}
+.inovasi-award-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  padding: 28px 20px;
+  border-radius: 20px;
+  background: rgba(34,211,238,0.06);
+  border: 1px solid rgba(34,211,238,0.15);
+}
+.inovasi-award-card__icon {
+  font-size: 2.4rem;
+}
+.inovasi-award-card strong {
+  color: #f8fafc;
+  font-size: 1rem;
+}
+.inovasi-award-card p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* ─── RESPONSIVE (story + awards) ───────────────── */
+@media (max-width: 900px) {
+  .inovasi-story {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 52px 20px;
+  }
+  .inovasi-story--reverse {
+    direction: ltr;
+  }
+  .inovasi-awards__grid {
+    grid-template-columns: 1fr;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+}
+@media (max-width: 600px) {
+  .inovasi-users {
+    gap: 8px;
+  }
+  .inovasi-user-pill {
+    font-size: 0.82rem;
+    padding: 6px 12px;
+  }
+  .inovasi-page__hero-actions,
+  .inovasi-cta__btns {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+}
 .handle {
   margin-top: 8px;
   font-size: 14px;

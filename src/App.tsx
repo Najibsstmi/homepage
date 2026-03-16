@@ -7,6 +7,14 @@ export default function App() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState<"home" | "inovasi">("home");
+  const [readMore, setReadMore] = useState(false);
+
+  const navigateTo = (page: "home" | "inovasi") => {
+    setCurrentPage(page);
+    setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -79,7 +87,13 @@ export default function App() {
   return (
     <div className="page">
       <nav className="navbar">
-        <div className="navbar__brand">CIKGUSTEM</div>
+        <div
+          className="navbar__brand"
+          style={{ cursor: "pointer" }}
+          onClick={() => navigateTo("home")}
+        >
+          CIKGUSTEM
+        </div>
         <button
           className="navbar__toggle"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -94,17 +108,217 @@ export default function App() {
           <a href="#achievements" onClick={() => setMobileMenuOpen(false)}>Pencapaian</a>
           <a href="#gallery" onClick={() => setMobileMenuOpen(false)}>Galeri</a>
           <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Hubungi</a>
-          <a
-            href="https://senismartlab.cikgustem.com"
-            target="_blank"
-            rel="noreferrer"
-            onClick={() => setMobileMenuOpen(false)}
+          <button
+            className={`navbar__inovasi-btn${currentPage === "inovasi" ? " navbar__inovasi-btn--active" : ""}`}
+            onClick={() => navigateTo("inovasi")}
           >
-            Smart Lab
-          </a>
+            Inovasi
+          </button>
         </div>
       </nav>
 
+      {currentPage === "inovasi" ? (
+        /* ─────────────── PAGE INOVASI ─────────────── */
+        <div className="inovasi-page">
+
+          {/* ── HERO ── */}
+          <div className="inovasi-page__hero">
+            <div className="inovasi-page__hero-glow inovasi-page__hero-glow--one"></div>
+            <div className="inovasi-page__hero-glow inovasi-page__hero-glow--two"></div>
+            <div className="inovasi-page__hero-content">
+              <span className="section__label">Produk Inovasi Terbaru</span>
+              <h1>SmartLab</h1>
+              <p className="inovasi-page__tagline">
+                Mengurus eksperimen makmal dengan lebih mudah dan sistematik
+              </p>
+              <div className="inovasi-page__hero-actions">
+                <a href="https://senismartlab.cikgustem.com" className="btn btn--primary" target="_blank" rel="noreferrer">
+                  Cuba SmartLab
+                </a>
+                <button className="btn btn--secondary" onClick={() => navigateTo("home")}>
+                  ← Kembali ke Utama
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* ── BLOK 1: Teks kiri | Gambar kanan (Login screenshot) ── */}
+          <div className="inovasi-story">
+            <div className="inovasi-story__text">
+              <p className="section__label">Tentang SmartLab</p>
+              <h2>Satu penyelesaian, dibina dari pengalaman sebenar</h2>
+              <p>
+                SmartLab ialah sebuah web apps yang dibangunkan khusus untuk membantu
+                guru sains merancang dan mengurus eksperimen makmal dengan lebih teratur.
+              </p>
+              <p>
+                Ia bermula daripada satu keperluan yang sangat biasa di sekolah —
+                guru perlu menjalankan eksperimen, tetapi penyediaan bahan dan radas
+                sering menjadi cabaran. SmartLab dibina untuk membantu menyelesaikan
+                masalah tersebut.
+              </p>
+            </div>
+            <div className="inovasi-story__image">
+              <img src="/gallery1.jpg" alt="SmartLab — Skrin Log Masuk" />
+              <span className="inovasi-story__caption">Antara muka log masuk SmartLab</span>
+            </div>
+          </div>
+
+          {/* ── BLOK 2: Gambar kiri (Dashboard) | Teks kanan ── */}
+          <div className="inovasi-story inovasi-story--reverse inovasi-story--alt">
+            <div className="inovasi-story__image">
+              <img src="/gallery2.jpg" alt="SmartLab — Dashboard" />
+              <span className="inovasi-story__caption">Dashboard gambaran keseluruhan tempahan</span>
+            </div>
+            <div className="inovasi-story__text">
+              <p className="section__label">Siapakah SmartLab untuk?</p>
+              <h2>Direka untuk semua warga makmal</h2>
+              <div className="inovasi-users">
+                {["🧑‍🏫 Guru Sains sekolah menengah", "🧪 Pembantu Makmal sekolah", "📋 Ketua Panitia Sains", "🏫 Pentadbir sekolah"].map(u => (
+                  <span className="inovasi-user-pill" key={u}>{u}</span>
+                ))}
+              </div>
+              <p>
+                SmartLab memastikan eksperimen dapat dirancang lebih awal, bahan
+                disediakan dengan tepat, dan proses pengajaran berjalan dengan lebih lancar.
+              </p>
+            </div>
+          </div>
+
+          {/* ── BLOK 3: Bagaimana ia berfungsi (Borang Tempahan) ── */}
+          <div className="inovasi-story">
+            <div className="inovasi-story__text">
+              <p className="section__label">Cara Penggunaan</p>
+              <h2>Pilih eksperimen. Sistem uruskan selebihnya.</h2>
+              <p>
+                Melalui SmartLab, guru memilih eksperimen yang ingin dijalankan dan
+                sistem akan menyediakan senarai bahan serta radas yang diperlukan secara
+                automatik.
+              </p>
+              <p>
+                Permintaan dihantar terus kepada pembantu makmal — tiada salah faham,
+                tiada kekurangan bahan.
+              </p>
+            </div>
+            <div className="inovasi-story__image">
+              <img src="/gallery3.jpg" alt="SmartLab — Borang Tempahan" />
+              <span className="inovasi-story__caption">Borang tempahan baru — mudah dan teratur</span>
+            </div>
+          </div>
+
+          {/* ── BUTANG BACA SETERUSNYA ── */}
+          {!readMore && (
+            <div className="inovasi-readmore">
+              <button className="inovasi-readmore__btn" onClick={() => setReadMore(true)}>
+                Baca Seterusnya
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+            </div>
+          )}
+
+          {/* ── KANDUNGAN LANJUTAN ── */}
+          {readMore && (
+            <div className="inovasi-expanded">
+              {/* Blok 4: Senarai Tempahan */}
+              <div className="inovasi-story inovasi-story--reverse inovasi-story--alt">
+                <div className="inovasi-story__image">
+                  <img src="/gallery4.jpg" alt="SmartLab — Senarai Tempahan" />
+                  <span className="inovasi-story__caption">Senarai tempahan beserta status kelulusan</span>
+                </div>
+                <div className="inovasi-story__text">
+                  <p className="section__label">Rekod & Status</p>
+                  <h2>Semua tempahan dalam satu paparan</h2>
+                  <p>
+                    Guru boleh menyemak status tempahan — sama ada diluluskan atau
+                    ditolak — dengan nota daripada pentadbir sekali gus. Setiap rekod
+                    boleh dicetak terus dari sistem.
+                  </p>
+                  <p>
+                    Dengan pendekatan ini, pengurusan eksperimen menjadi lebih tersusun
+                    dan risiko kesilapan dapat dikurangkan dengan ketara.
+                  </p>
+                </div>
+              </div>
+
+              {/* Blok 5: Borang close-up + prinsip */}
+              <div className="inovasi-story">
+                <div className="inovasi-story__text">
+                  <p className="section__label">Falsafah Reka Bentuk</p>
+                  <h2>Dibina oleh guru, untuk guru</h2>
+                  <p>
+                    SmartLab bukan sekadar satu sistem pengurusan makmal. Ia dibangunkan
+                    daripada pengalaman sebenar seorang guru yang berdepan dengan cabaran
+                    pengurusan eksperimen di sekolah setiap hari.
+                  </p>
+                  <p>
+                    SmartLab direka dengan satu prinsip yang sangat jelas —{" "}
+                    <strong>mudah digunakan oleh guru tanpa memerlukan kemahiran teknikal.</strong>
+                  </p>
+                  <p>
+                    Dengan bantuan teknologi, SmartLab cuba menjadikan pengurusan makmal
+                    sekolah lebih sistematik supaya guru boleh memberi lebih fokus kepada
+                    perkara yang paling penting — <strong>pembelajaran murid.</strong>
+                  </p>
+                </div>
+                <div className="inovasi-story__image">
+                  <img src="/gallery5.jpg" alt="SmartLab — Borang Terperinci" />
+                  <span className="inovasi-story__caption">Butiran lengkap dalam borang tempahan</span>
+                </div>
+              </div>
+
+              <div className="inovasi-readmore inovasi-readmore--collapse">
+                <button className="inovasi-readmore__btn inovasi-readmore__btn--collapse" onClick={() => { setReadMore(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+                  Tutup
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* ── ANUGERAH ── */}
+          <div className="inovasi-awards">
+            <p className="section__label" style={{ textAlign: "center", display: "block", marginBottom: "24px" }}>Pengiktirafan</p>
+            <div className="inovasi-awards__grid">
+              {[
+                { icon: "🏆", title: "Johan Inovasi", sub: "Malaysia Techlympics Zon Selatan 2022" },
+                { icon: "🥇", title: "Johan Kebangsaan", sub: "Inovasi Sungai Kim Kim 2022" },
+                { icon: "🎖️", title: "Pingat Emas", sub: "Karnival Kreatif & Inovasi PdPc 2019" },
+              ].map(a => (
+                <div className="inovasi-award-card" key={a.title}>
+                  <span className="inovasi-award-card__icon">{a.icon}</span>
+                  <strong>{a.title}</strong>
+                  <p>{a.sub}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── CTA ── */}
+          <div className="inovasi-section inovasi-section--cta">
+            <div className="cta__box">
+              <div>
+                <p className="section__label">Cuba Sekarang</p>
+                <h2>Akses SmartLab secara percuma</h2>
+                <p>Sesuai untuk semua sekolah menengah di Malaysia.</p>
+              </div>
+              <div className="inovasi-cta__btns">
+                <a href="https://senismartlab.cikgustem.com" className="btn btn--primary" target="_blank" rel="noreferrer">
+                  Buka SmartLab
+                </a>
+                <button className="btn btn--secondary" onClick={() => navigateTo("home")}>
+                  ← Kembali ke Utama
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <footer className="footer">
+            <p>© 2026 Najib Jaafar • cikgustem.com</p>
+            <p>STEM Educator • Innovation • Education Technology</p>
+          </footer>
+        </div>
+      ) : (
+        <>
       <section className="hero">
   <div className="hero__glow hero__glow--one"></div>
   <div className="hero__glow hero__glow--two"></div>
@@ -408,6 +622,8 @@ export default function App() {
   </p>
 
 </footer>
+        </>
+      )}
     </div>
   );
 }

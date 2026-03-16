@@ -702,6 +702,8 @@ a {
 /* ─── PAGE INOVASI ───────────────────────────── */
 .inovasi-page {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Hero */
@@ -1086,11 +1088,18 @@ a {
 .eduslot {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 64px 32px;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 72px 32px 56px;
+  border-top: none;
+  order: -1;
+}
+.eduslot__top {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 24px;
+  align-items: center;
 }
 .eduslot__hero {
-  max-width: 860px;
+  max-width: 100%;
 }
 .eduslot__hero h2 {
   margin: 10px 0 14px;
@@ -1120,7 +1129,7 @@ a {
 }
 
 .eduslot__showcase {
-  margin-top: 26px;
+  margin-top: 0;
 }
 .eduslot__showcase img {
   width: 100%;
@@ -1217,6 +1226,10 @@ a {
   }
   .eduslot {
     padding: 44px 20px;
+  }
+  .eduslot__top {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
   .eduslot__grid {
     grid-template-columns: 1fr;

@@ -310,40 +310,42 @@ export default function App() {
             </div>
           </div>
 
-          {/* ── INOVASI KEDUA: EDUSLOT ── */}
+          {/* ── INOVASI TERBARU: EDUSLOT ── */}
           <section className="eduslot">
-            <div className="eduslot__hero">
-              <p className="section__label">Inovasi Kedua</p>
-              <h2>EduSlot</h2>
-              <p className="eduslot__tagline">
-                Sistem tempahan bilik khas sekolah yang lebih mudah, teratur dan telus.
-              </p>
-              <p className="eduslot__intro">
-                EduSlot dibangunkan untuk menyusun tempahan bilik khas sekolah secara
-                digital supaya tiada pertindihan jadual, tiada kekeliruan tempahan,
-                dan semua pihak dapat melihat penggunaan bilik dengan jelas.
-              </p>
-              <div className="eduslot__actions">
-                <a
-                  href="https://eduslot.cikgustem.com"
-                  className="btn btn--primary"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Buka EduSlot
-                </a>
-                <button
-                  className="btn btn--secondary"
-                  onClick={() => setEduSlotReadMore(true)}
-                >
-                  Lihat Penerangan
-                </button>
+            <div className="eduslot__top">
+              <div className="eduslot__hero">
+                <p className="section__label">Inovasi Terbaru</p>
+                <h2>EduSlot</h2>
+                <p className="eduslot__tagline">
+                  Sistem tempahan bilik khas sekolah yang lebih mudah, teratur dan telus.
+                </p>
+                <p className="eduslot__intro">
+                  EduSlot dibangunkan untuk menyusun tempahan bilik khas sekolah secara
+                  digital supaya tiada pertindihan jadual, tiada kekeliruan tempahan,
+                  dan semua pihak dapat melihat penggunaan bilik dengan jelas.
+                </p>
+                <div className="eduslot__actions">
+                  <a
+                    href="https://eduslot.cikgustem.com"
+                    className="btn btn--primary"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Buka EduSlot
+                  </a>
+                  <button
+                    className="btn btn--secondary"
+                    onClick={() => setEduSlotReadMore(true)}
+                  >
+                    Lihat Penerangan
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div className="eduslot__showcase">
-              <img src="/dashboard utama.jpg" alt="EduSlot Dashboard Utama" />
-              <span>Paparan dashboard utama EduSlot</span>
+              <div className="eduslot__showcase">
+                <img src="/eduslot-1.png" alt="EduSlot Paparan Sistem" />
+                <span>Paparan sistem EduSlot</span>
+              </div>
             </div>
 
             <div className="eduslot__grid">

@@ -323,6 +323,22 @@ export default function App() {
                 digital supaya tiada pertindihan jadual, tiada kekeliruan tempahan,
                 dan semua pihak dapat melihat penggunaan bilik dengan jelas.
               </p>
+              <div className="eduslot__actions">
+                <a
+                  href="https://eduslot.cikgustem.com"
+                  className="btn btn--primary"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Buka EduSlot
+                </a>
+                <button
+                  className="btn btn--secondary"
+                  onClick={() => setEduSlotReadMore(true)}
+                >
+                  Lihat Penerangan
+                </button>
+              </div>
             </div>
 
             <div className="eduslot__showcase">

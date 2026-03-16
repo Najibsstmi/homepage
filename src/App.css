@@ -1109,6 +1109,15 @@ a {
   color: #cbd5e1;
   line-height: 1.8;
 }
+.eduslot__actions {
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.eduslot__actions .btn--secondary {
+  cursor: pointer;
+}
 
 .eduslot__showcase {
   margin-top: 26px;
@@ -1211,6 +1220,10 @@ a {
   }
   .eduslot__grid {
     grid-template-columns: 1fr;
+  }
+  .eduslot__actions {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 @media (max-width: 600px) {

@@ -3,6 +3,8 @@ import { useState } from "react";
 import emailjs from "@emailjs/browser";
 
 export default function App() {
+  type SharePlatform = "facebook" | "whatsapp" | "telegram" | "x";
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -41,6 +43,74 @@ export default function App() {
         }
       );
   };
+
+  const sharePlatforms: Array<{ platform: SharePlatform; label: string }> = [
+    { platform: "facebook", label: "Facebook" },
+    { platform: "whatsapp", label: "WhatsApp" },
+    { platform: "telegram", label: "Telegram" },
+    { platform: "x", label: "X" },
+  ];
+
+  const getShareUrl = (anchor: string) => {
+    if (typeof window === "undefined") {
+      return anchor;
+    }
+
+    return `${window.location.origin}${window.location.pathname}${anchor}`;
+  };
+
+  const openSocialShare = (platform: SharePlatform, title: string, anchor: string) => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const url = encodeURIComponent(getShareUrl(anchor));
+    const text = encodeURIComponent(`Jom lihat ${title} di CikguSTEM.`);
+
+    const shareLinkByPlatform: Record<SharePlatform, string> = {
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      whatsapp: `https://wa.me/?text=${text}%20${url}`,
+      telegram: `https://t.me/share/url?url=${url}&text=${text}`,
+      x: `https://x.com/intent/tweet?url=${url}&text=${text}`,
+    };
+
+    window.open(shareLinkByPlatform[platform], "_blank", "noopener,noreferrer");
+  };
+
+  const copyShareLink = async (anchor: string) => {
+    const url = getShareUrl(anchor);
+
+    try {
+      await navigator.clipboard.writeText(url);
+      alert("Pautan berjaya disalin.");
+    } catch {
+      window.prompt("Salin pautan ini:", url);
+    }
+  };
+
+  const ShareBar = ({ title, anchor }: { title: string; anchor: string }) => (
+    <div className="share-row" aria-label={`Kongsi ${title}`}>
+      <span className="share-row__label">Kongsi:</span>
+      {sharePlatforms.map(({ platform, label }) => (
+        <button
+          type="button"
+          key={`${anchor}-${platform}`}
+          className={`share-row__btn share-row__btn--${platform}`}
+          onClick={() => openSocialShare(platform, title, anchor)}
+        >
+          {label}
+        </button>
+      ))}
+      <button
+        type="button"
+        className="share-row__btn share-row__btn--copy"
+        onClick={() => copyShareLink(anchor)}
+      >
+        Salin Link
+      </button>
+    </div>
+  );
+
   const cards = [
     {
       title: "Seni Smart Lab",
@@ -123,7 +193,7 @@ export default function App() {
         <div className="inovasi-page">
 
           {/* ── HERO ── */}
-          <div className="inovasi-page__hero">
+          <div id="smartlab-hero" className="inovasi-page__hero">
             <div className="inovasi-page__hero-glow inovasi-page__hero-glow--one"></div>
             <div className="inovasi-page__hero-glow inovasi-page__hero-glow--two"></div>
             <div className="inovasi-page__hero-content">
@@ -140,11 +210,12 @@ export default function App() {
                   ← Kembali ke Utama
                 </button>
               </div>
+              <ShareBar title="SmartLab" anchor="#smartlab-hero" />
             </div>
           </div>
 
           {/* ── BLOK 1: Teks kiri | Gambar kanan (Login screenshot) ── */}
-          <div className="inovasi-story">
+          <div id="smartlab-pengenalan" className="inovasi-story">
             <div className="inovasi-story__text">
               <p className="section__label">Tentang SmartLab</p>
               <h2>Satu penyelesaian, dibina dari pengalaman sebenar</h2>
@@ -158,6 +229,7 @@ export default function App() {
                 sering menjadi cabaran. SmartLab dibina untuk membantu menyelesaikan
                 masalah tersebut.
               </p>
+              <ShareBar title="SmartLab: Pengenalan" anchor="#smartlab-pengenalan" />
             </div>
             <div className="inovasi-story__image">
               <img src="/Daftar akaun.jpg" alt="SmartLab — Daftar Akaun" />
@@ -166,7 +238,7 @@ export default function App() {
           </div>
 
           {/* ── BLOK 2: Gambar kiri (Dashboard) | Teks kanan ── */}
-          <div className="inovasi-story inovasi-story--reverse inovasi-story--alt">
+          <div id="smartlab-pengguna" className="inovasi-story inovasi-story--reverse inovasi-story--alt">
             <div className="inovasi-story__image">
               <img src="/dashboard utama.jpg" alt="SmartLab — Dashboard Utama" />
               <span className="inovasi-story__caption">Dashboard utama SmartLab</span>
@@ -183,6 +255,7 @@ export default function App() {
                 SmartLab memastikan eksperimen dapat dirancang lebih awal, bahan
                 disediakan dengan tepat, dan proses pengajaran berjalan dengan lebih lancar.
               </p>
+              <ShareBar title="SmartLab: Pengguna Sasaran" anchor="#smartlab-pengguna" />
             </div>
           </div>
 
@@ -203,7 +276,7 @@ export default function App() {
           {readMore && (
             <div className="inovasi-expanded">
               {/* Blok 3: Eksperimen dan Aktiviti */}
-              <div className="inovasi-story">
+              <div id="smartlab-cara" className="inovasi-story">
                 <div className="inovasi-story__text">
                   <p className="section__label">Cara Penggunaan</p>
                   <h2>Pilih eksperimen. Sistem uruskan selebihnya.</h2>
@@ -216,6 +289,7 @@ export default function App() {
                     Permintaan dihantar terus kepada pembantu makmal — tiada salah faham,
                     tiada kekurangan bahan.
                   </p>
+                  <ShareBar title="SmartLab: Cara Penggunaan" anchor="#smartlab-cara" />
                 </div>
                 <div className="inovasi-story__image">
                   <img src="/eksperiemen dan aktiviti.jpg" alt="SmartLab — Eksperimen dan Aktiviti" />
@@ -224,7 +298,7 @@ export default function App() {
               </div>
 
               {/* Blok 4: Senarai Tempahan */}
-              <div className="inovasi-story inovasi-story--reverse inovasi-story--alt">
+              <div id="smartlab-status" className="inovasi-story inovasi-story--reverse inovasi-story--alt">
                 <div className="inovasi-story__image">
                   <img src="/tempahan saya.jpg" alt="SmartLab — Tempahan Saya" />
                   <span className="inovasi-story__caption">Paparan Tempahan Saya dengan status kelulusan</span>
@@ -241,11 +315,12 @@ export default function App() {
                     Dengan pendekatan ini, pengurusan eksperimen menjadi lebih tersusun
                     dan risiko kesilapan dapat dikurangkan dengan ketara.
                   </p>
+                  <ShareBar title="SmartLab: Rekod dan Status" anchor="#smartlab-status" />
                 </div>
               </div>
 
               {/* Blok 5: Borang close-up + prinsip */}
-              <div className="inovasi-story">
+              <div id="smartlab-falsafah" className="inovasi-story">
                 <div className="inovasi-story__text">
                   <p className="section__label">Falsafah Reka Bentuk</p>
                   <h2>Dibina oleh guru, untuk guru</h2>
@@ -263,6 +338,7 @@ export default function App() {
                     sekolah lebih sistematik supaya guru boleh memberi lebih fokus kepada
                     perkara yang paling penting — <strong>pembelajaran murid.</strong>
                   </p>
+                  <ShareBar title="SmartLab: Falsafah Reka Bentuk" anchor="#smartlab-falsafah" />
                 </div>
                 <div className="inovasi-story__image">
                   <img src="/tempahan.jpg" alt="SmartLab — Tempahan" />
@@ -274,7 +350,7 @@ export default function App() {
           )}
 
           {/* ── ANUGERAH ── */}
-          <div className="inovasi-awards">
+          <div id="smartlab-pengiktirafan" className="inovasi-awards">
             <p className="section__label" style={{ textAlign: "center", display: "block", marginBottom: "24px" }}>Pengiktirafan</p>
             <div className="inovasi-awards__grid">
               {[
@@ -289,6 +365,7 @@ export default function App() {
                 </div>
               ))}
             </div>
+            <ShareBar title="SmartLab: Pengiktirafan" anchor="#smartlab-pengiktirafan" />
           </div>
 
           {/* ── CTA ── */}
@@ -311,7 +388,7 @@ export default function App() {
           </div>
 
           {/* ── INOVASI TERBARU: EDUSLOT ── */}
-          <section className="eduslot">
+          <section id="eduslot-post" className="eduslot">
             <div className="eduslot__top">
               <div className="eduslot__hero">
                 <p className="section__label">Inovasi Terbaru</p>
@@ -324,6 +401,7 @@ export default function App() {
                   digital supaya tiada pertindihan jadual, tiada kekeliruan tempahan,
                   dan semua pihak dapat melihat penggunaan bilik dengan jelas.
                 </p>
+                <ShareBar title="EduSlot" anchor="#eduslot-post" />
                 <div className="eduslot__actions">
                   <a
                     href="https://eduslot.cikgustem.com"

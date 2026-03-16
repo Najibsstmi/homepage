@@ -1128,6 +1128,12 @@ a {
 .eduslot__actions .btn--secondary {
   cursor: pointer;
 }
+.eduslot__sidecards {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
 
 .eduslot__showcase {
   margin-top: 0;
@@ -1151,9 +1157,9 @@ a {
 
 .eduslot__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 16px;
-  margin-top: 28px;
+  margin-top: 18px;
 }
 .eduslot__card {
   background: rgba(255,255,255,0.03);
@@ -1176,6 +1182,18 @@ a {
 }
 .eduslot__card li + li {
   margin-top: 8px;
+}
+.eduslot__card--compact {
+  padding: 16px;
+}
+.eduslot__card--compact h3 {
+  font-size: 0.92rem;
+  margin-bottom: 8px;
+}
+.eduslot__card--compact ul,
+.eduslot__card--compact ol {
+  font-size: 0.88rem;
+  line-height: 1.55;
 }
 
 .eduslot__features {
@@ -1244,6 +1262,9 @@ a {
     text-align: left;
   }
   .eduslot__grid {
+    grid-template-columns: 1fr;
+  }
+  .eduslot__sidecards {
     grid-template-columns: 1fr;
   }
   .eduslot__actions {

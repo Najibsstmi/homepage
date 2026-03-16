@@ -340,6 +340,25 @@ export default function App() {
                     Lihat Penerangan
                   </button>
                 </div>
+
+                <div className="eduslot__sidecards">
+                  <article className="eduslot__card eduslot__card--compact">
+                    <h3>Masalah yang selalu berlaku di sekolah</h3>
+                    <ul>
+                      <li>Pertindihan tempahan bilik tanpa disedari</li>
+                      <li>Jadual tidak jelas antara guru dan pentadbir</li>
+                    </ul>
+                  </article>
+
+                  <article className="eduslot__card eduslot__card--compact">
+                    <h3>Bagaimana EduSlot berfungsi dalam 3 langkah</h3>
+                    <ol>
+                      <li>Pilih bilik khas.</li>
+                      <li>Pilih tarikh dan masa.</li>
+                      <li>Hantar tempahan.</li>
+                    </ol>
+                  </article>
+                </div>
               </div>
 
               <div className="eduslot__showcase">
@@ -349,25 +368,6 @@ export default function App() {
             </div>
 
             <div className="eduslot__grid">
-              <article className="eduslot__card">
-                <h3>Masalah yang selalu berlaku di sekolah</h3>
-                <ul>
-                  <li>Pertindihan tempahan bilik tanpa disedari</li>
-                  <li>Jadual tidak jelas antara guru dan pentadbir</li>
-                  <li>Rekod penggunaan bilik sukar disemak semula</li>
-                  <li>Maklumat tempahan tidak sampai kepada semua pihak</li>
-                </ul>
-              </article>
-
-              <article className="eduslot__card">
-                <h3>Bagaimana EduSlot berfungsi dalam 3 langkah</h3>
-                <ol>
-                  <li>Pilih bilik khas yang ingin digunakan.</li>
-                  <li>Pilih tarikh dan masa berdasarkan slot tersedia.</li>
-                  <li>Hantar tempahan untuk rekod dan pemantauan pentadbir.</li>
-                </ol>
-              </article>
-
               <article className="eduslot__card">
                 <h3>Kenapa EduSlot sesuai untuk semua sekolah</h3>
                 <ul>

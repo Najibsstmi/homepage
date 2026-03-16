@@ -159,19 +159,19 @@ export default function App() {
               </p>
             </div>
             <div className="inovasi-story__image">
-              <img src="/IMG_20260306_191211.jpg" alt="SmartLab — Skrin Log Masuk" />
-              <span className="inovasi-story__caption">Antara muka log masuk SmartLab</span>
+              <img src="/Daftar akaun.jpg" alt="SmartLab — Daftar Akaun" />
+              <span className="inovasi-story__caption">Paparan Daftar Akaun SmartLab</span>
             </div>
           </div>
 
           {/* ── BLOK 2: Gambar kiri (Dashboard) | Teks kanan ── */}
           <div className="inovasi-story inovasi-story--reverse inovasi-story--alt">
             <div className="inovasi-story__image">
-              <img src="/IMG_20251014_082030.jpg" alt="SmartLab — Dashboard" />
-              <span className="inovasi-story__caption">Dashboard gambaran keseluruhan tempahan</span>
+              <img src="/dashboard utama.jpg" alt="SmartLab — Dashboard Utama" />
+              <span className="inovasi-story__caption">Dashboard utama SmartLab</span>
             </div>
             <div className="inovasi-story__text">
-              <p className="section__label">Siapakah SmartLab untuk?</p>
+              <p className="section__label">Smartlab untuk Siapa??</p>
               <h2>Direka untuk semua warga makmal</h2>
               <div className="inovasi-users">
                 {["🧑‍🏫 Guru Sains sekolah menengah", "🧪 Pembantu Makmal sekolah", "📋 Ketua Panitia Sains", "🏫 Pentadbir sekolah"].map(u => (
@@ -201,8 +201,8 @@ export default function App() {
               </p>
             </div>
             <div className="inovasi-story__image">
-              <img src="/IMG_20251001_161920.jpg" alt="SmartLab — Borang Tempahan" />
-              <span className="inovasi-story__caption">Borang tempahan baru — mudah dan teratur</span>
+              <img src="/eksperiemen dan aktiviti.jpg" alt="SmartLab — Eksperimen dan Aktiviti" />
+              <span className="inovasi-story__caption">Pilihan eksperimen dan aktiviti dalam SmartLab</span>
             </div>
           </div>
 
@@ -222,8 +222,8 @@ export default function App() {
               {/* Blok 4: Senarai Tempahan */}
               <div className="inovasi-story inovasi-story--reverse inovasi-story--alt">
                 <div className="inovasi-story__image">
-                  <img src="/IMG_20250927_130814.jpg" alt="SmartLab — Senarai Tempahan" />
-                  <span className="inovasi-story__caption">Senarai tempahan beserta status kelulusan</span>
+                  <img src="/tempahan saya.jpg" alt="SmartLab — Tempahan Saya" />
+                  <span className="inovasi-story__caption">Paparan Tempahan Saya dengan status kelulusan</span>
                 </div>
                 <div className="inovasi-story__text">
                   <p className="section__label">Rekod & Status</p>
@@ -261,8 +261,8 @@ export default function App() {
                   </p>
                 </div>
                 <div className="inovasi-story__image">
-                  <img src="/IMG_20210929_091154.jpg" alt="SmartLab — Borang Terperinci" />
-                  <span className="inovasi-story__caption">Butiran lengkap dalam borang tempahan</span>
+                  <img src="/tempahan.jpg" alt="SmartLab — Tempahan" />
+                  <span className="inovasi-story__caption">Borang tempahan SmartLab</span>
                 </div>
               </div>
 

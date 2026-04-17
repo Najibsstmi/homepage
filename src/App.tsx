@@ -13,6 +13,12 @@ export default function App() {
     "smartlab-falsafah",
     "smartlab-pengiktirafan",
   ]);
+  const journeySectionIds = new Set([
+    "journey-padang-line",
+    "journey-microbit",
+    "journey-mudball",
+    "journey-plc",
+  ]);
   const eduTrackSectionIds = new Set(["edutrack-post"]);
   const eduSlotSectionIds = new Set(["eduslot-post"]);
   const smartLabHiddenSectionIds = new Set([
@@ -207,17 +213,22 @@ export default function App() {
     }
 
     const targetId = anchor.replace(/^#/, "");
+
     const isInovasiTarget =
       smartLabSectionIds.has(targetId) ||
       eduTrackSectionIds.has(targetId) ||
       eduSlotSectionIds.has(targetId);
 
+    const isJourneyTarget = journeySectionIds.has(targetId);
+
     const appUrl = new URL(window.location.href);
     appUrl.hash = "";
     appUrl.search = "";
+
     if (isInovasiTarget) {
       appUrl.searchParams.set("page", "inovasi");
     }
+
     if (targetId) {
       appUrl.hash = targetId;
     }
@@ -225,16 +236,21 @@ export default function App() {
     const shareLandingUrl = new URL(window.location.href);
     shareLandingUrl.hash = "";
     shareLandingUrl.search = "";
-    shareLandingUrl.pathname =
-      shareLandingUrl.pathname.replace(/\/[^/]*$/, "/") +
-      (eduTrackSectionIds.has(targetId)
-        ? "share-edutrack.html"
-        : eduSlotSectionIds.has(targetId)
-          ? "share-eduslot.html"
-          : "share-smartlab.html");
-    shareLandingUrl.searchParams.set("target", targetId);
 
-    if (isInovasiTarget) {
+    const landingFile = eduTrackSectionIds.has(targetId)
+      ? "share-edutrack.html"
+      : eduSlotSectionIds.has(targetId)
+      ? "share-eduslot.html"
+      : smartLabSectionIds.has(targetId)
+      ? "share-smartlab.html"
+      : isJourneyTarget
+      ? "share-journey.html"
+      : "";
+
+    if (landingFile) {
+      shareLandingUrl.pathname =
+        shareLandingUrl.pathname.replace(/\/[^/]*$/, "/") + landingFile;
+      shareLandingUrl.searchParams.set("target", targetId);
       return shareLandingUrl.toString();
     }
 
@@ -1052,7 +1068,7 @@ export default function App() {
           </div>
         </div>
 
-        <article id="journey-post" className="journey-post">
+        <article id="journey-padang-line" className="journey-post">
           <div className="journey-post__header">
             <div>
               <span className="section-kicker">Catatan Guru</span>
@@ -1060,7 +1076,7 @@ export default function App() {
                 Kadang-kadang, pembelajaran paling bermakna bermula di tempat yang langsung
                 tidak kita sangka.
               </h3>
-              <ShareBar title="Catatan Perjalanan Guru" anchor="#journey-post" />
+              <ShareBar title="Perjalanan Guru di Padang" anchor="#journey-padang-line" />
             </div>
           </div>
 
@@ -1175,7 +1191,7 @@ export default function App() {
             </div>
 
             <div className="journey-post__shareFooter">
-              <ShareBar title="Catatan Perjalanan Guru" anchor="#journey-post" />
+              <ShareBar title="Perjalanan Guru di Padang" anchor="#journey-padang-line" />
             </div>
           </ReadMore>
         </article>

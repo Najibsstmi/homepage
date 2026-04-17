@@ -75,7 +75,41 @@ export default function App() {
   const navigateTo = (page: "home" | "inovasi") => {
     setCurrentPage(page);
     setMobileMenuOpen(false);
+
+    if (typeof window !== "undefined") {
+      if (page === "home") {
+        const homeUrl = new URL(window.location.href);
+        homeUrl.searchParams.delete("page");
+        homeUrl.hash = "";
+        window.history.replaceState(null, "", `${homeUrl.pathname}${homeUrl.search}`);
+      } else {
+        const inovasiUrl = new URL(window.location.href);
+        inovasiUrl.searchParams.set("page", "inovasi");
+        window.history.replaceState(
+          null,
+          "",
+          `${inovasiUrl.pathname}${inovasiUrl.search}${inovasiUrl.hash}`
+        );
+      }
+    }
+
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const goToHomeSection = (sectionId: string) => {
+    setCurrentPage("home");
+    setMobileMenuOpen(false);
+
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", `#${sectionId}`);
+    }
+
+    window.setTimeout(() => {
+      document.getElementById(sectionId)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 180);
   };
 
   const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
@@ -262,11 +296,11 @@ export default function App() {
           <span></span>
         </button>
         <div className={`navbar__links ${mobileMenuOpen ? "navbar__links--active" : ""}`}>
-          <a href="#about" onClick={() => setMobileMenuOpen(false)}>Tentang</a>
-          <a href="#focus" onClick={() => setMobileMenuOpen(false)}>Fokus</a>
-          <a href="#achievements" onClick={() => setMobileMenuOpen(false)}>Pencapaian</a>
-          <a href="#gallery" onClick={() => setMobileMenuOpen(false)}>Galeri</a>
-          <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Hubungi</a>
+          <a href="#about" onClick={() => goToHomeSection("about")}>Tentang</a>
+          <a href="#focus" onClick={() => goToHomeSection("focus")}>Fokus</a>
+          <a href="#achievements" onClick={() => goToHomeSection("achievements")}>Pencapaian</a>
+          <a href="#gallery" onClick={() => goToHomeSection("gallery")}>Galeri</a>
+          <a href="#contact" onClick={() => goToHomeSection("contact")}>Hubungi</a>
           <button
             className={`navbar__inovasi-btn${currentPage === "inovasi" ? " navbar__inovasi-btn--active" : ""}`}
             onClick={() => navigateTo("inovasi")}
@@ -499,13 +533,6 @@ export default function App() {
                   >
                     Buka EduTrack
                   </a>
-                  <button
-                    className="btn btn--secondary"
-                    type="button"
-                    onClick={() => setEduTrackReadMore(true)}
-                  >
-                    Baca Penerangan
-                  </button>
                 </div>
 
                 <div className="eduslot__sidecards">

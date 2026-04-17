@@ -580,6 +580,14 @@ a {
   margin-top: 26px;
 }
 
+.journey-post__readmore {
+  margin-top: 24px;
+}
+
+.journey-post__more.read-more__content--collapsed {
+  max-height: 290px;
+}
+
 .journey-post__inlineVisual {
   margin: 20px 0;
   padding: 18px;
@@ -1342,6 +1350,35 @@ a {
 .inovasi-readmore__btn--collapse:hover {
   background: rgba(255,255,255,0.05);
   color: #cbd5e1;
+}
+
+.read-more {
+  margin-top: 20px;
+}
+
+.read-more__content {
+  position: relative;
+}
+
+.read-more__content--collapsed {
+  max-height: 260px;
+  overflow: hidden;
+}
+
+.read-more__fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 88px;
+  background: linear-gradient(to top, #06142b 0%, rgba(6, 20, 43, 0) 100%);
+  pointer-events: none;
+}
+
+.read-more__toggle {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
 }
 
 /* ─── KANDUNGAN LANJUTAN ────────────────────────── */

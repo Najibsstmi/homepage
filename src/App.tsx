@@ -30,6 +30,63 @@ export default function App() {
   const [eduTrackReadMore, setEduTrackReadMore] = useState(false);
   const [eduSlotReadMore, setEduSlotReadMore] = useState(false);
 
+  const ReadMore = ({
+    children,
+    open,
+    onToggle,
+    expandLabel = "Ketahui Lebih Lanjut",
+    collapseLabel = "Lihat Ringkas",
+    className = "",
+    contentClassName = "",
+  }: {
+    children: React.ReactNode;
+    open?: boolean;
+    onToggle?: () => void;
+    expandLabel?: string;
+    collapseLabel?: string;
+    className?: string;
+    contentClassName?: string;
+  }) => {
+    const [internalOpen, setInternalOpen] = useState(false);
+    const isControlled = typeof open === "boolean";
+    const isOpen = isControlled ? open : internalOpen;
+
+    const handleToggle = () => {
+      if (isControlled) {
+        onToggle?.();
+        return;
+      }
+
+      setInternalOpen((prev) => !prev);
+    };
+
+    return (
+      <div className={`read-more ${className}`.trim()}>
+        <div
+          className={`read-more__content ${contentClassName} ${
+            isOpen ? "" : "read-more__content--collapsed"
+          }`.trim()}
+        >
+          {children}
+          {!isOpen && <div className="read-more__fade" aria-hidden="true"></div>}
+        </div>
+
+        <div className="read-more__toggle">
+          <button
+            className={`inovasi-readmore__btn${isOpen ? " inovasi-readmore__btn--collapse" : ""}`}
+            type="button"
+            onClick={handleToggle}
+          >
+            {isOpen ? collapseLabel : expandLabel}
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              {isOpen ? <polyline points="18 15 12 9 6 15" /> : <polyline points="6 9 12 15 18 9" />}
+            </svg>
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   useEffect(() => {
     if (typeof window === "undefined") {
       return;
@@ -383,7 +440,7 @@ export default function App() {
               className={`inovasi-readmore__btn${readMore ? " inovasi-readmore__btn--collapse" : ""}`}
               onClick={() => setReadMore((prev) => !prev)}
             >
-              {readMore ? "Lihat Kurang" : "Baca Seterusnya"}
+              {readMore ? "Lihat Ringkas" : "Ketahui Lebih Lanjut"}
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 {readMore ? <polyline points="18 15 12 9 6 15" /> : <polyline points="6 9 12 15 18 9" />}
               </svg>
@@ -608,21 +665,12 @@ export default function App() {
               ))}
             </div>
 
-            <div className="eduslot__toggleWrap">
-              <button
-                className="inovasi-readmore__btn"
-                type="button"
-                onClick={() => setEduTrackReadMore((prev) => !prev)}
-              >
-                {eduTrackReadMore ? "Lihat Ringkas" : "Baca Penuh EduTrack"}
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  {eduTrackReadMore ? <polyline points="18 15 12 9 6 15" /> : <polyline points="6 9 12 15 18 9" />}
-                </svg>
-              </button>
-            </div>
-
-            {eduTrackReadMore && (
-              <div className="eduslot__more">
+            <ReadMore
+              open={eduTrackReadMore}
+              onToggle={() => setEduTrackReadMore((prev) => !prev)}
+              className="eduslot__toggleWrap"
+              contentClassName="eduslot__more"
+            >
                 <p>
                   Sebagai guru, kita bukan sekadar memasukkan markah. Dalam fikiran kita
                   sentiasa ada persoalan yang lebih besar: sejauh mana murid ini boleh pergi,
@@ -686,8 +734,7 @@ export default function App() {
                   EduTrack dibina supaya data bukan hanya disimpan, tetapi benar-benar
                   digunakan untuk membantu membina masa depan murid.
                 </p>
-              </div>
-            )}
+            </ReadMore>
           </section>
 
           {/* ── INOVASI TERBARU: EDUSLOT ── */}
@@ -714,12 +761,6 @@ export default function App() {
                   >
                     Buka EduSlot
                   </a>
-                  <button
-                    className="btn btn--secondary"
-                    onClick={() => setEduSlotReadMore(true)}
-                  >
-                    Lihat Penerangan
-                  </button>
                 </div>
 
                 <div className="eduslot__sidecards">
@@ -774,20 +815,12 @@ export default function App() {
               ))}
             </div>
 
-            <div className="eduslot__toggleWrap">
-              <button
-                className="inovasi-readmore__btn"
-                onClick={() => setEduSlotReadMore((prev) => !prev)}
-              >
-                {eduSlotReadMore ? "Lihat Ringkas" : "Baca Penuh EduSlot"}
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  {eduSlotReadMore ? <polyline points="18 15 12 9 6 15" /> : <polyline points="6 9 12 15 18 9" />}
-                </svg>
-              </button>
-            </div>
-
-            {eduSlotReadMore && (
-              <div className="eduslot__more">
+            <ReadMore
+              open={eduSlotReadMore}
+              onToggle={() => setEduSlotReadMore((prev) => !prev)}
+              className="eduslot__toggleWrap"
+              contentClassName="eduslot__more"
+            >
                 <p>
                   Di kebanyakan sekolah, tempahan bilik khas masih menggunakan cara
                   manual seperti buku log, papan putih, atau pesanan WhatsApp. Dari
@@ -804,8 +837,7 @@ export default function App() {
                   pelajaran. Matlamatnya jelas: guru kurang terbeban dengan isu jadual,
                   dan lebih fokus kepada pengajaran serta pembelajaran murid.
                 </p>
-              </div>
-            )}
+            </ReadMore>
           </section>
 
           <footer className="footer">
@@ -1058,92 +1090,94 @@ export default function App() {
             </figure>
           </div>
 
-          <div className="journey-post__gallery">
-            {[
-              {
-                src: "/gelek padang (2).jpg",
-                alt: "Permukaan padang sekolah ketika kerja pengukuran dibuat",
-                caption: "Ketepatan ukuran juga sebahagian daripada disiplin sains.",
-              },
-              {
-                src: "/gelek padang (3).jpg",
-                alt: "Tompokan kuning unik di atas tanah padang sekolah",
-                caption: "Daripada tompokan kecil, lahir persoalan yang besar.",
-              },
-              {
-                src: "/gelek padang (4).jpg",
-                alt: "Paparan dekat organisma slime mold di padang sekolah",
-                caption: "Dog vomit slime mold, organisma unik yang jarang diperhatikan.",
-              },
-            ].map((image) => (
-              <figure className="journey-post__galleryItem" key={image.src}>
-                <img src={image.src} alt={image.alt} />
-                <figcaption>{image.caption}</figcaption>
-              </figure>
-            ))}
-          </div>
-
-          <div className="journey-post__body">
-            <p>
-              Rupa-rupanya, itu ialah sejenis organisma yang dikenali sebagai dog vomit slime
-              mold — satu bentuk kulat unik yang jarang kita perasan walaupun ia wujud di
-              persekitaran kita.
-            </p>
-            <p>
-              Situasi ini mengingatkan saya bahawa Sains tidak hanya berlaku di dalam makmal.
-              Ia sentiasa ada di sekeliling kita — di tanah, di udara, dan dalam perkara kecil
-              yang sering kita abaikan.
-            </p>
-            <p>
-              Membina garisan padang mungkin kelihatan seperti tugas teknikal biasa, tetapi di
-              situlah prinsip sains dan pemerhatian bergabung. Daripada ketepatan ukuran
-              hinggalah kepada penemuan kecil seperti ini, semuanya menjadi sebahagian daripada
-              pengalaman pembelajaran.
-            </p>
-
-            <div className="journey-post__inlineVisual">
-              <img src="/gelek padang (5).jpg" alt="Aktiviti di padang yang berkait dengan pemerhatian sains" />
-              <div>
-                <span className="section-kicker">Sains Di Sekeliling Kita</span>
-                <h4>Pembelajaran sebenar kadang-kadang muncul ketika kita sedang menjalankan tugas biasa.</h4>
-                <p>
-                  Sebagai guru, saya percaya pembelajaran sebenar berlaku apabila kita sentiasa
-                  peka dan ingin tahu. Sama ada di dalam kelas atau di luar, setiap detik boleh
-                  menjadi peluang untuk memahami dunia dengan lebih mendalam.
-                </p>
-              </div>
+          <ReadMore className="journey-post__readmore" contentClassName="journey-post__more">
+            <div className="journey-post__gallery">
+              {[
+                {
+                  src: "/gelek padang (2).jpg",
+                  alt: "Permukaan padang sekolah ketika kerja pengukuran dibuat",
+                  caption: "Ketepatan ukuran juga sebahagian daripada disiplin sains.",
+                },
+                {
+                  src: "/gelek padang (3).jpg",
+                  alt: "Tompokan kuning unik di atas tanah padang sekolah",
+                  caption: "Daripada tompokan kecil, lahir persoalan yang besar.",
+                },
+                {
+                  src: "/gelek padang (4).jpg",
+                  alt: "Paparan dekat organisma slime mold di padang sekolah",
+                  caption: "Dog vomit slime mold, organisma unik yang jarang diperhatikan.",
+                },
+              ].map((image) => (
+                <figure className="journey-post__galleryItem" key={image.src}>
+                  <img src={image.src} alt={image.alt} />
+                  <figcaption>{image.caption}</figcaption>
+                </figure>
+              ))}
             </div>
 
-            <p>
-              Dan mungkin, daripada perkara sekecil ini, lahir rasa ingin tahu yang lebih besar
-              — bukan sahaja dalam diri saya, tetapi juga dalam diri murid-murid yang saya
-              bimbing.
-            </p>
-          </div>
+            <div className="journey-post__body">
+              <p>
+                Rupa-rupanya, itu ialah sejenis organisma yang dikenali sebagai dog vomit slime
+                mold — satu bentuk kulat unik yang jarang kita perasan walaupun ia wujud di
+                persekitaran kita.
+              </p>
+              <p>
+                Situasi ini mengingatkan saya bahawa Sains tidak hanya berlaku di dalam makmal.
+                Ia sentiasa ada di sekeliling kita — di tanah, di udara, dan dalam perkara kecil
+                yang sering kita abaikan.
+              </p>
+              <p>
+                Membina garisan padang mungkin kelihatan seperti tugas teknikal biasa, tetapi di
+                situlah prinsip sains dan pemerhatian bergabung. Daripada ketepatan ukuran
+                hinggalah kepada penemuan kecil seperti ini, semuanya menjadi sebahagian daripada
+                pengalaman pembelajaran.
+              </p>
 
-          <div className="journey-post__gallery journey-post__gallery--end">
-            {[
-              {
-                src: "/gelek padang (6).jpg",
-                alt: "Keadaan padang sekolah selepas kerja menanda selesai",
-                caption: "Tugas di luar kelas juga boleh menjadi ruang refleksi pendidikan.",
-              },
-              {
-                src: "/gelek padang (7).jpg",
-                alt: "Suasana padang sekolah sebagai ruang pembelajaran tidak formal",
-                caption: "Dari padang ke bilik darjah, rasa ingin tahu tetap membawa makna.",
-              },
-            ].map((image) => (
-              <figure className="journey-post__galleryItem" key={image.src}>
-                <img src={image.src} alt={image.alt} />
-                <figcaption>{image.caption}</figcaption>
-              </figure>
-            ))}
-          </div>
+              <div className="journey-post__inlineVisual">
+                <img src="/gelek padang (5).jpg" alt="Aktiviti di padang yang berkait dengan pemerhatian sains" />
+                <div>
+                  <span className="section-kicker">Sains Di Sekeliling Kita</span>
+                  <h4>Pembelajaran sebenar kadang-kadang muncul ketika kita sedang menjalankan tugas biasa.</h4>
+                  <p>
+                    Sebagai guru, saya percaya pembelajaran sebenar berlaku apabila kita sentiasa
+                    peka dan ingin tahu. Sama ada di dalam kelas atau di luar, setiap detik boleh
+                    menjadi peluang untuk memahami dunia dengan lebih mendalam.
+                  </p>
+                </div>
+              </div>
 
-          <div className="journey-post__shareFooter">
-            <ShareBar title="Catatan Perjalanan Guru" anchor="#journey-post" />
-          </div>
+              <p>
+                Dan mungkin, daripada perkara sekecil ini, lahir rasa ingin tahu yang lebih besar
+                — bukan sahaja dalam diri saya, tetapi juga dalam diri murid-murid yang saya
+                bimbing.
+              </p>
+            </div>
+
+            <div className="journey-post__gallery journey-post__gallery--end">
+              {[
+                {
+                  src: "/gelek padang (6).jpg",
+                  alt: "Keadaan padang sekolah selepas kerja menanda selesai",
+                  caption: "Tugas di luar kelas juga boleh menjadi ruang refleksi pendidikan.",
+                },
+                {
+                  src: "/gelek padang (7).jpg",
+                  alt: "Suasana padang sekolah sebagai ruang pembelajaran tidak formal",
+                  caption: "Dari padang ke bilik darjah, rasa ingin tahu tetap membawa makna.",
+                },
+              ].map((image) => (
+                <figure className="journey-post__galleryItem" key={image.src}>
+                  <img src={image.src} alt={image.alt} />
+                  <figcaption>{image.caption}</figcaption>
+                </figure>
+              ))}
+            </div>
+
+            <div className="journey-post__shareFooter">
+              <ShareBar title="Catatan Perjalanan Guru" anchor="#journey-post" />
+            </div>
+          </ReadMore>
         </article>
 
         <div className="journey-highlight">

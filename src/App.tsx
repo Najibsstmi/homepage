@@ -540,25 +540,9 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="eduslot__showcase eduslot__showcase--panel">
-                <div className="eduslot__card eduslot__showcaseCard">
-                  <p className="eduslot__showcaseLabel">Idea Teras</p>
-                  <h3>
-                    Dari TOV ke ETR,
-                    <br />
-                    sistem bantu bentuk hala tuju murid.
-                  </h3>
-                  <p>
-                    Tidak semua murid perlu dibimbing dengan cara yang sama. Sebab itu
-                    EduTrack menyediakan tiga mod sasaran akademik supaya guru boleh memilih
-                    pendekatan yang paling sesuai dengan kemampuan dan potensi sebenar murid.
-                  </p>
-                  <div className="eduslot__showcaseModes">
-                    <span>Conservative</span>
-                    <span>Moderate</span>
-                    <span>Aggressive</span>
-                  </div>
-                </div>
+              <div className="eduslot__showcase">
+                <img src="/edutrack (1).jpg" alt="EduTrack paparan utama sistem" />
+                <span>Paparan utama EduTrack dengan fokus kepada analisis akademik murid</span>
               </div>
             </div>
 
@@ -573,6 +557,31 @@ export default function App() {
                 <span className="eduslot__feature-pill" key={feature}>
                   {feature}
                 </span>
+              ))}
+            </div>
+
+            <div className="edutrack__gallery edutrack__gallery--preview">
+              {[
+                {
+                  src: "/edutrack (2).jpg",
+                  alt: "EduTrack paparan analisis peperiksaan",
+                  caption: "Analisis peperiksaan dalam satu paparan",
+                },
+                {
+                  src: "/edutrack (3).jpg",
+                  alt: "EduTrack paparan sasaran akademik murid",
+                  caption: "Sasaran akademik yang lebih tersusun",
+                },
+                {
+                  src: "/edutrack (4).jpg",
+                  alt: "EduTrack paparan headcount dan unjuran",
+                  caption: "Headcount dan unjuran yang lebih jelas",
+                },
+              ].map((image) => (
+                <figure className="edutrack__galleryItem" key={image.src}>
+                  <img src={image.src} alt={image.alt} />
+                  <figcaption>{image.caption}</figcaption>
+                </figure>
               ))}
             </div>
 
@@ -604,6 +613,17 @@ export default function App() {
                   untuk mengubah pendekatan itu dengan menjadikan data akademik sebagai alat
                   bimbingan, bukan sekadar rekod.
                 </p>
+                <div className="edutrack__inlineVisual">
+                  <img src="/edutrack (5).jpg" alt="EduTrack paparan data dan penetapan sasaran" />
+                  <div className="edutrack__inlineVisualText">
+                    <p className="eduslot__showcaseLabel">Sorotan Sistem</p>
+                    <h3>Data tidak berhenti pada laporan, tetapi diterjemah menjadi tindakan.</h3>
+                    <p>
+                      Melalui paparan yang tersusun, guru boleh membaca prestasi semasa,
+                      memahami jurang pencapaian dan menetapkan sasaran dengan lebih yakin.
+                    </p>
+                  </div>
+                </div>
                 <p>
                   Melalui fungsi Sasaran Akademik, guru boleh memilih mod Conservative,
                   Moderate atau Aggressive. Berdasarkan pilihan ini, sistem membina OTR
@@ -617,6 +637,25 @@ export default function App() {
                   analisis akan menyesuaikan bacaan secara automatik apabila murid berpindah
                   atau tidak mengambil subjek tertentu.
                 </p>
+                <div className="edutrack__gallery edutrack__gallery--detail">
+                  {[
+                    {
+                      src: "/edutrack (6).jpg",
+                      alt: "EduTrack paparan pengurusan peperiksaan",
+                      caption: "Kawalan peperiksaan diurus dengan lebih terancang",
+                    },
+                    {
+                      src: "/edutrack (7).jpg",
+                      alt: "EduTrack paparan analisis murid",
+                      caption: "Analisis disesuaikan mengikut situasi sebenar murid",
+                    },
+                  ].map((image) => (
+                    <figure className="edutrack__galleryItem" key={image.src}>
+                      <img src={image.src} alt={image.alt} />
+                      <figcaption>{image.caption}</figcaption>
+                    </figure>
+                  ))}
+                </div>
                 <p>
                   Apa yang membezakan EduTrack bukan sekadar teknologinya, tetapi cara ia
                   memahami kerja seorang guru. Masa itu terhad, keputusan perlu dibuat dengan

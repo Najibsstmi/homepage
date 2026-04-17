@@ -150,10 +150,17 @@ export default function App() {
     }
 
     const targetId = anchor.replace(/^#/, "");
+    const isInovasiTarget =
+      smartLabSectionIds.has(targetId) ||
+      eduTrackSectionIds.has(targetId) ||
+      eduSlotSectionIds.has(targetId);
+
     const appUrl = new URL(window.location.href);
     appUrl.hash = "";
     appUrl.search = "";
-    appUrl.searchParams.set("page", "inovasi");
+    if (isInovasiTarget) {
+      appUrl.searchParams.set("page", "inovasi");
+    }
     if (targetId) {
       appUrl.hash = targetId;
     }
@@ -170,11 +177,7 @@ export default function App() {
           : "share-smartlab.html");
     shareLandingUrl.searchParams.set("target", targetId);
 
-    if (
-      smartLabSectionIds.has(targetId) ||
-      eduTrackSectionIds.has(targetId) ||
-      eduSlotSectionIds.has(targetId)
-    ) {
+    if (isInovasiTarget) {
       return shareLandingUrl.toString();
     }
 
@@ -243,8 +246,8 @@ export default function App() {
     {
       title: "Inovasi STEM",
       text: "Pembangunan projek STEM, idea inovasi, Micro:bit dan penyelesaian pendidikan yang relevan dengan dunia sebenar.",
-      link: "#focus",
-      button: "Lihat Fokus",
+      link: "#journey",
+      button: "Lihat Perjalanan",
     },
     {
       title: "Portfolio Pendidikan",
@@ -252,13 +255,6 @@ export default function App() {
       link: "#about",
       button: "Kenali Saya",
     },
-  ];
-
-  const focusAreas = [
-    "Teknologi dalam pendidikan sains",
-    "Pembangunan inovasi STEM dan projek sekolah",
-    "Sistem digital untuk guru dan murid",
-    "Perkongsian amalan terbaik PdP abad ke-21",
   ];
 
   const achievements = [
@@ -297,7 +293,7 @@ export default function App() {
         </button>
         <div className={`navbar__links ${mobileMenuOpen ? "navbar__links--active" : ""}`}>
           <a href="#about" onClick={() => goToHomeSection("about")}>Tentang</a>
-          <a href="#focus" onClick={() => goToHomeSection("focus")}>Fokus</a>
+          <a href="#journey" onClick={() => goToHomeSection("journey")}>Perjalanan</a>
           <a href="#achievements" onClick={() => goToHomeSection("achievements")}>Pencapaian</a>
           <a href="#gallery" onClick={() => goToHomeSection("gallery")}>Galeri</a>
           <a href="#contact" onClick={() => goToHomeSection("contact")}>Hubungi</a>
@@ -977,18 +973,199 @@ export default function App() {
         </div>
       </section>
 
-      <section id="focus" className="section focus">
-        <div className="section__header">
-          <p className="section__label">Fokus Utama</p>
-          <h2>Bidang yang sedang dibangunkan melalui CikguSTEM</h2>
+      <section id="journey" className="section section-block">
+        <div className="section-heading">
+          <span className="section-kicker">Perjalanan & Fokus Saya</span>
+          <h2>
+            Dari bilik darjah, ke inovasi yang benar-benar membantu guru dan murid.
+          </h2>
+          <p>
+            Saya percaya pendidikan yang bermakna bukan sekadar menyampaikan isi pelajaran,
+            tetapi membina hala tuju, keyakinan dan potensi murid secara tersusun.
+            Sebagai guru Sains, saya melihat sendiri bagaimana cabaran sebenar di sekolah
+            sering memerlukan penyelesaian yang lebih praktikal, lebih jelas dan lebih dekat
+            dengan realiti tugas guru.
+          </p>
         </div>
 
-        <div className="focus__grid">
-          {focusAreas.map((item) => (
-            <div className="focus__item" key={item}>
-              {item}
+        <div className="journey-grid">
+          <div className="journey-card">
+            <h3>Di dalam kelas</h3>
+            <p>
+              Saya memberi fokus kepada pengajaran Sains yang lebih hidup, berstruktur dan
+              relevan dengan dunia sebenar. Aktiviti pembelajaran bukan hanya untuk faham
+              konsep, tetapi untuk membina pemikiran, kemahiran menyelesaikan masalah dan
+              minat murid terhadap STEM.
+            </p>
+          </div>
+
+          <div className="journey-card">
+            <h3>Di luar buku teks</h3>
+            <p>
+              Saya aktif membangunkan projek, aktiviti dan pengalaman pembelajaran yang
+              menghubungkan murid dengan inovasi, eksperimen, teknologi dan kreativiti.
+              Daripada projek STEM hinggalah kepada program sekolah, saya percaya murid belajar
+              paling baik apabila mereka terlibat secara aktif.
+            </p>
+          </div>
+
+          <div className="journey-card">
+            <h3>Dalam sistem & inovasi</h3>
+            <p>
+              Daripada pengalaman sebenar sebagai guru, saya mula membangunkan penyelesaian
+              digital seperti SmartLab dan EduTrack supaya kerja guru menjadi lebih teratur,
+              keputusan lebih tepat, dan pengurusan pembelajaran murid dapat dibuat dengan
+              lebih berfokus.
+            </p>
+          </div>
+        </div>
+
+        <article id="journey-post" className="journey-post">
+          <div className="journey-post__header">
+            <div>
+              <span className="section-kicker">Catatan Guru</span>
+              <h3>
+                Kadang-kadang, pembelajaran paling bermakna bermula di tempat yang langsung
+                tidak kita sangka.
+              </h3>
+              <ShareBar title="Catatan Perjalanan Guru" anchor="#journey-post" />
             </div>
-          ))}
+          </div>
+
+          <div className="journey-post__lead">
+            <div className="journey-post__text">
+              <p>
+                Hari ini, saya tidak berada di dalam makmal Sains. Tiada eksperimen,
+                tiada radas, tiada graf untuk dianalisis.
+              </p>
+              <p>
+                Sebaliknya, saya berada di padang — memegang pita ukur, menanda garisan,
+                dan memastikan setiap ukuran tepat. Sebagai guru, peranan saya tidak terhad
+                kepada satu subjek sahaja. Selain mengajar Sains, saya juga memikul
+                tanggungjawab sebagai guru Pendidikan Jasmani.
+              </p>
+              <p>
+                Sedang saya menyiapkan garisan padang, perhatian saya tertarik kepada satu
+                tompokan kuning yang pelik di permukaan tanah. Pada mulanya, ia kelihatan
+                seperti kotoran biasa. Namun, sebagai seorang guru Sains, rasa ingin tahu itu
+                sukar untuk diabaikan.
+              </p>
+            </div>
+
+            <figure className="journey-post__heroImage">
+              <img src="/gelek padang (1).jpg" alt="Aktiviti menanda garisan padang di sekolah" />
+              <figcaption>Di padang juga, pemerhatian saintifik boleh bermula tanpa dirancang.</figcaption>
+            </figure>
+          </div>
+
+          <div className="journey-post__gallery">
+            {[
+              {
+                src: "/gelek padang (2).jpg",
+                alt: "Permukaan padang sekolah ketika kerja pengukuran dibuat",
+                caption: "Ketepatan ukuran juga sebahagian daripada disiplin sains.",
+              },
+              {
+                src: "/gelek padang (3).jpg",
+                alt: "Tompokan kuning unik di atas tanah padang sekolah",
+                caption: "Daripada tompokan kecil, lahir persoalan yang besar.",
+              },
+              {
+                src: "/gelek padang (4).jpg",
+                alt: "Paparan dekat organisma slime mold di padang sekolah",
+                caption: "Dog vomit slime mold, organisma unik yang jarang diperhatikan.",
+              },
+            ].map((image) => (
+              <figure className="journey-post__galleryItem" key={image.src}>
+                <img src={image.src} alt={image.alt} />
+                <figcaption>{image.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+
+          <div className="journey-post__body">
+            <p>
+              Rupa-rupanya, itu ialah sejenis organisma yang dikenali sebagai dog vomit slime
+              mold — satu bentuk kulat unik yang jarang kita perasan walaupun ia wujud di
+              persekitaran kita.
+            </p>
+            <p>
+              Situasi ini mengingatkan saya bahawa Sains tidak hanya berlaku di dalam makmal.
+              Ia sentiasa ada di sekeliling kita — di tanah, di udara, dan dalam perkara kecil
+              yang sering kita abaikan.
+            </p>
+            <p>
+              Membina garisan padang mungkin kelihatan seperti tugas teknikal biasa, tetapi di
+              situlah prinsip sains dan pemerhatian bergabung. Daripada ketepatan ukuran
+              hinggalah kepada penemuan kecil seperti ini, semuanya menjadi sebahagian daripada
+              pengalaman pembelajaran.
+            </p>
+
+            <div className="journey-post__inlineVisual">
+              <img src="/gelek padang (5).jpg" alt="Aktiviti di padang yang berkait dengan pemerhatian sains" />
+              <div>
+                <span className="section-kicker">Sains Di Sekeliling Kita</span>
+                <h4>Pembelajaran sebenar kadang-kadang muncul ketika kita sedang menjalankan tugas biasa.</h4>
+                <p>
+                  Sebagai guru, saya percaya pembelajaran sebenar berlaku apabila kita sentiasa
+                  peka dan ingin tahu. Sama ada di dalam kelas atau di luar, setiap detik boleh
+                  menjadi peluang untuk memahami dunia dengan lebih mendalam.
+                </p>
+              </div>
+            </div>
+
+            <p>
+              Dan mungkin, daripada perkara sekecil ini, lahir rasa ingin tahu yang lebih besar
+              — bukan sahaja dalam diri saya, tetapi juga dalam diri murid-murid yang saya
+              bimbing.
+            </p>
+          </div>
+
+          <div className="journey-post__gallery journey-post__gallery--end">
+            {[
+              {
+                src: "/gelek padang (6).jpg",
+                alt: "Keadaan padang sekolah selepas kerja menanda selesai",
+                caption: "Tugas di luar kelas juga boleh menjadi ruang refleksi pendidikan.",
+              },
+              {
+                src: "/gelek padang (7).jpg",
+                alt: "Suasana padang sekolah sebagai ruang pembelajaran tidak formal",
+                caption: "Dari padang ke bilik darjah, rasa ingin tahu tetap membawa makna.",
+              },
+            ].map((image) => (
+              <figure className="journey-post__galleryItem" key={image.src}>
+                <img src={image.src} alt={image.alt} />
+                <figcaption>{image.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+
+          <div className="journey-post__shareFooter">
+            <ShareBar title="Catatan Perjalanan Guru" anchor="#journey-post" />
+          </div>
+        </article>
+
+        <div className="journey-highlight">
+          <h3>Apa yang saya perjuangkan dalam pendidikan</h3>
+          <ul>
+            <li>Pengajaran Sains yang aktif, jelas dan berimpak</li>
+            <li>Inovasi STEM yang relevan dengan keperluan sebenar sekolah</li>
+            <li>Sistem digital yang memudahkan tugas guru</li>
+            <li>Pembinaan hala tuju akademik murid melalui data dan strategi</li>
+          </ul>
+        </div>
+
+        <div className="journey-bridge">
+          <p>
+            Semua ini bukan bermula daripada idea atas kertas, tetapi daripada pengalaman
+            sebenar di sekolah. Sebab itu setiap inovasi yang saya bangunkan sentiasa berpunca
+            daripada satu soalan yang sama: bagaimana kita boleh menjadikan kerja guru lebih
+            mudah dan pembelajaran murid lebih bermakna?
+          </p>
+          <button onClick={() => navigateTo("inovasi")} className="secondary-btn">
+            Lihat Inovasi Saya
+          </button>
         </div>
       </section>
 

@@ -1220,6 +1220,59 @@ a {
   font-size: 0.84rem;
   text-align: right;
 }
+.eduslot__showcase--panel {
+  display: flex;
+  align-items: stretch;
+}
+.eduslot__showcaseCard {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  padding: 28px;
+  background:
+    radial-gradient(circle at top left, rgba(34, 211, 238, 0.18), transparent 42%),
+    linear-gradient(160deg, rgba(15, 23, 42, 0.96), rgba(12, 18, 34, 0.92));
+}
+.eduslot__showcaseLabel {
+  margin: 0;
+  color: #67e8f9;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.eduslot__showcaseCard h3 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(1.5rem, 2.8vw, 2.3rem);
+  line-height: 1.15;
+}
+.eduslot__showcaseCard p {
+  margin: 0;
+  color: #cbd5e1;
+  line-height: 1.8;
+}
+.eduslot__showcaseModes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.eduslot__showcaseModes span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 211, 238, 0.24);
+  background: rgba(34, 211, 238, 0.08);
+  color: #a5f3fc;
+  font-size: 0.84rem;
+  text-align: center;
+}
 
 .eduslot__grid {
   display: grid;
@@ -1326,6 +1379,9 @@ a {
   }
   .eduslot__showcase span {
     text-align: left;
+  }
+  .eduslot__showcaseCard {
+    padding: 24px;
   }
   .eduslot__grid {
     grid-template-columns: 1fr;

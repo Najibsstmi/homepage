@@ -13,6 +13,7 @@ export default function App() {
     "smartlab-falsafah",
     "smartlab-pengiktirafan",
   ]);
+  const eduTrackSectionIds = new Set(["edutrack-post"]);
   const eduSlotSectionIds = new Set(["eduslot-post"]);
   const smartLabHiddenSectionIds = new Set([
     "smartlab-cara",
@@ -26,6 +27,7 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<"home" | "inovasi">("home");
   const [readMore, setReadMore] = useState(false);
+  const [eduTrackReadMore, setEduTrackReadMore] = useState(false);
   const [eduSlotReadMore, setEduSlotReadMore] = useState(false);
 
   useEffect(() => {
@@ -38,6 +40,7 @@ export default function App() {
     const shouldOpenInovasi =
       params.get("page") === "inovasi" ||
       smartLabSectionIds.has(hashTarget) ||
+      eduTrackSectionIds.has(hashTarget) ||
       eduSlotSectionIds.has(hashTarget);
 
     if (shouldOpenInovasi) {
@@ -67,7 +70,7 @@ export default function App() {
     }, 180);
 
     return () => window.clearTimeout(timer);
-  }, [currentPage, readMore, eduSlotReadMore]);
+  }, [currentPage, readMore, eduTrackReadMore, eduSlotReadMore]);
 
   const navigateTo = (page: "home" | "inovasi") => {
     setCurrentPage(page);
@@ -126,10 +129,18 @@ export default function App() {
     shareLandingUrl.search = "";
     shareLandingUrl.pathname =
       shareLandingUrl.pathname.replace(/\/[^/]*$/, "/") +
-      (eduSlotSectionIds.has(targetId) ? "share-eduslot.html" : "share-smartlab.html");
+      (eduTrackSectionIds.has(targetId)
+        ? "share-edutrack.html"
+        : eduSlotSectionIds.has(targetId)
+          ? "share-eduslot.html"
+          : "share-smartlab.html");
     shareLandingUrl.searchParams.set("target", targetId);
 
-    if (smartLabSectionIds.has(targetId) || eduSlotSectionIds.has(targetId)) {
+    if (
+      smartLabSectionIds.has(targetId) ||
+      eduTrackSectionIds.has(targetId) ||
+      eduSlotSectionIds.has(targetId)
+    ) {
       return shareLandingUrl.toString();
     }
 
@@ -463,6 +474,159 @@ export default function App() {
               </div>
             </div>
           </div>
+
+          <section id="edutrack-post" className="eduslot">
+            <div className="eduslot__top">
+              <div className="eduslot__hero">
+                <p className="section__label">Inovasi Terkini</p>
+                <h2>EduTrack</h2>
+                <p className="eduslot__tagline">
+                  Bukan sekadar simpan markah, tetapi membantu guru merancang masa depan murid.
+                </p>
+                <p className="eduslot__intro">
+                  EduTrack dibina dengan satu fokus yang jelas: menjadikan data akademik
+                  sebagai alat bimbingan. Apabila markah dimasukkan, sistem terus membantu
+                  guru melihat hubungan antara TOV, OTR dan ETR supaya sasaran murid dapat
+                  dirancang dengan lebih cepat, lebih jelas dan lebih bermakna.
+                </p>
+                <ShareBar title="EduTrack" anchor="#edutrack-post" />
+                <div className="eduslot__actions">
+                  <a
+                    href="https://edutrack.cikgustem.com"
+                    className="btn btn--primary"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Buka EduTrack
+                  </a>
+                  <button
+                    className="btn btn--secondary"
+                    type="button"
+                    onClick={() => setEduTrackReadMore(true)}
+                  >
+                    Baca Penerangan
+                  </button>
+                </div>
+
+                <div className="eduslot__sidecards">
+                  <article className="eduslot__card eduslot__card--compact">
+                    <h3>Masalah sebenar yang dihadapi guru</h3>
+                    <ul>
+                      <li>Kebanyakan sistem hanya berhenti pada simpanan markah dan penjanaan laporan</li>
+                      <li>Guru masih perlu menilai sasaran dan hala tuju murid secara manual</li>
+                    </ul>
+                  </article>
+
+                  <article className="eduslot__card eduslot__card--compact">
+                    <h3>Bagaimana EduTrack membantu dalam 3 langkah</h3>
+                    <ol>
+                      <li>Guru masukkan markah semasa.</li>
+                      <li>Sistem membaca jurang TOV, OTR dan ETR.</li>
+                      <li>Sasaran dibina secara automatik ikut pendekatan yang dipilih.</li>
+                    </ol>
+                  </article>
+                </div>
+
+                <div className="eduslot__grid">
+                  <article className="eduslot__card">
+                    <h3>Kenapa EduTrack lebih dekat dengan realiti kerja guru</h3>
+                    <ul>
+                      <li>Guru boleh memilih mod Conservative, Moderate atau Aggressive mengikut potensi murid</li>
+                      <li>OTR dibina secara automatik tanpa kiraan berulang yang memenatkan</li>
+                      <li>Pentadbir boleh mengawal peperiksaan yang dibuka untuk kemasukan markah</li>
+                      <li>Analisis disesuaikan apabila murid berpindah atau tidak mengambil subjek tertentu</li>
+                    </ul>
+                  </article>
+                </div>
+              </div>
+
+              <div className="eduslot__showcase eduslot__showcase--panel">
+                <div className="eduslot__card eduslot__showcaseCard">
+                  <p className="eduslot__showcaseLabel">Idea Teras</p>
+                  <h3>
+                    Dari TOV ke ETR,
+                    <br />
+                    sistem bantu bentuk hala tuju murid.
+                  </h3>
+                  <p>
+                    Tidak semua murid perlu dibimbing dengan cara yang sama. Sebab itu
+                    EduTrack menyediakan tiga mod sasaran akademik supaya guru boleh memilih
+                    pendekatan yang paling sesuai dengan kemampuan dan potensi sebenar murid.
+                  </p>
+                  <div className="eduslot__showcaseModes">
+                    <span>Conservative</span>
+                    <span>Moderate</span>
+                    <span>Aggressive</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="eduslot__features">
+              {[
+                "TOV ke ETR dalam satu pandangan",
+                "OTR dibina secara automatik",
+                "Tiga mod sasaran akademik",
+                "Kawalan peperiksaan oleh pentadbir",
+                "Analisis adaptif ikut situasi murid",
+              ].map((feature) => (
+                <span className="eduslot__feature-pill" key={feature}>
+                  {feature}
+                </span>
+              ))}
+            </div>
+
+            <div className="eduslot__toggleWrap">
+              <button
+                className="inovasi-readmore__btn"
+                type="button"
+                onClick={() => setEduTrackReadMore((prev) => !prev)}
+              >
+                {eduTrackReadMore ? "Lihat Ringkas" : "Baca Penuh EduTrack"}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  {eduTrackReadMore ? <polyline points="18 15 12 9 6 15" /> : <polyline points="6 9 12 15 18 9" />}
+                </svg>
+              </button>
+            </div>
+
+            {eduTrackReadMore && (
+              <div className="eduslot__more">
+                <p>
+                  Sebagai guru, kita bukan sekadar memasukkan markah. Dalam fikiran kita
+                  sentiasa ada persoalan yang lebih besar: sejauh mana murid ini boleh pergi,
+                  apakah sasaran yang realistik untuknya, dan bagaimana hendak membimbingnya
+                  dari TOV ke ETR dengan lebih terarah.
+                </p>
+                <p>
+                  Namun dalam realiti semasa, banyak sistem hanya berhenti pada penyimpanan
+                  data. Markah dimasukkan, laporan dijana, tetapi proses membuat keputusan
+                  masih bergantung sepenuhnya kepada guru secara manual. EduTrack dibina
+                  untuk mengubah pendekatan itu dengan menjadikan data akademik sebagai alat
+                  bimbingan, bukan sekadar rekod.
+                </p>
+                <p>
+                  Melalui fungsi Sasaran Akademik, guru boleh memilih mod Conservative,
+                  Moderate atau Aggressive. Berdasarkan pilihan ini, sistem membina OTR
+                  secara automatik agar proses headcount tidak lagi menjadi kerja manual
+                  yang berulang, tetapi satu proses yang lebih hidup, responsif dan selari
+                  dengan kemampuan sebenar murid.
+                </p>
+                <p>
+                  Dalam masa yang sama, kawalan tetap berada di tangan sekolah. Pentadbir
+                  boleh menentukan peperiksaan yang dibuka untuk kemasukan markah, manakala
+                  analisis akan menyesuaikan bacaan secara automatik apabila murid berpindah
+                  atau tidak mengambil subjek tertentu.
+                </p>
+                <p>
+                  Apa yang membezakan EduTrack bukan sekadar teknologinya, tetapi cara ia
+                  memahami kerja seorang guru. Masa itu terhad, keputusan perlu dibuat dengan
+                  cepat, dan di sebalik setiap data ada seorang murid yang perlu dibimbing.
+                  EduTrack dibina supaya data bukan hanya disimpan, tetapi benar-benar
+                  digunakan untuk membantu membina masa depan murid.
+                </p>
+              </div>
+            )}
+          </section>
 
           {/* ── INOVASI TERBARU: EDUSLOT ── */}
           <section id="eduslot-post" className="eduslot">

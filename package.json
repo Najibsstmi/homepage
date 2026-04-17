@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "create:share": "node scripts/create-share-page.mjs"
+    "create:share": "node scripts/create-share-page.mjs",
+    "create:share:template": "powershell -ExecutionPolicy Bypass -File scripts/new-share-page.ps1"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

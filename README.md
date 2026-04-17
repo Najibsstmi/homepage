@@ -46,6 +46,40 @@ Pilihan tambahan:
 4. Deploy laman.
 5. Buka Facebook Sharing Debugger dan tekan `Scrape Again` untuk URL share baharu.
 
+## Template Paling Mudah
+
+Jika mahu cara paling mudah, anda tidak perlu edit command panjang. Jalankan sahaja:
+
+```bash
+npm run create:share:template
+```
+
+Script akan tanya satu demi satu:
+
+1. `$slug`
+2. `$title`
+3. `$description`
+4. `$target`
+5. `$image`
+
+Sebelum prompt bermula, script akan bantu paparkan:
+
+1. senarai anchor yang dikesan dalam `src/App.tsx`
+2. senarai imej yang ada dalam folder `public`
+
+Jika anda mahu preview sosial yang lebih khusus, anda boleh tukar juga:
+
+- `$ogDescription`
+- `$twitterDescription`
+
+Jika slug yang sama sudah pernah dijana sebelum ini, script juga akan tanya sama ada anda mahu overwrite fail `share-<slug>.html` atau tidak.
+
+Jika anda mahu, script yang sama juga boleh dipanggil terus dengan parameter:
+
+```bash
+powershell -ExecutionPolicy Bypass -File scripts/new-share-page.ps1 -slug 'post-baharu' -title 'Post Baharu | Inovasi CikguSTEM' -description 'Deskripsi meta utama' -target 'post-baharu' -image 'og-post-baharu.jpg'
+```
+
 ## Nota Penting
 
 - Butang share hanya menghantar URL.

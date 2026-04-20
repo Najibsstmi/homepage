@@ -967,45 +967,6 @@ export default function App() {
         </div>
       </section>
 
-      <section id="stats" className="statsSection">
-        <div className="statsShell">
-          <div className="statsHeading">
-            <span className="statsKicker">Sorotan Ringkas</span>
-            <h2>Perjalanan, inovasi dan impak yang sedang berkembang</h2>
-            <p>
-              Website ini menghimpunkan perkongsian saya sebagai guru, projek inovasi
-              pendidikan dan pengalaman sebenar di sekolah.
-            </p>
-          </div>
-
-          <div className="statsGrid">
-            <article className="statCard statCardPrimary">
-              <p className="statValue">{totalVisitors}+</p>
-              <p className="statLabel">Pelawat</p>
-              <span className="statHint">telah singgah ke CikguSTEM</span>
-            </article>
-
-            <article className="statCard">
-              <p className="statValue">3</p>
-              <p className="statLabel">Inovasi Utama</p>
-              <span className="statHint">SmartLab, EduTrack dan EduSlot</span>
-            </article>
-
-            <article className="statCard">
-              <p className="statValue">20+</p>
-              <p className="statLabel">Aktiviti &amp; Perkongsian</p>
-              <span className="statHint">pengalaman guru di bilik darjah dan luar kelas</span>
-            </article>
-
-            <article className="statCard">
-              <p className="statValue">2</p>
-              <p className="statLabel">Bidang Pengajaran</p>
-              <span className="statHint">Sains dan Pendidikan Jasmani</span>
-            </article>
-          </div>
-        </div>
-      </section>
-
       <section id="journey" className="section section-block">
         <div className="section-heading">
           <span className="section-kicker">Perjalanan & Fokus Saya</span>
@@ -1231,6 +1192,45 @@ export default function App() {
               <img src={img} alt={`Galeri ${index + 1}`} />
             </div>
           ))}
+        </div>
+      </section>
+
+      <section id="stats" className="statsSection">
+        <div className="statsShell">
+          <div className="statsHeading">
+            <span className="statsKicker">Sorotan Ringkas</span>
+            <h2>Perjalanan, inovasi dan impak yang sedang berkembang</h2>
+            <p>
+              Website ini menghimpunkan perkongsian saya sebagai guru, projek inovasi
+              pendidikan dan pengalaman sebenar di sekolah.
+            </p>
+          </div>
+
+          <div className="statsGrid">
+            <article className="statCard statCardPrimary">
+              <p className="statValue">{totalVisitors}+</p>
+              <p className="statLabel">Pelawat</p>
+              <span className="statHint">telah singgah ke CikguSTEM</span>
+            </article>
+
+            <article className="statCard">
+              <p className="statValue">3</p>
+              <p className="statLabel">Inovasi Utama</p>
+              <span className="statHint">SmartLab, EduTrack dan EduSlot</span>
+            </article>
+
+            <article className="statCard">
+              <p className="statValue">20+</p>
+              <p className="statLabel">Aktiviti &amp; Perkongsian</p>
+              <span className="statHint">pengalaman guru di bilik darjah dan luar kelas</span>
+            </article>
+
+            <article className="statCard">
+              <p className="statValue">2</p>
+              <p className="statLabel">Bidang Pengajaran</p>
+              <span className="statHint">Sains dan Pendidikan Jasmani</span>
+            </article>
+          </div>
         </div>
       </section>
 

@@ -1021,45 +1021,6 @@ export default function App() {
         </div>
       </section>
 
-      <section id="stats" className="statsSection">
-        <div className="statsShell">
-          <div className="statsHeading">
-            <span className="statsKicker">Sorotan Ringkas</span>
-            <h2>Perjalanan, inovasi dan impak yang sedang berkembang</h2>
-            <p>
-              Website ini menghimpunkan perkongsian saya sebagai guru, projek inovasi
-              pendidikan dan pengalaman sebenar di sekolah.
-            </p>
-          </div>
-
-          <div className="statsGrid">
-            <article className="statCard statCardPrimary">
-              <p className="statValue">Ramai+</p>
-              <p className="statLabel">Pelawat</p>
-              <span className="statHint">sedang mengikuti perjalanan CikguSTEM</span>
-            </article>
-
-            <article className="statCard">
-              <p className="statValue">3</p>
-              <p className="statLabel">Inovasi Utama</p>
-              <span className="statHint">SmartLab, EduTrack dan EduSlot</span>
-            </article>
-
-            <article className="statCard">
-              <p className="statValue">20+</p>
-              <p className="statLabel">Aktiviti &amp; Perkongsian</p>
-              <span className="statHint">pengalaman guru di bilik darjah dan luar kelas</span>
-            </article>
-
-            <article className="statCard">
-              <p className="statValue">2</p>
-              <p className="statLabel">Bidang Pengajaran</p>
-              <span className="statHint">Sains dan Pendidikan Jasmani</span>
-            </article>
-          </div>
-        </div>
-      </section>
-
       <section id="journey" className="section section-block">
         <div className="section-heading">
           <span className="section-kicker">Perjalanan & Fokus Saya</span>
@@ -1289,20 +1250,7 @@ export default function App() {
       </section>
 
       <section className="section cta">
-        <div className="cta__box">
-          <div>
-            <p className="section__label">Portal Utama</p>
-            <h2>
-              cikgustem.com dibina sebagai pusat identiti profesional dan
-              ekosistem digital pendidikan.
-            </h2>
-            <p>
-              Dari sini, pelawat boleh mengenali latar belakang Najib Jaafar,
-              melihat projek utama dan mengakses aplikasi seperti Seni Smart
-              Lab.
-            </p>
-          </div>
-
+        <div className="cta__box cta__box--compact">
           <a
             href="https://senismartlab.cikgustem.com"
             className="btn btn--primary"
@@ -1311,6 +1259,35 @@ export default function App() {
           >
             Lawati Seni Smart Lab
           </a>
+        </div>
+      </section>
+
+      <section className="contactIntroStrip">
+        <div className="contactIntroCard">
+          <span className="contactIntroKicker">Sedikit Sorotan</span>
+          <h3>Guru, inovasi dan perkongsian yang terus berkembang</h3>
+          <p>
+            Website ini menghimpunkan perjalanan saya sebagai guru Sains dan Pendidikan
+            Jasmani, bersama inovasi pendidikan, aktiviti sekolah dan perkongsian yang
+            dibina daripada pengalaman sebenar di lapangan.
+          </p>
+
+          <div className="contactMiniStats">
+            <div className="contactMiniStat">
+              <strong>2</strong>
+              <span>Bidang Pengajaran</span>
+            </div>
+
+            <div className="contactMiniStat">
+              <strong>3</strong>
+              <span>Inovasi Utama</span>
+            </div>
+
+            <div className="contactMiniStat">
+              <strong>Aktif</strong>
+              <span>Perkongsian Perjalanan</span>
+            </div>
+          </div>
         </div>
       </section>
 

@@ -35,6 +35,7 @@ export default function App() {
   const [readMore, setReadMore] = useState(false);
   const [eduTrackReadMore, setEduTrackReadMore] = useState(false);
   const [eduSlotReadMore, setEduSlotReadMore] = useState(false);
+  const [totalVisitors, setTotalVisitors] = useState<string>("...");
 
   const ReadMore = ({
     children,
@@ -134,6 +135,28 @@ export default function App() {
 
     return () => window.clearTimeout(timer);
   }, [currentPage, readMore, eduTrackReadMore, eduSlotReadMore]);
+
+  useEffect(() => {
+    const fetchVisitorCount = async () => {
+      try {
+        const response = await fetch("https://cikgustem.goatcounter.com/counter/TOTAL.json");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch visitor count");
+        }
+
+        const data = await response.json();
+        const count = Number(data?.count_unique ?? data?.count ?? 0);
+
+        setTotalVisitors(count.toLocaleString("en-MY"));
+      } catch (error) {
+        console.error("Visitor counter error:", error);
+        setTotalVisitors("1k");
+      }
+    };
+
+    fetchVisitorCount();
+  }, []);
 
   const navigateTo = (page: "home" | "inovasi") => {
     setCurrentPage(page);
@@ -1017,6 +1040,45 @@ export default function App() {
             Laman ini juga menjadi pusat kepada projek-projek utama seperti
             Seni Smart Lab serta inisiatif masa depan dalam bidang STEM, EdTech
             dan pembangunan pendidikan digital.
+          </div>
+        </div>
+      </section>
+
+      <section id="stats" className="statsSection">
+        <div className="statsShell">
+          <div className="statsHeading">
+            <span className="statsKicker">Sorotan Ringkas</span>
+            <h2>Perjalanan, inovasi dan impak yang sedang berkembang</h2>
+            <p>
+              Website ini menghimpunkan perkongsian saya sebagai guru, projek inovasi
+              pendidikan dan pengalaman sebenar di sekolah.
+            </p>
+          </div>
+
+          <div className="statsGrid">
+            <article className="statCard statCardPrimary">
+              <p className="statValue">{totalVisitors}+</p>
+              <p className="statLabel">Pelawat</p>
+              <span className="statHint">telah singgah ke CikguSTEM</span>
+            </article>
+
+            <article className="statCard">
+              <p className="statValue">3</p>
+              <p className="statLabel">Inovasi Utama</p>
+              <span className="statHint">SmartLab, EduTrack dan EduSlot</span>
+            </article>
+
+            <article className="statCard">
+              <p className="statValue">20+</p>
+              <p className="statLabel">Aktiviti &amp; Perkongsian</p>
+              <span className="statHint">pengalaman guru di bilik darjah dan luar kelas</span>
+            </article>
+
+            <article className="statCard">
+              <p className="statValue">2</p>
+              <p className="statLabel">Bidang Pengajaran</p>
+              <span className="statHint">Sains dan Pendidikan Jasmani</span>
+            </article>
           </div>
         </div>
       </section>

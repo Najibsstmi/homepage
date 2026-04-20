@@ -319,6 +319,124 @@ a {
   object-fit: cover;
 }
 
+.statsSection {
+  padding: 5rem 1.5rem 1rem;
+}
+
+.statsShell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(56, 189, 248, 0.14), transparent 28%),
+    radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.12), transparent 24%),
+    rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 18px 60px rgba(2, 6, 23, 0.28);
+}
+
+.statsHeading {
+  max-width: 760px;
+  margin-bottom: 1.75rem;
+}
+
+.statsKicker {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(125, 211, 252, 0.22);
+  background: rgba(14, 165, 233, 0.08);
+  color: #7dd3fc;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.statsHeading h2 {
+  margin: 0 0 0.8rem;
+  color: #f8fafc;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1.1;
+}
+
+.statsHeading p {
+  margin: 0;
+  color: rgba(226, 232, 240, 0.82);
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.statCard {
+  position: relative;
+  overflow: hidden;
+  padding: 1.35rem 1.2rem;
+  border-radius: 22px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(15, 23, 42, 0.72);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.statCardPrimary {
+  background:
+    linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(59, 130, 246, 0.12)),
+    rgba(15, 23, 42, 0.88);
+  border-color: rgba(56, 189, 248, 0.26);
+}
+
+.statValue {
+  margin: 0 0 0.35rem;
+  color: #ffffff;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.statLabel {
+  margin: 0;
+  color: #e2e8f0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.statHint {
+  display: inline-block;
+  margin-top: 0.45rem;
+  color: rgba(148, 163, 184, 0.92);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 960px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .statsSection {
+    padding: 4rem 1rem 0.5rem;
+  }
+
+  .statsShell {
+    padding: 1.25rem;
+    border-radius: 22px;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .hero__card {
   padding: 24px;
   border-radius: 24px;

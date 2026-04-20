@@ -1984,6 +1984,7 @@ section {
 
 .modulesHero {
   margin-bottom: 2rem;
+  max-width: 1080px;
 }
 
 .modulesKicker {
@@ -2003,8 +2004,14 @@ section {
   line-height: 1.08;
 }
 
+.modulesHeroText {
+  max-width: 980px;
+  display: grid;
+  gap: 1rem;
+}
+
 .modulesHero p {
-  max-width: 760px;
+  max-width: none;
   margin: 0;
   color: rgba(226, 232, 240, 0.82);
   font-size: 1.05rem;
@@ -2013,11 +2020,14 @@ section {
 
 .modulesGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.25rem;
+  align-items: stretch;
 }
 
 .moduleCard {
+  display: flex;
+  flex-direction: column;
   padding: 1.5rem;
   border-radius: 22px;
   border: 1px solid rgba(148, 163, 184, 0.14);
@@ -2061,6 +2071,7 @@ section {
   margin: 0 0 1.2rem;
   color: rgba(226, 232, 240, 0.8);
   line-height: 1.7;
+  flex: 1;
 }
 
 .moduleCard a {
@@ -2076,9 +2087,16 @@ section {
   color: #a5f3fc;
 }
 
+.moduleLinks {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
 @media (max-width: 960px) {
   .modulesGrid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 }
 

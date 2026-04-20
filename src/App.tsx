@@ -875,55 +875,72 @@ export default function App() {
       ) : currentPage === "modul" ? (
         <main className="modulesPage">
           <section className="modulesHero">
-            <span className="modulesKicker">Modul</span>
-            <h1>Modul Amalan Harian Sains</h1>
-            <p>
-              Modul Amalan Harian Sains (AHS) merupakan bahan pendidikan yang dibangunkan
-              secara rasmi oleh Panel Perunding Mata Pelajaran (PPMP) Sains Negeri Johor
-              di bawah Jabatan Pendidikan Negeri Johor. Edisi 2025 ini direka khusus untuk
-              membantu murid Tingkatan 4 dan Tingkatan 5 menguasai silibus Sains melalui
-              pendekatan yang lebih ringkas, teratur dan berfokus kepada kefahaman sebenar.
-              Kandungannya merangkumi nota padat, penggunaan mnemonik dan akronim,
-              penekanan kepada soalan lazim peperiksaan, serta rajah dan visual yang membantu
-              murid memahami konsep saintifik dengan lebih jelas.
-            </p>
+            <span className="modulesKicker">Modul & Bahan</span>
+            <h1>Ruang Modul Sains</h1>
+            <div className="modulesHeroText">
+              <p>
+                Ruang ini menghimpunkan dua modul utama bagi subjek Sains, iaitu Modul
+                Amalan Harian Sains dan Modul Sains Pareto. Kedua-duanya dibangunkan dengan
+                tujuan yang berbeza tetapi saling melengkapi untuk membantu murid belajar
+                secara lebih tersusun, berfokus dan berkesan.
+              </p>
+              <p>
+                Modul Amalan Harian Sains memberi penekanan kepada pengukuhan konsep melalui
+                latihan berperingkat, manakala Modul Sains Pareto lebih berfokus kepada topik
+                penting dan persediaan strategik menghadapi peperiksaan.
+              </p>
+            </div>
           </section>
 
           <section className="modulesGrid">
             <article className="moduleCard">
               <div className="moduleMeta">
                 <span className="moduleTag">Sains</span>
-                <span className="moduleTag">Tingkatan 4</span>
+                <span className="moduleTag">PPMP Johor</span>
               </div>
 
-              <h3>Tingkatan 4</h3>
+              <h3>Modul Amalan Harian Sains</h3>
 
               <p>
-                Fokus kepada pengukuhan konsep asas melalui nota padat, latihan harian
-                dan aplikasi sains yang dekat dengan situasi kehidupan seharian.
+                Modul Amalan Harian Sains (AHS) dibangunkan secara rasmi oleh Panel
+                Perunding Mata Pelajaran (PPMP) Sains Negeri Johor untuk membantu murid
+                Tingkatan 4 dan Tingkatan 5 menguasai silibus melalui nota padat, latihan
+                harian, mnemonik, visual dan ulang kaji berperingkat.
               </p>
 
-              <a href="/modules/sains/t4/%28AHS%29%20MODUL%20AMALAN%20HARIAN%20SAINS%20TINGKATAN%204.pdf" target="_blank" rel="noreferrer">
-                Buka Modul →
-              </a>
+              <div className="moduleLinks">
+                <a href="/modules/sains/t4/amalan-sains-harian-t4.pdf" target="_blank" rel="noreferrer">
+                  Tingkatan 4 →
+                </a>
+                <a href="/modules/sains/t5/amalan-sains-harian-t5.pdf" target="_blank" rel="noreferrer">
+                  Tingkatan 5 →
+                </a>
+              </div>
             </article>
 
             <article className="moduleCard">
               <div className="moduleMeta">
                 <span className="moduleTag">Sains</span>
-                <span className="moduleTag">Tingkatan 5</span>
+                <span className="moduleTag">Pasir Gudang</span>
               </div>
 
-              <h3>Tingkatan 5</h3>
+              <h3>Modul Sains Pareto</h3>
 
               <p>
-                Fokus kepada pengukuhan konsep, aplikasi dan persediaan peperiksaan
-                melalui ulang kaji berstruktur serta latihan pada topik penting.
+                Modul Sains Pareto disediakan oleh pasukan PARETO Sains Daerah Pasir Gudang
+                untuk membantu calon SPM menguasai Kertas 2 Sains melalui fokus kepada topik
+                penting, kemahiran proses sains, prosedur eksperimen dan pendekatan belajar
+                yang lebih strategik.
               </p>
 
-              <a href="/modules/sains/t5/%28AHS%29%20MODUL%20AMALAN%20HARIAN%20SAINS%20TINGKATAN%205.pdf" target="_blank" rel="noreferrer">
-                Buka Modul →
-              </a>
+              <div className="moduleLinks">
+                <a href="/modules/pareto/pareto-bahagian-a.pdf" target="_blank" rel="noreferrer">
+                  Bahagian A →
+                </a>
+                <a href="/modules/pareto/pareto-bahagian-c.pdf" target="_blank" rel="noreferrer">
+                  Bahagian C →
+                </a>
+              </div>
             </article>
           </section>
         </main>

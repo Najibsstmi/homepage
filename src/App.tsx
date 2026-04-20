@@ -35,7 +35,6 @@ export default function App() {
   const [readMore, setReadMore] = useState(false);
   const [eduTrackReadMore, setEduTrackReadMore] = useState(false);
   const [eduSlotReadMore, setEduSlotReadMore] = useState(false);
-  const [totalVisitors, setTotalVisitors] = useState<string>("...");
 
   const ReadMore = ({
     children,
@@ -135,28 +134,6 @@ export default function App() {
 
     return () => window.clearTimeout(timer);
   }, [currentPage, readMore, eduTrackReadMore, eduSlotReadMore]);
-
-  useEffect(() => {
-    const fetchVisitorCount = async () => {
-      try {
-        const response = await fetch("https://cikgustem.goatcounter.com/counter/TOTAL.json");
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch visitor count");
-        }
-
-        const data = await response.json();
-        const count = Number(data?.count_unique ?? data?.count ?? 0);
-
-        setTotalVisitors(count.toLocaleString("en-MY"));
-      } catch (error) {
-        console.error("Visitor counter error:", error);
-        setTotalVisitors("1k");
-      }
-    };
-
-    fetchVisitorCount();
-  }, []);
 
   const navigateTo = (page: "home" | "inovasi") => {
     setCurrentPage(page);
@@ -1057,9 +1034,9 @@ export default function App() {
 
           <div className="statsGrid">
             <article className="statCard statCardPrimary">
-              <p className="statValue">{totalVisitors}+</p>
+              <p className="statValue">Ramai+</p>
               <p className="statLabel">Pelawat</p>
-              <span className="statHint">telah singgah ke CikguSTEM</span>
+              <span className="statHint">sedang mengikuti perjalanan CikguSTEM</span>
             </article>
 
             <article className="statCard">

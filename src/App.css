@@ -1889,3 +1889,205 @@ a {
   color: #67e8f9;
   opacity: 0.9;
 }
+
+/* ===============================
+   PREMIUM SECTION SPACING
+================================ */
+section {
+  margin-bottom: 4rem;
+}
+
+/* ===============================
+   SOROTAN RINGKAS (PREMIUM)
+================================ */
+.statsSection {
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.35), rgba(15, 23, 42, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 2.5rem;
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+}
+
+.statsSection:hover {
+  transform: translateY(-2px);
+}
+
+.statsCard {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.statsCard:hover {
+  transform: translateY(-5px) scale(1.01);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 10px 25px rgba(56, 189, 248, 0.08);
+}
+
+.statsCard h3 {
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+/* ===============================
+   CONTACT SECTION (PREMIUM)
+================================ */
+.contactSection {
+  margin-top: 3rem;
+}
+
+.contactCard {
+  background: rgba(255,255,255,0.03);
+  border-radius: 18px;
+  padding: 2rem;
+  border: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+}
+
+.contactCard input,
+.contactCard textarea {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 0.7rem;
+  color: white;
+}
+
+.contactCard input:focus,
+.contactCard textarea:focus {
+  border: 1px solid rgba(56, 189, 248, 0.6);
+  outline: none;
+}
+
+.contactCard button {
+  background: linear-gradient(135deg, #38bdf8, #22d3ee);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.contactCard button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(34, 211, 238, 0.3);
+}
+
+.modulesPage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+}
+
+.modulesHero {
+  margin-bottom: 2rem;
+}
+
+.modulesKicker {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  color: #67e8f9;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.modulesHero h1 {
+  margin: 0 0 1rem;
+  color: #f8fafc;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.08;
+}
+
+.modulesHero p {
+  max-width: 760px;
+  margin: 0;
+  color: rgba(226, 232, 240, 0.82);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.modulesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.moduleCard {
+  padding: 1.5rem;
+  border-radius: 22px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  background:
+    radial-gradient(circle at top right, rgba(34, 211, 238, 0.08), transparent 30%),
+    rgba(15, 23, 42, 0.72);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.moduleCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(103, 232, 249, 0.28);
+  box-shadow: 0 16px 44px rgba(34, 211, 238, 0.08);
+}
+
+.moduleMeta {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.moduleTag {
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(103, 232, 249, 0.16);
+  color: #67e8f9;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.moduleCard h3 {
+  margin: 0 0 0.8rem;
+  color: #f8fafc;
+  font-size: 1.35rem;
+}
+
+.moduleCard p {
+  margin: 0 0 1.2rem;
+  color: rgba(226, 232, 240, 0.8);
+  line-height: 1.7;
+}
+
+.moduleCard a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #67e8f9;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.moduleCard a:hover {
+  color: #a5f3fc;
+}
+
+@media (max-width: 960px) {
+  .modulesGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .modulesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .modulesPage {
+    padding: 2.2rem 1rem 4rem;
+  }
+}

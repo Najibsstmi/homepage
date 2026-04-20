@@ -31,7 +31,7 @@ export default function App() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState<"home" | "inovasi">("home");
+  const [currentPage, setCurrentPage] = useState<"home" | "inovasi" | "modul">("home");
   const [readMore, setReadMore] = useState(false);
   const [eduTrackReadMore, setEduTrackReadMore] = useState(false);
   const [eduSlotReadMore, setEduSlotReadMore] = useState(false);
@@ -106,9 +106,12 @@ export default function App() {
       smartLabSectionIds.has(hashTarget) ||
       eduTrackSectionIds.has(hashTarget) ||
       eduSlotSectionIds.has(hashTarget);
+    const shouldOpenModul = params.get("page") === "modul";
 
     if (shouldOpenInovasi) {
       setCurrentPage("inovasi");
+    } else if (shouldOpenModul) {
+      setCurrentPage("modul");
     }
 
     if (smartLabHiddenSectionIds.has(hashTarget)) {
@@ -158,7 +161,7 @@ export default function App() {
     fetchVisitorCount();
   }, []);
 
-  const navigateTo = (page: "home" | "inovasi") => {
+  const navigateTo = (page: "home" | "inovasi" | "modul") => {
     setCurrentPage(page);
     setMobileMenuOpen(false);
 
@@ -169,12 +172,12 @@ export default function App() {
         homeUrl.hash = "";
         window.history.replaceState(null, "", `${homeUrl.pathname}${homeUrl.search}`);
       } else {
-        const inovasiUrl = new URL(window.location.href);
-        inovasiUrl.searchParams.set("page", "inovasi");
+        const targetUrl = new URL(window.location.href);
+        targetUrl.searchParams.set("page", page);
         window.history.replaceState(
           null,
           "",
-          `${inovasiUrl.pathname}${inovasiUrl.search}${inovasiUrl.hash}`
+          `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`
         );
       }
     }
@@ -370,6 +373,12 @@ export default function App() {
           <a href="#about" onClick={() => goToHomeSection("about")}>Tentang</a>
           <a href="#journey" onClick={() => goToHomeSection("journey")}>Perjalanan</a>
           <a href="#achievements" onClick={() => goToHomeSection("achievements")}>Pencapaian</a>
+          <button
+            className={`navbar__inovasi-btn${currentPage === "modul" ? " navbar__inovasi-btn--active" : ""}`}
+            onClick={() => navigateTo("modul")}
+          >
+            Modul
+          </button>
           <a href="#gallery" onClick={() => goToHomeSection("gallery")}>Galeri</a>
           <a href="#contact" onClick={() => goToHomeSection("contact")}>Hubungi</a>
           <button
@@ -863,6 +872,61 @@ export default function App() {
             <p>STEM Educator • Innovation • Education Technology</p>
           </footer>
         </div>
+      ) : currentPage === "modul" ? (
+        <main className="modulesPage">
+          <section className="modulesHero">
+            <span className="modulesKicker">Modul</span>
+            <h1>Modul Amalan Harian Sains</h1>
+            <p>
+              Modul Amalan Harian Sains (AHS) merupakan bahan pendidikan yang dibangunkan
+              secara rasmi oleh Panel Perunding Mata Pelajaran (PPMP) Sains Negeri Johor
+              di bawah Jabatan Pendidikan Negeri Johor. Edisi 2025 ini direka khusus untuk
+              membantu murid Tingkatan 4 dan Tingkatan 5 menguasai silibus Sains melalui
+              pendekatan yang lebih ringkas, teratur dan berfokus kepada kefahaman sebenar.
+              Kandungannya merangkumi nota padat, penggunaan mnemonik dan akronim,
+              penekanan kepada soalan lazim peperiksaan, serta rajah dan visual yang membantu
+              murid memahami konsep saintifik dengan lebih jelas.
+            </p>
+          </section>
+
+          <section className="modulesGrid">
+            <article className="moduleCard">
+              <div className="moduleMeta">
+                <span className="moduleTag">Sains</span>
+                <span className="moduleTag">Tingkatan 4</span>
+              </div>
+
+              <h3>Tingkatan 4</h3>
+
+              <p>
+                Fokus kepada pengukuhan konsep asas melalui nota padat, latihan harian
+                dan aplikasi sains yang dekat dengan situasi kehidupan seharian.
+              </p>
+
+              <a href="/modules/sains/t4/%28AHS%29%20MODUL%20AMALAN%20HARIAN%20SAINS%20TINGKATAN%204.pdf" target="_blank" rel="noreferrer">
+                Buka Modul →
+              </a>
+            </article>
+
+            <article className="moduleCard">
+              <div className="moduleMeta">
+                <span className="moduleTag">Sains</span>
+                <span className="moduleTag">Tingkatan 5</span>
+              </div>
+
+              <h3>Tingkatan 5</h3>
+
+              <p>
+                Fokus kepada pengukuhan konsep, aplikasi dan persediaan peperiksaan
+                melalui ulang kaji berstruktur serta latihan pada topik penting.
+              </p>
+
+              <a href="/modules/sains/t5/%28AHS%29%20MODUL%20AMALAN%20HARIAN%20SAINS%20TINGKATAN%205.pdf" target="_blank" rel="noreferrer">
+                Buka Modul →
+              </a>
+            </article>
+          </section>
+        </main>
       ) : (
         <>
       <section className="hero">
@@ -1207,25 +1271,25 @@ export default function App() {
           </div>
 
           <div className="statsGrid">
-            <article className="statCard statCardPrimary">
+            <article className="statCard statsCard statCardPrimary">
               <p className="statValue">{totalVisitors}+</p>
               <p className="statLabel">Pelawat</p>
               <span className="statHint">telah singgah ke CikguSTEM</span>
             </article>
 
-            <article className="statCard">
+            <article className="statCard statsCard">
               <p className="statValue">3</p>
               <p className="statLabel">Inovasi Utama</p>
               <span className="statHint">SmartLab, EduTrack dan EduSlot</span>
             </article>
 
-            <article className="statCard">
+            <article className="statCard statsCard">
               <p className="statValue">20+</p>
               <p className="statLabel">Aktiviti &amp; Perkongsian</p>
               <span className="statHint">pengalaman guru di bilik darjah dan luar kelas</span>
             </article>
 
-            <article className="statCard">
+            <article className="statCard statsCard">
               <p className="statValue">2</p>
               <p className="statLabel">Bidang Pengajaran</p>
               <span className="statHint">Sains dan Pendidikan Jasmani</span>
@@ -1234,7 +1298,7 @@ export default function App() {
         </div>
       </section>
 
-      <section id="contact" className="section contact">
+      <section id="contact" className="section contact contactSection">
         <div className="section__header">
           <p className="section__label">Hubungi Saya</p>
           <h2>Untuk kerjasama, pertanyaan atau perkongsian idea</h2>
@@ -1256,7 +1320,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="contact__form">
+          <div className="contact__form contactCard">
             <form onSubmit={sendEmail}>
               <div className="form__group">
                 <label htmlFor="name">Nama</label>

@@ -31,7 +31,8 @@ export default function App() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState<"home" | "inovasi" | "modul">("home");
+  const [currentPage, setCurrentPage] = useState<"home" | "inovasi" | "modul" | "banksoalan">("home");
+  const [modulMenuOpen, setModulMenuOpen] = useState(false);
   const [readMore, setReadMore] = useState(false);
   const [eduTrackReadMore, setEduTrackReadMore] = useState(false);
   const [eduSlotReadMore, setEduSlotReadMore] = useState(false);
@@ -107,9 +108,12 @@ export default function App() {
       eduTrackSectionIds.has(hashTarget) ||
       eduSlotSectionIds.has(hashTarget);
     const shouldOpenModul = params.get("page") === "modul";
+    const shouldOpenBankSoalan = params.get("page") === "banksoalan";
 
     if (shouldOpenInovasi) {
       setCurrentPage("inovasi");
+    } else if (shouldOpenBankSoalan) {
+      setCurrentPage("banksoalan");
     } else if (shouldOpenModul) {
       setCurrentPage("modul");
     }
@@ -161,9 +165,10 @@ export default function App() {
     fetchVisitorCount();
   }, []);
 
-  const navigateTo = (page: "home" | "inovasi" | "modul") => {
+  const navigateTo = (page: "home" | "inovasi" | "modul" | "banksoalan") => {
     setCurrentPage(page);
     setMobileMenuOpen(false);
+    setModulMenuOpen(false);
 
     if (typeof window !== "undefined") {
       if (page === "home") {
@@ -188,6 +193,7 @@ export default function App() {
   const goToHomeSection = (sectionId: string) => {
     setCurrentPage("home");
     setMobileMenuOpen(false);
+    setModulMenuOpen(false);
 
     if (typeof window !== "undefined") {
       window.history.replaceState(null, "", `#${sectionId}`);
@@ -370,17 +376,32 @@ export default function App() {
           <span></span>
         </button>
         <div className={`navbar__links ${mobileMenuOpen ? "navbar__links--active" : ""}`}>
-          <a href="#about" onClick={() => goToHomeSection("about")}>Tentang</a>
-          <a href="#journey" onClick={() => goToHomeSection("journey")}>Perjalanan</a>
-          <a href="#achievements" onClick={() => goToHomeSection("achievements")}>Pencapaian</a>
-          <button
-            className={`navbar__inovasi-btn${currentPage === "modul" ? " navbar__inovasi-btn--active" : ""}`}
-            onClick={() => navigateTo("modul")}
+          <button className="navbar__linkBtn" onClick={() => goToHomeSection("about")}>Tentang</button>
+          <button className="navbar__linkBtn" onClick={() => goToHomeSection("journey")}>Perjalanan</button>
+          <button className="navbar__linkBtn" onClick={() => goToHomeSection("achievements")}>Pencapaian</button>
+
+          <div
+            className="navDropdown"
+            onMouseEnter={() => setModulMenuOpen(true)}
+            onMouseLeave={() => setModulMenuOpen(false)}
           >
-            Modul
-          </button>
-          <a href="#gallery" onClick={() => goToHomeSection("gallery")}>Galeri</a>
-          <a href="#contact" onClick={() => goToHomeSection("contact")}>Hubungi</a>
+            <button
+              className={`navDropdownTrigger${currentPage === "modul" || currentPage === "banksoalan" ? " navDropdownTrigger--active" : ""}`}
+              onClick={() => setModulMenuOpen((prev) => !prev)}
+            >
+              Perkongsian <span className="navCaret">▾</span>
+            </button>
+
+            {modulMenuOpen && (
+              <div className="navDropdownMenu">
+                <button onClick={() => navigateTo("modul")}>Modul</button>
+                <button onClick={() => navigateTo("banksoalan")}>Bank Soalan</button>
+              </div>
+            )}
+          </div>
+
+          <button className="navbar__linkBtn" onClick={() => goToHomeSection("gallery")}>Galeri</button>
+          <button className="navbar__linkBtn" onClick={() => goToHomeSection("contact")}>Hubungi</button>
           <button
             className={`navbar__inovasi-btn${currentPage === "inovasi" ? " navbar__inovasi-btn--active" : ""}`}
             onClick={() => navigateTo("inovasi")}
@@ -879,15 +900,14 @@ export default function App() {
             <h1>Ruang Modul Sains</h1>
             <div className="modulesHeroText">
               <p>
-                Ruang ini menghimpunkan dua modul utama bagi subjek Sains, iaitu Modul
-                Amalan Harian Sains dan Modul Sains Pareto. Kedua-duanya dibangunkan dengan
-                tujuan yang berbeza tetapi saling melengkapi untuk membantu murid belajar
-                secara lebih tersusun, berfokus dan berkesan.
+                Ruang ini menghimpunkan pelbagai modul, bahan rujukan dan sokongan pembelajaran
+                bagi subjek Sains untuk membantu murid belajar secara lebih tersusun, berfokus
+                dan mudah diakses mengikut keperluan semasa.
               </p>
               <p>
-                Modul Amalan Harian Sains memberi penekanan kepada pengukuhan konsep melalui
-                latihan berperingkat, manakala Modul Sains Pareto lebih berfokus kepada topik
-                penting dan persediaan strategik menghadapi peperiksaan.
+                Selain modul utama, ruang ini juga boleh dikembangkan dengan set soalan,
+                bahan ulang kaji, nota padat, serta dokumen sokongan lain yang sesuai untuk
+                pengukuhan konsep dan persediaan peperiksaan.
               </p>
             </div>
           </section>
@@ -941,6 +961,53 @@ export default function App() {
                   Bahagian C →
                 </a>
               </div>
+            </article>
+          </section>
+        </main>
+      ) : currentPage === "banksoalan" ? (
+        <main className="modulesPage">
+          <section className="modulesHero">
+            <span className="modulesKicker">Bank Soalan</span>
+            <h1>Bank Soalan</h1>
+            <p>
+              Ruang ini menghimpunkan set soalan, latihan dan bahan ulang kaji
+              yang boleh digunakan untuk membantu murid membuat persediaan dengan lebih tersusun.
+            </p>
+          </section>
+
+          <section className="modulesGrid">
+            <article className="moduleCard">
+              <div className="moduleMeta">
+                <span className="moduleTag">Sains</span>
+                <span className="moduleTag">Jana Minda Siri 1</span>
+              </div>
+              <h3>Jana Minda 1 SSeMJ PPT 2026</h3>
+              <p>
+                Soalan Jana Minda ini disediakan sebagai persediaan menghadapi peperiksaan pertengahan tahun
+                Sekolah Seni Malaysia Johor 2026, lengkap dengan panduan menjawab kemahiran proses sains
+                yang betul serta penulisan jawapan yang tepat untuk soalan KBAT Bahagian B.
+              </p>
+              <a
+                href="/bank-soalan/JANA%20MINDA%201%20SSeMJ%20PPT%202026/MODUL%20JANA%20MINDA%20PPT.docx"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Buka Dokumen Jana Minda →
+              </a>
+            </article>
+
+            <article className="moduleCard">
+              <div className="moduleMeta">
+                <span className="moduleTag">Sains</span>
+                <span className="moduleTag">Bahagian B</span>
+              </div>
+              <h3>Bank Soalan Sains Bahagian B</h3>
+              <p>
+                Himpunan soalan struktur untuk membantu murid membina jawapan dengan lebih tepat.
+              </p>
+              <a href="/bank-soalan/sains-bahagian-b.pdf" target="_blank" rel="noreferrer">
+                Buka Bank Soalan →
+              </a>
             </article>
           </section>
         </main>

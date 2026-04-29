@@ -1023,32 +1023,7 @@ export default function App() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Buka Modul GO-K1 →
-                </a>
-              </div>
-            </article>
-
-            <article className="moduleCard">
-              <div className="moduleMeta">
-                <span className="moduleTag">Sains</span>
-                <span className="moduleTag">Pasir Gudang</span>
-              </div>
-
-              <h3>Modul Sains Pareto</h3>
-
-              <p>
-                Modul Sains Pareto disediakan oleh pasukan PARETO Sains Daerah Pasir Gudang
-                untuk membantu calon SPM menguasai Kertas 2 Sains melalui fokus kepada topik
-                penting, kemahiran proses sains, prosedur eksperimen dan pendekatan belajar
-                yang lebih strategik.
-              </p>
-
-              <div className="moduleLinks">
-                <a href="/modules/pareto/pareto-bahagian-a.pdf" target="_blank" rel="noreferrer">
-                  Bahagian A →
-                </a>
-                <a href="/modules/pareto/pareto-bahagian-c.pdf" target="_blank" rel="noreferrer">
-                  Bahagian C →
+                  Modul Kertas 1 →
                 </a>
               </div>
             </article>

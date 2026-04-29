@@ -94,12 +94,14 @@ a {
 }
 
 .navbar__links a:hover::after,
-.navbar__linkBtn:hover::after {
+.navbar__linkBtn:hover::after,
+.navbar__linkBtn--active::after {
   width: 100%;
 }
 
 .navbar__links a:hover,
-.navbar__linkBtn:hover {
+.navbar__linkBtn:hover,
+.navbar__linkBtn--active {
   color: #67e8f9;
   transform: translateY(-1px);
 }
@@ -220,6 +222,13 @@ a {
   color: #f8fafc;
 }
 
+.section__header h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 1.08;
+  color: #f8fafc;
+}
+
 /* HERO */
 .hero {
   position: relative;
@@ -311,6 +320,10 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  text-decoration: none;
   padding: 15px 24px;
   border-radius: 18px;
   font-weight: 700;
@@ -613,6 +626,21 @@ a {
   color: #cbd5e1;
   line-height: 1.9;
   font-size: 1.05rem;
+}
+
+.about__box {
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: 0;
+}
+
+.about-page__section {
+  min-height: calc(100vh - 82px);
+}
+
+.about-page__actions {
+  margin-top: 34px;
 }
 
 .section-block {

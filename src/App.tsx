@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import emailjs from "@emailjs/browser";
 
 export default function App() {
+  type Page = "home" | "about" | "inovasi" | "modul" | "banksoalan";
   type SharePlatform = "facebook" | "whatsapp" | "telegram" | "x";
   const smartLabSectionIds = new Set([
     "smartlab-hero",
@@ -31,7 +32,7 @@ export default function App() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState<"home" | "inovasi" | "modul" | "banksoalan">("home");
+  const [currentPage, setCurrentPage] = useState<Page>("home");
   const [modulMenuOpen, setModulMenuOpen] = useState(false);
   const [readMore, setReadMore] = useState(false);
   const [eduTrackReadMore, setEduTrackReadMore] = useState(false);
@@ -107,11 +108,14 @@ export default function App() {
       smartLabSectionIds.has(hashTarget) ||
       eduTrackSectionIds.has(hashTarget) ||
       eduSlotSectionIds.has(hashTarget);
+    const shouldOpenAbout = params.get("page") === "about" || hashTarget === "about";
     const shouldOpenModul = params.get("page") === "modul";
     const shouldOpenBankSoalan = params.get("page") === "banksoalan";
 
     if (shouldOpenInovasi) {
       setCurrentPage("inovasi");
+    } else if (shouldOpenAbout) {
+      setCurrentPage("about");
     } else if (shouldOpenBankSoalan) {
       setCurrentPage("banksoalan");
     } else if (shouldOpenModul) {
@@ -165,7 +169,7 @@ export default function App() {
     fetchVisitorCount();
   }, []);
 
-  const navigateTo = (page: "home" | "inovasi" | "modul" | "banksoalan") => {
+  const navigateTo = (page: Page) => {
     setCurrentPage(page);
     setMobileMenuOpen(false);
     setModulMenuOpen(false);
@@ -179,6 +183,7 @@ export default function App() {
       } else {
         const targetUrl = new URL(window.location.href);
         targetUrl.searchParams.set("page", page);
+        targetUrl.hash = "";
         window.history.replaceState(
           null,
           "",
@@ -196,7 +201,14 @@ export default function App() {
     setModulMenuOpen(false);
 
     if (typeof window !== "undefined") {
-      window.history.replaceState(null, "", `#${sectionId}`);
+      const targetUrl = new URL(window.location.href);
+      targetUrl.searchParams.delete("page");
+      targetUrl.hash = sectionId;
+      window.history.replaceState(
+        null,
+        "",
+        `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`
+      );
     }
 
     window.setTimeout(() => {
@@ -376,7 +388,12 @@ export default function App() {
           <span></span>
         </button>
         <div className={`navbar__links ${mobileMenuOpen ? "navbar__links--active" : ""}`}>
-          <button className="navbar__linkBtn" onClick={() => goToHomeSection("about")}>Tentang</button>
+          <button
+            className={`navbar__linkBtn${currentPage === "about" ? " navbar__linkBtn--active" : ""}`}
+            onClick={() => navigateTo("about")}
+          >
+            Tentang
+          </button>
           <button className="navbar__linkBtn" onClick={() => goToHomeSection("journey")}>Perjalanan</button>
           <button className="navbar__linkBtn" onClick={() => goToHomeSection("achievements")}>Pencapaian</button>
 
@@ -893,6 +910,49 @@ export default function App() {
             <p>STEM Educator • Innovation • Education Technology</p>
           </footer>
         </div>
+      ) : currentPage === "about" ? (
+        <main className="about-page">
+          <section id="about" className="section about about-page__section">
+            <div className="section__header">
+              <p className="section__label">Tentang Saya</p>
+              <h1>
+                Profil profesional yang menggabungkan pendidikan, teknologi dan
+                inovasi.
+              </h1>
+            </div>
+
+            <div className="about__grid">
+              <div className="about__box">
+                Saya merupakan seorang guru sains yang berminat dalam inovasi STEM,
+                pembangunan teknologi pendidikan dan penciptaan pengalaman
+                pembelajaran yang lebih berkesan untuk murid.
+              </div>
+
+              <div className="about__box">
+                Melalui cikgustem.com, saya menghimpunkan portfolio profesional,
+                projek pendidikan, inovasi sekolah dan aplikasi digital yang dibina
+                untuk menyokong komuniti guru.
+              </div>
+
+              <div className="about__box">
+                Laman ini juga menjadi pusat kepada projek-projek utama seperti
+                Seni Smart Lab serta inisiatif masa depan dalam bidang STEM, EdTech
+                dan pembangunan pendidikan digital.
+              </div>
+            </div>
+
+            <div className="about-page__actions">
+              <button type="button" className="btn btn--secondary" onClick={() => navigateTo("home")}>
+                Kembali ke Utama
+              </button>
+            </div>
+          </section>
+
+          <footer className="footer">
+            <p>&copy; 2026 Najib Jaafar &bull; cikgustem.com</p>
+            <p>STEM Educator &bull; Innovation &bull; Education Technology</p>
+          </footer>
+        </main>
       ) : currentPage === "modul" ? (
         <main className="modulesPage">
           <section className="modulesHero">
@@ -1047,9 +1107,9 @@ export default function App() {
       >
         Buka Seni Smart Lab
       </a>
-      <a href="#about" className="btn btn--secondary">
+      <button type="button" className="btn btn--secondary" onClick={() => navigateTo("about")}>
         Kenali Saya
-      </a>
+      </button>
     </div>
 
     <div className="hero__stats">
@@ -1084,36 +1144,6 @@ export default function App() {
     </div>
   </div>
 </section>
-
-      <section id="about" className="section about">
-        <div className="section__header">
-          <p className="section__label">Tentang Saya</p>
-          <h2>
-            Profil profesional yang menggabungkan pendidikan, teknologi dan
-            inovasi.
-          </h2>
-        </div>
-
-        <div className="about__grid">
-          <div className="about__box">
-            Saya merupakan seorang guru sains yang berminat dalam inovasi STEM,
-            pembangunan teknologi pendidikan dan penciptaan pengalaman
-            pembelajaran yang lebih berkesan untuk murid.
-          </div>
-
-          <div className="about__box">
-            Melalui cikgustem.com, saya menghimpunkan portfolio profesional,
-            projek pendidikan, inovasi sekolah dan aplikasi digital yang dibina
-            untuk menyokong komuniti guru.
-          </div>
-
-          <div className="about__box">
-            Laman ini juga menjadi pusat kepada projek-projek utama seperti
-            Seni Smart Lab serta inisiatif masa depan dalam bidang STEM, EdTech
-            dan pembangunan pendidikan digital.
-          </div>
-        </div>
-      </section>
 
       <section id="journey" className="section section-block">
         <div className="section-heading">

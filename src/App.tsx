@@ -257,6 +257,7 @@ export default function App() {
       return anchor;
     }
 
+    const publicSiteUrl = "https://www.cikgustem.com";
     const targetId = anchor.replace(/^#/, "");
 
     const isInovasiTarget =
@@ -266,7 +267,7 @@ export default function App() {
 
     const isJourneyTarget = journeySectionIds.has(targetId);
 
-    const appUrl = new URL(window.location.href);
+    const appUrl = new URL(publicSiteUrl);
     appUrl.hash = "";
     appUrl.search = "";
 
@@ -278,7 +279,7 @@ export default function App() {
       appUrl.hash = targetId;
     }
 
-    const shareLandingUrl = new URL(window.location.href);
+    const shareLandingUrl = new URL(publicSiteUrl);
     shareLandingUrl.hash = "";
     shareLandingUrl.search = "";
 
@@ -295,8 +296,7 @@ export default function App() {
       : "";
 
     if (landingFile) {
-      shareLandingUrl.pathname =
-        shareLandingUrl.pathname.replace(/\/[^/]*$/, "/") + landingFile;
+      shareLandingUrl.pathname = `/${landingFile}`;
       shareLandingUrl.searchParams.set("target", targetId);
       return shareLandingUrl.toString();
     }
@@ -997,6 +997,33 @@ export default function App() {
                 </a>
                 <a href="/modules/sains/t5/amalan-sains-harian-t5.pdf" target="_blank" rel="noreferrer">
                   Tingkatan 5 →
+                </a>
+              </div>
+            </article>
+
+            <article className="moduleCard">
+              <div className="moduleMeta">
+                <span className="moduleTag">Sains</span>
+                <span className="moduleTag">GO-K1</span>
+                <span className="moduleTag">Pareto Pasir Gudang</span>
+              </div>
+
+              <h3>Modul GO-K1</h3>
+
+              <p>
+                GO-K1 dihasilkan oleh pasukan PARETO Sains Daerah Pasir Gudang pada tahun
+                2025 untuk membantu murid melalui bahan latih tubi Kertas 1. Modul ini
+                disusun secara topikal bagi mengukuhkan kefahaman dan pengetahuan murid
+                terhadap fakta-fakta Sains.
+              </p>
+
+              <div className="moduleLinks">
+                <a
+                  href="/modules/go-k1/MODUL%20GO-K1%20LENGKAP%2012.8.25.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Buka Modul GO-K1 →
                 </a>
               </div>
             </article>

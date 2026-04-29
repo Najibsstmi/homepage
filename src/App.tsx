@@ -15,6 +15,7 @@ export default function App() {
     "smartlab-pengiktirafan",
   ]);
   const journeySectionIds = new Set([
+    "journey-guru-cemerlang-ksl",
     "journey-padang-line",
     "journey-microbit",
     "journey-mudball",
@@ -287,6 +288,8 @@ export default function App() {
       ? "share-eduslot.html"
       : smartLabSectionIds.has(targetId)
       ? "share-smartlab.html"
+      : targetId === "journey-guru-cemerlang-ksl"
+      ? "share-guru-cemerlang.html"
       : isJourneyTarget
       ? "share-journey.html"
       : "";
@@ -1191,6 +1194,165 @@ export default function App() {
             </p>
           </div>
         </div>
+
+        <article id="journey-guru-cemerlang-ksl" className="journey-post journey-post--latest">
+          <div className="journey-post__header">
+            <div>
+              <span className="section-kicker">Catatan Terkini • 28 April 2026</span>
+              <h3>
+                Selagi ada peluang, saya akan terus berjalan dalam laluan ini sebagai seorang
+                Guru Cemerlang.
+              </h3>
+              <ShareBar title="Guru Cemerlang Pasir Gudang" anchor="#journey-guru-cemerlang-ksl" />
+            </div>
+          </div>
+
+          <div className="journey-post__lead">
+            <div className="journey-post__text">
+              <p>
+                Selasa, 28 April 2026. Jam 11 pagi, saya melangkah masuk ke Infusion Cafe,
+                KSL Hotel dengan satu perasaan yang sukar digambarkan — teruja, bangga, dan
+                dalam masa yang sama… penuh dengan persoalan dalam diri.
+              </p>
+              <p>
+                Hari itu bukan sekadar perjumpaan biasa. Ia adalah pertemuan lebih 30 orang
+                Guru Cemerlang dari seluruh daerah Pasir Gudang. Bila berada dalam ruang yang
+                sama dengan individu-individu yang mempunyai tahap komitmen yang tinggi
+                terhadap pendidikan, suasananya memang berbeza. Kita bukan sekadar hadir,
+                tetapi kita “rasa” satu aura — aura yang mengingatkan kita kenapa kita memilih
+                laluan ini sejak awal.
+              </p>
+              <p>
+                Program ini membawa tema “Memperkasa Profesionalisme, Menjamin Kelestarian,
+                Melonjak Kecemerlangan”, dan sepanjang perjalanan majlis, saya mula faham
+                bahawa ini bukan sekadar kata-kata di atas kertas. Ia adalah satu tanggungjawab
+                yang perlu digalas.
+              </p>
+            </div>
+
+            <figure className="journey-post__heroImage">
+              <img src="/MGC (1).jpg" alt="Pertemuan Majlis Guru Cemerlang Pasir Gudang di Infusion Cafe, KSL Hotel" />
+              <figcaption>
+                Pertemuan Guru Cemerlang Pasir Gudang yang membuka semula ruang refleksi tentang hala tuju pendidikan.
+              </figcaption>
+            </figure>
+          </div>
+
+          <ReadMore className="journey-post__readmore" contentClassName="journey-post__more">
+            <div className="journey-post__body">
+              <p>
+                Slot pertama oleh En. Muhammad Suhairi benar-benar membuka ruang pemikiran
+                saya. Beliau tidak bercakap tentang apa yang telah kita capai, tetapi lebih
+                kepada satu persoalan yang cukup kuat — “What’s next?” Dalam perkongsian
+                beliau, projek seperti GC Buddy dan Pek Individu diperkenalkan sebagai satu
+                usaha untuk memastikan Guru Cemerlang terus bergerak, terus berkembang, dan
+                tidak terhenti pada satu tahap sahaja. Saya terasa seperti diingatkan dengan
+                lembut, bahawa gelaran ini bukan noktah, tetapi permulaan kepada satu
+                perjalanan yang lebih besar.
+              </p>
+
+              <div className="journey-post__inlineVisual">
+                <img src="/MGC (2).jpg" alt="Sesi perkongsian profesionalisme Guru Cemerlang Pasir Gudang" />
+                <div>
+                  <span className="section-kicker">What's Next?</span>
+                  <h4>Gelaran ini bukan noktah, tetapi permulaan kepada perjalanan yang lebih besar.</h4>
+                  <p>
+                    Perkongsian tentang hala tuju, sokongan rakan sejawat dan projek seperti
+                    GC Buddy mengingatkan saya bahawa Guru Cemerlang perlu terus bergerak dan
+                    berkembang.
+                  </p>
+                </div>
+              </div>
+
+              <p>
+                Apabila Encik Mustakim mengambil alih slot seterusnya, perspektif itu menjadi
+                lebih luas. Beliau membentangkan hala tuju sektor perancangan PPD Pasir Gudang
+                yang mensasarkan lebih ramai calon Guru Cemerlang menjelang 2027. Pada ketika
+                itu, saya tersedar bahawa perjalanan ini bukan sekadar tentang diri sendiri.
+                Ia adalah tentang bagaimana kita menjadi sebahagian daripada ekosistem yang
+                membina, membimbing, dan membuka jalan kepada guru-guru lain untuk turut
+                melangkah ke tahap ini.
+              </p>
+
+              <div className="journey-post__inlineVisual journey-post__inlineVisual--reverse">
+                <img src="/MGC (3).jpg" alt="Guru Cemerlang mengikuti pembentangan hala tuju pendidikan daerah" />
+                <div>
+                  <span className="section-kicker">Ekosistem Pendidikan</span>
+                  <h4>Perjalanan ini bukan sekadar tentang diri sendiri.</h4>
+                  <p>
+                    Ia tentang bagaimana setiap guru boleh menjadi sebahagian daripada sistem
+                    sokongan yang membimbing, membuka jalan dan mengangkat lebih ramai rakan
+                    pendidik.
+                  </p>
+                </div>
+              </div>
+
+              <p>
+                Namun, antara yang paling memberi kesan kepada saya adalah perkongsian oleh
+                Cikgu Izzaty. Beliau berkongsi amalan terbaik yang bukan sekadar teori, tetapi
+                pengalaman sebenar yang telah membawa beliau ke pentas antarabangsa.
+                Pencapaiannya sebagai penerima anugerah Teacher Gift 2026 serta peluang
+                membentangkan inovasi di UK dan Jepun benar-benar membuka mata saya. Saya
+                melihat sendiri bahawa apa yang kita lakukan di bilik darjah, jika digerakkan
+                dengan kesungguhan dan konsistensi, mampu pergi jauh melebihi apa yang kita
+                bayangkan.
+              </p>
+              <p>
+                Dalam diam, saya bertanya kepada diri sendiri… “Kenapa aku bermula dulu?”
+              </p>
+              <p>
+                Jawapannya masih sama. Untuk murid. Untuk ilmu. Untuk perubahan kecil yang
+                mungkin tidak semua orang nampak, tetapi memberi kesan yang besar dalam
+                kehidupan seseorang.
+              </p>
+              <p>
+                Hakikatnya, perjalanan sebagai Guru Cemerlang bukanlah satu laluan yang
+                sentiasa mendatar. Ada masa kita bersemangat, ada masa kita letih, dan ada
+                masa kita mula meragui diri sendiri. Tetapi hari itu, saya belajar bahawa
+                semangat itu memang akan turun naik. Yang penting adalah kita tidak berhenti.
+              </p>
+              <p>
+                Sekitar jam 4 petang, majlis bersurai. Saya melangkah keluar dari KSL bukan
+                sekadar dengan ilmu baharu, tetapi dengan satu kesedaran yang lebih jelas.
+                Saya mungkin tidak sempurna, dan semangat saya mungkin tidak sentiasa tinggi,
+                tetapi saya masih berada di laluan yang betul.
+              </p>
+              <p>
+                Dan selagi ada peluang, saya akan terus berjalan dalam laluan ini — sebagai
+                seorang Guru Cemerlang.
+              </p>
+            </div>
+
+            <div className="journey-post__gallery">
+              {[
+                {
+                  src: "/MGC (4).jpg",
+                  alt: "Suasana pertemuan Guru Cemerlang Pasir Gudang",
+                  caption: "Ruang perkongsian yang menghubungkan pengalaman, hala tuju dan semangat baharu.",
+                },
+                {
+                  src: "/MGC (5).jpg",
+                  alt: "Guru Cemerlang dalam sesi profesionalisme di KSL Hotel",
+                  caption: "Setiap sesi membawa pulang persoalan penting tentang langkah seterusnya.",
+                },
+                {
+                  src: "/MGC (6).jpg",
+                  alt: "Kenangan program Guru Cemerlang Pasir Gudang",
+                  caption: "Dari KSL, perjalanan diteruskan dengan kesedaran yang lebih jelas.",
+                },
+              ].map((image) => (
+                <figure className="journey-post__galleryItem" key={image.src}>
+                  <img src={image.src} alt={image.alt} />
+                  <figcaption>{image.caption}</figcaption>
+                </figure>
+              ))}
+            </div>
+
+            <div className="journey-post__shareFooter">
+              <ShareBar title="Guru Cemerlang Pasir Gudang" anchor="#journey-guru-cemerlang-ksl" />
+            </div>
+          </ReadMore>
+        </article>
 
         <article id="journey-padang-line" className="journey-post">
           <div className="journey-post__header">

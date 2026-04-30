@@ -103,7 +103,8 @@ export default function App() {
     }
 
     const params = new URLSearchParams(window.location.search);
-    const hashTarget = window.location.hash.replace(/^#/, "");
+    const targetParam = params.get("target") || "";
+    const hashTarget = window.location.hash.replace(/^#/, "") || targetParam;
     const shouldOpenInovasi =
       params.get("page") === "inovasi" ||
       smartLabSectionIds.has(hashTarget) ||
@@ -133,7 +134,9 @@ export default function App() {
       return;
     }
 
-    const hashTarget = window.location.hash.replace(/^#/, "");
+    const params = new URLSearchParams(window.location.search);
+    const targetParam = params.get("target") || "";
+    const hashTarget = window.location.hash.replace(/^#/, "") || targetParam;
     if (!hashTarget) {
       return;
     }

@@ -35,7 +35,7 @@
     />
     <meta name="twitter:image" content="https://www.cikgustem.com/og-guru-cemerlang.jpg" />
 
-    <meta http-equiv="refresh" content="0; url=/#journey-guru-cemerlang-ksl" />
+    <meta http-equiv="refresh" content="0; url=/?target=journey-guru-cemerlang-ksl#journey-guru-cemerlang-ksl" />
     <script>
       (function () {
         var params = new URLSearchParams(window.location.search);
@@ -44,7 +44,9 @@
           ? target
           : "journey-guru-cemerlang-ksl";
         var basePath = window.location.pathname.replace(/\/[^/]*$/, "/");
-        window.location.replace(basePath + "#" + safeTarget);
+        window.location.replace(
+          basePath + "?target=" + encodeURIComponent(safeTarget) + "#" + safeTarget
+        );
       })();
     </script>
   </head>
@@ -52,7 +54,7 @@
     <p>Mengarahkan ke catatan Guru Cemerlang...</p>
     <p>
       Jika tidak bergerak automatik,
-      <a href="/#journey-guru-cemerlang-ksl">klik di sini</a>.
+      <a href="/?target=journey-guru-cemerlang-ksl#journey-guru-cemerlang-ksl">klik di sini</a>.
     </p>
   </body>
 </html>

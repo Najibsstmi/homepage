@@ -3017,6 +3017,842 @@ section {
   color: rgba(203, 213, 225, 0.76);
 }
 
+.electrolysisPage {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2.8rem 1.5rem 5rem;
+}
+
+.electroHero,
+.electroPanel {
+  border-radius: 24px;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.022)),
+    rgba(15, 23, 42, 0.78);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.18);
+}
+
+.electroHero {
+  margin-bottom: 1.1rem;
+  padding: clamp(1.6rem, 4vw, 2.6rem);
+  background:
+    radial-gradient(circle at 82% 12%, rgba(250, 204, 21, 0.14), transparent 24%),
+    radial-gradient(circle at 15% 8%, rgba(34, 211, 238, 0.16), transparent 28%),
+    rgba(15, 23, 42, 0.74);
+}
+
+.electroHero h1 {
+  max-width: 940px;
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(2rem, 5vw, 3.7rem);
+  line-height: 1.08;
+}
+
+.electroHero p {
+  max-width: 920px;
+  margin: 1rem 0 0;
+  color: rgba(226, 232, 240, 0.86);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.electroModeBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+}
+
+.electroModeBar button,
+.electroApparatus__top button,
+.schemePanel button,
+.aqueousActions button,
+.inferenceBox button {
+  border: 0;
+  border-radius: 14px;
+  padding: 0.76rem 1rem;
+  background: rgba(255, 255, 255, 0.07);
+  color: #f8fafc;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.electroModeBar button.active,
+.electroApparatus__top button:not(:disabled),
+.schemePanel button,
+.aqueousActions button:not(:disabled),
+.inferenceBox button:not(:disabled) {
+  background: linear-gradient(135deg, #22d3ee, #38bdf8);
+  color: #082f49;
+}
+
+.electroModeBar button:last-child {
+  margin-left: auto;
+  background: rgba(250, 204, 21, 0.15);
+  color: #fde68a;
+}
+
+.burnerSwitch {
+  position: relative;
+  display: inline-flex;
+  min-width: 154px;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 999px !important;
+  padding: 0.58rem 0.68rem 0.58rem 1rem !important;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.16);
+}
+
+.burnerSwitch span {
+  font-size: 0.82rem;
+}
+
+.burnerSwitch i {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #f8fafc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+}
+
+.burnerSwitch--on {
+  background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+  color: #f0fdf4 !important;
+}
+
+.burnerSwitch--off {
+  background: linear-gradient(135deg, #dc2626, #ef4444) !important;
+  color: #fff1f2 !important;
+}
+
+.electroLayout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.electroPanel {
+  padding: 1.15rem;
+}
+
+.electroPanel h2 {
+  margin: 0 0 0.85rem;
+  color: #f8fafc;
+  font-size: 1.22rem;
+}
+
+.materialTray {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.electroMaterial {
+  display: grid;
+  gap: 0.35rem;
+  width: 100%;
+  border: 1px solid rgba(103, 232, 249, 0.16);
+  border-radius: 16px;
+  padding: 0.95rem;
+  background: rgba(8, 47, 73, 0.38);
+  color: #f8fafc;
+  text-align: left;
+  cursor: grab;
+}
+
+.electroMaterial--visual {
+  grid-template-columns: 56px 1fr;
+  align-items: center;
+}
+
+.electroMaterial--visual small {
+  grid-column: 2;
+}
+
+.powderScoop {
+  position: relative;
+  display: block;
+  width: 82px;
+  height: 46px;
+  grid-row: span 2;
+  transform: scale(0.7);
+  transform-origin: left center;
+}
+
+.powderScoop__spoon {
+  position: absolute;
+  left: 0;
+  bottom: 8px;
+  width: 62px;
+  height: 10px;
+  border-radius: 999px 8px 8px 999px;
+  background: linear-gradient(90deg, #d1d5db, #f8fafc 55%, #9ca3af);
+  border: 2px solid rgba(15, 23, 42, 0.35);
+}
+
+.powderScoop__handle {
+  position: absolute;
+  left: 54px;
+  bottom: 10px;
+  width: 64px;
+  height: 8px;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(45deg, rgba(15, 23, 42, 0.28) 0 3px, transparent 3px 6px),
+    linear-gradient(#cbd5e1, #94a3b8);
+  border: 1px solid rgba(15, 23, 42, 0.25);
+}
+
+.powderScoop__pile {
+  position: absolute;
+  left: 5px;
+  bottom: 17px;
+  width: 58px;
+  height: 28px;
+  border-radius: 60% 55% 45% 35%;
+  background:
+    radial-gradient(circle at 20% 70%, #fef3c7 0 6px, transparent 7px),
+    radial-gradient(circle at 46% 38%, #f8e6a1 0 8px, transparent 9px),
+    radial-gradient(circle at 68% 70%, #e8d783 0 7px, transparent 8px),
+    #eadf9a;
+  box-shadow: inset 0 -5px 0 rgba(161, 98, 7, 0.12);
+}
+
+.carbonElectrodeIcon {
+  position: relative;
+  display: flex;
+  width: 42px;
+  height: 72px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  grid-row: span 2;
+}
+
+.carbonElectrodeIcon span {
+  width: 10px;
+  height: 62px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #020617, #475569, #0f172a);
+  border: 2px solid #94a3b8;
+  box-shadow: inset 3px 0 5px rgba(255, 255, 255, 0.08);
+}
+
+.powderScoop--salt .powderScoop__pile {
+  background:
+    radial-gradient(circle at 24% 68%, #ffffff 0 6px, transparent 7px),
+    radial-gradient(circle at 50% 42%, #e2e8f0 0 8px, transparent 9px),
+    radial-gradient(circle at 72% 72%, #f8fafc 0 7px, transparent 8px),
+    #cbd5e1;
+}
+
+.waterBeakerIcon {
+  position: relative;
+  display: block;
+  width: 48px;
+  height: 66px;
+  grid-row: span 2;
+}
+
+.waterBeakerIcon__glass {
+  position: absolute;
+  left: 7px;
+  top: 4px;
+  width: 34px;
+  height: 54px;
+  border: 3px solid rgba(226, 232, 240, 0.82);
+  border-top-width: 4px;
+  border-radius: 4px 4px 14px 14px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.waterBeakerIcon__water {
+  position: absolute;
+  left: 11px;
+  bottom: 10px;
+  width: 26px;
+  height: 30px;
+  border-radius: 4px 4px 12px 12px;
+  background: linear-gradient(#67e8f9, #0284c7);
+  box-shadow: 0 0 14px rgba(34, 211, 238, 0.4);
+}
+
+.burnerIcon {
+  position: relative;
+  display: block;
+  width: 42px;
+  height: 72px;
+  grid-row: span 2;
+}
+
+.burnerIcon__flame {
+  position: absolute;
+  left: 13px;
+  top: 0;
+  width: 18px;
+  height: 30px;
+  border-radius: 70% 70% 55% 55%;
+  background: linear-gradient(#fde68a, #f97316);
+  box-shadow: 0 0 14px rgba(249, 115, 22, 0.65);
+}
+
+.burnerIcon__tube {
+  position: absolute;
+  left: 14px;
+  top: 28px;
+  width: 16px;
+  height: 34px;
+  border-radius: 5px;
+  background: #475569;
+  border: 2px solid #94a3b8;
+}
+
+.burnerIcon__base {
+  position: absolute;
+  left: 3px;
+  bottom: 0;
+  width: 38px;
+  height: 12px;
+  border-radius: 999px;
+  background: #334155;
+  border: 2px solid #94a3b8;
+}
+
+.burnerControlDock {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  margin: -2.6rem 0 1rem;
+  pointer-events: none;
+}
+
+.burnerControlDock .burnerSwitch {
+  pointer-events: auto;
+}
+
+.electroMaterial span {
+  font-weight: 900;
+}
+
+.electroMaterial small,
+.electroNote p,
+.learningPanel p,
+.challengePanel p {
+  color: rgba(203, 213, 225, 0.78);
+  line-height: 1.65;
+}
+
+.electroMaterial--placed {
+  border-color: rgba(34, 197, 94, 0.28);
+  background: rgba(34, 197, 94, 0.09);
+  cursor: default;
+}
+
+.electroNote {
+  margin-top: 0.2rem;
+  padding: 0.95rem;
+  border-radius: 16px;
+  background: rgba(250, 204, 21, 0.09);
+  border: 1px solid rgba(250, 204, 21, 0.18);
+}
+
+.electroNote strong {
+  color: #fde68a;
+}
+
+.electroMain {
+  display: grid;
+  gap: 1rem;
+}
+
+.electroApparatus__top {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.electroApparatus__top p {
+  margin: 0;
+  color: rgba(203, 213, 225, 0.78);
+}
+
+.electroApparatus__top button:disabled,
+.aqueousActions button:disabled,
+.inferenceBox button:disabled {
+  cursor: not-allowed;
+  background: rgba(148, 163, 184, 0.18);
+  color: rgba(226, 232, 240, 0.48);
+}
+
+.electroSvgDrop {
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(2, 6, 23, 0.38);
+}
+
+.electroSvg {
+  display: block;
+  width: 100%;
+  min-height: 420px;
+}
+
+.apparatusBg {
+  fill: rgba(15, 23, 42, 0.56);
+}
+
+.wire {
+  fill: none;
+  stroke: #cbd5e1;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.circuitSwitch line {
+  stroke: #facc15;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.circuitSwitch .switchBlade {
+  transition: y2 0.2s ease;
+}
+
+.circuitSwitch text {
+  fill: #fde68a;
+  font-size: 15px;
+  font-weight: 900;
+  text-anchor: middle;
+}
+
+.circuitSwitch--on line {
+  stroke: #86efac;
+}
+
+.battery rect {
+  fill: rgba(226, 232, 240, 0.1);
+  stroke: #e2e8f0;
+  stroke-width: 3;
+}
+
+.battery line,
+.battery text {
+  stroke: none;
+  fill: #f8fafc;
+  font-weight: 800;
+  text-anchor: middle;
+}
+
+.bulb circle {
+  fill: rgba(148, 163, 184, 0.14);
+  stroke: #e2e8f0;
+  stroke-width: 4;
+}
+
+.bulb--on circle {
+  fill: url(#bulbGlow);
+  filter: drop-shadow(0 0 20px rgba(250, 204, 21, 0.9));
+}
+
+.bulb path,
+.tripod line {
+  stroke: #cbd5e1;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.bulb text,
+.electrodes text,
+.electrodeGhost text,
+.tripod text,
+.materialLabel,
+.apparatusLabel,
+.crucibleDrop text,
+.burner text,
+.beaker text {
+  fill: #e2e8f0;
+  font-size: 18px;
+  font-weight: 800;
+  text-anchor: middle;
+}
+
+.electrodes rect {
+  fill: #0f172a;
+  stroke: #94a3b8;
+  stroke-width: 4;
+}
+
+.carbonRods rect {
+  fill: #111827;
+}
+
+.electrodeGhost rect {
+  fill: rgba(148, 163, 184, 0.08);
+  stroke: rgba(148, 163, 184, 0.46);
+  stroke-width: 4;
+  stroke-dasharray: 10 8;
+}
+
+.electrodeGhost text,
+.apparatusLabel {
+  fill: rgba(226, 232, 240, 0.72);
+  font-size: 16px;
+}
+
+.crucible {
+  fill: rgba(226, 232, 240, 0.08);
+  stroke: #e2e8f0;
+  stroke-width: 5;
+}
+
+.crucibleLip {
+  stroke: #f8fafc;
+  stroke-width: 7;
+  stroke-linecap: round;
+}
+
+.solidPb {
+  fill: #cbd5e1;
+  opacity: 0.9;
+}
+
+.moltenPb {
+  fill: url(#moltenPb);
+  filter: drop-shadow(0 0 22px rgba(249, 115, 22, 0.65));
+  animation: moltenPulse 1.6s ease-in-out infinite;
+}
+
+.moltenIons text {
+  fill: #fef3c7;
+  font-size: 16px;
+  font-weight: 900;
+  text-anchor: middle;
+  animation: moltenIonDrift 1.8s ease-in-out infinite alternate;
+}
+
+.moltenIons text:nth-child(2),
+.moltenIons text:nth-child(4) {
+  animation-delay: 0.45s;
+}
+
+.heatVapour path {
+  fill: none;
+  stroke: rgba(254, 243, 199, 0.65);
+  stroke-width: 4;
+  stroke-linecap: round;
+  animation: vapourRise 1.8s ease-in-out infinite;
+}
+
+.flame path:first-child {
+  fill: #f97316;
+  filter: drop-shadow(0 0 20px rgba(249, 115, 22, 0.9));
+}
+
+.flame path:last-child {
+  fill: #fde68a;
+}
+
+.burner rect {
+  fill: #334155;
+  stroke: #94a3b8;
+  stroke-width: 3;
+}
+
+.aqueousActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  align-items: center;
+  justify-content: end;
+}
+
+.aqueousActions label {
+  color: rgba(226, 232, 240, 0.86);
+  font-weight: 800;
+}
+
+.beakerWall,
+.beakerLip {
+  fill: rgba(226, 232, 240, 0.04);
+  stroke: rgba(226, 232, 240, 0.7);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.beakerLip {
+  fill: none;
+  stroke: rgba(103, 232, 249, 0.45);
+  stroke-width: 3;
+}
+
+.aqueousLiquid {
+  fill: rgba(34, 211, 238, 0.24);
+  stroke: rgba(103, 232, 249, 0.48);
+  stroke-width: 3;
+}
+
+.aqueousSolute {
+  fill: #67e8f9;
+  font-size: 24px;
+  font-weight: 900;
+  text-anchor: middle;
+}
+
+.ion {
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.ion--pb,
+.ion--cation {
+  fill: #38bdf8;
+  animation: ionToCathodeRight 3.2s cubic-bezier(0.35, 0, 0.2, 1) infinite;
+}
+
+.ion--br,
+.ion--anion {
+  fill: #facc15;
+  animation: ionToAnodeLeft 3.2s cubic-bezier(0.35, 0, 0.2, 1) infinite;
+}
+
+.ion--path2 {
+  animation-delay: 0.45s;
+}
+
+.ion--path3 {
+  animation-delay: 0.9s;
+}
+
+.ion--path4 {
+  animation-delay: 1.35s;
+}
+
+.ionLayer:not(.ionLayer--active) .ion {
+  animation: none;
+}
+
+.ionPath {
+  fill: none;
+  stroke-width: 3;
+  stroke-dasharray: 8 8;
+}
+
+.ionPath--pb,
+.ionPath--cation {
+  stroke: #38bdf8;
+}
+
+.ionPath--br,
+.ionPath--anion {
+  stroke: #facc15;
+}
+
+.ionLabel {
+  fill: #e2e8f0;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.learningPanel p {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.electroObservation,
+.schemePanel,
+.comparisonPanel,
+.reflectionPanel,
+.challengePanel {
+  margin-top: 1rem;
+}
+
+.electroTableWrap {
+  overflow-x: auto;
+}
+
+.electroTableWrap table {
+  width: 100%;
+  border-collapse: collapse;
+  color: rgba(226, 232, 240, 0.88);
+}
+
+.electroTableWrap th {
+  background: rgba(103, 232, 249, 0.14);
+  color: #67e8f9;
+}
+
+.electroTableWrap th,
+.electroTableWrap td {
+  min-width: 190px;
+  padding: 0.85rem;
+  border: 1px solid rgba(103, 232, 249, 0.18);
+  vertical-align: top;
+}
+
+.electroTableWrap select,
+.inferenceBox textarea,
+.reflectionList input {
+  width: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  padding: 0.7rem;
+  background: rgba(2, 6, 23, 0.5);
+  color: #f8fafc;
+}
+
+.inferenceBox {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.inferenceBox button {
+  justify-self: start;
+  padding: 0.58rem 0.85rem;
+}
+
+.checkText {
+  margin: 0.45rem 0 0;
+  font-weight: 900;
+}
+
+.checkText--ok {
+  color: #86efac;
+}
+
+.checkText--bad {
+  color: #fca5a5;
+}
+
+.checkText--warn {
+  color: #fde68a;
+}
+
+.schemeList {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1rem;
+  color: rgba(226, 232, 240, 0.88);
+  line-height: 1.7;
+}
+
+.reflectionList {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.reflectionList label {
+  display: grid;
+  gap: 0.5rem;
+  color: rgba(226, 232, 240, 0.9);
+  font-weight: 800;
+}
+
+.scoreGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 1rem 0;
+}
+
+.scoreGrid div {
+  padding: 0.95rem;
+  border-radius: 16px;
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(103, 232, 249, 0.14);
+}
+
+.scoreGrid span {
+  display: block;
+  color: rgba(203, 213, 225, 0.76);
+}
+
+.scoreGrid strong,
+.totalScore {
+  color: #67e8f9;
+  font-size: 1.25rem;
+}
+
+@keyframes moltenPulse {
+  0%, 100% {
+    opacity: 0.82;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes vapourRise {
+  0%, 100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes moltenIonDrift {
+  0% {
+    transform: translateX(-8px) translateY(2px);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateX(8px) translateY(-5px);
+    opacity: 1;
+  }
+}
+
+@keyframes ionToCathodeRight {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  25% {
+    transform: translate(28px, -18px);
+    opacity: 1;
+  }
+  52% {
+    transform: translate(76px, 14px);
+    opacity: 1;
+  }
+  82% {
+    transform: translate(132px, -74px);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(154px, -116px);
+    opacity: 0;
+  }
+}
+
+@keyframes ionToAnodeLeft {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  28% {
+    transform: translate(-24px, -20px);
+    opacity: 1;
+  }
+  54% {
+    transform: translate(-82px, 12px);
+    opacity: 1;
+  }
+  84% {
+    transform: translate(-142px, -72px);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-178px, -116px);
+    opacity: 0;
+  }
+}
+
 @media (max-width: 960px) {
   .modulesGrid {
     grid-template-columns: 1fr;
@@ -3028,8 +3864,14 @@ section {
 
   .linearSim__workspace,
   .linearData,
-  .linearData__secondary {
+  .linearData__secondary,
+  .electroLayout,
+  .scoreGrid {
     grid-template-columns: 1fr;
+  }
+
+  .electroModeBar button:last-child {
+    margin-left: 0;
   }
 }
 
@@ -3073,5 +3915,19 @@ section {
   .tickerTape__header {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .electrolysisPage {
+    padding: 2rem 1rem 4rem;
+  }
+
+  .electroApparatus__top,
+  .aqueousActions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .electroSvg {
+    min-height: 330px;
   }
 }

@@ -36,13 +36,13 @@ export const simulators = [
     href: "/simulator/kadar-tindak-balas",
   },
   {
-    id: "elektrolisis",
-    title: "Elektrolisis",
+    id: "elektrokimia-elektrolisis",
+    title: "Elektrolisis Sebatian Ion",
     level: "Tingkatan 5",
-    topic: "Elektrokimia",
+    topic: "Bab 6 Elektrokimia",
     description:
-      "Simulasi elektrolisis bagi membantu murid memahami pergerakan ion, elektrod dan hasil tindak balas dengan lebih jelas.",
-    href: "/simulator/elektrolisis",
+      "Mengkaji kekonduksian elektrik plumbum(II) bromida dalam keadaan pepejal, leburan dan akueus.",
+    href: "/simulator/elektrokimia-elektrolisis",
   },
   {
     id: "kanta",

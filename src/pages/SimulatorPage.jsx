@@ -1,5 +1,6 @@
 import SimulatorCard from "../components/SimulatorCard";
 import LinearMotionSimulator from "../components/LinearMotionSimulator";
+import ElectrolysisSimulatorPage from "./ElectrolysisSimulatorPage";
 import { simulators } from "../data/simulators";
 
 export default function SimulatorPage() {
@@ -7,6 +8,10 @@ export default function SimulatorPage() {
 
   if (path === "/simulator/gerakan-linear") {
     return <LinearMotionSimulator />;
+  }
+
+  if (path === "/simulator/elektrokimia-elektrolisis") {
+    return <ElectrolysisSimulatorPage />;
   }
 
   return (

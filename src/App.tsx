@@ -1,9 +1,10 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import emailjs from "@emailjs/browser";
+import SimulatorPage from "./pages/SimulatorPage";
 
 export default function App() {
-  type Page = "home" | "about" | "inovasi" | "modul" | "banksoalan";
+  type Page = "home" | "about" | "inovasi" | "modul" | "banksoalan" | "simulator";
   type SharePlatform = "facebook" | "whatsapp" | "telegram" | "x";
   const smartLabSectionIds = new Set([
     "smartlab-hero",
@@ -103,6 +104,7 @@ export default function App() {
     }
 
     const params = new URLSearchParams(window.location.search);
+    const pathName = window.location.pathname;
     const targetParam = params.get("target") || "";
     const hashTarget = window.location.hash.replace(/^#/, "") || targetParam;
     const shouldOpenInovasi =
@@ -113,9 +115,13 @@ export default function App() {
     const shouldOpenAbout = params.get("page") === "about" || hashTarget === "about";
     const shouldOpenModul = params.get("page") === "modul";
     const shouldOpenBankSoalan = params.get("page") === "banksoalan";
+    const shouldOpenSimulator =
+      params.get("page") === "simulator" || pathName.startsWith("/simulator");
 
     if (shouldOpenInovasi) {
       setCurrentPage("inovasi");
+    } else if (shouldOpenSimulator) {
+      setCurrentPage("simulator");
     } else if (shouldOpenAbout) {
       setCurrentPage("about");
     } else if (shouldOpenBankSoalan) {
@@ -183,7 +189,9 @@ export default function App() {
         const homeUrl = new URL(window.location.href);
         homeUrl.searchParams.delete("page");
         homeUrl.hash = "";
-        window.history.replaceState(null, "", `${homeUrl.pathname}${homeUrl.search}`);
+        window.history.replaceState(null, "", `/${homeUrl.search}`);
+      } else if (page === "simulator") {
+        window.history.replaceState(null, "", "/simulator");
       } else {
         const targetUrl = new URL(window.location.href);
         targetUrl.searchParams.set("page", page);
@@ -207,6 +215,7 @@ export default function App() {
     if (typeof window !== "undefined") {
       const targetUrl = new URL(window.location.href);
       targetUrl.searchParams.delete("page");
+      targetUrl.pathname = "/";
       targetUrl.hash = sectionId;
       window.history.replaceState(
         null,
@@ -401,6 +410,12 @@ export default function App() {
             Tentang
           </button>
           <button className="navbar__linkBtn" onClick={() => goToHomeSection("journey")}>Perjalanan</button>
+          <button
+            className={`navbar__linkBtn${currentPage === "simulator" ? " navbar__linkBtn--active" : ""}`}
+            onClick={() => navigateTo("simulator")}
+          >
+            Simulator
+          </button>
           <button className="navbar__linkBtn" onClick={() => goToHomeSection("achievements")}>Pencapaian</button>
 
           <div
@@ -434,7 +449,9 @@ export default function App() {
         </div>
       </nav>
 
-      {currentPage === "inovasi" ? (
+      {currentPage === "simulator" ? (
+        <SimulatorPage />
+      ) : currentPage === "inovasi" ? (
         /* ─────────────── PAGE INOVASI ─────────────── */
         <div className="inovasi-page">
 

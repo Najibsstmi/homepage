@@ -8,8 +8,10 @@ export default function AqueousMode({
   onToggleCircuit,
   onToggleIons,
 }) {
-  const ready = aqueousItems.water && aqueousItems.powder && aqueousItems.electrodes;
-  const bulbOn = ready && circuitOn;
+  const solutionReady = aqueousItems.water && aqueousItems.powder;
+  const ready = solutionReady && aqueousItems.electrodes;
+  const canLightBulb = solutionReady && circuitOn;
+  const bulbOn = canLightBulb;
 
   const handleDrop = (event) => {
     event.preventDefault();
@@ -25,8 +27,8 @@ export default function AqueousMode({
             {bulbOn
               ? "Larutan akueus NaCl mengkonduksikan elektrik. Mentol menyala."
               : ready
-                ? "Radas lengkap. Hidupkan suis litar untuk menyalakan mentol."
-                : "Masukkan air suling, NaCl dan elektrod karbon ke dalam bikar."}
+                ? "Larutan NaCl sudah terbentuk. Hidupkan suis litar untuk menyalakan mentol."
+                : "Masukkan air suling dan NaCl ke dalam bikar."}
           </p>
         </div>
         <div className="aqueousActions">
@@ -37,7 +39,7 @@ export default function AqueousMode({
           <button
             type="button"
             className={`burnerSwitch ${circuitOn ? "burnerSwitch--on" : "burnerSwitch--off"}`}
-            disabled={!ready}
+            disabled={!solutionReady}
             onClick={onToggleCircuit}
           >
             <span>{circuitOn ? "LITAR ON" : "LITAR OFF"}</span>
@@ -48,6 +50,12 @@ export default function AqueousMode({
 
       <div className="electroSvgDrop" onDragOver={(event) => event.preventDefault()} onDrop={handleDrop}>
         <svg className="electroSvg" viewBox="0 0 900 560" role="img" aria-label="Radas elektrolisis akueus natrium klorida">
+          <defs>
+            <radialGradient id="aqueousBulbGlow" cx="50%" cy="50%" r="55%">
+              <stop offset="0%" stopColor="#fde68a" />
+              <stop offset="100%" stopColor="#f59e0b" />
+            </radialGradient>
+          </defs>
           <rect className="apparatusBg" x="0" y="0" width="900" height="560" rx="28" />
           <g className="battery">
             <rect x="370" y="38" width="160" height="44" rx="10" />
@@ -58,12 +66,12 @@ export default function AqueousMode({
             <text x="495" y="66">-</text>
           </g>
 
-          <path className="wire" d="M 370 60 H 358" />
-          <path className="wire" d="M 266 60 H 238 V 118" />
+          <path className="wire" d="M 370 60 H 262" />
+          <path className="wire" d="M 170 60 H 54 V 118 H 81" />
           <path className="wire" d="M 530 60 H 650 V 150 H 592" />
           <path className="wire" d="M 238 118 V 150 H 312" />
           <text className="apparatusLabel" x="674" y="92">Wayar penyambung</text>
-          <g className={`circuitSwitch ${circuitOn ? "circuitSwitch--on" : ""}`} transform="translate(266 60)">
+          <g className={`circuitSwitch ${circuitOn ? "circuitSwitch--on" : ""}`} transform="translate(170 60)">
             <line x1="0" y1="0" x2="38" y2="0" />
             <line x1="58" y1="0" x2="92" y2="0" />
             <line className="switchBlade" x1="38" y1="0" x2="58" y2={circuitOn ? 0 : -18} />
@@ -76,7 +84,6 @@ export default function AqueousMode({
             <text x="112" y="180">Mentol</text>
           </g>
           <path className="wire" d="M 238 118 H 143" />
-          <path className="wire" d="M 81 118 H 52 V 60 H 370" />
 
           <g className="beaker">
             <path className="beakerWall" d="M 260 170 V 420 C 260 462 642 462 642 420 V 170" />

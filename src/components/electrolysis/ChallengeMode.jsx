@@ -7,38 +7,37 @@ export default function ChallengeMode({
   bulbAnswers,
   inferences,
 }) {
-  const setupScore = solidReady && moltenReady && aqueousReady ? 30 : moltenReady || aqueousReady ? 20 : solidReady ? 10 : 0;
-  const bulbScore =
+  const circuitSolver = solidReady && moltenReady && aqueousReady ? 10 : moltenReady || aqueousReady ? 7 : solidReady ? 4 : 0;
+  const observationExpert =
     bulbAnswers.solid === "Tidak menyala" && bulbAnswers.molten === "Menyala" && bulbAnswers.aqueous === "Menyala"
-      ? 30
+      ? 10
       : 0;
-  const inferenceScore =
+  const electrochemist =
     checkInferenceWithAI(inferences.solid || "", "solid") &&
     checkInferenceWithAI(inferences.molten || "", "molten") &&
     checkInferenceWithAI(inferences.aqueous || "", "aqueous")
-      ? 40
+      ? 10
       : 0;
-  const total = setupScore + bulbScore + inferenceScore;
 
   return (
-    <section className="electroPanel challengePanel">
-      <h2>Challenge Mode</h2>
-      <p>Misi: Lengkapkan eksperimen elektrolisis sehingga mentol menyala dan jadual pemerhatian betul.</p>
+    <section className="scoreboardPanel">
+      <div className="scoreboardPanel__header">
+        <span>Scoreboard</span>
+      </div>
       <div className="scoreGrid">
-        <div>
-          <span>Susun radas betul</span>
-          <strong>{setupScore}/30</strong>
+        <div style={{ "--score": `${circuitSolver * 10}%` }}>
+          <span>Circuit Solver</span>
+          <strong>{circuitSolver}/10</strong>
         </div>
-        <div>
-          <span>Keadaan mentol betul</span>
-          <strong>{bulbScore}/30</strong>
+        <div style={{ "--score": `${observationExpert * 10}%` }}>
+          <span>Observation Expert</span>
+          <strong>{observationExpert}/10</strong>
         </div>
-        <div>
-          <span>Inferens betul</span>
-          <strong>{inferenceScore}/40</strong>
+        <div style={{ "--score": `${electrochemist * 10}%` }}>
+          <span>Electrochemist</span>
+          <strong>{electrochemist}/10</strong>
         </div>
       </div>
-      <strong className="totalScore">Skor: {total}/100</strong>
     </section>
   );
 }

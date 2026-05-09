@@ -3458,6 +3458,11 @@ section {
   filter: drop-shadow(0 0 20px rgba(250, 204, 21, 0.9));
 }
 
+.aqueousPanel .bulb--on circle {
+  fill: url(#aqueousBulbGlow);
+  filter: drop-shadow(0 0 20px rgba(250, 204, 21, 0.9));
+}
+
 .bulb path,
 .tripod line {
   stroke: #cbd5e1;
@@ -3662,12 +3667,53 @@ section {
   font-size: 1.05rem;
 }
 
+.learningPanel {
+  padding: 1rem 1.15rem;
+}
+
 .electroObservation,
 .schemePanel,
 .comparisonPanel,
 .reflectionPanel,
-.challengePanel {
-  margin-top: 1rem;
+.challengePanel,
+.scoreboardPanel {
+  margin-top: 0.8rem;
+}
+
+.electroAccordion {
+  padding: 0;
+  overflow: hidden;
+}
+
+.accordionHeader {
+  width: 100%;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  background: rgba(34, 211, 238, 0.07);
+  color: #f8fafc;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.accordionHeader span {
+  font-size: 1.1rem;
+}
+
+.accordionHeader strong {
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  background: linear-gradient(135deg, #22d3ee, #38bdf8);
+  color: #082f49;
+  font-size: 0.82rem;
+}
+
+.accordionBody {
+  padding: 1rem;
+  animation: accordionDrop 0.22s ease-out;
 }
 
 .electroTableWrap {
@@ -3678,6 +3724,7 @@ section {
   width: 100%;
   border-collapse: collapse;
   color: rgba(226, 232, 240, 0.88);
+  font-size: 1.02rem;
 }
 
 .electroTableWrap th {
@@ -3688,9 +3735,10 @@ section {
 .electroTableWrap th,
 .electroTableWrap td {
   min-width: 190px;
-  padding: 0.85rem;
+  padding: 1rem 0.9rem;
   border: 1px solid rgba(103, 232, 249, 0.18);
   vertical-align: top;
+  line-height: 1.55;
 }
 
 .electroTableWrap select,
@@ -3702,6 +3750,7 @@ section {
   padding: 0.7rem;
   background: rgba(2, 6, 23, 0.5);
   color: #f8fafc;
+  font-size: 1rem;
 }
 
 .inferenceBox {
@@ -3734,9 +3783,14 @@ section {
 .schemeList {
   display: grid;
   gap: 0.7rem;
-  margin-top: 1rem;
+  margin: 0 0 1rem;
   color: rgba(226, 232, 240, 0.88);
   line-height: 1.7;
+  font-size: 1.02rem;
+}
+
+.comparisonPanel--embedded {
+  margin-top: 0.8rem;
 }
 
 .reflectionList {
@@ -3751,29 +3805,149 @@ section {
   font-weight: 800;
 }
 
+.scoreboardPanel {
+  position: sticky;
+  top: 78px;
+  z-index: 12;
+  overflow: hidden;
+  width: min(390px, 100%);
+  margin: 0.8rem 0 1rem auto;
+  padding: 0.85rem;
+  border-radius: 20px;
+  border: 1px solid rgba(250, 204, 21, 0.22);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(250, 204, 21, 0.26), transparent 34%),
+    radial-gradient(circle at 100% 12%, rgba(34, 211, 238, 0.2), transparent 34%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.86));
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28), 0 0 28px rgba(34, 211, 238, 0.08);
+  backdrop-filter: blur(14px);
+}
+
+.scoreboardPanel::before {
+  content: "";
+  position: absolute;
+  inset: -55% auto auto -18%;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(250, 204, 21, 0.12);
+  animation: scoreboardPulse 3s ease-in-out infinite;
+}
+
+.scoreboardPanel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.08) 45%, transparent 72%);
+  transform: translateX(-100%);
+  animation: scoreboardShine 4.8s ease-in-out infinite;
+}
+
+.scoreboardPanel__header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.scoreboardPanel__header span {
+  color: #fde68a;
+  font-size: 1rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.scoreboardPanel__header strong {
+  color: #67e8f9;
+  font-size: 1.05rem;
+  line-height: 1;
+  text-shadow: 0 0 18px rgba(34, 211, 238, 0.28);
+}
+
+.scoreboardPanel__header small {
+  color: rgba(226, 232, 240, 0.78);
+  font-weight: 900;
+}
+
+.scoreboardPanel p {
+  position: relative;
+  z-index: 2;
+  color: rgba(226, 232, 240, 0.82);
+}
+
 .scoreGrid {
+  position: relative;
+  z-index: 2;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.8rem;
-  margin: 1rem 0;
+  grid-template-columns: 1fr;
+  gap: 0.55rem;
+  margin: 0.65rem 0 0;
 }
 
 .scoreGrid div {
-  padding: 0.95rem;
-  border-radius: 16px;
-  background: rgba(34, 211, 238, 0.08);
-  border: 1px solid rgba(103, 232, 249, 0.14);
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 48px;
+  padding: 0.62rem 0.72rem;
+  border-radius: 14px;
+  background:
+    linear-gradient(90deg, rgba(34, 211, 238, 0.3) var(--score), rgba(255, 255, 255, 0.06) var(--score)),
+    rgba(2, 6, 23, 0.3);
+  border: 1px solid rgba(103, 232, 249, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
 .scoreGrid span {
   display: block;
-  color: rgba(203, 213, 225, 0.76);
+  color: rgba(248, 250, 252, 0.9);
+  font-size: 0.82rem;
+  font-weight: 900;
 }
 
 .scoreGrid strong,
 .totalScore {
   color: #67e8f9;
-  font-size: 1.25rem;
+  font-size: 1.05rem;
+  font-weight: 950;
+  text-shadow: 0 0 16px rgba(34, 211, 238, 0.28);
+}
+
+@keyframes accordionDrop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scoreboardPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.16);
+    opacity: 0.9;
+  }
+}
+
+@keyframes scoreboardShine {
+  0%, 62% {
+    transform: translateX(-100%);
+  }
+  82%, 100% {
+    transform: translateX(100%);
+  }
 }
 
 @keyframes moltenPulse {
@@ -3871,6 +4045,12 @@ section {
   }
 
   .electroModeBar button:last-child {
+    margin-left: 0;
+  }
+
+  .scoreboardPanel {
+    top: 70px;
+    width: 100%;
     margin-left: 0;
   }
 }

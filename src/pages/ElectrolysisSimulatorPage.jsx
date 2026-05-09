@@ -21,6 +21,7 @@ export default function ElectrolysisSimulatorPage() {
   const [solidCircuitOn, setSolidCircuitOn] = useState(false);
   const [bulbDelayedOn, setBulbDelayedOn] = useState(false);
   const [showScheme, setShowScheme] = useState(false);
+  const [showObservation, setShowObservation] = useState(false);
   const [bulbAnswers, setBulbAnswers] = useState(initialBulbAnswers);
   const [inferences, setInferences] = useState(initialInferences);
   const [aqueousItems, setAqueousItems] = useState(initialAqueousItems);
@@ -29,14 +30,14 @@ export default function ElectrolysisSimulatorPage() {
 
   const learningMessage = useMemo(() => {
     if (mode === "aqueous") {
-      const aqueousComplete = aqueousItems.water && aqueousItems.powder && aqueousItems.electrodes;
-      if (aqueousComplete && aqueousCircuitOn) {
+      const solutionReady = aqueousItems.water && aqueousItems.powder;
+      if (solutionReady && aqueousCircuitOn) {
         return "Ion Na⁺ bergerak ke katod manakala ion Cl⁻ bergerak ke anod. Larutan akueus mengkonduksikan elektrik dan mentol menyala.";
       }
-      if (aqueousComplete) {
+      if (solutionReady) {
         return "Larutan akueus NaCl sudah terbentuk. Hidupkan suis litar untuk menyalakan mentol.";
       }
-      return "Masukkan air suling, natrium klorida dan elektrod karbon ke dalam bikar. Bateri sudah tersedia dalam litar.";
+      return "Masukkan air suling dan natrium klorida ke dalam bikar. Bateri sudah tersedia dalam litar.";
     }
 
     if (!hasPowder) {
@@ -109,7 +110,7 @@ export default function ElectrolysisSimulatorPage() {
     setShowIons(true);
   };
 
-  const aqueousReady = aqueousItems.water && aqueousItems.powder && aqueousItems.electrodes && aqueousCircuitOn;
+  const aqueousReady = aqueousItems.water && aqueousItems.powder && aqueousCircuitOn;
 
   return (
     <main className="electrolysisPage">
@@ -134,6 +135,14 @@ export default function ElectrolysisSimulatorPage() {
         ))}
         <button type="button" onClick={resetExperiment}>Reset eksperimen</button>
       </section>
+
+      <ChallengeMode
+        solidReady={hasPowder && hasElectrodes}
+        moltenReady={hasPowder && hasElectrodes && burnerOn && solidCircuitOn}
+        aqueousReady={aqueousReady}
+        bulbAnswers={bulbAnswers}
+        inferences={inferences}
+      />
 
       <section className="electroLayout">
         <aside className="electroPanel materialTray">
@@ -190,36 +199,34 @@ export default function ElectrolysisSimulatorPage() {
       </section>
 
       <ObservationTable
+        open={showObservation}
+        onToggle={() => setShowObservation((value) => !value)}
         bulbAnswers={bulbAnswers}
         inferences={inferences}
         onBulbChange={(id, value) => setBulbAnswers((current) => ({ ...current, [id]: value }))}
         onInferenceChange={(id, value) => setInferences((current) => ({ ...current, [id]: value }))}
       />
 
-      <section className="electroPanel schemePanel">
-        <button type="button" onClick={() => setShowScheme((value) => !value)}>
-          {showScheme ? "Sembunyikan skema jawapan" : "Pamerkan skema jawapan"}
+      <section className="electroPanel schemePanel electroAccordion">
+        <button className="accordionHeader" type="button" onClick={() => setShowScheme((value) => !value)}>
+          <span>Skema Jawapan</span>
+          <strong>{showScheme ? "Sembunyikan" : "Pamerkan"}</strong>
         </button>
         {showScheme && (
-          <div className="schemeList">
-            {observationRows.map((row) => (
-              <p key={row.id}>
-                <strong>{row.material}:</strong> Mentol {row.expectedBulb.toLowerCase()}. {row.scheme}
-              </p>
-            ))}
+          <div className="accordionBody">
+            <div className="schemeList">
+              {observationRows.map((row) => (
+                <p key={row.id}>
+                  <strong>{row.material}:</strong> Mentol {row.expectedBulb.toLowerCase()}. {row.scheme}
+                </p>
+              ))}
+            </div>
+            <ComparisonTable embedded />
           </div>
         )}
       </section>
 
-      <ComparisonTable />
       <ReflectionQuestions />
-      <ChallengeMode
-        solidReady={hasPowder && hasElectrodes}
-        moltenReady={hasPowder && hasElectrodes && burnerOn && solidCircuitOn}
-        aqueousReady={aqueousReady}
-        bulbAnswers={bulbAnswers}
-        inferences={inferences}
-      />
     </main>
   );
 }

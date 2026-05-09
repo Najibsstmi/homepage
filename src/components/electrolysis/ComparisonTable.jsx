@@ -1,4 +1,4 @@
-export default function ComparisonTable() {
+export default function ComparisonTable({ embedded = false }) {
   const rows = [
     ["Pepejal", "Ion tidak bebas bergerak", "Tidak menyala", "Tidak mengkonduksikan elektrik"],
     ["Leburan", "Ion bebas bergerak", "Menyala", "Mengkonduksikan elektrik"],
@@ -6,7 +6,7 @@ export default function ComparisonTable() {
   ];
 
   return (
-    <section className="electroPanel comparisonPanel">
+    <section className={embedded ? "comparisonPanel comparisonPanel--embedded" : "electroPanel comparisonPanel"}>
       <h2>Perbandingan Keadaan Bahan</h2>
       <div className="electroTableWrap">
         <table>

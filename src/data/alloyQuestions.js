@@ -32,7 +32,7 @@ export const alloyObservationRows = Object.values(alloyMaterials);
 export function getIndentDepth(materialId, dropHeight) {
   const material = alloyMaterials[materialId];
   const height = dropHeights[dropHeight] || dropHeights.medium;
-  return material ? Math.min(material.baseDepth * height.factor, 6) : 0;
+  return material ? material.baseDepth * height.factor : 0;
 }
 
 export function checkAlloyReflection(answer, concept) {

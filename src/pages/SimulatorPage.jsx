@@ -2,6 +2,7 @@ import SimulatorCard from "../components/SimulatorCard";
 import LinearMotionSimulator from "../components/LinearMotionSimulator";
 import AlloyHardnessSimulatorPage from "./AlloyHardnessSimulatorPage";
 import ElectrolysisSimulatorPage from "./ElectrolysisSimulatorPage";
+import ReactionRateSimulatorPage from "./ReactionRateSimulatorPage";
 import { simulators } from "../data/simulators";
 
 export default function SimulatorPage() {
@@ -17,6 +18,10 @@ export default function SimulatorPage() {
 
   if (path === "/simulator/aloi" || path === "/simulator/alloy-hardness") {
     return <AlloyHardnessSimulatorPage />;
+  }
+
+  if (path === "/simulator/kadar-tindak-balas") {
+    return <ReactionRateSimulatorPage />;
   }
 
   return (

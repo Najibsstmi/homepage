@@ -1,15 +1,38 @@
+import { useEffect, useState } from "react";
+
+const isWithinTolerance = (value, expected) => Math.abs(value - expected) <= 0.2;
+
 export default function IndentationResult({ results, latestResult, readings, measurementCorrect, onReadingChange }) {
   const active = latestResult?.materialId;
   const expected = latestResult?.depth || 0;
   const rawReading = active ? readings[active] || "" : "";
   const numericReading = Number(rawReading);
-  const hasReading = rawReading !== "";
-  const isCorrect = active && hasReading && Math.abs(numericReading - expected) <= 0.5;
-  const scaleMax = 6;
-  const scaleHeight = 156;
+  const hasReading = rawReading !== "" && Number.isFinite(numericReading);
+  const isCorrect = active && hasReading && isWithinTolerance(numericReading, expected);
+  const [attempts, setAttempts] = useState({ pure: 0, alloy: 0 });
+  const [checked, setChecked] = useState(false);
+  const scaleMax = Math.max(7, Math.ceil(expected));
+  const scaleHeight = 175;
   const surfaceTop = 34;
-  const dentHeight = Math.min(Math.max((expected / scaleMax) * scaleHeight, 18), scaleHeight);
+  const dentHeight = (expected / scaleMax) * scaleHeight;
   const guideTop = surfaceTop + dentHeight;
+  const activeAttempts = active ? attempts[active] || 0 : 0;
+  const showCorrectAnswer = checked && !isCorrect && activeAttempts >= 2;
+
+  useEffect(() => {
+    setChecked(false);
+  }, [active, rawReading]);
+
+  const checkReading = () => {
+    if (!active || !hasReading) {
+      return;
+    }
+
+    setChecked(true);
+    if (!isCorrect) {
+      setAttempts((current) => ({ ...current, [active]: (current[active] || 0) + 1 }));
+    }
+  };
 
   return (
     <section className="electroPanel alloyResultPanel">
@@ -41,7 +64,7 @@ export default function IndentationResult({ results, latestResult, readings, mea
             <div className="indentRulerWrap">
               <span className="indentRulerUnit">mm</span>
               <div className="indentRuler" aria-label="Pembaris skala milimeter">
-                {Array.from({ length: 7 }, (_, index) => (
+                {Array.from({ length: scaleMax + 1 }, (_, index) => (
                   <span key={index} style={{ top: `${(index / scaleMax) * 100}%` }}>
                     {index}
                   </span>
@@ -61,10 +84,17 @@ export default function IndentationResult({ results, latestResult, readings, mea
               />
               <span>mm</span>
             </div>
+            <button className="indentCheckButton" type="button" onClick={checkReading} disabled={!hasReading}>
+              Semak bacaan
+            </button>
           </label>
-          {hasReading && (
+          {checked && hasReading && (
             <p className={isCorrect ? "checkText checkText--ok" : "checkText checkText--warn"}>
-              {isCorrect || measurementCorrect[active] ? "✓ Bacaan tepat" : "Cuba baca skala pembaris semula"}
+              {isCorrect || measurementCorrect[active]
+                ? "✓ Bacaan tepat"
+                : showCorrectAnswer
+                  ? `Cuba semak semula. Bacaan sebenar ialah ${expected.toFixed(1)} mm.`
+                  : "Cuba baca skala pembaris semula"}
             </p>
           )}
         </div>

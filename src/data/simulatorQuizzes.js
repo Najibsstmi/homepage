@@ -70,6 +70,53 @@ export const electrolysisQuiz = [
   },
 ];
 
+export const reactionRateQuiz = [
+  {
+    question: "Keadaan manakah menghasilkan kadar tindak balas paling tinggi bagi zink?",
+    options: {
+      A: "Ketulan besar",
+      B: "Ketulan",
+      C: "Serbuk",
+      D: "Bongkah sangat sejuk",
+    },
+    answer: "C",
+    explanation: "Serbuk mempunyai luas permukaan paling besar, maka perlanggaran berkesan berlaku lebih kerap.",
+  },
+  {
+    question: "Apakah yang berlaku apabila suhu asid hidroklorik dinaikkan?",
+    options: {
+      A: "Zarah bergerak lebih laju",
+      B: "Zarah hilang sepenuhnya",
+      C: "Isi padu gas sentiasa sifar",
+      D: "Zink tidak bertindak balas",
+    },
+    answer: "A",
+    explanation: "Suhu tinggi meningkatkan tenaga kinetik zarah dan kekerapan perlanggaran berkesan.",
+  },
+  {
+    question: "Dalam graf isi padu H2 melawan masa, garisan yang lebih curam menunjukkan apa?",
+    options: {
+      A: "Kadar tindak balas lebih rendah",
+      B: "Kadar tindak balas lebih tinggi",
+      C: "Tiada gas terhasil",
+      D: "Masa tidak berubah",
+    },
+    answer: "B",
+    explanation: "Kecerunan graf mewakili kadar tindak balas. Graf lebih curam bermaksud kadar lebih tinggi.",
+  },
+  {
+    question: "Bagaimanakah mangkin meningkatkan kadar tindak balas?",
+    options: {
+      A: "Menambah jisim produk",
+      B: "Mengurangkan tenaga pengaktifan",
+      C: "Menghapuskan semua zarah reaktan",
+      D: "Menukar gas H2 kepada oksigen",
+    },
+    answer: "B",
+    explanation: "Mangkin menyediakan laluan alternatif dengan tenaga pengaktifan yang lebih rendah.",
+  },
+];
+
 export const linearMotionQuiz = [
   {
     question: "Apakah maksud pecutan?",

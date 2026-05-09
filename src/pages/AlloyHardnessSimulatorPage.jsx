@@ -14,6 +14,8 @@ const initialTableAnswers = {
   alloy: { depth: "", hardness: "", inference: "" },
 };
 
+const isWithinTolerance = (value, expected) => Math.abs(value - expected) <= 0.2;
+
 export default function AlloyHardnessSimulatorPage() {
   const [selectedMaterial, setSelectedMaterial] = useState("");
   const [dropHeight, setDropHeight] = useState("medium");
@@ -27,8 +29,8 @@ export default function AlloyHardnessSimulatorPage() {
 
   const completed = Boolean(results.pure && results.alloy);
   const measurementCorrect = {
-    pure: results.pure && readings.pure !== "" && Math.abs(Number(readings.pure) - results.pure.depth) <= 0.5,
-    alloy: results.alloy && readings.alloy !== "" && Math.abs(Number(readings.alloy) - results.alloy.depth) <= 0.5,
+    pure: results.pure && readings.pure !== "" && isWithinTolerance(Number(readings.pure), results.pure.depth),
+    alloy: results.alloy && readings.alloy !== "" && isWithinTolerance(Number(readings.alloy), results.alloy.depth),
   };
   const learningMessage = useMemo(() => {
     if (!selectedMaterial) {
@@ -123,13 +125,6 @@ export default function AlloyHardnessSimulatorPage() {
             onRelease={releaseBall}
             onReset={resetExperiment}
           />
-          <IndentationResult
-            results={results}
-            latestResult={latestResult}
-            readings={readings}
-            measurementCorrect={measurementCorrect}
-            onReadingChange={(id, value) => setReadings((current) => ({ ...current, [id]: value }))}
-          />
         </div>
 
         <aside className="electroProgressRail" aria-label="Progress pembelajaran aloi">
@@ -142,22 +137,29 @@ export default function AlloyHardnessSimulatorPage() {
         </aside>
       </section>
 
-      <QuizCard
-        title="Science Check (Kuiz)"
-        questions={alloyQuiz}
-        onComplete={(score, total) => setQuizResult({ score, total })}
-      />
+      <section className="alloyDataGrid">
+        <IndentationResult
+          results={results}
+          latestResult={latestResult}
+          readings={readings}
+          measurementCorrect={measurementCorrect}
+          onReadingChange={(id, value) => setReadings((current) => ({ ...current, [id]: value }))}
+        />
+        <AtomicView selectedMaterial={selectedMaterial || "pure"} show={showAtoms} onToggle={() => setShowAtoms((value) => !value)} />
+      </section>
 
       <section className="electroPanel learningPanel">
         <h2>Apa yang berlaku?</h2>
         <p>{learningMessage}</p>
       </section>
 
-      <section className="alloyDataGrid">
-        <AtomicView selectedMaterial={selectedMaterial || "pure"} show={showAtoms} onToggle={() => setShowAtoms((value) => !value)} />
-      </section>
-
       <AlloyObservationTable answers={tableAnswers} onChange={updateTableAnswer} results={results} />
+
+      <QuizCard
+        title="Science Check (Kuiz)"
+        questions={alloyQuiz}
+        onComplete={(score, total) => setQuizResult({ score, total })}
+      />
     </main>
   );
 }

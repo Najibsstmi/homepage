@@ -2,11 +2,34 @@
   box-sizing: border-box;
 }
 
+html,
+body,
+#root {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+  max-width: 100%;
+}
+
 a {
   text-decoration: none;
 }
 
 .page {
+  width: 100%;
+  overflow-x: hidden;
   min-height: 100vh;
   background:
     radial-gradient(circle at top right, rgba(56, 189, 248, 0.14), transparent 22%),
@@ -2376,9 +2399,10 @@ section {
 
 .linearSim__workspace {
   display: grid;
-  grid-template-columns: 330px 1fr;
+  grid-template-columns: 300px minmax(0, 1fr) 280px;
   gap: 1.2rem;
-  align-items: stretch;
+  align-items: start;
+  overflow: visible;
 }
 
 .linearPanel,
@@ -2464,10 +2488,30 @@ section {
 }
 
 .linearStage__metrics div {
+  position: relative;
+  overflow: hidden;
   padding: 0.9rem;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.metricCard--live {
+  border-color: rgba(103, 232, 249, 0.2) !important;
+}
+
+.metricCard i {
+  position: absolute;
+  left: 0.9rem;
+  right: auto;
+  bottom: 0.55rem;
+  display: block;
+  height: 4px;
+  max-width: calc(100% - 1.8rem);
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22d3ee, #fde68a);
+  box-shadow: 0 0 14px rgba(34, 211, 238, 0.3);
+  transition: width 0.2s ease;
 }
 
 .linearStage__metrics span {
@@ -2490,6 +2534,122 @@ section {
     linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
     radial-gradient(circle at 50% 30%, rgba(103, 232, 249, 0.12), transparent 34%);
   overflow: hidden;
+}
+
+.linearForceHint,
+.linearDataPopup {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  font-weight: 950;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
+}
+
+.linearForceHint {
+  top: 1rem;
+  border: 1px solid rgba(250, 204, 21, 0.26);
+  background: rgba(120, 53, 15, 0.62);
+  color: #fde68a;
+}
+
+.linearDataPopup {
+  top: 1rem;
+  border: 1px solid rgba(103, 232, 249, 0.28);
+  background: rgba(8, 47, 73, 0.88);
+  color: #e0f2fe;
+  animation: dataPopupIn 0.35s ease-out;
+}
+
+.linearProgressPanel {
+  position: sticky;
+  top: 110px;
+  overflow: hidden;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 24px;
+  border: 1px solid rgba(103, 232, 249, 0.2);
+  background:
+    radial-gradient(circle at 16% 0%, rgba(34, 211, 238, 0.22), transparent 34%),
+    radial-gradient(circle at 100% 8%, rgba(250, 204, 21, 0.18), transparent 36%),
+    rgba(15, 23, 42, 0.82);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.linearProgressPanel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.linearProgressPanel__header span {
+  color: #fde68a;
+  font-size: 0.92rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.linearProgressPanel__header strong {
+  color: #67e8f9;
+  font-size: 1.45rem;
+  text-shadow: 0 0 18px rgba(34, 211, 238, 0.3);
+}
+
+.linearProgressPanel p {
+  margin: 0.75rem 0 0;
+  border-radius: 999px;
+  padding: 0.55rem 0.75rem;
+  background: rgba(250, 204, 21, 0.12);
+  border: 1px solid rgba(250, 204, 21, 0.22);
+  color: #fde68a;
+  text-align: center;
+  font-weight: 900;
+}
+
+.linearProgressGrid {
+  display: grid;
+  gap: 0.72rem;
+  margin-top: 0.85rem;
+}
+
+.linearProgressItem {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.75rem;
+  border-radius: 16px;
+  border: 1px solid rgba(103, 232, 249, 0.16);
+  background: rgba(2, 6, 23, 0.32);
+}
+
+.linearProgressItem div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.linearProgressItem span {
+  color: rgba(248, 250, 252, 0.88);
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.linearProgressItem strong {
+  color: #67e8f9;
+  font-size: 0.94rem;
+}
+
+.linearProgressItem > i {
+  display: block;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, #22d3ee var(--score), rgba(255, 255, 255, 0.08) var(--score));
+  border: 1px solid rgba(148, 163, 184, 0.16);
 }
 
 .tickerTape {
@@ -2555,6 +2715,21 @@ section {
   border: 1px solid rgba(15, 23, 42, 0.12);
 }
 
+.tickerTape--active .tickerTape__continuous {
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.08), 0 12px 28px rgba(34, 211, 238, 0.1);
+}
+
+.tickerTape--active .tickerTape__continuous::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.2));
+  animation: tapeFeedPulse 0.42s ease-in-out infinite;
+}
+
 .tickerTape__continuous span {
   position: absolute;
   top: 50%;
@@ -2563,6 +2738,7 @@ section {
   border-radius: 50%;
   background: #0f172a;
   transform: translate(-50%, -50%);
+  animation: dotPop 0.18s ease-out;
 }
 
 .tickerTape__continuousWrap small {
@@ -2715,8 +2891,17 @@ section {
 
 .svgCartRig {
   transform: translate(var(--start-x), var(--start-y));
-  transition: transform 0.016s linear;
+  transition: transform 0.012s linear;
   will-change: transform;
+}
+
+.linearStage--running .svgCartRig {
+  filter: drop-shadow(0 16px 26px rgba(34, 211, 238, 0.14));
+}
+
+.svgCartShadow {
+  fill: rgba(2, 6, 23, 0.42);
+  filter: blur(2px);
 }
 
 .svgCartBody {
@@ -2729,9 +2914,22 @@ section {
 }
 
 .svgCartWheel {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(var(--wheel-rotation));
+  transition: transform 0.08s linear;
+}
+
+.svgCartWheel circle {
   fill: #0f172a;
   stroke: #e2e8f0;
   stroke-width: 5;
+}
+
+.svgCartWheel line {
+  stroke: #67e8f9;
+  stroke-width: 2.2;
+  stroke-linecap: round;
 }
 
 .svgLoad rect {
@@ -2756,8 +2954,39 @@ section {
 
 .motionTrail {
   stroke: rgba(103, 232, 249, 0.28);
-  stroke-width: 18;
+  stroke-width: 8;
   stroke-linecap: round;
+}
+
+.motionTrail--wide {
+  stroke: rgba(34, 211, 238, 0.12);
+  stroke-width: 24;
+}
+
+.linearStage--running .motionTrailGroup {
+  animation: trailPulse 0.7s ease-in-out infinite alternate;
+}
+
+.tickerTimer rect {
+  fill: rgba(148, 163, 184, 0.48);
+  stroke: rgba(226, 232, 240, 0.55);
+  stroke-width: 3;
+}
+
+.tickerTimer circle {
+  fill: #22d3ee;
+  filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.45));
+}
+
+.tickerTimer text {
+  fill: rgba(226, 232, 240, 0.75);
+  font-size: 13px;
+  font-weight: 800;
+  text-anchor: middle;
+}
+
+.linearStage--running .tickerTimer {
+  animation: tickerShake 0.1s linear infinite;
 }
 
 .tickerTape__segments {
@@ -3129,9 +3358,10 @@ section {
 
 .electroLayout {
   display: grid;
-  grid-template-columns: 320px minmax(0, 1fr);
+  grid-template-columns: 320px minmax(0, 1fr) 320px;
   gap: 1rem;
   align-items: start;
+  overflow: visible;
 }
 
 .electroPanel {
@@ -3147,6 +3377,10 @@ section {
 .materialTray {
   display: grid;
   gap: 0.8rem;
+}
+
+.electroProgressRail {
+  min-width: 0;
 }
 
 .electroMaterial {
@@ -3807,19 +4041,20 @@ section {
 
 .scoreboardPanel {
   position: sticky;
-  top: 78px;
-  z-index: 12;
+  top: 110px;
+  z-index: 4;
   overflow: hidden;
-  width: min(390px, 100%);
-  margin: 0.8rem 0 1rem auto;
-  padding: 0.85rem;
-  border-radius: 20px;
-  border: 1px solid rgba(250, 204, 21, 0.22);
+  width: 100%;
+  max-height: calc(100vh - 130px);
+  margin: 0;
+  padding: 1rem;
+  border-radius: 22px;
+  border: 1px solid rgba(103, 232, 249, 0.2);
   background:
-    radial-gradient(circle at 0% 0%, rgba(250, 204, 21, 0.26), transparent 34%),
-    radial-gradient(circle at 100% 12%, rgba(34, 211, 238, 0.2), transparent 34%),
-    linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.86));
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28), 0 0 28px rgba(34, 211, 238, 0.08);
+    radial-gradient(circle at 12% 0%, rgba(250, 204, 21, 0.2), transparent 34%),
+    radial-gradient(circle at 100% 8%, rgba(34, 211, 238, 0.22), transparent 38%),
+    linear-gradient(145deg, rgba(15, 23, 42, 0.94), rgba(8, 47, 73, 0.5));
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(14px);
 }
 
@@ -3849,12 +4084,13 @@ section {
   z-index: 2;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.5rem;
 }
 
 .scoreboardPanel__header span {
   color: #fde68a;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 950;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -3862,7 +4098,7 @@ section {
 
 .scoreboardPanel__header strong {
   color: #67e8f9;
-  font-size: 1.05rem;
+  font-size: 1.55rem;
   line-height: 1;
   text-shadow: 0 0 18px rgba(34, 211, 238, 0.28);
 }
@@ -3878,45 +4114,81 @@ section {
   color: rgba(226, 232, 240, 0.82);
 }
 
+.scoreboardBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 38px;
+  margin: 0.8rem 0 0;
+  border: 1px solid rgba(250, 204, 21, 0.26);
+  border-radius: 999px;
+  background: rgba(250, 204, 21, 0.12);
+  color: #fde68a !important;
+  font-weight: 950;
+  text-align: center;
+}
+
 .scoreGrid {
   position: relative;
   z-index: 2;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0.55rem;
-  margin: 0.65rem 0 0;
+  gap: 0.7rem;
+  margin: 0.8rem 0 0;
 }
 
-.scoreGrid div {
+.scoreItem {
   position: relative;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 0.8rem;
-  min-height: 48px;
-  padding: 0.62rem 0.72rem;
-  border-radius: 14px;
-  background:
-    linear-gradient(90deg, rgba(34, 211, 238, 0.3) var(--score), rgba(255, 255, 255, 0.06) var(--score)),
-    rgba(2, 6, 23, 0.3);
+  gap: 0.55rem;
+  min-height: 74px;
+  padding: 0.78rem;
+  border-radius: 16px;
+  background: rgba(2, 6, 23, 0.34);
   border: 1px solid rgba(103, 232, 249, 0.18);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
-.scoreGrid span {
+.scoreItem__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.scoreItem__top span {
   display: block;
   color: rgba(248, 250, 252, 0.9);
   font-size: 0.82rem;
   font-weight: 900;
 }
 
-.scoreGrid strong,
+.scoreItem__top strong,
 .totalScore {
   color: #67e8f9;
   font-size: 1.05rem;
   font-weight: 950;
   text-shadow: 0 0 16px rgba(34, 211, 238, 0.28);
+}
+
+.scoreItem__bar {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.78);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.scoreItem__bar i {
+  display: block;
+  width: var(--score);
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #22d3ee, #67e8f9 55%, #fde68a);
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.32);
+  transition: width 0.35s ease;
 }
 
 @keyframes accordionDrop {
@@ -3947,6 +4219,53 @@ section {
   }
   82%, 100% {
     transform: translateX(100%);
+  }
+}
+
+@keyframes tickerShake {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(1.5px, -0.8px);
+  }
+}
+
+@keyframes trailPulse {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes tapeFeedPulse {
+  0%, 100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes dotPop {
+  from {
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes dataPopupIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
   }
 }
 
@@ -4027,6 +4346,27 @@ section {
   }
 }
 
+@media (max-width: 1100px) {
+  .linearSim__workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .linearProgressPanel {
+    position: relative;
+    top: auto;
+  }
+
+  .electroLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .scoreboardPanel {
+    position: relative;
+    top: auto;
+    max-height: none;
+  }
+}
+
 @media (max-width: 960px) {
   .modulesGrid {
     grid-template-columns: 1fr;
@@ -4039,7 +4379,6 @@ section {
   .linearSim__workspace,
   .linearData,
   .linearData__secondary,
-  .electroLayout,
   .scoreGrid {
     grid-template-columns: 1fr;
   }
@@ -4049,7 +4388,6 @@ section {
   }
 
   .scoreboardPanel {
-    top: 70px;
     width: 100%;
     margin-left: 0;
   }
@@ -4109,5 +4447,338 @@ section {
 
   .electroSvg {
     min-height: 330px;
+  }
+}
+
+/* Mobile-first safety pass for cikgustem.com */
+@media (max-width: 1100px) {
+  .hero,
+  .cards,
+  .focus__grid,
+  .about__grid,
+  .achievement__list,
+  .contact__grid,
+  .statsGrid,
+  .modulesGrid,
+  .simulatorGrid,
+  .inovasi-intro__grid,
+  .inovasi-features__grid,
+  .inovasi-awards__grid,
+  .inovasi-story,
+  .eduslot__top,
+  .eduslot__grid,
+  .eduslot__sidecards,
+  .edutrack__gallery,
+  .edutrack__inlineVisual,
+  .journey-grid,
+  .journey-post__lead,
+  .journey-post__inlineVisual,
+  .journey-post__gallery,
+  .gallery__grid,
+  .linearSim__workspace,
+  .linearData,
+  .linearData__secondary,
+  .electroLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .linearProgressPanel,
+  .scoreboardPanel {
+    position: relative;
+    top: auto;
+    max-height: none;
+  }
+
+  .electroProgressRail {
+    order: 3;
+  }
+
+  .electroMain {
+    order: 2;
+  }
+
+  .materialTray {
+    order: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    align-items: center;
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .navbar__brand {
+    min-width: 0;
+    font-size: clamp(1.25rem, 7vw, 1.65rem);
+    letter-spacing: 0.1em;
+    line-height: 1;
+    overflow-wrap: anywhere;
+  }
+
+  .navbar__toggle {
+    display: inline-flex;
+    flex: 0 0 auto;
+    padding: 0.45rem;
+  }
+
+  .navbar__links {
+    display: none !important;
+    position: absolute;
+    top: 100%;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-height: calc(100vh - 76px);
+    overflow-y: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.55rem;
+    padding: 0.85rem;
+    border: 1px solid rgba(103, 232, 249, 0.16);
+    border-radius: 18px;
+    background: rgba(2, 6, 23, 0.98);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.34);
+  }
+
+  .navbar__links--active {
+    display: flex !important;
+  }
+
+  .navbar__linkBtn,
+  .navbar__inovasi-btn,
+  .navDropdownTrigger {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .navDropdown {
+    width: 100%;
+    display: grid;
+    padding-bottom: 0;
+  }
+
+  .navDropdownMenu {
+    position: static;
+    width: 100%;
+    min-width: 0;
+    margin-top: 0.55rem;
+    box-shadow: none;
+  }
+
+  .hero,
+  .section,
+  .inovasi-page,
+  .modulesPage,
+  .simulatorPage,
+  .linearSim,
+  .electrolysisPage {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .hero,
+  .section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .hero__content h1,
+  .inovasi-page__hero-content h1,
+  .simulatorHero h1,
+  .linearSim__hero h1,
+  .electroHero h1 {
+    font-size: clamp(2rem, 11vw, 3rem);
+    line-height: 1.08;
+  }
+
+  .section__header h2,
+  .journey-post h3,
+  .inovasi-story__text h2,
+  .statsHeading h2 {
+    font-size: clamp(1.55rem, 8vw, 2.25rem);
+    line-height: 1.15;
+  }
+
+  .cards,
+  .focus__grid,
+  .about__grid,
+  .achievement__list,
+  .contact__grid,
+  .statsGrid,
+  .modulesGrid,
+  .simulatorGrid,
+  .gallery__grid,
+  .journey-grid,
+  .journey-post__lead,
+  .journey-post__inlineVisual,
+  .journey-post__gallery,
+  .inovasi-story,
+  .inovasi-awards__grid,
+  .edutrack__gallery,
+  .edutrack__inlineVisual,
+  .linearSim__workspace,
+  .linearData,
+  .linearData__secondary,
+  .electroLayout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .card,
+  .hero__card,
+  .focus__item,
+  .about__box,
+  .achievement__item,
+  .journey-post,
+  .journey-highlight,
+  .journey-bridge,
+  .modulesCard,
+  .simulatorCard,
+  .linearPanel,
+  .linearStage,
+  .tickerTape,
+  .tapeChart,
+  .electroPanel,
+  .electroHero {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .btn,
+  .secondary-btn,
+  .inovasi-readmore__btn,
+  .share-row__btn,
+  .accordionHeader,
+  .linearSim__actions button,
+  .tickerTape__header button {
+    min-height: 44px;
+  }
+
+  .inovasi-page__hero-actions,
+  .inovasi-cta__btns,
+  .share-row,
+  .electroModeBar,
+  .electroApparatus__top,
+  .aqueousActions,
+  .tickerTape__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .share-row__label {
+    width: 100%;
+  }
+
+  .linearStage__metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .linearTrackWrap {
+    min-height: 240px;
+  }
+
+  .linearTrackSvg {
+    min-height: 230px;
+  }
+
+  .electroSvg {
+    width: 100%;
+    min-height: 300px;
+    max-height: 72vh;
+  }
+
+  .electroTableWrap,
+  .linearTableWrap,
+  .tapeChart__scroll,
+  .tickerTape__continuousWrap,
+  .tickerTape__segments {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .electroTableWrap table,
+  .linearTableWrap table {
+    min-width: 680px;
+  }
+
+  .scoreboardPanel,
+  .linearProgressPanel {
+    position: relative;
+    top: auto;
+    width: 100%;
+    max-height: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 10px 12px;
+  }
+
+  .navbar__brand {
+    font-size: clamp(1.12rem, 7vw, 1.42rem);
+    letter-spacing: 0.08em;
+  }
+
+  .navbar__toggle span {
+    width: 22px;
+  }
+
+  .hero,
+  .section,
+  .inovasi-page,
+  .modulesPage,
+  .simulatorPage,
+  .linearSim,
+  .electrolysisPage {
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+  }
+
+  .hero,
+  .linearSim__hero,
+  .electroHero,
+  .simulatorHero,
+  .inovasi-page__hero,
+  .inovasi-story,
+  .journey-post,
+  .contactCard,
+  .linearPanel,
+  .linearStage,
+  .electroPanel {
+    border-radius: 18px;
+  }
+
+  .linearPanel,
+  .linearStage,
+  .tickerTape,
+  .tapeChart,
+  .electroPanel,
+  .accordionBody {
+    padding: 0.85rem;
+  }
+
+  .linearSim__actions {
+    grid-template-columns: 1fr;
+  }
+
+  .linearForceHint,
+  .linearDataPopup {
+    width: calc(100% - 1.5rem);
+    white-space: normal;
+    text-align: center;
+  }
+
+  .electroTableWrap table,
+  .linearTableWrap table {
+    min-width: 620px;
+  }
+
+  .tapeChart__body {
+    grid-template-columns: 22px minmax(0, 1fr);
   }
 }

@@ -97,6 +97,42 @@ function buildLiveData(acceleration, elapsedTime) {
   };
 }
 
+function LinearProgressPanel({ heightCm, started, completed, tapeCut, showData, segmentCount }) {
+  const motionStarter = completed ? 10 : started ? 8 : heightCm > 0 ? 5 : 0;
+  const dataCollector = completed ? 10 : started ? Math.min(Math.max(segmentCount, 1), 10) : 0;
+  const tapeAnalyst = tapeCut ? 10 : segmentCount > 0 ? 4 : 0;
+  const graphInterpreter = tapeCut && showData && segmentCount > 0 ? 10 : showData ? 3 : 0;
+  const total = motionStarter + dataCollector + tapeAnalyst + graphInterpreter;
+  const badge = total >= 36 ? "Pakar Pita Detik" : total >= 24 ? "Penganalisis Gerakan" : total >= 12 ? "Pengumpul Data" : "Sedia Mula";
+  const items = [
+    ["Motion Starter", motionStarter],
+    ["Data Collector", dataCollector],
+    ["Tape Analyst", tapeAnalyst],
+    ["Graph Interpreter", graphInterpreter],
+  ];
+
+  return (
+    <aside className="linearProgressPanel" aria-label="Progress simulator gerakan linear">
+      <div className="linearProgressPanel__header">
+        <span>Motion Progress</span>
+        <strong>{total}/40</strong>
+      </div>
+      <p>{badge}</p>
+      <div className="linearProgressGrid">
+        {items.map(([label, score]) => (
+          <div className="linearProgressItem" key={label} style={{ "--score": `${score * 10}%` }}>
+            <div>
+              <span>{label}</span>
+              <strong>{score}/10</strong>
+            </div>
+            <i aria-hidden="true" />
+          </div>
+        ))}
+      </div>
+    </aside>
+  );
+}
+
 export default function LinearMotionSimulator() {
   const [heightCm, setHeightCm] = useState(0);
   const [massKg, setMassKg] = useState(1);
@@ -272,6 +308,15 @@ export default function LinearMotionSimulator() {
           completed={completed}
           statusMessage={message}
         />
+
+        <LinearProgressPanel
+          heightCm={heightCm}
+          started={elapsedTime > 0 || running || paused || completed}
+          completed={completed}
+          tapeCut={tapeCut}
+          showData={showData}
+          segmentCount={completedSegments.length || liveData.segments.length}
+        />
       </section>
 
       <TickerTape
@@ -280,6 +325,7 @@ export default function LinearMotionSimulator() {
         started={elapsedTime > 0 || running || paused || completed}
         isCut={tapeCut}
         onCut={() => setTapeCut(true)}
+        active={running && !paused}
       />
 
       {showData && (

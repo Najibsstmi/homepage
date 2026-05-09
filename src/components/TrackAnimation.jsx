@@ -28,9 +28,15 @@ export default function TrackAnimation({
   const gravityLength = 28 + (heightCm / 60) * 48;
   const trailEndX = startX + (cartX - startX) * 0.86;
   const trailEndY = startY + (cartY - startY) * 0.86;
+  const wheelRotation = safeProgress * 1900;
+  const stageClass = [
+    "linearStage",
+    running && !paused ? "linearStage--running" : "",
+    completed ? "linearStage--completed" : "",
+  ].filter(Boolean).join(" ");
 
   return (
-    <section className="linearStage" aria-label="Animasi troli menuruni landasan condong">
+    <section className={stageClass} aria-label="Animasi troli menuruni landasan condong">
       <div className="linearStage__metrics">
         <div>
           <span>Panjang landasan</span>
@@ -40,9 +46,10 @@ export default function TrackAnimation({
           <span>Masa diambil</span>
           <strong>{travelTime ? `${travelTime.toFixed(2)} s` : "Belum bergerak"}</strong>
         </div>
-        <div>
+        <div className={heightCm > 0 ? "metricCard metricCard--live" : "metricCard"}>
           <span>Pecutan anggaran</span>
           <strong>{acceleration.toFixed(1)} cm s⁻²</strong>
+          <i style={{ width: `${Math.min(Math.max((heightCm / 60) * 100, 0), 100)}%` }} aria-hidden="true" />
         </div>
         <div>
           <span>Jisim sistem</span>
@@ -63,6 +70,8 @@ export default function TrackAnimation({
       </div>
 
       <div className="linearTrackWrap">
+        {heightCm === 0 && <div className="linearForceHint">Tiada daya menuruni cerun</div>}
+        {completed && <div className="linearDataPopup">Data berjaya direkodkan</div>}
         <svg className="linearTrackSvg" viewBox="0 0 960 330" role="img" aria-label="Troli bergerak menuruni landasan condong">
           <defs>
             <linearGradient id="trackMetal" x1="0%" x2="100%">
@@ -95,8 +104,17 @@ export default function TrackAnimation({
           )}
 
           {safeProgress > 0 && (
-            <line className="motionTrail" x1={startX} y1={startY - 12} x2={trailEndX} y2={trailEndY - 12} />
+            <g className="motionTrailGroup">
+              <line className="motionTrail motionTrail--wide" x1={startX} y1={startY - 12} x2={trailEndX} y2={trailEndY - 12} />
+              <line className="motionTrail" x1={startX} y1={startY - 12} x2={trailEndX} y2={trailEndY - 12} />
+            </g>
           )}
+
+          <g className="tickerTimer" transform={`translate(${startX + 318} ${floorY - 98})`}>
+            <rect x="-18" y="-44" width="36" height="54" rx="10" />
+            <circle cx="0" cy="-22" r="8" />
+            <text x="0" y="28">Ticker timer</text>
+          </g>
 
           <g className="softWall" transform={`translate(${endX + 18} ${endY - 86})`}>
             <rect className="softWall__pad" x="0" y="0" width="36" height="106" rx="12" />
@@ -109,13 +127,22 @@ export default function TrackAnimation({
             className="svgCartRig"
             style={{ transform: `translate(${cartX}px, ${cartY}px)` }}
           >
+            <ellipse className="svgCartShadow" cx="0" cy="12" rx="58" ry="13" transform={`rotate(${angle})`} />
             <g transform={`rotate(${angle}) translate(-44 -52)`}>
               {Array.from({ length: cartCount }, (_, index) => (
                 <g key={`cart-${index}`} transform={`translate(0 ${-index * cartStackHeight})`}>
                   <rect className="svgCartBody" x="0" y="0" width="86" height="46" rx="12" />
                   <rect className="svgCartPanel" x="18" y="10" width="50" height="18" rx="7" />
-                  <circle className="svgCartWheel" cx="22" cy="50" r="10" />
-                  <circle className="svgCartWheel" cx="64" cy="50" r="10" />
+                  <g className="svgCartWheel" style={{ "--wheel-rotation": `${wheelRotation}deg` }} transform="translate(22 50)">
+                    <circle r="10" />
+                    <line x1="-7" y1="0" x2="7" y2="0" />
+                    <line x1="0" y1="-7" x2="0" y2="7" />
+                  </g>
+                  <g className="svgCartWheel" style={{ "--wheel-rotation": `${wheelRotation}deg` }} transform="translate(64 50)">
+                    <circle r="10" />
+                    <line x1="-7" y1="0" x2="7" y2="0" />
+                    <line x1="0" y1="-7" x2="0" y2="7" />
+                  </g>
                 </g>
               ))}
 

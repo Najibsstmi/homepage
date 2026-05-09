@@ -18,25 +18,33 @@ export default function ChallengeMode({
     checkInferenceWithAI(inferences.aqueous || "", "aqueous")
       ? 10
       : 0;
+  const total = circuitSolver + observationExpert + electrochemist;
+  const level = total >= 27 ? "Saintis Muda" : total >= 17 ? "Penyiasat Aktif" : total >= 7 ? "Pembina Litar" : "Mula Misi";
+  const scoreItems = [
+    ["Circuit Solver", circuitSolver],
+    ["Observation Expert", observationExpert],
+    ["Electrochemist", electrochemist],
+  ];
 
   return (
-    <section className="scoreboardPanel">
+    <section className="scoreboardPanel" aria-label="Science Progress">
       <div className="scoreboardPanel__header">
-        <span>Scoreboard</span>
+        <span>Science Progress</span>
+        <strong>{total}/30</strong>
       </div>
+      <p className="scoreboardBadge">{level}</p>
       <div className="scoreGrid">
-        <div style={{ "--score": `${circuitSolver * 10}%` }}>
-          <span>Circuit Solver</span>
-          <strong>{circuitSolver}/10</strong>
-        </div>
-        <div style={{ "--score": `${observationExpert * 10}%` }}>
-          <span>Observation Expert</span>
-          <strong>{observationExpert}/10</strong>
-        </div>
-        <div style={{ "--score": `${electrochemist * 10}%` }}>
-          <span>Electrochemist</span>
-          <strong>{electrochemist}/10</strong>
-        </div>
+        {scoreItems.map(([label, score]) => (
+          <div key={label} className="scoreItem" style={{ "--score": `${score * 10}%` }}>
+            <div className="scoreItem__top">
+              <span>{label}</span>
+              <strong>{score}/10</strong>
+            </div>
+            <div className="scoreItem__bar" aria-hidden="true">
+              <i />
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

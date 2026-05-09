@@ -396,6 +396,9 @@ export default function App() {
         </div>
         <button
           className="navbar__toggle"
+          type="button"
+          aria-label={mobileMenuOpen ? "Tutup menu navigasi" : "Buka menu navigasi"}
+          aria-expanded={mobileMenuOpen}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           <span></span>
@@ -425,6 +428,8 @@ export default function App() {
           >
             <button
               className={`navDropdownTrigger${currentPage === "modul" || currentPage === "banksoalan" ? " navDropdownTrigger--active" : ""}`}
+              type="button"
+              aria-expanded={modulMenuOpen}
               onClick={() => setModulMenuOpen((prev) => !prev)}
             >
               Perkongsian <span className="navCaret">▾</span>

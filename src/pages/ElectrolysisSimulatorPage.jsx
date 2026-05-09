@@ -136,14 +136,6 @@ export default function ElectrolysisSimulatorPage() {
         <button type="button" onClick={resetExperiment}>Reset eksperimen</button>
       </section>
 
-      <ChallengeMode
-        solidReady={hasPowder && hasElectrodes}
-        moltenReady={hasPowder && hasElectrodes && burnerOn && solidCircuitOn}
-        aqueousReady={aqueousReady}
-        bulbAnswers={bulbAnswers}
-        inferences={inferences}
-      />
-
       <section className="electroLayout">
         <aside className="electroPanel materialTray">
           <h2>Bahan</h2>
@@ -190,12 +182,22 @@ export default function ElectrolysisSimulatorPage() {
               onToggleIons={setShowIons}
             />
           )}
-
-          <section className="electroPanel learningPanel">
-            <h2>Apa yang berlaku?</h2>
-            <p>{learningMessage}</p>
-          </section>
         </div>
+
+        <aside className="electroProgressRail" aria-label="Progress pembelajaran">
+          <ChallengeMode
+            solidReady={hasPowder && hasElectrodes}
+            moltenReady={hasPowder && hasElectrodes && burnerOn && solidCircuitOn}
+            aqueousReady={aqueousReady}
+            bulbAnswers={bulbAnswers}
+            inferences={inferences}
+          />
+        </aside>
+      </section>
+
+      <section className="electroPanel learningPanel">
+        <h2>Apa yang berlaku?</h2>
+        <p>{learningMessage}</p>
       </section>
 
       <ObservationTable

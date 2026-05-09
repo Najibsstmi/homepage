@@ -1,9 +1,9 @@
-export default function TickerTape({ tickerDots, segments, started, isCut, onCut }) {
+export default function TickerTape({ tickerDots, segments, started, isCut, onCut, active }) {
   const lastDistance = tickerDots[tickerDots.length - 1]?.distance || 0;
   const continuousWidth = Math.min(Math.max(lastDistance * 4, 420), 1600);
 
   return (
-    <div className="tickerTape">
+    <div className={`tickerTape ${active ? "tickerTape--active" : ""}`}>
       <div className="tickerTape__header">
         <div>
           <div className="tickerTape__label">Pita detik 50 Hz</div>

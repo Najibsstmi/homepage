@@ -2,7 +2,6 @@ import { alloyMaterials, getIndentDepth } from "../../data/alloyQuestions";
 
 export default function AlloyApparatus({
   selectedMaterial,
-  ballPlaced,
   dropHeight,
   dropping,
   latestResult,
@@ -16,12 +15,13 @@ export default function AlloyApparatus({
   const depth = latestResult ? latestResult.depth : previewDepth;
   const dentScale = Math.min(Math.max(depth / 7, 0.18), 1);
   const impactClass =
-    latestResult && !ballPlaced && !dropping
+    latestResult && !dropping
       ? latestResult.materialId === "pure"
         ? "alloySteelBall--impactPure"
         : "alloySteelBall--impactAlloy"
       : "";
-  const ballClass = ["alloySteelBall", impactClass, ballPlaced ? "alloySteelBall--placed" : "", dropping ? "alloySteelBall--drop" : ""]
+  const dropClass = dropping ? (selectedMaterial === "pure" ? "alloySteelBall--dropPure" : "alloySteelBall--dropAlloy") : "";
+  const ballClass = ["alloySteelBall", impactClass, dropClass]
     .filter(Boolean)
     .join(" ");
 
@@ -38,15 +38,16 @@ export default function AlloyApparatus({
           <p>{material ? `Bongkah dipilih: ${material.label}` : "Seret atau pilih jenis bongkah untuk memulakan eksperimen."}</p>
         </div>
         <div className="alloyApparatus__actions">
-          <button type="button" onClick={onRelease} disabled={!selectedMaterial || !ballPlaced || dropping}>
-            Lepaskan bebola
+          <button className="alloyReleaseButton" type="button" onClick={onRelease} disabled={!selectedMaterial || dropping}>
+            <span aria-hidden="true">☝</span>
+            Lepaskan bebola keluli
           </button>
           <button type="button" onClick={onReset}>Reset</button>
         </div>
       </div>
 
       <div className="alloyRig" aria-label="Simulasi bebola keluli dijatuhkan ke atas bongkah">
-        <svg viewBox="0 0 760 430" role="img" aria-label="Radas eksperimen mengkaji kedalaman lekukan">
+        <svg viewBox="0 0 760 500" role="img" aria-label="Radas eksperimen mengkaji kedalaman lekukan">
           <defs>
             <linearGradient id="alloyBlockPure" x1="0%" x2="100%">
               <stop offset="0%" stopColor="#94a3b8" />
@@ -63,22 +64,28 @@ export default function AlloyApparatus({
             </radialGradient>
           </defs>
 
-          <rect className="alloyRig__bg" x="0" y="0" width="760" height="430" rx="26" />
-          <line className="alloyStand" x1="128" y1="70" x2="128" y2="342" />
-          <line className="alloyStand" x1="88" y1="342" x2="668" y2="342" />
-          <line className="alloyGuide" x1="360" y1="92" x2="360" y2="218" />
-          <text className="alloySvgLabel" x="148" y="82">Kaki retort</text>
-          <text className="alloySvgLabel" x="382" y="126">Laluan jatuhan</text>
+          <rect className="alloyRig__bg" x="0" y="0" width="760" height="500" rx="26" />
+          <line className="alloyStand" x1="150" y1="58" x2="150" y2="416" />
+          <line className="alloyStand" x1="100" y1="416" x2="660" y2="416" />
+          <line className="alloyStand alloyStand--rod" x1="150" y1="92" x2="430" y2="92" />
+          <rect className="alloyClamp" x="132" y="74" width="36" height="54" rx="8" />
+          <rect className="alloyClamp" x="405" y="78" width="52" height="30" rx="8" />
+          <circle className="alloyClampBolt" cx="462" cy="93" r="8" />
+          <line className="alloyString" x1="420" y1="106" x2="420" y2="220" />
+          <line className="alloyGuide" x1="420" y1="108" x2="420" y2="300" />
+          <text className="alloySvgLabel" x="178" y="68">Kaki retort</text>
+          <text className="alloySvgLabel" x="468" y="96">Clamp dan benang</text>
 
-          <g transform="translate(360 104)">
+          <g transform="translate(420 220)">
             <g className={ballClass}>
               <circle r="30" />
               <ellipse cx="-10" cy="-10" rx="9" ry="6" />
+              <text className="alloyBallMass" x="0" y="54">1 kg</text>
             </g>
           </g>
-          <text className="alloySvgLabel alloySvgLabel--center" x="360" y="52">Bebola keluli</text>
+          <text className="alloySvgLabel alloySvgLabel--center" x="420" y="168">Bebola keluli 1 kg</text>
 
-          <g transform="translate(225 252)">
+          <g transform="translate(265 300)">
             <ellipse className="alloyBlockShadow" cx="155" cy="92" rx="190" ry="18" />
             <rect
               className={`alloyBlock alloyBlock--${selectedMaterial || "empty"}`}
@@ -92,7 +99,7 @@ export default function AlloyApparatus({
               <ellipse
                 className="alloyDent"
                 cx="155"
-                cy="18"
+                cy="8"
                 rx={42 + dentScale * 18}
                 ry={8 + dentScale * 20}
               />

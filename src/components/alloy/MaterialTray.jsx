@@ -1,9 +1,7 @@
 export default function MaterialTray({
   selectedMaterial,
-  ballPlaced,
   dropHeight,
   onSelectMaterial,
-  onPlaceBall,
   onHeightChange,
 }) {
   const handleDragStart = (event, id) => {
@@ -32,17 +30,11 @@ export default function MaterialTray({
         </button>
       ))}
 
-      <button
-        type="button"
-        draggable
-        onDragStart={(event) => handleDragStart(event, "steel-ball")}
-        onClick={onPlaceBall}
-        className={`alloyMaterialCard alloyBallCard ${ballPlaced ? "alloyMaterialCard--active" : ""}`}
-      >
+      <div className="alloyMaterialCard alloyBallCard alloyBallCard--static">
         <span className="steelBallIcon" />
-        <strong>Bebola keluli</strong>
-        <small>Seret atau tekan untuk letak di atas bongkah</small>
-      </button>
+        <strong>Bebola keluli 1 kg</strong>
+        <small>Jisim tetap, sudah tergantung pada radas</small>
+      </div>
 
       <label className="alloyHeightControl">
         <span>Ketinggian jatuhan</span>

@@ -4807,6 +4807,10 @@ section {
   cursor: grab;
 }
 
+.alloyBallCard--static {
+  cursor: default;
+}
+
 .alloyMaterialCard--active {
   border-color: rgba(34, 197, 94, 0.42);
   background: rgba(20, 83, 45, 0.32);
@@ -4909,6 +4913,28 @@ section {
   cursor: pointer;
 }
 
+.alloyReleaseButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border: 1px solid rgba(250, 204, 21, 0.34) !important;
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.24), rgba(34, 211, 238, 0.18)) !important;
+  color: #fde68a !important;
+  box-shadow: 0 0 26px rgba(250, 204, 21, 0.12);
+}
+
+.alloyReleaseButton span {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: rgba(250, 204, 21, 0.18);
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
 .alloyApparatus__actions button:disabled {
   cursor: not-allowed;
   background: rgba(148, 163, 184, 0.22);
@@ -4939,6 +4965,29 @@ section {
   stroke-linecap: round;
 }
 
+.alloyStand--rod {
+  stroke-width: 10;
+}
+
+.alloyClamp {
+  fill: url(#steelBallGrad);
+  stroke: rgba(226, 232, 240, 0.62);
+  stroke-width: 2;
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.26));
+}
+
+.alloyClampBolt {
+  fill: #94a3b8;
+  stroke: #e2e8f0;
+  stroke-width: 2;
+}
+
+.alloyString {
+  stroke: rgba(226, 232, 240, 0.72);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
 .alloyGuide {
   stroke-dasharray: 10 10;
   stroke-width: 4;
@@ -4963,20 +5012,30 @@ section {
   fill: rgba(255, 255, 255, 0.62);
 }
 
-.alloySteelBall--placed {
-  transform: translateY(110px);
+.alloyBallMass {
+  fill: #f8fafc;
+  font-size: 14px;
+  font-weight: 950;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: rgba(15, 23, 42, 0.7);
+  stroke-width: 3px;
 }
 
 .alloySteelBall--impactAlloy {
-  transform: translateY(132px);
+  transform: translateY(60px);
 }
 
 .alloySteelBall--impactPure {
-  transform: translateY(160px);
+  transform: translateY(78px);
 }
 
-.alloySteelBall--drop {
-  animation: alloyBallDrop 0.72s cubic-bezier(0.18, 0.92, 0.28, 1.05);
+.alloySteelBall--dropAlloy {
+  animation: alloyBallDropAlloy 0.72s cubic-bezier(0.18, 0.92, 0.28, 1.05);
+}
+
+.alloySteelBall--dropPure {
+  animation: alloyBallDropPure 0.72s cubic-bezier(0.18, 0.92, 0.28, 1.05);
 }
 
 .alloyBlockShadow {
@@ -5095,17 +5154,22 @@ section {
   color: #fde68a;
 }
 
+.indentMeasureCard__hint {
+  margin: 0;
+  color: rgba(226, 232, 240, 0.78);
+}
+
 .indentMeasureCard__visual {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 54px;
-  gap: 0.8rem;
+  grid-template-columns: minmax(0, 1fr) 86px;
+  gap: 1rem;
   align-items: stretch;
-  min-height: 170px;
+  min-height: 230px;
 }
 
 .indentMeasureBlock {
   position: relative;
-  min-height: 170px;
+  min-height: 230px;
   overflow: hidden;
   border-radius: 18px;
   border: 1px solid rgba(226, 232, 240, 0.22);
@@ -5116,9 +5180,29 @@ section {
   background: linear-gradient(135deg, #38bdf8, #facc15);
 }
 
+.indentSurfaceLine {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(248, 250, 252, 0.9);
+  box-shadow: 0 0 12px rgba(248, 250, 252, 0.18);
+}
+
+.indentSurfaceLabel {
+  position: absolute;
+  top: 8px;
+  left: 18px;
+  color: #f8fafc;
+  font-size: 0.82rem;
+  font-weight: 950;
+  paint-order: stroke;
+  text-shadow: 0 1px 8px rgba(2, 6, 23, 0.5);
+}
+
 .indentMeasureDent {
   position: absolute;
-  top: 28px;
   left: 50%;
   width: 84px;
   border-radius: 0 0 48px 48px;
@@ -5127,20 +5211,59 @@ section {
   box-shadow: inset 0 14px 20px rgba(2, 6, 23, 0.24);
 }
 
-.indentRuler {
+.indentGuideLine {
+  position: absolute;
+  left: 50%;
+  right: -104px;
+  border-top: 2px dashed #ef4444;
+  transform: translateX(42px);
+  z-index: 2;
+}
+
+.indentRulerWrap {
+  position: relative;
   display: grid;
-  grid-template-rows: repeat(8, 1fr);
+  grid-template-rows: auto 1fr;
+  gap: 0.25rem;
+  align-self: stretch;
+}
+
+.indentRulerUnit {
+  color: #f8fafc;
+  font-weight: 900;
+}
+
+.indentRuler {
+  position: relative;
   border-radius: 12px;
   background:
-    repeating-linear-gradient(180deg, #f8fafc 0 1px, transparent 1px 20px),
+    repeating-linear-gradient(180deg, rgba(15, 23, 42, 0.45) 0 1px, transparent 1px 13px),
     linear-gradient(90deg, #e2e8f0, #94a3b8);
   color: #0f172a;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   font-weight: 900;
-  padding: 0.3rem;
+  min-height: 190px;
+  border: 1px solid rgba(15, 23, 42, 0.35);
+  overflow: hidden;
 }
 
 .indentRuler span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  min-height: 1px;
+  padding-left: 0.45rem;
+  border-top: 2px solid rgba(15, 23, 42, 0.62);
+  transform: translateY(-1px);
+  line-height: 1.05;
+}
+
+.indentRuler span::after {
+  content: "";
+  position: absolute;
+  right: 0.35rem;
+  top: -1px;
+  width: 34px;
   border-top: 1px solid rgba(15, 23, 42, 0.45);
 }
 
@@ -5207,18 +5330,33 @@ section {
   cursor: default;
 }
 
-@keyframes alloyBallDrop {
+@keyframes alloyBallDropAlloy {
   0% {
     transform: translateY(0);
   }
   72% {
-    transform: translateY(170px);
+    transform: translateY(68px);
   }
   86% {
-    transform: translateY(136px);
+    transform: translateY(52px);
   }
   100% {
-    transform: translateY(154px);
+    transform: translateY(60px);
+  }
+}
+
+@keyframes alloyBallDropPure {
+  0% {
+    transform: translateY(0);
+  }
+  72% {
+    transform: translateY(88px);
+  }
+  86% {
+    transform: translateY(66px);
+  }
+  100% {
+    transform: translateY(78px);
   }
 }
 

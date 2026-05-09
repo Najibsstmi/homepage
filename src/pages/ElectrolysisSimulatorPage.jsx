@@ -234,7 +234,7 @@ export default function ElectrolysisSimulatorPage() {
       </section>
 
       <QuizCard
-        title="Science Check"
+        title="Science Check (Kuiz)"
         questions={electrolysisQuiz}
         onComplete={(score, total) => setQuizResult({ score, total })}
       />

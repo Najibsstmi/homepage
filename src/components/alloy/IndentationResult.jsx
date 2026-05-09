@@ -5,7 +5,11 @@ export default function IndentationResult({ results, latestResult, readings, mea
   const numericReading = Number(rawReading);
   const hasReading = rawReading !== "";
   const isCorrect = active && hasReading && Math.abs(numericReading - expected) <= 0.5;
-  const dentHeight = Math.min(Math.max(expected * 14, 24), 96);
+  const scaleMax = 6;
+  const scaleHeight = 156;
+  const surfaceTop = 34;
+  const dentHeight = Math.min(Math.max((expected / scaleMax) * scaleHeight, 18), scaleHeight);
+  const guideTop = surfaceTop + dentHeight;
 
   return (
     <section className="electroPanel alloyResultPanel">
@@ -26,14 +30,23 @@ export default function IndentationResult({ results, latestResult, readings, mea
       {latestResult && (
         <div className="indentMeasureCard">
           <h3>Ukur Kedalaman Lekukan</h3>
+          <p className="indentMeasureCard__hint">Baca dari permukaan asal (0 mm) hingga ke dasar lekukan.</p>
           <div className="indentMeasureCard__visual">
             <div className={`indentMeasureBlock indentMeasureBlock--${active}`}>
-              <span className="indentMeasureDent" style={{ height: `${dentHeight}px` }} />
+              <span className="indentSurfaceLine" style={{ top: `${surfaceTop}px` }} />
+              <span className="indentSurfaceLabel">Permukaan asal (0 mm)</span>
+              <span className="indentMeasureDent" style={{ top: `${surfaceTop}px`, height: `${dentHeight}px` }} />
+              <span className="indentGuideLine" style={{ top: `${guideTop}px` }} />
             </div>
-            <div className="indentRuler" aria-label="Pembaris skala milimeter">
-              {Array.from({ length: 8 }, (_, index) => (
-                <span key={index}>{index}</span>
-              ))}
+            <div className="indentRulerWrap">
+              <span className="indentRulerUnit">mm</span>
+              <div className="indentRuler" aria-label="Pembaris skala milimeter">
+                {Array.from({ length: 7 }, (_, index) => (
+                  <span key={index} style={{ top: `${(index / scaleMax) * 100}%` }}>
+                    {index}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
           <label>

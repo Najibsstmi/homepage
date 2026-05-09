@@ -386,7 +386,7 @@ export default function LinearMotionSimulator() {
       )}
 
       <QuizCard
-        title="Science Check"
+        title="Science Check (Kuiz)"
         questions={linearMotionQuiz}
         onComplete={(score, total) => setQuizResult({ score, total })}
       />

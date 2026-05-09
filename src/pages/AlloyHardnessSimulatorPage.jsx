@@ -16,7 +16,6 @@ const initialTableAnswers = {
 
 export default function AlloyHardnessSimulatorPage() {
   const [selectedMaterial, setSelectedMaterial] = useState("");
-  const [ballPlaced, setBallPlaced] = useState(false);
   const [dropHeight, setDropHeight] = useState("medium");
   const [dropping, setDropping] = useState(false);
   const [results, setResults] = useState({});
@@ -35,9 +34,6 @@ export default function AlloyHardnessSimulatorPage() {
     if (!selectedMaterial) {
       return "Pilih jenis bongkah untuk memulakan eksperimen.";
     }
-    if (!ballPlaced) {
-      return "Letakkan bebola keluli di atas bongkah sebelum dilepaskan.";
-    }
     if (dropping) {
       return "Bebola keluli dijatuhkan ke atas bongkah.";
     }
@@ -48,13 +44,9 @@ export default function AlloyHardnessSimulatorPage() {
       return "Aloi lebih keras kerana susunan atom berlainan saiz menghalang penggelongsoran lapisan atom.";
     }
     return `${alloyMaterials[selectedMaterial].label} sudah dipilih. Tekan Lepaskan bebola untuk merekod pemerhatian.`;
-  }, [selectedMaterial, ballPlaced, dropping, latestResult]);
+  }, [selectedMaterial, dropping, latestResult]);
 
   const handleDropItem = (id) => {
-    if (id === "steel-ball") {
-      setBallPlaced(true);
-      return;
-    }
     if (id === "pure" || id === "alloy") {
       setSelectedMaterial(id);
       setLatestResult(null);
@@ -62,7 +54,7 @@ export default function AlloyHardnessSimulatorPage() {
   };
 
   const releaseBall = () => {
-    if (!selectedMaterial || !ballPlaced || dropping) {
+    if (!selectedMaterial || dropping) {
       return;
     }
 
@@ -75,13 +67,11 @@ export default function AlloyHardnessSimulatorPage() {
       setResults((current) => ({ ...current, [selectedMaterial]: result }));
       setLatestResult(result);
       setDropping(false);
-      setBallPlaced(false);
     }, 760);
   };
 
   const resetExperiment = () => {
     setSelectedMaterial("");
-    setBallPlaced(false);
     setDropHeight("medium");
     setDropping(false);
     setResults({});
@@ -117,17 +107,14 @@ export default function AlloyHardnessSimulatorPage() {
       <section className="electroLayout alloyLayout">
         <MaterialTray
           selectedMaterial={selectedMaterial}
-          ballPlaced={ballPlaced}
           dropHeight={dropHeight}
           onSelectMaterial={setSelectedMaterial}
-          onPlaceBall={() => setBallPlaced(true)}
           onHeightChange={setDropHeight}
         />
 
         <div className="electroMain alloyMain">
           <AlloyApparatus
             selectedMaterial={selectedMaterial}
-            ballPlaced={ballPlaced}
             dropHeight={dropHeight}
             dropping={dropping}
             latestResult={latestResult}
@@ -135,6 +122,13 @@ export default function AlloyHardnessSimulatorPage() {
             onDropItem={handleDropItem}
             onRelease={releaseBall}
             onReset={resetExperiment}
+          />
+          <IndentationResult
+            results={results}
+            latestResult={latestResult}
+            readings={readings}
+            measurementCorrect={measurementCorrect}
+            onReadingChange={(id, value) => setReadings((current) => ({ ...current, [id]: value }))}
           />
         </div>
 
@@ -148,28 +142,22 @@ export default function AlloyHardnessSimulatorPage() {
         </aside>
       </section>
 
+      <QuizCard
+        title="Science Check (Kuiz)"
+        questions={alloyQuiz}
+        onComplete={(score, total) => setQuizResult({ score, total })}
+      />
+
       <section className="electroPanel learningPanel">
         <h2>Apa yang berlaku?</h2>
         <p>{learningMessage}</p>
       </section>
 
       <section className="alloyDataGrid">
-        <IndentationResult
-          results={results}
-          latestResult={latestResult}
-          readings={readings}
-          measurementCorrect={measurementCorrect}
-          onReadingChange={(id, value) => setReadings((current) => ({ ...current, [id]: value }))}
-        />
         <AtomicView selectedMaterial={selectedMaterial || "pure"} show={showAtoms} onToggle={() => setShowAtoms((value) => !value)} />
       </section>
 
       <AlloyObservationTable answers={tableAnswers} onChange={updateTableAnswer} results={results} />
-      <QuizCard
-        title="Science Check"
-        questions={alloyQuiz}
-        onComplete={(score, total) => setQuizResult({ score, total })}
-      />
     </main>
   );
 }

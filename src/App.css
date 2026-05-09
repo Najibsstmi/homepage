@@ -5450,15 +5450,15 @@ section {
 
 .reactionFactorPanel *,
 .reactionApparatus *,
+.reactionAtomicView *,
 .reactionDataGrid *,
 .reactionPlotChallenge * {
   box-sizing: border-box;
 }
 
 .reactionFactorPanel,
-.reactionFactorPanel *,
 .reactionApparatus,
-.reactionApparatus *,
+.reactionAtomicView,
 .reactionDataGrid,
 .reactionPlotChallenge {
   width: 100%;
@@ -5466,18 +5466,32 @@ section {
   min-width: 0;
 }
 
+.reactionFactorPanel *,
+.reactionApparatus *,
+.reactionAtomicView *,
+.reactionDataGrid *,
+.reactionPlotChallenge * {
+  max-width: 100%;
+  min-width: 0;
+}
+
 .reactionControlDeck,
 .reactionWorkspace,
 .reactionFactorPanel,
+.reactionFactorPanel__body,
 .reactionApparatus,
 .reactionStage,
 .reactionDataGrid,
 .reactionPlotChallenge,
 .reactionFactorInfo,
+.reactionFactorInfo__text,
+.reactionFactorStack,
 .reactionMassCard,
 .reactionRunStatus,
 .reactionOption,
-.reactionEquation {
+.reactionEquation,
+.reactionMacroView,
+.reactionAtomicView {
   width: 100%;
   max-width: 100%;
 }
@@ -5495,9 +5509,8 @@ section {
 
 .reactionFactorPanel {
   display: grid;
-  grid-template-columns: minmax(360px, 1.45fr) minmax(180px, 0.72fr) minmax(270px, 1fr) minmax(230px, 0.85fr);
-  gap: 0.9rem;
-  align-items: start;
+  gap: 0.85rem;
+  align-items: stretch;
   margin-top: 1rem;
 }
 
@@ -5514,9 +5527,26 @@ section {
   margin-bottom: 0;
 }
 
+.reactionFactorPanel__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(190px, 0.55fr);
+  gap: 0.85rem;
+  align-items: stretch;
+}
+
+.reactionFactorPanel__body--withStatus {
+  grid-template-columns: minmax(0, 1.6fr) minmax(190px, 0.55fr) minmax(260px, 0.75fr);
+}
+
+.reactionFactorStack {
+  display: grid;
+  gap: 0.85rem;
+  align-content: stretch;
+}
+
 .reactionWorkspace {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-columns: minmax(0, 1fr) 220px;
   gap: 1rem;
   margin-top: 1rem;
   align-items: start;
@@ -5570,19 +5600,15 @@ section {
 }
 
 .reactionFactorInfo {
-  grid-column: 1 / 3;
+  grid-template-columns: minmax(170px, 0.58fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0.85rem;
 }
 
-.reactionMassCard {
-  grid-column: auto;
-}
-
-.reactionRunStatus {
-  grid-column: 3;
-}
-
-.reactionEquation {
-  grid-column: 4;
+.reactionFactorInfo__text {
+  display: grid;
+  gap: 0.5rem;
+  align-content: center;
 }
 
 .reactionFactorInfo span,
@@ -5671,12 +5697,12 @@ section {
 }
 
 .reactionOptionList {
-  grid-template-columns: repeat(2, minmax(130px, 1fr));
-  margin-top: 0.9rem;
+  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  margin-top: 0;
 }
 
 .reactionOption {
-  min-height: 74px;
+  min-height: 66px;
   align-content: center;
 }
 
@@ -5744,16 +5770,80 @@ section {
 
 .reactionStage {
   position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(210px, 220px);
+  gap: 0.85rem;
   margin-top: 1rem;
+  padding: 0.85rem;
   overflow: hidden;
   border-radius: 24px;
   background: rgba(2, 6, 23, 0.28);
 }
 
-.reactionStage svg {
+.reactionMacroView,
+.reactionAtomicView {
+  overflow: hidden;
+  border: 1px solid rgba(103, 232, 249, 0.14);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 20% 8%, rgba(34, 211, 238, 0.1), transparent 32%),
+    rgba(2, 6, 23, 0.42);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.reactionMacroView {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 455px;
+}
+
+.reactionViewHeader,
+.reactionAtomicView__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.8rem 0.9rem;
+  border-bottom: 1px solid rgba(103, 232, 249, 0.12);
+}
+
+.reactionViewHeader div,
+.reactionAtomicView__head div:first-child {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.reactionViewHeader span,
+.reactionAtomicView__head p {
+  margin: 0;
+  color: rgba(226, 232, 240, 0.68);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.reactionViewHeader strong,
+.reactionAtomicView__head h3 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.reactionViewHeader em {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 0.45rem 0.7rem;
+  background: rgba(250, 204, 21, 0.13);
+  color: #fde68a;
+  font-style: normal;
+  font-weight: 950;
+}
+
+.reactionMacroView svg {
   display: block;
   width: 100%;
-  min-height: 500px;
+  min-height: 395px;
+  height: 100%;
 }
 
 .reactionStageBg,
@@ -5843,9 +5933,29 @@ section {
 }
 
 .reactionBuretGas {
-  fill: rgba(250, 204, 21, 0.2);
-  stroke: rgba(250, 204, 21, 0.28);
+  fill: rgba(224, 242, 254, 0.34);
+  stroke: rgba(125, 211, 252, 0.38);
   stroke-width: 1;
+}
+
+.reactionBuretWaterFill {
+  fill: rgba(14, 165, 233, 0.38);
+  stroke: rgba(125, 211, 252, 0.28);
+  stroke-width: 1;
+  transition: y 0.35s ease, height 0.35s ease;
+}
+
+.reactionBuretWaterLine {
+  stroke: rgba(224, 242, 254, 0.18);
+  stroke-width: 1;
+  stroke-dasharray: 5 5;
+}
+
+.reactionBuretWaterLevel {
+  stroke: rgba(103, 232, 249, 0.72);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  transition: transform 0.35s ease;
 }
 
 .reactionBuretStem,
@@ -5866,6 +5976,11 @@ section {
   fill: #64748b;
   stroke: rgba(226, 232, 240, 0.56);
   stroke-width: 3;
+}
+
+.reactionStopper--cork {
+  fill: #b7791f;
+  stroke: rgba(254, 243, 199, 0.55);
 }
 
 .reactionBuretTapKnob {
@@ -5925,6 +6040,22 @@ section {
 
 .reactionBubble--run {
   animation: reactionBubbleRise 1.2s ease-in infinite;
+}
+
+.reactionGasTrail {
+  opacity: 0;
+}
+
+.reactionGasTrail--run {
+  opacity: 1;
+}
+
+.reactionTubeBubble {
+  fill: rgba(224, 242, 254, 0.86);
+  stroke: rgba(103, 232, 249, 0.9);
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 7px rgba(103, 232, 249, 0.72));
+  opacity: 0.92;
 }
 
 .reactionSvgLabel,
@@ -6026,6 +6157,298 @@ section {
 
 .reactionParticles--running .reactionCollision--three {
   animation-delay: 0.52s;
+}
+
+.reactionAtomicView {
+  display: grid;
+  grid-template-rows: auto minmax(320px, 1fr) auto;
+  min-height: 430px;
+}
+
+.reactionAtomicSwitch {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 0.35rem;
+  padding: 0.25rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 999px;
+  background: rgba(2, 6, 23, 0.48);
+}
+
+.reactionAtomicSwitch__button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.45rem 0.62rem;
+  background: transparent;
+  color: rgba(226, 232, 240, 0.72);
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.reactionAtomicSwitch__button--active {
+  background: rgba(34, 211, 238, 0.16);
+  color: #67e8f9;
+}
+
+.reactionAtomicMaterial {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 0.42rem 0.65rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.72);
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+.reactionAtomicChamber {
+  position: relative;
+  min-height: 320px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 72% 26%, rgba(34, 211, 238, 0.12), transparent 25%),
+    linear-gradient(180deg, rgba(8, 47, 73, 0.34), rgba(2, 6, 23, 0.72));
+}
+
+.reactionAtomicChamber__liquid {
+  position: absolute;
+  inset: 11% 6% 8%;
+  border-radius: 26px;
+  background:
+    linear-gradient(180deg, rgba(56, 189, 248, 0.14), rgba(14, 165, 233, 0.07)),
+    repeating-linear-gradient(0deg, rgba(226, 232, 240, 0.07) 0 1px, transparent 1px 18px);
+  border: 1px solid rgba(125, 211, 252, 0.12);
+}
+
+.reactionAtomicChamber__surface {
+  position: absolute;
+  left: 37%;
+  right: 7%;
+  bottom: 9%;
+  height: 25%;
+  border-radius: 45% 45% 20px 20px;
+  background:
+    linear-gradient(180deg, rgba(148, 163, 184, 0.2), rgba(51, 65, 85, 0.78)),
+    rgba(15, 23, 42, 0.58);
+  box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.5), inset 0 1px 0 rgba(248, 250, 252, 0.16);
+}
+
+.reactionAtomicView--carbonate .reactionAtomicChamber__surface {
+  background:
+    linear-gradient(180deg, rgba(226, 232, 240, 0.2), rgba(148, 163, 184, 0.5)),
+    rgba(217, 119, 6, 0.2);
+}
+
+.reactionAtomicSolid,
+.reactionAtomicIon,
+.reactionAtomicBubble,
+.reactionAtomicFlash,
+.reactionAtomicCatalyst {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  font-weight: 950;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.reactionAtomicSolid {
+  left: var(--x);
+  top: var(--y);
+  width: 38px;
+  height: 24px;
+  border-radius: 11px;
+  color: rgba(15, 23, 42, 0.86);
+  font-size: 0.64rem;
+  opacity: var(--atomic-zinc-opacity, 1);
+  box-shadow: 0 0 16px rgba(226, 232, 240, 0.14);
+  transition: opacity 0.35s ease;
+}
+
+.reactionAtomicSolid--zinc {
+  background: linear-gradient(135deg, #f8fafc, #94a3b8 46%, #475569);
+  border: 1px solid rgba(248, 250, 252, 0.45);
+}
+
+.reactionAtomicSolid--carbonate {
+  width: 44px;
+  height: 26px;
+  background: linear-gradient(135deg, #e0f2fe, #bae6fd 52%, #7dd3fc);
+  border: 1px solid rgba(186, 230, 253, 0.5);
+  color: #075985;
+}
+
+.reactionAtomicView--powder .reactionAtomicSolid {
+  width: 25px;
+  height: 20px;
+  border-radius: 9px;
+  font-size: 0.56rem;
+}
+
+.reactionAtomicView--active .reactionAtomicSolid {
+  animation: reactionAtomicSurfacePulse 1.8s ease-in-out infinite;
+  animation-delay: var(--delay);
+}
+
+.reactionAtomicIon {
+  left: var(--x);
+  top: var(--y);
+  width: 31px;
+  height: 31px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 0.66rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.reactionAtomicIon--h {
+  background: radial-gradient(circle at 34% 28%, #fecdd3, #fb7185 58%, #be123c);
+  box-shadow: 0 0 18px rgba(244, 114, 182, 0.5);
+  z-index: 5;
+}
+
+.reactionAtomicIon--cl {
+  width: 34px;
+  height: 34px;
+  background: radial-gradient(circle at 34% 28%, #bbf7d0, #22c55e 58%, #15803d);
+  box-shadow: 0 0 18px rgba(34, 197, 94, 0.42);
+  color: #052e16;
+}
+
+.reactionAtomicIon--zn2 {
+  width: 39px;
+  height: 39px;
+  background: radial-gradient(circle at 35% 30%, #f8fafc, #cbd5e1 50%, #64748b);
+  color: #0f172a;
+  opacity: 0;
+  box-shadow: 0 0 22px rgba(226, 232, 240, 0.34);
+}
+
+.reactionAtomicView--active .reactionAtomicIon--h {
+  animation: reactionHIonApproach var(--atomic-speed) linear infinite;
+  animation-delay: var(--delay);
+}
+
+.reactionAtomicView--active .reactionAtomicIon--cl {
+  animation: reactionClDrift var(--atomic-speed-slow) ease-in-out infinite alternate;
+  animation-delay: var(--delay);
+}
+
+.reactionAtomicView--active .reactionAtomicIon--zn2 {
+  animation: reactionZnRelease var(--atomic-zinc-speed) ease-out infinite;
+  animation-delay: var(--delay);
+}
+
+.reactionAtomicFlash {
+  left: var(--x);
+  top: var(--y);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid rgba(250, 204, 21, 0.75);
+  opacity: 0;
+  z-index: 6;
+  box-shadow: 0 0 20px rgba(250, 204, 21, 0.6);
+}
+
+.reactionAtomicView--active .reactionAtomicFlash {
+  animation: reactionAtomicFlash var(--atomic-flash-speed) ease-out infinite;
+  animation-delay: var(--delay);
+}
+
+.reactionAtomicBubble {
+  left: var(--x);
+  bottom: 18%;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  color: #e0f2fe;
+  font-size: 0.62rem;
+  border: 1px solid rgba(224, 242, 254, 0.62);
+  opacity: 0;
+  z-index: 4;
+}
+
+.reactionAtomicBubble--h2 {
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.86), rgba(103, 232, 249, 0.26));
+  box-shadow: 0 0 22px rgba(103, 232, 249, 0.42);
+}
+
+.reactionAtomicBubble--co2 {
+  background: radial-gradient(circle at 35% 30%, rgba(224, 242, 254, 0.92), rgba(56, 189, 248, 0.3));
+  box-shadow: 0 0 22px rgba(125, 211, 252, 0.48);
+}
+
+.reactionAtomicView--active .reactionAtomicBubble {
+  animation: reactionAtomicBubbleRise var(--atomic-bubble-speed) ease-in infinite;
+  animation-delay: var(--delay);
+}
+
+.reactionAtomicCatalyst {
+  left: 86%;
+  top: 64%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  width: auto;
+  border-radius: 999px;
+  padding: 0.38rem 0.58rem;
+  background: rgba(168, 85, 247, 0.22);
+  border: 1px solid rgba(216, 180, 254, 0.45);
+  color: #e9d5ff;
+  font-size: 0.72rem;
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.34);
+}
+
+.reactionAtomicLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  padding: 0.7rem 0.85rem 0.85rem;
+  border-top: 1px solid rgba(103, 232, 249, 0.1);
+}
+
+.reactionAtomicLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.34rem;
+  width: auto;
+  border-radius: 999px;
+  padding: 0.38rem 0.52rem;
+  background: rgba(15, 23, 42, 0.68);
+  color: rgba(248, 250, 252, 0.88);
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+.reactionAtomicLegend__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.reactionAtomicLegend__dot--h {
+  background: #fb7185;
+}
+
+.reactionAtomicLegend__dot--cl {
+  background: #22c55e;
+}
+
+.reactionAtomicLegend__dot--zn {
+  background: #94a3b8;
+}
+
+.reactionAtomicLegend__dot--zn2 {
+  background: #e2e8f0;
+}
+
+.reactionAtomicLegend__dot--h2 {
+  background: #67e8f9;
+}
+
+.reactionAtomicLegend__dot--co2 {
+  background: #7dd3fc;
 }
 
 .reactionDataGrid {
@@ -6211,6 +6634,7 @@ section {
 .reactionRunCard {
   position: relative;
   display: grid;
+  grid-column: 1 / -1;
   gap: 0.45rem;
   width: 100%;
   padding: 0.9rem;
@@ -6254,6 +6678,60 @@ section {
   z-index: 2;
   margin-top: 0.6rem;
   font-weight: 900;
+}
+
+.reactionProgress.scoreboardPanel {
+  padding: 0.75rem;
+  border-radius: 18px;
+}
+
+.reactionProgress .scoreboardPanel__header span {
+  font-size: 0.75rem;
+}
+
+.reactionProgress .scoreboardPanel__header strong {
+  font-size: 1.3rem;
+}
+
+.reactionProgress .scoreboardBadge {
+  min-height: 30px;
+  margin-top: 0.55rem;
+  padding: 0.28rem 0.5rem;
+  font-size: 0.78rem;
+}
+
+.reactionProgress .reactionProgressHint {
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.reactionProgress .scoreGrid {
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.reactionProgress .scoreItem {
+  min-height: 58px;
+  gap: 0.4rem;
+  padding: 0.58rem;
+  border-radius: 13px;
+}
+
+.reactionProgress .scoreItem__top {
+  gap: 0.4rem;
+}
+
+.reactionProgress .scoreItem__top span {
+  font-size: 0.72rem;
+}
+
+.reactionProgress .scoreItem__top strong {
+  font-size: 0.9rem;
+}
+
+.reactionProgress .scoreItem__bar {
+  height: 8px;
 }
 
 .reactionPlotChallenge {
@@ -6327,6 +6805,96 @@ section {
   cursor: default;
 }
 
+@keyframes reactionAtomicSurfacePulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(0.94);
+  }
+}
+
+@keyframes reactionHIonApproach {
+  0% {
+    left: var(--x);
+    top: var(--y);
+    transform: translate(-50%, -50%) scale(0.86);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  78% {
+    left: var(--tx);
+    top: var(--ty);
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    left: var(--tx);
+    top: var(--ty);
+    transform: translate(-50%, -50%) scale(0.55);
+    opacity: 0;
+  }
+}
+
+@keyframes reactionClDrift {
+  0% {
+    transform: translate(-50%, -50%) translate(-8px, 6px);
+  }
+  50% {
+    transform: translate(-50%, -50%) translate(12px, -10px);
+  }
+  100% {
+    transform: translate(-50%, -50%) translate(-4px, 14px);
+  }
+}
+
+@keyframes reactionZnRelease {
+  0%,
+  45% {
+    transform: translate(-50%, -50%) scale(0.62);
+    opacity: 0;
+  }
+  62% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -86%) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes reactionAtomicFlash {
+  0%,
+  42% {
+    transform: translate(-50%, -50%) scale(0.28);
+    opacity: 0;
+  }
+  58% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.65);
+    opacity: 0;
+  }
+}
+
+@keyframes reactionAtomicBubbleRise {
+  0% {
+    transform: translate(-50%, 42%) scale(0.62);
+    opacity: 0;
+  }
+  22% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-50%, -260%) scale(1.05);
+    opacity: 0;
+  }
+}
+
 @keyframes reactionBubbleRise {
   0% {
     transform: translateY(18px) scale(0.72);
@@ -6366,11 +6934,14 @@ section {
 
 @media (max-width: 1100px) {
   .reactionFactorPanel,
-  .reactionWorkspace {
+  .reactionFactorPanel__body,
+  .reactionWorkspace,
+  .reactionStage {
     grid-template-columns: 1fr;
   }
 
   .reactionFactorInfo,
+  .reactionFactorStack,
   .reactionMassCard,
   .reactionOptionList,
   .reactionRunStatus,
@@ -6380,6 +6951,10 @@ section {
 
   .reactionFactorPanel {
     align-items: stretch;
+  }
+
+  .reactionFactorInfo {
+    grid-template-columns: 1fr;
   }
 
   .reactionDataGrid {
@@ -6403,7 +6978,12 @@ section {
     justify-content: stretch;
   }
 
-  .reactionStage svg {
+  .reactionMacroView,
+  .reactionAtomicView {
+    min-height: 360px;
+  }
+
+  .reactionMacroView svg {
     min-height: 360px;
   }
 
@@ -6414,8 +6994,52 @@ section {
 }
 
 @media (max-width: 520px) {
+  .electrolysisPage.reactionRatePage {
+    padding-left: 0.55rem;
+    padding-right: 0.55rem;
+  }
+
+  .reactionControlDeck,
+  .reactionWorkspace,
+  .reactionDataGrid,
+  .reactionPlotChallenge,
+  .quizCard,
+  .reactionHero {
+    width: calc(100vw - 1.4rem);
+    max-width: calc(100vw - 1.4rem);
+  }
+
+  .electroPanel.reactionFactorPanel,
+  .electroPanel.reactionApparatus {
+    padding: 0.85rem;
+  }
+
   .reactionTabs {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+  }
+
+  .reactionStage {
+    padding: 0.55rem;
+    border-radius: 18px;
+  }
+
+  .reactionViewHeader,
+  .reactionAtomicView__head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .reactionAtomicSwitch {
+    width: 100%;
+  }
+
+  .reactionAtomicSwitch__button {
+    flex: 1;
+  }
+
+  .reactionAtomicView {
+    grid-template-rows: auto minmax(280px, 1fr) auto;
   }
 
   .reactionTab {

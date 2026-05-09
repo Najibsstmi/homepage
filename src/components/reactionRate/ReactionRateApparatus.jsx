@@ -1,24 +1,26 @@
-import ReactionParticles from "./ReactionParticles";
+import ReactionAtomicView from "./ReactionAtomicView";
 
 export default function ReactionRateApparatus({ factor, option, running, elapsed, volume, progress, completed, canRun, onStart, onReset }) {
   const bubbleCount = Math.min(18, Math.max(4, Math.round(option.rate * 10)));
-  const rateLevel = option.rate;
   const zincTotal = option.id === "powder" ? 30 : 10;
   const zincCount = completed ? (option.id === "large" ? 1 : 0) : Math.max(0, Math.ceil(zincTotal * (1 - progress * 0.94)));
-  const gasHeight = Math.min(132, volume * 1.9);
-  const waterLevel = 358;
-  const buretGasTop = waterLevel - gasHeight;
+  const buretTop = 52;
+  const buretBottom = 318;
+  const buretInnerHeight = buretBottom - buretTop;
+  const gasHeight = volume > 0 ? Math.max(5, Math.min(buretInnerHeight - 12, volume * 3.65)) : 0;
+  const buretWaterY = buretTop + gasHeight;
+  const buretWaterHeight = Math.max(8, buretBottom - buretWaterY);
+  const zincLabel = option.id === "powder" ? "Serbuk zink" : "Ketulan zink";
 
   return (
     <section className="electroPanel reactionApparatus">
       <div className="reactionApparatus__top">
         <div>
           <h2>Radas Eksperimen</h2>
-          <p>Zn + 2HCl {'->'} ZnCl2 + H2</p>
+          <p>Zn + 2HCl {"->"} ZnCl2 + H2</p>
         </div>
         <div className="reactionActions">
           <button type="button" className="alloyReleaseButton" onClick={onStart} disabled={running || !canRun}>
-            <span>▶</span>
             Mula eksperimen
           </button>
           <button type="button" onClick={onReset}>Reset semua</button>
@@ -26,117 +28,162 @@ export default function ReactionRateApparatus({ factor, option, running, elapsed
       </div>
 
       <div className="reactionStage">
-        <svg viewBox="0 0 980 560" role="img" aria-label="Radas kadar tindak balas zink dan asid hidroklorik dengan buret terbalik">
-          <defs>
-            <linearGradient id="acidGradient" x1="0%" x2="100%">
-              <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.46" />
-            </linearGradient>
-            <linearGradient id="glassGradient" x1="0%" x2="100%">
-              <stop offset="0%" stopColor="#e2e8f0" stopOpacity="0.18" />
-              <stop offset="48%" stopColor="#ffffff" stopOpacity="0.07" />
-              <stop offset="100%" stopColor="#94a3b8" stopOpacity="0.18" />
-            </linearGradient>
-            <linearGradient id="zincGradient" x1="0%" x2="100%">
-              <stop offset="0%" stopColor="#f8fafc" />
-              <stop offset="100%" stopColor="#64748b" />
-            </linearGradient>
-          </defs>
+        <section className="reactionMacroView" aria-label="Eksperimen sebenar kadar tindak balas">
+          <div className="reactionViewHeader">
+            <div>
+              <span>Makro view</span>
+              <strong>Radas eksperimen sebenar</strong>
+            </div>
+            <em>{elapsed}s</em>
+          </div>
 
-          <rect className="reactionStageBg" x="0" y="0" width="980" height="560" rx="28" />
+          <svg viewBox="0 0 920 430" role="img" aria-label="Radas kadar tindak balas zink dan asid hidroklorik dengan buret terbalik">
+            <defs>
+              <linearGradient id="acidGradient" x1="0%" x2="100%">
+                <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.82" />
+                <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.5" />
+              </linearGradient>
+              <linearGradient id="glassGradient" x1="0%" x2="100%">
+                <stop offset="0%" stopColor="#e2e8f0" stopOpacity="0.18" />
+                <stop offset="48%" stopColor="#ffffff" stopOpacity="0.06" />
+                <stop offset="100%" stopColor="#94a3b8" stopOpacity="0.18" />
+              </linearGradient>
+              <linearGradient id="zincGradient" x1="0%" x2="100%">
+                <stop offset="0%" stopColor="#f8fafc" />
+                <stop offset="100%" stopColor="#64748b" />
+              </linearGradient>
+              <clipPath id="reactionBuretClip">
+                <path d="M 598 52 Q 598 30 620 30 Q 642 30 642 52 L 642 294 Q 642 318 620 322 Q 598 318 598 294 Z" />
+              </clipPath>
+            </defs>
 
-          <text className="reactionSvgMetric reactionSvgMetric--time" x="42" y="54">{elapsed}s</text>
+            <rect className="reactionStageBg" x="0" y="0" width="920" height="430" rx="24" />
 
-          <g className="reactionRetortGroup">
-            <line className="reactionRetort" x1="826" y1="88" x2="826" y2="460" />
-            <rect className="reactionRetortBase" x="746" y="462" width="160" height="18" rx="4" />
-            <line className="reactionRetortArm" x1="514" y1="176" x2="872" y2="176" />
-            <rect className="reactionClamp" x="555" y="151" width="48" height="50" rx="7" />
-            <rect className="reactionClamp" x="806" y="151" width="48" height="50" rx="7" />
-            <text className="reactionSvgLabel" x="858" y="308">Kaki retort</text>
-            <path className="reactionLeader" d="M 850 302 L 826 302" />
-          </g>
+            <g className="reactionRetortGroup">
+              <line className="reactionRetort" x1="815" y1="70" x2="815" y2="360" />
+              <rect className="reactionRetortBase" x="742" y="360" width="150" height="18" rx="4" />
+              <line className="reactionRetortArm" x1="535" y1="164" x2="855" y2="164" />
+              <rect className="reactionClamp" x="582" y="139" width="48" height="50" rx="7" />
+              <rect className="reactionClamp" x="794" y="139" width="44" height="50" rx="7" />
+              <text className="reactionSvgLabel" x="792" y="230">Kaki retort</text>
+              <path className="reactionLeader" d="M 785 224 L 815 224" />
+            </g>
 
-          <g className="reactionBuretSetup">
-            <path className="reactionBasin" d="M 472 332 Q 472 314 490 314 L 754 314 Q 772 314 772 332 L 760 422 Q 756 448 730 448 L 518 448 Q 492 448 488 422 Z" />
-            <path className="reactionBasinWater" d="M 494 356 C 552 342, 624 370, 748 354 L 738 418 Q 734 434 718 436 L 528 436 Q 512 434 508 418 Z" />
-            {Array.from({ length: 10 }, (_, index) => (
-              <line key={index} className="reactionWaterLine" x1="508" x2="738" y1={374 + index * 6} y2={374 + index * 6} />
-            ))}
-            <text className="reactionSvgLabel" x="394" y="384">Besen</text>
-            <path className="reactionLeader" d="M 450 378 L 502 378" />
-            <text className="reactionSvgLabel" x="394" y="426">Air</text>
-            <path className="reactionLeader" d="M 424 420 L 506 420" />
+            <g className="reactionBuretSetup">
+              <path className="reactionBasin" d="M 486 244 Q 486 225 505 225 L 744 225 Q 763 225 763 244 L 752 338 Q 748 365 720 365 L 526 365 Q 498 365 494 338 Z" />
+              <path className="reactionBasinWater" d="M 504 275 C 556 263, 625 286, 745 273 L 737 334 Q 734 350 716 352 L 532 352 Q 514 350 512 334 Z" />
+              {Array.from({ length: 9 }, (_, index) => (
+                <line key={index} className="reactionWaterLine" x1="514" x2="736" y1={286 + index * 6} y2={286 + index * 6} />
+              ))}
+              <text className="reactionSvgLabel" x="420" y="268">Besen</text>
+              <path className="reactionLeader" d="M 474 262 L 506 262" />
+              <text className="reactionSvgLabel" x="424" y="310">Air</text>
+              <path className="reactionLeader" d="M 456 304 L 512 304" />
 
-            <rect className="reactionBuret" x="574" y="58" width="38" height="320" rx="17" />
-            <rect className="reactionBuretGas" x="581" y={buretGasTop} width="24" height={Math.max(4, gasHeight)} rx="10" />
-            <line className="reactionBuretStem" x1="592" y1="50" x2="592" y2="20" />
-            <line className="reactionBuretStem" x1="606" y1="50" x2="606" y2="20" />
-            <rect className="reactionBuretTap" x="566" y="52" width="56" height="18" rx="8" />
-            <circle className="reactionBuretTapKnob" cx="560" cy="61" r="7" />
-            {Array.from({ length: 15 }, (_, index) => (
-              <line
-                key={index}
-                className={index % 5 === 0 ? "reactionBuretMark reactionBuretMark--major" : "reactionBuretMark"}
-                x1="577"
-                x2={index % 5 === 0 ? "604" : "594"}
-                y1={88 + index * 17}
-                y2={88 + index * 17}
-              />
-            ))}
-            <text className="reactionSvgLabel" x="640" y="104">Gas H2</text>
-            <path className="reactionLeader" d="M 630 102 L 606 142" />
-            <text className="reactionSvgLabel" x="632" y="260">Buret</text>
-            <path className="reactionLeader" d="M 624 254 L 604 254" />
-            <text className="reactionSvgMetric" x="706" y="70">{volume.toFixed(1)} cm3</text>
-          </g>
+              <path className="reactionBuret" d="M 598 52 Q 598 30 620 30 Q 642 30 642 52 L 642 294 Q 642 318 620 322 Q 598 318 598 294 Z" />
+              <g clipPath="url(#reactionBuretClip)">
+                <rect className="reactionBuretWaterFill" x="599" y={buretWaterY} width="42" height={buretWaterHeight} />
+                <rect className="reactionBuretGas" x="599" y={buretTop} width="42" height={gasHeight} />
+                {Array.from({ length: 9 }, (_, index) => (
+                  <line key={index} className="reactionBuretWaterLine" x1="601" x2="639" y1={buretWaterY + 14 + index * 18} y2={buretWaterY + 14 + index * 18} />
+                ))}
+              </g>
+              <line className="reactionBuretWaterLevel" x1="602" x2="638" y1={buretWaterY} y2={buretWaterY} />
+              <line className="reactionBuretStem" x1="612" y1="28" x2="612" y2="8" />
+              <line className="reactionBuretStem" x1="628" y1="28" x2="628" y2="8" />
+              <rect className="reactionBuretTap" x="588" y="34" width="62" height="18" rx="8" />
+              <circle className="reactionBuretTapKnob" cx="582" cy="43" r="7" />
+              {Array.from({ length: 17 }, (_, index) => (
+                <line
+                  key={index}
+                  className={index % 5 === 0 ? "reactionBuretMark reactionBuretMark--major" : "reactionBuretMark"}
+                  x1="601"
+                  x2={index % 5 === 0 ? "628" : "617"}
+                  y1={66 + index * 13}
+                  y2={66 + index * 13}
+                />
+              ))}
+              <text className="reactionSvgLabel" x="664" y="126">Buret</text>
+              <path className="reactionLeader" d="M 652 121 L 641 121" />
+              <text className="reactionSvgLabel" x="665" y="78">Gas H2</text>
+              <path className="reactionLeader" d="M 653 74 L 631 86" />
+              <text className="reactionSvgMetric" x="705" y="48">{volume.toFixed(1)} cm3</text>
+            </g>
 
-          <g className="reactionFlaskSetup">
-            <path className="reactionTube" d="M 258 230 L 258 118 Q 258 92 284 92 L 382 92 Q 398 92 410 105 L 592 342" />
-            <path className="reactionTubeInside" d="M 270 230 L 270 126 Q 270 106 290 106 L 376 106 Q 388 106 397 116 L 582 346" />
-            <text className="reactionSvgLabel" x="38" y="112">Salur penghantar</text>
-            <path className="reactionLeader" d="M 188 110 L 258 110" />
+            <g className="reactionFlaskSetup">
+              <path className="reactionTube" d="M 226 168 L 226 75 Q 226 56 246 56 L 362 56 Q 377 56 386 68 L 612 303" />
+              <path className="reactionTubeInside" d="M 237 168 L 237 82 Q 237 68 251 68 L 356 68 Q 368 68 376 78 L 604 306" />
+              <text className="reactionSvgLabel" x="42" y="78">Salur</text>
+              <text className="reactionSvgLabel" x="42" y="101">penghantar</text>
+              <path className="reactionLeader" d="M 142 85 L 226 85" />
 
-            <path className="reactionFlask" d="M 198 226 L 306 226 L 306 292 L 362 424 Q 376 462 334 466 L 170 466 Q 128 462 142 424 L 198 292 Z" />
-            <path className="reactionLiquid" d="M 166 406 C 208 386, 270 422, 338 400 L 350 430 Q 358 452 330 454 L 174 454 Q 146 452 154 430 Z" />
-            <rect className="reactionStopper" x="202" y="202" width="96" height="36" rx="9" />
-            <text className="reactionSvgLabel" x="44" y="342">Ketulan zink</text>
-            <path className="reactionLeader" d="M 150 338 L 194 412" />
-            <text className="reactionSvgLabel" x="182" y="516">Asid hidroklorik cair</text>
-            <path className="reactionLeader" d="M 272 494 L 258 434" />
-            <text className="reactionSvgLabel reactionSvgLabel--center" x="252" y="540">Jisim Zn tetap: 5 g</text>
+              <path className="reactionFlask" d="M 178 165 L 278 165 L 278 230 L 342 354 Q 356 383 326 388 L 130 388 Q 100 383 114 354 L 178 230 Z" />
+              <path className="reactionLiquid" d="M 134 326 C 176 314, 241 336, 322 322 L 334 354 Q 342 374 320 376 L 136 376 Q 114 374 122 354 Z" />
+              <rect className="reactionStopper" x="182" y="142" width="92" height="34" rx="8" />
+              <rect className="reactionStopper reactionStopper--cork" x="172" y="143" width="18" height="32" rx="3" />
+              <text className="reactionSvgLabel" x="42" y="284">{zincLabel}</text>
+              <path className="reactionLeader" d="M 150 280 L 178 350" />
+              <text className="reactionSvgLabel" x="156" y="416">Asid hidroklorik cair</text>
+              <path className="reactionLeader" d="M 278 397 L 258 346" />
 
-            {Array.from({ length: bubbleCount }, (_, index) => (
-              <circle
-                key={index}
-                className={running ? "reactionBubble reactionBubble--run" : "reactionBubble"}
-                cx={188 + (index % 7) * 22}
-                cy={402 - (index % 5) * 18}
-                r={4 + (index % 3)}
-                opacity={running || volume > 0 ? 1 : 0}
-                style={{ animationDelay: `${index * -0.16}s`, animationDuration: `${Math.max(0.7, 1.55 - option.rate * 0.36)}s` }}
-              />
-            ))}
+              {Array.from({ length: bubbleCount }, (_, index) => (
+                <circle
+                  key={index}
+                  className={running ? "reactionBubble reactionBubble--run" : "reactionBubble"}
+                  cx={156 + (index % 7) * 24}
+                  cy={326 - (index % 5) * 16}
+                  r={4 + (index % 3)}
+                  opacity={running || volume > 0 ? 1 : 0}
+                  style={{ animationDelay: `${index * -0.16}s`, animationDuration: `${Math.max(0.7, 1.55 - option.rate * 0.36)}s` }}
+                />
+              ))}
 
-            {Array.from({ length: zincCount }, (_, index) => (
-              <rect
-                key={index}
-                className={option.id === "powder" ? "reactionZinc reactionZinc--powder" : "reactionZinc"}
-                x={174 + (index % 8) * 20}
-                y={428 + Math.floor(index / 8) * 10}
-                width={option.id === "large" ? 20 : 7}
-                height={option.id === "large" ? 11 : 5}
-                rx="3"
-              />
-            ))}
-          </g>
-        </svg>
+              {Array.from({ length: zincCount }, (_, index) => (
+                <rect
+                  key={index}
+                  className={option.id === "powder" ? "reactionZinc reactionZinc--powder" : "reactionZinc"}
+                  x={148 + (index % 8) * 20}
+                  y={354 + Math.floor(index / 8) * 9}
+                  width={option.id === "large" ? 20 : 7}
+                  height={option.id === "large" ? 10 : 5}
+                  rx="3"
+                />
+              ))}
+            </g>
 
-        <ReactionParticles running={running} rateLevel={rateLevel} />
+            <g className={running ? "reactionGasTrail reactionGasTrail--run" : "reactionGasTrail"} aria-hidden="true">
+              {Array.from({ length: 7 }, (_, index) => (
+                <circle
+                  key={index}
+                  className="reactionTubeBubble"
+                  r={3 + (index % 3)}
+                  style={{ "--delay": `${index * 0.32}s` }}
+                >
+                  <animateMotion
+                    path="M 220 324 C 218 250 226 184 226 88 Q 226 58 252 58 L 360 58 Q 376 58 388 70 L 610 303"
+                    dur={`${Math.max(1.6, 3.6 - option.rate * 0.8)}s`}
+                    begin={`${index * 0.28}s`}
+                    repeatCount="indefinite"
+                  />
+                </circle>
+              ))}
+            </g>
+          </svg>
+        </section>
+
+        <ReactionAtomicView
+          factor={factor}
+          option={option}
+          running={running}
+          progress={progress}
+          completed={completed}
+          canRun={canRun}
+        />
+
         <div className="reactionRunCard">
           <span>Status eksperimen</span>
           <strong>{option.label}</strong>
-          <small>{!canRun ? "MVP perbandingan lengkap menggunakan faktor Saiz bahan." : running ? "Tindak balas sedang berlaku..." : completed ? "Eksperimen selesai." : "Pilih keadaan dan tekan mula."}</small>
+          <small>{!canRun ? "Atomic view berubah mengikut faktor. Graf kuantitatif disediakan untuk saiz bahan." : running ? "Tindak balas sedang berlaku..." : completed ? "Eksperimen selesai." : "Pilih keadaan dan tekan mula."}</small>
           <i><b style={{ width: `${progress * 100}%` }} /></i>
         </div>
       </div>

@@ -22,52 +22,59 @@ export default function ReactionFactorPanel({ activeFactor, selectedOptions, com
         </div>
       </div>
 
-      <div className="reactionFactorInfo">
-        <span>Pemboleh ubah dimanipulasikan</span>
-        <strong>{factor.variable}</strong>
-        {factor.prompt && <p>{factor.prompt}</p>}
-        <div className="reactionOptionList" aria-label={`Pilihan ${factor.label}`}>
-          {factor.options.map((option) => (
-            <button
-              key={option.id}
-              type="button"
-              className={selectedOption === option.id ? "reactionOption reactionOption--active" : "reactionOption"}
-              disabled={running}
-              onClick={() => onOptionChange(activeFactor, option.id)}
-            >
-              <span>{option.label}</span>
-              {option.note && <small>{option.note}</small>}
-            </button>
-          ))}
-        </div>
-      </div>
+      <div className={activeFactor === "size" ? "reactionFactorPanel__body reactionFactorPanel__body--withStatus" : "reactionFactorPanel__body"}>
+        <div className="reactionFactorInfo">
+          <div className="reactionFactorInfo__text">
+            <span>Pemboleh ubah dimanipulasikan</span>
+            <strong>{factor.variable}</strong>
+            {factor.prompt && <p>{factor.prompt}</p>}
+          </div>
 
-      <div className="reactionMassCard">
-        <span>Jisim zink</span>
-        <strong>{zincMass} g (tetap)</strong>
-      </div>
-
-      {activeFactor === "size" && (
-        <div className="reactionRunStatus">
-          <strong>Status eksperimen</strong>
-          <div className="reactionRunStatus__grid">
-            {sizeOptionIds.map((id) => {
-              const option = factor.options.find((item) => item.id === id);
-              const done = Boolean(completedRuns[id]);
-              return (
-                <div key={id} className={done ? "reactionRunStatus__row reactionRunStatus__row--done" : "reactionRunStatus__row"}>
-                  <span>{option?.label}</span>
-                  <small>{done ? "Selesai" : "Belum diuji"}</small>
-                </div>
-              );
-            })}
+          <div className="reactionOptionList" aria-label={`Pilihan ${factor.label}`}>
+            {factor.options.map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                className={selectedOption === option.id ? "reactionOption reactionOption--active" : "reactionOption"}
+                disabled={running}
+                onClick={() => onOptionChange(activeFactor, option.id)}
+              >
+                <span>{option.label}</span>
+                {option.note && <small>{option.note}</small>}
+              </button>
+            ))}
           </div>
         </div>
-      )}
 
-      <div className="electroNote reactionEquation">
-        <strong>Eksperimen utama</strong>
-        <p>Zn + 2HCl {'->'} ZnCl2 + H2</p>
+        <div className="reactionFactorStack">
+          <div className="reactionMassCard">
+            <span>Jisim zink</span>
+            <strong>{zincMass} g (tetap)</strong>
+          </div>
+
+          <div className="electroNote reactionEquation">
+            <strong>Eksperimen utama</strong>
+            <p>Zn + 2HCl {'->'} ZnCl2 + H2</p>
+          </div>
+        </div>
+
+        {activeFactor === "size" && (
+          <div className="reactionRunStatus">
+            <strong>Status eksperimen</strong>
+            <div className="reactionRunStatus__grid">
+              {sizeOptionIds.map((id) => {
+                const option = factor.options.find((item) => item.id === id);
+                const done = Boolean(completedRuns[id]);
+                return (
+                  <div key={id} className={done ? "reactionRunStatus__row reactionRunStatus__row--done" : "reactionRunStatus__row"}>
+                    <span>{option?.label}</span>
+                    <small>{done ? "Selesai" : "Belum diuji"}</small>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </aside>
   );

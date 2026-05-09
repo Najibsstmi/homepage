@@ -1,5 +1,6 @@
 import SimulatorCard from "../components/SimulatorCard";
 import LinearMotionSimulator from "../components/LinearMotionSimulator";
+import AlloyHardnessSimulatorPage from "./AlloyHardnessSimulatorPage";
 import ElectrolysisSimulatorPage from "./ElectrolysisSimulatorPage";
 import { simulators } from "../data/simulators";
 
@@ -12,6 +13,10 @@ export default function SimulatorPage() {
 
   if (path === "/simulator/elektrokimia-elektrolisis") {
     return <ElectrolysisSimulatorPage />;
+  }
+
+  if (path === "/simulator/aloi" || path === "/simulator/alloy-hardness") {
+    return <AlloyHardnessSimulatorPage />;
   }
 
   return (

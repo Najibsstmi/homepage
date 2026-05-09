@@ -6,6 +6,8 @@ export default function ChallengeMode({
   aqueousReady,
   bulbAnswers,
   inferences,
+  quizScore = 0,
+  quizTotal = 0,
 }) {
   const circuitSolver = solidReady && moltenReady && aqueousReady ? 10 : moltenReady || aqueousReady ? 7 : solidReady ? 4 : 0;
   const observationExpert =
@@ -18,19 +20,21 @@ export default function ChallengeMode({
     checkInferenceWithAI(inferences.aqueous || "", "aqueous")
       ? 10
       : 0;
-  const total = circuitSolver + observationExpert + electrochemist;
-  const level = total >= 27 ? "Saintis Muda" : total >= 17 ? "Penyiasat Aktif" : total >= 7 ? "Pembina Litar" : "Mula Misi";
+  const scienceCheck = quizTotal > 0 ? Math.round((quizScore / quizTotal) * 10) : 0;
+  const total = circuitSolver + observationExpert + electrochemist + scienceCheck;
+  const level = total >= 36 ? "Saintis Muda" : total >= 24 ? "Penyiasat Aktif" : total >= 10 ? "Pembina Litar" : "Mula Misi";
   const scoreItems = [
     ["Circuit Solver", circuitSolver],
     ["Observation Expert", observationExpert],
     ["Electrochemist", electrochemist],
+    ["Science Check", scienceCheck],
   ];
 
   return (
     <section className="scoreboardPanel" aria-label="Science Progress">
       <div className="scoreboardPanel__header">
         <span>Science Progress</span>
-        <strong>{total}/30</strong>
+        <strong>{total}/40</strong>
       </div>
       <p className="scoreboardBadge">{level}</p>
       <div className="scoreGrid">

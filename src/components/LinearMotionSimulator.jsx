@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import AnalysisPanel from "./AnalysisPanel";
 import ControlsPanel from "./ControlsPanel";
+import QuizCard from "./quiz/QuizCard";
 import TapeChart from "./TapeChart";
 import TickerTape from "./TickerTape";
 import TrackAnimation from "./TrackAnimation";
+import { linearMotionQuiz } from "../data/simulatorQuizzes";
 
 const trackLengthCm = 200;
 const tickerInterval = 0.02;
@@ -97,25 +99,27 @@ function buildLiveData(acceleration, elapsedTime) {
   };
 }
 
-function LinearProgressPanel({ heightCm, started, completed, tapeCut, showData, segmentCount }) {
+function LinearProgressPanel({ heightCm, started, completed, tapeCut, showData, segmentCount, quizScore, quizTotal }) {
   const motionStarter = completed ? 10 : started ? 8 : heightCm > 0 ? 5 : 0;
   const dataCollector = completed ? 10 : started ? Math.min(Math.max(segmentCount, 1), 10) : 0;
   const tapeAnalyst = tapeCut ? 10 : segmentCount > 0 ? 4 : 0;
   const graphInterpreter = tapeCut && showData && segmentCount > 0 ? 10 : showData ? 3 : 0;
-  const total = motionStarter + dataCollector + tapeAnalyst + graphInterpreter;
-  const badge = total >= 36 ? "Pakar Pita Detik" : total >= 24 ? "Penganalisis Gerakan" : total >= 12 ? "Pengumpul Data" : "Sedia Mula";
+  const scienceCheck = quizTotal > 0 ? Math.round((quizScore / quizTotal) * 10) : 0;
+  const total = motionStarter + dataCollector + tapeAnalyst + graphInterpreter + scienceCheck;
+  const badge = total >= 45 ? "Pakar Pita Detik" : total >= 30 ? "Penganalisis Gerakan" : total >= 14 ? "Pengumpul Data" : "Sedia Mula";
   const items = [
     ["Motion Starter", motionStarter],
     ["Data Collector", dataCollector],
     ["Tape Analyst", tapeAnalyst],
     ["Graph Interpreter", graphInterpreter],
+    ["Science Check", scienceCheck],
   ];
 
   return (
     <aside className="linearProgressPanel" aria-label="Progress simulator gerakan linear">
       <div className="linearProgressPanel__header">
         <span>Motion Progress</span>
-        <strong>{total}/40</strong>
+        <strong>{total}/50</strong>
       </div>
       <p>{badge}</p>
       <div className="linearProgressGrid">
@@ -144,6 +148,7 @@ export default function LinearMotionSimulator() {
   const [tapeCut, setTapeCut] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [message, setMessage] = useState("Sedia untuk dilepaskan.");
+  const [quizResult, setQuizResult] = useState({ score: 0, total: linearMotionQuiz.length });
   const requestRef = useRef(null);
   const startedAtRef = useRef(0);
   const pausedElapsedRef = useRef(0);
@@ -261,6 +266,7 @@ export default function LinearMotionSimulator() {
     setElapsedTime(0);
     pausedElapsedRef.current = 0;
     setMessage("Sedia untuk dilepaskan.");
+    setQuizResult({ score: 0, total: linearMotionQuiz.length });
   };
 
   return (
@@ -316,6 +322,8 @@ export default function LinearMotionSimulator() {
           tapeCut={tapeCut}
           showData={showData}
           segmentCount={completedSegments.length || liveData.segments.length}
+          quizScore={quizResult.score}
+          quizTotal={quizResult.total}
         />
       </section>
 
@@ -376,6 +384,12 @@ export default function LinearMotionSimulator() {
           </div>
         </section>
       )}
+
+      <QuizCard
+        title="Science Check"
+        questions={linearMotionQuiz}
+        onComplete={(score, total) => setQuizResult({ score, total })}
+      />
     </main>
   );
 }

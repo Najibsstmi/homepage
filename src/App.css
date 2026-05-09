@@ -4782,3 +4782,640 @@ section {
     grid-template-columns: 22px minmax(0, 1fr);
   }
 }
+
+/* Alloy hardness simulator */
+.alloyLayout {
+  margin-top: 1rem;
+}
+
+.alloyTray {
+  align-self: start;
+}
+
+.alloyMaterialCard {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 0.25rem 0.8rem;
+  align-items: center;
+  width: 100%;
+  padding: 0.9rem;
+  border: 1px solid rgba(103, 232, 249, 0.16);
+  border-radius: 16px;
+  background: rgba(8, 47, 73, 0.36);
+  color: #f8fafc;
+  text-align: left;
+  cursor: grab;
+}
+
+.alloyMaterialCard--active {
+  border-color: rgba(34, 197, 94, 0.42);
+  background: rgba(20, 83, 45, 0.32);
+}
+
+.alloyMaterialCard strong,
+.alloyMaterialCard small {
+  grid-column: 2;
+}
+
+.alloyMaterialCard small {
+  color: rgba(203, 213, 225, 0.78);
+}
+
+.alloyBlockIcon,
+.steelBallIcon {
+  grid-row: span 2;
+  display: block;
+}
+
+.alloyBlockIcon {
+  width: 48px;
+  height: 34px;
+  border-radius: 9px;
+  box-shadow: inset 0 -8px 14px rgba(15, 23, 42, 0.22), 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.alloyBlockIcon--pure {
+  background: linear-gradient(135deg, #cbd5e1, #64748b);
+}
+
+.alloyBlockIcon--alloy {
+  background: linear-gradient(135deg, #38bdf8, #facc15);
+}
+
+.steelBallIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 28%, #f8fafc, #94a3b8 58%, #334155);
+  box-shadow: 0 12px 26px rgba(148, 163, 184, 0.2);
+}
+
+.alloyHeightControl {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.9rem;
+  border-radius: 16px;
+  border: 1px solid rgba(103, 232, 249, 0.14);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.alloyHeightControl span {
+  color: rgba(226, 232, 240, 0.82);
+}
+
+.alloyHeightControl strong {
+  color: #67e8f9;
+}
+
+.alloyHeightControl select {
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 12px;
+  padding: 0.7rem;
+  background: rgba(2, 6, 23, 0.56);
+  color: #f8fafc;
+}
+
+.alloyApparatus {
+  overflow: hidden;
+}
+
+.alloyApparatus__top,
+.alloyPanelHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.alloyApparatus__top p {
+  margin: 0;
+  color: rgba(203, 213, 225, 0.82);
+}
+
+.alloyApparatus__actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.alloyApparatus__actions button,
+.alloyPanelHeader button {
+  border: 0;
+  border-radius: 14px;
+  padding: 0.72rem 0.95rem;
+  background: linear-gradient(135deg, #22d3ee, #38bdf8);
+  color: #082f49;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.alloyApparatus__actions button:disabled {
+  cursor: not-allowed;
+  background: rgba(148, 163, 184, 0.22);
+  color: rgba(226, 232, 240, 0.54);
+}
+
+.alloyRig {
+  margin-top: 1rem;
+  border-radius: 24px;
+  overflow: hidden;
+  background: rgba(2, 6, 23, 0.28);
+}
+
+.alloyRig svg {
+  display: block;
+  width: 100%;
+}
+
+.alloyRig__bg,
+.alloyAtomicBg {
+  fill: rgba(15, 23, 42, 0.7);
+}
+
+.alloyStand,
+.alloyGuide {
+  stroke: rgba(226, 232, 240, 0.58);
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.alloyGuide {
+  stroke-dasharray: 10 10;
+  stroke-width: 4;
+}
+
+.alloySvgLabel {
+  fill: rgba(226, 232, 240, 0.82);
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.alloySvgLabel--center {
+  text-anchor: middle;
+}
+
+.alloySteelBall circle {
+  fill: url(#steelBallGrad);
+  filter: drop-shadow(0 18px 22px rgba(15, 23, 42, 0.28));
+}
+
+.alloySteelBall ellipse {
+  fill: rgba(255, 255, 255, 0.62);
+}
+
+.alloySteelBall--placed {
+  transform: translateY(110px);
+}
+
+.alloySteelBall--impactAlloy {
+  transform: translateY(132px);
+}
+
+.alloySteelBall--impactPure {
+  transform: translateY(160px);
+}
+
+.alloySteelBall--drop {
+  animation: alloyBallDrop 0.72s cubic-bezier(0.18, 0.92, 0.28, 1.05);
+}
+
+.alloyBlockShadow {
+  fill: rgba(2, 6, 23, 0.42);
+  filter: blur(2px);
+}
+
+.alloyBlock {
+  stroke: rgba(226, 232, 240, 0.32);
+  stroke-width: 2;
+  filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.22));
+}
+
+.alloyBlock--pure {
+  fill: url(#alloyBlockPure);
+}
+
+.alloyBlock--alloy {
+  fill: url(#alloyBlockMixed);
+}
+
+.alloyBlock--empty {
+  fill: rgba(148, 163, 184, 0.12);
+  stroke-dasharray: 10 8;
+}
+
+.alloyDent {
+  fill: rgba(15, 23, 42, 0.5);
+  stroke: rgba(15, 23, 42, 0.2);
+  transform-origin: center;
+  animation: alloyDentIn 0.35s ease-out;
+}
+
+.alloyDropHint,
+.alloyBlockText,
+.alloyDepthText {
+  text-anchor: middle;
+  font-weight: 950;
+}
+
+.alloyDropHint {
+  fill: rgba(203, 213, 225, 0.72);
+  font-size: 18px;
+}
+
+.alloyBlockText {
+  fill: #082f49;
+  font-size: 20px;
+}
+
+.alloyDepthText {
+  fill: #e0f2fe;
+  font-size: 17px;
+}
+
+.alloyBadge {
+  margin-top: 1rem;
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  background: rgba(250, 204, 21, 0.14);
+  border: 1px solid rgba(250, 204, 21, 0.28);
+  color: #fde68a;
+  font-weight: 950;
+}
+
+.alloyDataGrid {
+  display: grid;
+  grid-template-columns: 0.86fr 1.14fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.alloyResultGrid {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.alloyResultCard {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.95rem;
+  border-radius: 16px;
+  border: 1px solid rgba(103, 232, 249, 0.14);
+  background: rgba(2, 6, 23, 0.3);
+}
+
+.alloyResultCard span {
+  color: rgba(203, 213, 225, 0.82);
+}
+
+.alloyResultCard strong {
+  color: #67e8f9;
+  font-size: 1.55rem;
+}
+
+.alloyResultCard small,
+.alloyMuted,
+.alloyAtomicContent p {
+  color: rgba(226, 232, 240, 0.82);
+  line-height: 1.65;
+}
+
+.indentMeasureCard {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(250, 204, 21, 0.2);
+  background: rgba(120, 53, 15, 0.14);
+}
+
+.indentMeasureCard h3 {
+  margin: 0;
+  color: #fde68a;
+}
+
+.indentMeasureCard__visual {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 54px;
+  gap: 0.8rem;
+  align-items: stretch;
+  min-height: 170px;
+}
+
+.indentMeasureBlock {
+  position: relative;
+  min-height: 170px;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(226, 232, 240, 0.22);
+  background: linear-gradient(135deg, #94a3b8, #e2e8f0);
+}
+
+.indentMeasureBlock--alloy {
+  background: linear-gradient(135deg, #38bdf8, #facc15);
+}
+
+.indentMeasureDent {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  width: 84px;
+  border-radius: 0 0 48px 48px;
+  background: rgba(15, 23, 42, 0.5);
+  transform: translateX(-50%);
+  box-shadow: inset 0 14px 20px rgba(2, 6, 23, 0.24);
+}
+
+.indentRuler {
+  display: grid;
+  grid-template-rows: repeat(8, 1fr);
+  border-radius: 12px;
+  background:
+    repeating-linear-gradient(180deg, #f8fafc 0 1px, transparent 1px 20px),
+    linear-gradient(90deg, #e2e8f0, #94a3b8);
+  color: #0f172a;
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 0.3rem;
+}
+
+.indentRuler span {
+  border-top: 1px solid rgba(15, 23, 42, 0.45);
+}
+
+.indentMeasureCard label {
+  display: grid;
+  gap: 0.45rem;
+  color: rgba(226, 232, 240, 0.86);
+  font-weight: 800;
+}
+
+.indentMeasureCard__input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.indentMeasureCard__input input {
+  width: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  padding: 0.7rem;
+  background: rgba(2, 6, 23, 0.5);
+  color: #f8fafc;
+}
+
+.alloyAtomicContent {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.alloyAtomicContent svg {
+  width: 100%;
+  border-radius: 20px;
+}
+
+.atom {
+  fill: #67e8f9;
+  stroke: rgba(8, 47, 73, 0.45);
+  stroke-width: 3;
+}
+
+.atom--mixed {
+  fill: #facc15;
+}
+
+.atomLayerArrow {
+  fill: none;
+  stroke: #facc15;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 10 10;
+}
+
+.alloyObservation textarea {
+  width: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  padding: 0.7rem;
+  background: rgba(2, 6, 23, 0.5);
+  color: #f8fafc;
+}
+
+.alloyStaticHeader {
+  cursor: default;
+}
+
+@keyframes alloyBallDrop {
+  0% {
+    transform: translateY(0);
+  }
+  72% {
+    transform: translateY(170px);
+  }
+  86% {
+    transform: translateY(136px);
+  }
+  100% {
+    transform: translateY(154px);
+  }
+}
+
+@keyframes alloyDentIn {
+  from {
+    transform: scale(0.28);
+    opacity: 0.3;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1100px) {
+  .alloyDataGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .alloyApparatus__top,
+  .alloyPanelHeader,
+  .alloyApparatus__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .alloyRig svg {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .alloyMaterialCard {
+    grid-template-columns: 46px minmax(0, 1fr);
+    padding: 0.8rem;
+  }
+
+  .alloyBlockIcon {
+    width: 42px;
+    height: 30px;
+  }
+
+  .steelBallIcon {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+/* Reusable Quizizz-style science check */
+.quizCard {
+  margin-top: 1rem;
+}
+
+.quizCard__body {
+  display: grid;
+  gap: 1rem;
+}
+
+.quizCard__progress {
+  height: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(2, 6, 23, 0.58);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.quizCard__progress i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #22d3ee, #67e8f9 58%, #fde68a);
+  transition: width 0.25s ease;
+}
+
+.quizCard__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: rgba(203, 213, 225, 0.78);
+  font-weight: 900;
+}
+
+.quizCard__meta strong {
+  color: #fde68a;
+}
+
+.quizCard h2 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(1.25rem, 3vw, 1.8rem);
+  line-height: 1.25;
+}
+
+.quizCard__options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.quizOption {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 68px;
+  border: 1px solid rgba(103, 232, 249, 0.16);
+  border-radius: 18px;
+  padding: 0.8rem;
+  background: rgba(2, 6, 23, 0.36);
+  color: #f8fafc;
+  text-align: left;
+  cursor: pointer;
+}
+
+.quizOption span {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: rgba(34, 211, 238, 0.14);
+  color: #67e8f9;
+  font-weight: 950;
+}
+
+.quizOption strong {
+  line-height: 1.35;
+}
+
+.quizOption--correct {
+  border-color: rgba(34, 197, 94, 0.54);
+  background: rgba(22, 101, 52, 0.4);
+}
+
+.quizOption--correct span {
+  background: #22c55e;
+  color: #052e16;
+}
+
+.quizOption--wrong {
+  border-color: rgba(248, 113, 113, 0.58);
+  background: rgba(127, 29, 29, 0.42);
+}
+
+.quizOption--wrong span {
+  background: #ef4444;
+  color: #fff1f2;
+}
+
+.quizCard__feedback,
+.quizCard__complete {
+  display: grid;
+  gap: 0.55rem;
+  border-radius: 18px;
+  padding: 1rem;
+  border: 1px solid rgba(250, 204, 21, 0.22);
+  background: rgba(120, 53, 15, 0.18);
+}
+
+.quizCard__feedback strong,
+.quizCard__complete span {
+  color: #fde68a;
+  font-weight: 950;
+}
+
+.quizCard__feedback p,
+.quizCard__complete p {
+  margin: 0;
+  color: rgba(226, 232, 240, 0.84);
+}
+
+.quizCard__feedback button,
+.quizCard__complete button {
+  justify-self: start;
+  border: 0;
+  border-radius: 14px;
+  padding: 0.72rem 1rem;
+  background: linear-gradient(135deg, #22d3ee, #38bdf8);
+  color: #082f49;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.quizCard__complete strong {
+  color: #67e8f9;
+  font-size: clamp(2.4rem, 8vw, 4rem);
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .quizCard__options {
+    grid-template-columns: 1fr;
+  }
+
+  .quizCard__meta {
+    flex-direction: column;
+  }
+}

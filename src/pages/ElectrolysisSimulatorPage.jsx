@@ -5,8 +5,9 @@ import ComparisonTable from "../components/electrolysis/ComparisonTable";
 import DraggableMaterial from "../components/electrolysis/DraggableMaterial";
 import ElectrolysisApparatus from "../components/electrolysis/ElectrolysisApparatus";
 import ObservationTable from "../components/electrolysis/ObservationTable";
-import ReflectionQuestions from "../components/electrolysis/ReflectionQuestions";
+import QuizCard from "../components/quiz/QuizCard";
 import { observationRows } from "../data/electrolysisQuestions";
+import { electrolysisQuiz } from "../data/simulatorQuizzes";
 
 const initialBulbAnswers = { solid: "", molten: "", aqueous: "" };
 const initialInferences = { solid: "", molten: "", aqueous: "" };
@@ -27,6 +28,7 @@ export default function ElectrolysisSimulatorPage() {
   const [aqueousItems, setAqueousItems] = useState(initialAqueousItems);
   const [aqueousCircuitOn, setAqueousCircuitOn] = useState(false);
   const [showIons, setShowIons] = useState(true);
+  const [quizResult, setQuizResult] = useState({ score: 0, total: electrolysisQuiz.length });
 
   const learningMessage = useMemo(() => {
     if (mode === "aqueous") {
@@ -108,6 +110,7 @@ export default function ElectrolysisSimulatorPage() {
     setAqueousItems(initialAqueousItems);
     setAqueousCircuitOn(false);
     setShowIons(true);
+    setQuizResult({ score: 0, total: electrolysisQuiz.length });
   };
 
   const aqueousReady = aqueousItems.water && aqueousItems.powder && aqueousCircuitOn;
@@ -191,6 +194,8 @@ export default function ElectrolysisSimulatorPage() {
             aqueousReady={aqueousReady}
             bulbAnswers={bulbAnswers}
             inferences={inferences}
+            quizScore={quizResult.score}
+            quizTotal={quizResult.total}
           />
         </aside>
       </section>
@@ -228,7 +233,11 @@ export default function ElectrolysisSimulatorPage() {
         )}
       </section>
 
-      <ReflectionQuestions />
+      <QuizCard
+        title="Science Check"
+        questions={electrolysisQuiz}
+        onComplete={(score, total) => setQuizResult({ score, total })}
+      />
     </main>
   );
 }

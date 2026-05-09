@@ -27,6 +27,15 @@ export const simulators = [
     href: "/simulator/pola-pertumbuhan",
   },
   {
+    id: "aloi",
+    title: "Kekerasan Logam Tulen dan Aloi",
+    level: "Tingkatan 4",
+    topic: "Bab 9 Kimia Industri: Aloi",
+    description:
+      "Mengkaji kesan jenis bongkah terhadap kedalaman lekukan untuk membandingkan kekerasan logam tulen dan aloi.",
+    href: "/simulator/aloi",
+  },
+  {
     id: "kadar-tindak-balas",
     title: "Kadar Tindak Balas",
     level: "Tingkatan 5",

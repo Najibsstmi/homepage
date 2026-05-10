@@ -3,8 +3,7 @@ import { alloyObservationRows } from "../../data/alloyQuestions";
 export default function AlloyObservationTable({ answers, onChange, results }) {
   const isRowCorrect = (row) =>
     answers[row.id]?.depth === row.depthAnswer &&
-    answers[row.id]?.hardness === row.hardnessAnswer &&
-    (answers[row.id]?.inference || "").toLowerCase().includes(row.id === "pure" ? "mudah" : "berlainan");
+    answers[row.id]?.hardness === row.hardnessAnswer;
 
   return (
     <section className="electroPanel electroAccordion alloyObservation">
@@ -20,7 +19,6 @@ export default function AlloyObservationTable({ answers, onChange, results }) {
                 <th>Jenis bongkah</th>
                 <th>Kedalaman lekukan</th>
                 <th>Kekerasan</th>
-                <th>Inferens</th>
               </tr>
             </thead>
             <tbody>
@@ -50,17 +48,9 @@ export default function AlloyObservationTable({ answers, onChange, results }) {
                       <option value="Kurang keras">Kurang keras</option>
                       <option value="Lebih keras">Lebih keras</option>
                     </select>
-                  </td>
-                  <td>
-                    <textarea
-                      rows="3"
-                      value={answers[row.id]?.inference || ""}
-                      onChange={(event) => onChange(row.id, "inference", event.target.value)}
-                      placeholder="Tulis inferens ringkas..."
-                    />
-                    {(answers[row.id]?.depth || answers[row.id]?.hardness || answers[row.id]?.inference) && (
+                    {(answers[row.id]?.depth || answers[row.id]?.hardness) && (
                       <p className={isRowCorrect(row) ? "checkText checkText--ok" : "checkText checkText--warn"}>
-                        {isRowCorrect(row) ? "✓ Pemerhatian tepat" : "Lengkapkan idea tentang lekukan dan susunan atom."}
+                        {isRowCorrect(row) ? "Pemerhatian tepat" : "Semak semula hubungan antara lekukan dan kekerasan."}
                       </p>
                     )}
                   </td>

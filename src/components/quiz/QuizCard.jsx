@@ -4,24 +4,51 @@ export default function QuizCard({ title = "Science Check", questions, onComplet
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState("");
+  const [wrongSelections, setWrongSelections] = useState({});
+  const [missedFirstAttempt, setMissedFirstAttempt] = useState({});
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
   const current = questions[index];
-  const answered = Boolean(selected);
-  const progress = questions.length ? ((done ? questions.length : index) / questions.length) * 100 : 0;
+  const isCorrectSelection = selected === current.answer;
+  const attempted = Boolean(selected);
+  const currentWrongSelections = wrongSelections[index] || [];
+  const progressStep = done ? questions.length : isCorrectSelection ? index + 1 : index;
+  const progress = questions.length ? (progressStep / questions.length) * 100 : 0;
 
   const choose = (option) => {
-    if (answered || done) {
+    if (isCorrectSelection || done) {
       return;
     }
 
     setSelected(option);
     if (option === current.answer) {
-      setScore((value) => value + 1);
+      if (!missedFirstAttempt[index]) {
+        setScore((value) => value + 1);
+      }
+      return;
     }
+
+    setMissedFirstAttempt((currentMisses) => ({
+      ...currentMisses,
+      [index]: true,
+    }));
+    setWrongSelections((currentSelections) => {
+      const previous = currentSelections[index] || [];
+      if (previous.includes(option)) {
+        return currentSelections;
+      }
+      return {
+        ...currentSelections,
+        [index]: [...previous, option],
+      };
+    });
   };
 
   const next = () => {
+    if (!isCorrectSelection) {
+      return;
+    }
+
     if (index < questions.length - 1) {
       setIndex((value) => value + 1);
       setSelected("");
@@ -36,6 +63,8 @@ export default function QuizCard({ title = "Science Check", questions, onComplet
   const retry = () => {
     setIndex(0);
     setSelected("");
+    setWrongSelections({});
+    setMissedFirstAttempt({});
     setScore(0);
     setDone(false);
     onComplete?.(0, questions.length);
@@ -56,7 +85,7 @@ export default function QuizCard({ title = "Science Check", questions, onComplet
 
           {done ? (
             <div className="quizCard__complete">
-              <span>Skor akhir</span>
+              <span>Skor cubaan pertama</span>
               <strong>{score}/{questions.length}</strong>
               <p>{score === questions.length ? "Hebat!" : "Cuba semak semula konsep."}</p>
               <button type="button" onClick={retry}>Ulang kuiz</button>
@@ -65,17 +94,18 @@ export default function QuizCard({ title = "Science Check", questions, onComplet
             <>
               <div className="quizCard__meta">
                 <span>Soalan {index + 1}/{questions.length}</span>
-                <strong>{answered && (selected === current.answer ? "Hebat!" : "Cuba semak semula konsep.")}</strong>
+                <strong>{attempted && (isCorrectSelection ? "Betul!" : "Cuba lagi.")}</strong>
               </div>
               <h2>{current.question}</h2>
               <div className="quizCard__options">
                 {Object.entries(current.options).map(([key, value]) => {
-                  const isCorrect = answered && key === current.answer;
-                  const isWrong = answered && key === selected && key !== current.answer;
+                  const isCorrect = isCorrectSelection && key === current.answer;
+                  const isWrong = currentWrongSelections.includes(key);
                   return (
                     <button
                       key={key}
                       type="button"
+                      disabled={isCorrectSelection || isWrong}
                       className={[
                         "quizOption",
                         isCorrect ? "quizOption--correct" : "",
@@ -90,13 +120,22 @@ export default function QuizCard({ title = "Science Check", questions, onComplet
                 })}
               </div>
 
-              {answered && (
+              {attempted && (
                 <div className="quizCard__feedback">
-                  <strong>Jawapan betul: {current.answer}</strong>
-                  <p>{current.explanation}</p>
-                  <button type="button" onClick={next}>
-                    {index < questions.length - 1 ? "Soalan seterusnya" : "Lihat skor"}
-                  </button>
+                  {isCorrectSelection ? (
+                    <>
+                      <strong>Jawapan betul: {current.answer}</strong>
+                      <p>{current.explanation}</p>
+                      <button type="button" onClick={next}>
+                        {index < questions.length - 1 ? "Soalan seterusnya" : "Lihat skor"}
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <strong>Cuba lagi</strong>
+                      <p>Jawapan betul belum dipaparkan. Pilih pilihan lain sehingga tepat.</p>
+                    </>
+                  )}
                 </div>
               )}
             </>

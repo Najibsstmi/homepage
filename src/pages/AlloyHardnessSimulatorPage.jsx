@@ -10,15 +10,14 @@ import { alloyMaterials, getIndentDepth } from "../data/alloyQuestions";
 import { alloyQuiz } from "../data/simulatorQuizzes";
 
 const initialTableAnswers = {
-  pure: { depth: "", hardness: "", inference: "" },
-  alloy: { depth: "", hardness: "", inference: "" },
+  pure: { depth: "", hardness: "" },
+  alloy: { depth: "", hardness: "" },
 };
 
 const isWithinTolerance = (value, expected) => Math.abs(value - expected) <= 0.2;
 
 export default function AlloyHardnessSimulatorPage() {
   const [selectedMaterial, setSelectedMaterial] = useState("");
-  const [dropHeight, setDropHeight] = useState("medium");
   const [dropping, setDropping] = useState(false);
   const [results, setResults] = useState({});
   const [latestResult, setLatestResult] = useState(null);
@@ -64,7 +63,7 @@ export default function AlloyHardnessSimulatorPage() {
     window.setTimeout(() => {
       const result = {
         materialId: selectedMaterial,
-        depth: getIndentDepth(selectedMaterial, dropHeight),
+        depth: getIndentDepth(selectedMaterial),
       };
       setResults((current) => ({ ...current, [selectedMaterial]: result }));
       setLatestResult(result);
@@ -74,7 +73,6 @@ export default function AlloyHardnessSimulatorPage() {
 
   const resetExperiment = () => {
     setSelectedMaterial("");
-    setDropHeight("medium");
     setDropping(false);
     setResults({});
     setLatestResult(null);
@@ -109,15 +107,12 @@ export default function AlloyHardnessSimulatorPage() {
       <section className="electroLayout alloyLayout">
         <MaterialTray
           selectedMaterial={selectedMaterial}
-          dropHeight={dropHeight}
           onSelectMaterial={setSelectedMaterial}
-          onHeightChange={setDropHeight}
         />
 
         <div className="electroMain alloyMain">
           <AlloyApparatus
             selectedMaterial={selectedMaterial}
-            dropHeight={dropHeight}
             dropping={dropping}
             latestResult={latestResult}
             completed={completed}

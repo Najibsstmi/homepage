@@ -1,6 +1,190 @@
 import ReactionAtomicView from "./ReactionAtomicView";
+import { getConcentrationProgress } from "../../data/reactionRateData";
 
-export default function ReactionRateApparatus({ factor, option, running, elapsed, volume, progress, completed, canRun, onStart, onReset }) {
+function ConcentrationFormula() {
+  return (
+    <>
+      Na<sub>2</sub>S<sub>2</sub>O<sub>3</sub> + H<sub>2</sub>SO<sub>4</sub> &rarr; Na<sub>2</sub>SO<sub>4</sub> + SO<sub>2</sub> + S + H<sub>2</sub>O
+    </>
+  );
+}
+
+function ConcentrationUnit({ label }) {
+  return (
+    <>
+      {label.replace(" mol dm-3", "")} mol dm<sup>-3</sup>
+    </>
+  );
+}
+
+function ReactionConcentrationApparatus({
+  option,
+  running,
+  activeExperiment,
+  elapsed,
+  concentrationRuns,
+  concentrationFeedback,
+  activeConcentrationRun,
+  onStart,
+  onStop,
+  onReset,
+}) {
+  const record = concentrationRuns[option.id];
+  const isActive = running && activeExperiment === "concentration" && activeConcentrationRun?.optionId === option.id;
+  const displayTime = isActive ? elapsed : record?.time || 0;
+  const visualProgress = isActive ? getConcentrationProgress(elapsed, option.id) : record ? 1 : 0;
+  const xOpacity = Math.max(0.02, 1 - Math.max(0, visualProgress - 0.08) / 0.78);
+  const xBlur = Math.min(10, visualProgress * 9);
+  const cloudOpacity = Math.min(0.9, 0.08 + visualProgress * 0.82);
+  const sulfurDots = Array.from({ length: 34 }, (_, index) => ({
+    x: 158 + ((index * 29) % 170),
+    y: 280 + ((index * 17) % 70),
+    r: 2 + (index % 3),
+  }));
+  return (
+    <section className="electroPanel reactionApparatus reactionApparatus--concentration">
+      <div className="reactionApparatus__top">
+        <div>
+          <h2>Radas Eksperimen</h2>
+          <p>Faktor Kepekatan</p>
+          <strong className="reactionConcentrationBadge">
+            <ConcentrationUnit label={option.label} />
+          </strong>
+        </div>
+        <div className="reactionActions reactionActions--concentration">
+          <button type="button" className="alloyReleaseButton" onClick={onStart} disabled={running}>
+            Mula tindak balas
+          </button>
+          <button type="button" className="reactionStopButton" onClick={onStop} disabled={!isActive}>
+            STOP
+          </button>
+          <button type="button" onClick={onReset}>Reset</button>
+        </div>
+      </div>
+
+      <div className="reactionConcentrationEquation" aria-label="Persamaan tindak balas">
+        <ConcentrationFormula />
+      </div>
+
+      <div
+        className="reactionConcentrationStage"
+        style={{
+          "--x-opacity": xOpacity,
+          "--x-blur": `${xBlur}px`,
+          "--cloud-opacity": cloudOpacity,
+        }}
+      >
+        <section className="reactionTopViewCard" aria-label="Pandangan atas kelalang">
+          <div>
+            <h3>Pandangan atas kelalang</h3>
+            <p>Lihat tanda X melalui larutan dari atas.</p>
+          </div>
+          <div className="reactionTopViewCircle">
+            <span className="reactionTopViewLiquid" />
+            <span className="reactionTopViewCloud" />
+            <strong>X</strong>
+          </div>
+          <em>{visualProgress >= 0.92 ? "X tidak kelihatan" : visualProgress >= 0.72 ? "X hampir hilang" : "X masih kelihatan"}</em>
+        </section>
+
+        <section className="reactionConcentrationMacro" aria-label="Kelalang kon natrium tiosulfat dan asid sulfurik">
+          <svg viewBox="0 0 520 430" role="img" aria-label="Kelalang kon mengandungi natrium tiosulfat dan larutan menjadi keruh">
+            <defs>
+              <linearGradient id="thiosulfateLiquid" x1="0%" x2="100%">
+                <stop offset="0%" stopColor="#7dd3fc" stopOpacity="0.62" />
+                <stop offset="100%" stopColor="#fef08a" stopOpacity="0.38" />
+              </linearGradient>
+              <linearGradient id="concentrationGlass" x1="0%" x2="100%">
+                <stop offset="0%" stopColor="#e0f2fe" stopOpacity="0.18" />
+                <stop offset="44%" stopColor="#ffffff" stopOpacity="0.06" />
+                <stop offset="100%" stopColor="#bae6fd" stopOpacity="0.2" />
+              </linearGradient>
+              <clipPath id="concentrationFlaskClip">
+                <path d="M 210 60 L 310 60 L 310 130 L 390 354 Q 400 384 368 390 L 152 390 Q 120 384 130 354 L 210 130 Z" />
+              </clipPath>
+            </defs>
+            <rect className="reactionStageBg" x="0" y="0" width="520" height="430" rx="24" />
+            <rect className="reactionBench" x="72" y="388" width="376" height="14" rx="3" />
+            <rect className="reactionPaperSheet" x="116" y="348" width="300" height="44" rx="8" />
+            <text className="reactionSvgLabel reactionSvgLabel--center" x="266" y="420">Kertas putih di bawah kelalang</text>
+
+            <path className="reactionConcentrationFlask" d="M 210 60 L 310 60 L 310 130 L 390 354 Q 400 384 368 390 L 152 390 Q 120 384 130 354 L 210 130 Z" />
+            <g clipPath="url(#concentrationFlaskClip)">
+              <path className="reactionConcentrationLiquid" d="M 140 292 C 194 276, 276 306, 382 286 L 394 354 Q 402 376 368 382 L 154 382 Q 120 376 128 354 Z" />
+              <path className="reactionConcentrationCloud" d="M 130 258 C 190 236, 274 268, 392 246 L 402 386 L 122 386 Z" />
+              {sulfurDots.map((dot, index) => (
+                <circle
+                  key={index}
+                  className="reactionSulfurDot"
+                  cx={dot.x}
+                  cy={dot.y}
+                  r={dot.r}
+                  style={{ opacity: visualProgress > 0.16 ? Math.min(0.92, visualProgress + (index % 4) * 0.08) : 0 }}
+                />
+              ))}
+            </g>
+            <path className="reactionConcentrationSurface" d="M 164 292 C 210 280, 280 300, 356 286" />
+            <line className="reactionConcentrationNeck" x1="212" y1="64" x2="308" y2="64" />
+            <text className="reactionSvgLabel reactionSvgLabel--center" x="260" y="49">Kelalang kon</text>
+            <text className="reactionSvgLabel reactionSvgLabel--center" x="260" y="168">Na2S2O3</text>
+            <text className="reactionSvgLabel reactionSvgLabel--center" x="260" y="328">Larutan semakin keruh</text>
+
+            <g className={isActive ? "reactionAcidPour reactionAcidPour--active" : "reactionAcidPour"}>
+              <rect className="reactionAcidBeaker" x="392" y="80" width="76" height="66" rx="12" />
+              <text className="reactionSvgMetric" x="430" y="120">H2SO4</text>
+              <path className="reactionPourLine" d="M 392 138 C 362 158, 340 178, 314 204" />
+            </g>
+          </svg>
+        </section>
+
+        <section className="reactionStopwatchCard" aria-label="Jam randik digital">
+          <span>Jam Randik</span>
+          <strong>{displayTime.toFixed(1)} s</strong>
+          <p>Tekan STOP apabila tanda X dalam pandangan atas tidak kelihatan.</p>
+          <div className={concentrationFeedback.includes("direkodkan") ? "reactionStopFeedback reactionStopFeedback--ok" : "reactionStopFeedback"}>
+            {concentrationFeedback}
+          </div>
+        </section>
+      </div>
+
+    </section>
+  );
+}
+
+export default function ReactionRateApparatus({
+  factor,
+  option,
+  running,
+  activeExperiment,
+  elapsed,
+  volume,
+  progress,
+  completed,
+  concentrationRuns = {},
+  concentrationFeedback,
+  activeConcentrationRun,
+  canRun,
+  onStart,
+  onStop,
+  onReset,
+}) {
+  if (factor.id === "concentration") {
+    return (
+      <ReactionConcentrationApparatus
+        option={option}
+        running={running}
+        activeExperiment={activeExperiment}
+        elapsed={elapsed}
+        concentrationRuns={concentrationRuns}
+        concentrationFeedback={concentrationFeedback}
+        activeConcentrationRun={activeConcentrationRun}
+        onStart={onStart}
+        onStop={onStop}
+        onReset={onReset}
+      />
+    );
+  }
+
   const bubbleCount = Math.min(18, Math.max(4, Math.round(option.rate * 10)));
   const zincTotal = option.id === "powder" ? 30 : 10;
   const zincCount = completed ? (option.id === "large" ? 1 : 0) : Math.max(0, Math.ceil(zincTotal * (1 - progress * 0.94)));

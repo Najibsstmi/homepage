@@ -4854,31 +4854,6 @@ section {
   box-shadow: 0 12px 26px rgba(148, 163, 184, 0.2);
 }
 
-.alloyHeightControl {
-  display: grid;
-  gap: 0.45rem;
-  padding: 0.9rem;
-  border-radius: 16px;
-  border: 1px solid rgba(103, 232, 249, 0.14);
-  background: rgba(255, 255, 255, 0.045);
-}
-
-.alloyHeightControl span {
-  color: rgba(226, 232, 240, 0.82);
-}
-
-.alloyHeightControl strong {
-  color: #67e8f9;
-}
-
-.alloyHeightControl select {
-  border: 1px solid rgba(148, 163, 184, 0.22);
-  border-radius: 12px;
-  padding: 0.7rem;
-  background: rgba(2, 6, 23, 0.56);
-  color: #f8fafc;
-}
-
 .alloyApparatus {
   overflow: hidden;
 }
@@ -4931,7 +4906,8 @@ section {
   height: 34px;
   border-radius: 12px;
   background: rgba(250, 204, 21, 0.18);
-  font-size: 1.55rem;
+  font-size: 0.78rem;
+  font-weight: 950;
   line-height: 1;
 }
 
@@ -5023,11 +4999,11 @@ section {
 }
 
 .alloySteelBall--impactAlloy {
-  transform: translateY(60px);
+  transform: translateY(122px);
 }
 
 .alloySteelBall--impactPure {
-  transform: translateY(78px);
+  transform: translateY(140px);
 }
 
 .alloySteelBall--dropAlloy {
@@ -5355,13 +5331,13 @@ section {
     transform: translateY(0);
   }
   72% {
-    transform: translateY(68px);
+    transform: translateY(132px);
   }
   86% {
-    transform: translateY(52px);
+    transform: translateY(106px);
   }
   100% {
-    transform: translateY(60px);
+    transform: translateY(122px);
   }
 }
 
@@ -5370,13 +5346,13 @@ section {
     transform: translateY(0);
   }
   72% {
-    transform: translateY(88px);
+    transform: translateY(152px);
   }
   86% {
-    transform: translateY(66px);
+    transform: translateY(122px);
   }
   100% {
-    transform: translateY(78px);
+    transform: translateY(140px);
   }
 }
 
@@ -5441,8 +5417,8 @@ section {
     rgba(15, 23, 42, 0.76);
 }
 
-.reactionControlDeck,
 .reactionWorkspace,
+.reactionControlDeck,
 .reactionMain,
 .reactionProgress {
   min-width: 0;
@@ -5546,7 +5522,7 @@ section {
 
 .reactionWorkspace {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 0.34fr);
   gap: 1rem;
   margin-top: 1rem;
   align-items: start;
@@ -5581,6 +5557,11 @@ section {
   color: #fde68a;
 }
 
+.reactionTab:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 .reactionFactorInfo,
 .reactionMassCard,
 .reactionRunStatus,
@@ -5600,7 +5581,7 @@ section {
 }
 
 .reactionFactorInfo {
-  grid-template-columns: minmax(170px, 0.58fr) minmax(0, 1fr);
+  grid-template-columns: minmax(220px, 0.42fr) minmax(0, 1fr);
   align-items: stretch;
   gap: 0.85rem;
 }
@@ -5633,6 +5614,24 @@ section {
 .reactionPanelTitle p,
 .reactionApparatus__top p {
   margin: 0;
+}
+
+.reactionVariableList {
+  display: grid;
+  gap: 0.38rem;
+  margin-top: 0.25rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid rgba(134, 239, 172, 0.16);
+}
+
+.reactionVariableList strong {
+  color: #e0f2fe;
+  font-size: 0.94rem;
+}
+
+.reactionVariableList p {
+  color: rgba(226, 232, 240, 0.82);
+  line-height: 1.5;
 }
 
 .reactionMassCard {
@@ -5697,8 +5696,22 @@ section {
 }
 
 .reactionOptionList {
-  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
   margin-top: 0;
+}
+
+.reactionOptionList--concentration {
+  align-items: start;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.reactionOptionList--concentration .reactionOption {
+  min-height: 76px;
+  padding: 0.74rem 0.62rem;
+}
+
+.reactionOptionList--concentration .reactionOption span {
+  font-size: 0.88rem;
 }
 
 .reactionOption {
@@ -5766,6 +5779,319 @@ section {
 .reactionActions button:disabled {
   cursor: not-allowed;
   opacity: 0.58;
+}
+
+.reactionActions--concentration .reactionStopButton {
+  border-color: rgba(248, 113, 113, 0.5);
+  background: rgba(127, 29, 29, 0.42);
+  color: #fecaca;
+}
+
+.reactionConcentrationBadge {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 0.6rem;
+  border-radius: 999px;
+  padding: 0.46rem 0.7rem;
+  border: 1px solid rgba(103, 232, 249, 0.26);
+  background: rgba(8, 145, 178, 0.2);
+  color: #67e8f9;
+  font-weight: 950;
+}
+
+.reactionConcentrationEquation {
+  margin-top: 0.85rem;
+  border-radius: 14px;
+  padding: 0.72rem 0.85rem;
+  border: 1px solid rgba(103, 232, 249, 0.14);
+  background: rgba(2, 6, 23, 0.34);
+  color: rgba(226, 232, 240, 0.9);
+  font-weight: 900;
+}
+
+.reactionConcentrationStage {
+  display: grid;
+  grid-template-columns: minmax(170px, 0.72fr) minmax(260px, 1.2fr) minmax(160px, 0.58fr);
+  gap: 0.85rem;
+  margin-top: 1rem;
+  padding: 0.85rem;
+  overflow: hidden;
+  border-radius: 24px;
+  background: rgba(2, 6, 23, 0.28);
+}
+
+.reactionTopViewCard,
+.reactionConcentrationMacro,
+.reactionStopwatchCard,
+.reactionConcentrationAtomic {
+  overflow: hidden;
+  border: 1px solid rgba(103, 232, 249, 0.14);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 20% 8%, rgba(34, 211, 238, 0.1), transparent 32%),
+    rgba(2, 6, 23, 0.42);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.reactionTopViewCard {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+  padding: 1rem;
+}
+
+.reactionTopViewCard h3,
+.reactionConcentrationGraphCard h3 {
+  margin: 0;
+  color: #fde68a;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.reactionTopViewCard p {
+  margin: 0.2rem 0 0;
+  color: rgba(226, 232, 240, 0.78);
+  line-height: 1.45;
+}
+
+.reactionTopViewCircle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  justify-self: center;
+  width: min(100%, 190px);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 4px solid rgba(226, 232, 240, 0.68);
+  background: #f8fafc;
+  box-shadow: inset 0 -20px 45px rgba(14, 165, 233, 0.14), 0 18px 30px rgba(2, 6, 23, 0.3);
+}
+
+.reactionTopViewLiquid,
+.reactionTopViewCloud {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.reactionTopViewLiquid {
+  background: rgba(125, 211, 252, 0.2);
+}
+
+.reactionTopViewCloud {
+  background:
+    radial-gradient(circle at 32% 28%, rgba(254, 240, 138, 0.6), transparent 18%),
+    radial-gradient(circle at 66% 58%, rgba(254, 240, 138, 0.46), transparent 20%),
+    rgba(250, 204, 21, 0.38);
+  opacity: var(--cloud-opacity);
+  filter: blur(calc(var(--x-blur) * 0.55));
+  transition: opacity 0.18s ease, filter 0.18s ease;
+}
+
+.reactionTopViewCircle strong {
+  position: relative;
+  z-index: 2;
+  color: #111827;
+  font-size: clamp(4rem, 12vw, 6.4rem);
+  line-height: 1;
+  opacity: var(--x-opacity);
+  filter: blur(var(--x-blur));
+  transition: opacity 0.18s ease, filter 0.18s ease;
+}
+
+.reactionTopViewCard em {
+  justify-self: center;
+  border-radius: 999px;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid rgba(250, 204, 21, 0.34);
+  background: rgba(120, 53, 15, 0.22);
+  color: #fde68a;
+  font-style: normal;
+  font-weight: 950;
+  text-align: center;
+}
+
+.reactionConcentrationMacro svg {
+  display: block;
+  width: 100%;
+  min-height: 390px;
+}
+
+.reactionBench {
+  fill: #94a3b8;
+  opacity: 0.9;
+}
+
+.reactionPaperSheet {
+  fill: rgba(248, 250, 252, 0.92);
+  stroke: rgba(15, 23, 42, 0.28);
+  stroke-width: 2;
+}
+
+.reactionConcentrationFlask {
+  fill: url(#concentrationGlass);
+  stroke: rgba(226, 232, 240, 0.78);
+  stroke-width: 5;
+}
+
+.reactionConcentrationLiquid {
+  fill: url(#thiosulfateLiquid);
+  stroke: rgba(125, 211, 252, 0.28);
+  stroke-width: 2;
+}
+
+.reactionConcentrationCloud {
+  fill: rgba(250, 204, 21, 0.52);
+  opacity: var(--cloud-opacity);
+  filter: blur(calc(var(--x-blur) * 0.26));
+  transition: opacity 0.18s ease, filter 0.18s ease;
+}
+
+.reactionConcentrationSurface,
+.reactionConcentrationNeck {
+  fill: none;
+  stroke: rgba(226, 232, 240, 0.55);
+  stroke-width: 2.5;
+  stroke-dasharray: 10 8;
+}
+
+.reactionSulfurDot {
+  fill: #fef08a;
+  transition: opacity 0.18s ease;
+}
+
+.reactionAcidBeaker {
+  fill: rgba(8, 47, 73, 0.72);
+  stroke: rgba(103, 232, 249, 0.56);
+  stroke-width: 3;
+}
+
+.reactionPourLine {
+  fill: none;
+  stroke: rgba(125, 211, 252, 0.9);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 12 12;
+  opacity: 0;
+}
+
+.reactionAcidPour--active .reactionPourLine {
+  opacity: 1;
+  animation: reactionPourFlow 0.8s linear infinite;
+}
+
+.reactionStopwatchCard {
+  display: grid;
+  gap: 0.8rem;
+  align-content: center;
+  padding: 1rem;
+  text-align: center;
+}
+
+.reactionStopwatchCard span {
+  color: #fde68a;
+  font-size: 0.9rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  white-space: normal;
+}
+
+.reactionStopwatchCard strong {
+  color: #67e8f9;
+  font-size: clamp(2.35rem, 6vw, 3.6rem);
+  line-height: 1;
+  font-weight: 950;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.reactionStopwatchCard p {
+  margin: 0;
+  color: rgba(226, 232, 240, 0.78);
+  line-height: 1.45;
+}
+
+.reactionStopFeedback {
+  border-radius: 14px;
+  padding: 0.72rem;
+  border: 1px solid rgba(250, 204, 21, 0.28);
+  background: rgba(120, 53, 15, 0.18);
+  color: #fde68a;
+  font-weight: 900;
+}
+
+.reactionStopFeedback--ok {
+  border-color: rgba(34, 197, 94, 0.34);
+  background: rgba(22, 101, 52, 0.2);
+  color: #86efac;
+}
+
+.reactionConcentrationAtomic {
+  display: grid;
+  grid-column: 1 / -1;
+  margin-top: 1rem;
+}
+
+.reactionThioChamber {
+  position: relative;
+  min-height: 220px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 70% 28%, rgba(250, 204, 21, 0.14), transparent 28%),
+    linear-gradient(180deg, rgba(8, 47, 73, 0.34), rgba(2, 6, 23, 0.72));
+}
+
+.reactionThioParticle {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 950;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.reactionThioParticle--thio {
+  width: 44px;
+  height: 28px;
+  background: rgba(34, 211, 238, 0.18);
+  border: 1px solid rgba(103, 232, 249, 0.36);
+  color: #cffafe;
+}
+
+.reactionThioParticle--acid {
+  width: 32px;
+  height: 32px;
+  background: rgba(244, 114, 182, 0.24);
+  border: 1px solid rgba(251, 113, 133, 0.42);
+  color: #fecdd3;
+}
+
+.reactionThioParticle--sulfur {
+  width: 28px;
+  height: 28px;
+  background: rgba(250, 204, 21, 0.35);
+  border: 1px solid rgba(253, 230, 138, 0.52);
+  color: #fef3c7;
+}
+
+.reactionThioChamber--active .reactionThioParticle {
+  animation: reactionThioDrift 1.65s ease-in-out infinite alternate;
+  animation-delay: var(--delay);
+}
+
+.reactionThioSummary {
+  margin: 0;
+  padding: 0.85rem;
+  border-top: 1px solid rgba(103, 232, 249, 0.1);
+  color: rgba(226, 232, 240, 0.82);
+  line-height: 1.55;
 }
 
 .reactionStage {
@@ -6479,6 +6805,29 @@ section {
   width: 100%;
 }
 
+.reactionConcentrationGraphGrid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.reactionConcentrationGraphCard {
+  border-radius: 18px;
+  padding: 0.85rem;
+  border: 1px solid rgba(103, 232, 249, 0.12);
+  background: rgba(2, 6, 23, 0.26);
+}
+
+.reactionConcentrationGraphCard .reactionPanelTitle {
+  margin-bottom: 0.75rem;
+}
+
+.reactionConcentrationGraphCard svg {
+  display: block;
+  width: 100%;
+  border-radius: 18px;
+}
+
 .reactionGridLine {
   stroke: rgba(148, 163, 184, 0.16);
   stroke-width: 1;
@@ -6621,6 +6970,34 @@ section {
 
 .reactionPendingCell {
   color: rgba(148, 163, 184, 0.62);
+}
+
+.reactionConcentrationTableWrap {
+  max-height: 430px;
+  overflow: auto !important;
+}
+
+.reactionConcentrationTableWrap table {
+  min-width: 680px !important;
+}
+
+.reactionStatusPill {
+  display: inline-flex;
+  justify-content: center;
+  min-width: 108px;
+  border-radius: 999px;
+  padding: 0.42rem 0.65rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(15, 23, 42, 0.56);
+  color: rgba(226, 232, 240, 0.72);
+  font-size: 0.86rem;
+  font-weight: 950;
+}
+
+.reactionStatusPill--done {
+  border-color: rgba(34, 197, 94, 0.34);
+  background: rgba(22, 101, 52, 0.22);
+  color: #86efac;
 }
 
 .reactionApparatusFooter {
@@ -6815,6 +7192,24 @@ section {
   }
 }
 
+@keyframes reactionPourFlow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@keyframes reactionThioDrift {
+  from {
+    transform: translate(-50%, -50%) translate(-10px, 8px);
+  }
+  to {
+    transform: translate(-50%, -50%) translate(12px, -10px);
+  }
+}
+
 @keyframes reactionHIonApproach {
   0% {
     left: var(--x);
@@ -6978,12 +7373,17 @@ section {
     justify-content: stretch;
   }
 
+  .reactionConcentrationStage {
+    grid-template-columns: 1fr;
+  }
+
   .reactionMacroView,
   .reactionAtomicView {
     min-height: 360px;
   }
 
-  .reactionMacroView svg {
+  .reactionMacroView svg,
+  .reactionConcentrationMacro svg {
     min-height: 360px;
   }
 
@@ -7120,6 +7520,10 @@ section {
   color: #f8fafc;
   text-align: left;
   cursor: pointer;
+}
+
+.quizOption:disabled {
+  cursor: default;
 }
 
 .quizOption span {

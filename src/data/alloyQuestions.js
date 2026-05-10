@@ -21,18 +21,11 @@ export const alloyMaterials = {
   },
 };
 
-export const dropHeights = {
-  low: { label: "Rendah", factor: 0.82 },
-  medium: { label: "Sederhana", factor: 1 },
-  high: { label: "Tinggi", factor: 1.18 },
-};
-
 export const alloyObservationRows = Object.values(alloyMaterials);
 
-export function getIndentDepth(materialId, dropHeight) {
+export function getIndentDepth(materialId) {
   const material = alloyMaterials[materialId];
-  const height = dropHeights[dropHeight] || dropHeights.medium;
-  return material ? material.baseDepth * height.factor : 0;
+  return material ? material.baseDepth : 0;
 }
 
 export function checkAlloyReflection(answer, concept) {

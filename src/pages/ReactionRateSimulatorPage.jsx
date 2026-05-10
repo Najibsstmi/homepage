@@ -1,12 +1,24 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import QuizCard from "../components/quiz/QuizCard";
+import ReactionConcentrationGraphs from "../components/reactionRate/ReactionConcentrationGraphs";
+import ReactionConcentrationObservationTable from "../components/reactionRate/ReactionConcentrationObservationTable";
+import ReactionConcentrationPlotChallenge from "../components/reactionRate/ReactionConcentrationPlotChallenge";
 import ReactionFactorPanel from "../components/reactionRate/ReactionFactorPanel";
 import ReactionGraph from "../components/reactionRate/ReactionGraph";
 import ReactionObservationTable from "../components/reactionRate/ReactionObservationTable";
 import ReactionPlotChallenge from "../components/reactionRate/ReactionPlotChallenge";
 import ReactionProgress from "../components/reactionRate/ReactionProgress";
 import ReactionRateApparatus from "../components/reactionRate/ReactionRateApparatus";
-import { factorOrder, getSizeReactionPoints, reactionFactors, sizeOptionIds } from "../data/reactionRateData";
+import {
+  concentrationOptionIds,
+  concentrationSpeedMultiplier,
+  factorOrder,
+  getConcentrationOption,
+  getInverseTime,
+  getSizeReactionPoints,
+  reactionFactors,
+  sizeOptionIds,
+} from "../data/reactionRateData";
 import { reactionRateQuiz } from "../data/simulatorQuizzes";
 
 const initialOptions = factorOrder.reduce((options, factorId) => {
@@ -15,15 +27,21 @@ const initialOptions = factorOrder.reduce((options, factorId) => {
 }, {});
 
 export default function ReactionRateSimulatorPage() {
-  const [activeFactor, setActiveFactor] = useState("size");
+  const [activeFactor, setActiveFactor] = useState("concentration");
   const [selectedOptions, setSelectedOptions] = useState(initialOptions);
   const [running, setRunning] = useState(false);
   const [elapsed, setElapsed] = useState(0);
+  const [activeExperiment, setActiveExperiment] = useState(null);
   const [activeRun, setActiveRun] = useState(null);
+  const [activeConcentrationRun, setActiveConcentrationRun] = useState(null);
   const [completedRuns, setCompletedRuns] = useState({});
+  const [concentrationRuns, setConcentrationRuns] = useState({});
+  const [concentrationFeedback, setConcentrationFeedback] = useState("Pilih kepekatan dan tekan Mula tindak balas.");
   const [started, setStarted] = useState(false);
   const [plotComplete, setPlotComplete] = useState(false);
+  const [concentrationPlotComplete, setConcentrationPlotComplete] = useState(false);
   const [quizResult, setQuizResult] = useState({ score: 0, total: reactionRateQuiz.length });
+  const concentrationStartedAt = useRef(0);
 
   const factor = reactionFactors[activeFactor];
   const selectedOptionId = selectedOptions[activeFactor] || factor.options[0].id;
@@ -33,10 +51,16 @@ export default function ReactionRateSimulatorPage() {
   const latestPoint = activePoints[activePoints.length - 1] || completedPoints[completedPoints.length - 1] || { time: 0, volume: 0 };
   const completedCount = sizeOptionIds.filter((id) => completedRuns[id]).length;
   const allSizeRunsComplete = completedCount === sizeOptionIds.length;
-  const graphComplete = allSizeRunsComplete || plotComplete;
+  const concentrationCompletedCount = concentrationOptionIds.filter((id) => concentrationRuns[id]).length;
+  const allConcentrationRunsComplete = concentrationCompletedCount === concentrationOptionIds.length;
+  const isConcentration = activeFactor === "concentration";
+  const graphComplete = isConcentration ? allConcentrationRunsComplete || concentrationPlotComplete : allSizeRunsComplete || plotComplete;
+  const progressCompletedCount = isConcentration ? concentrationCompletedCount : completedCount;
+  const progressAllRunsComplete = isConcentration ? allConcentrationRunsComplete : allSizeRunsComplete;
+  const progressTotalRuns = isConcentration ? concentrationOptionIds.length : sizeOptionIds.length;
 
   useEffect(() => {
-    if (!running || !activeRun) {
+    if (!running || activeExperiment !== "size" || !activeRun) {
       return undefined;
     }
 
@@ -56,6 +80,7 @@ export default function ReactionRateSimulatorPage() {
         if (finished) {
           window.clearInterval(timer);
           setRunning(false);
+          setActiveExperiment(null);
           setCompletedRuns((runs) => ({ ...runs, [current.optionId]: fullDataset }));
         }
 
@@ -68,7 +93,21 @@ export default function ReactionRateSimulatorPage() {
     }, 520);
 
     return () => window.clearInterval(timer);
-  }, [running, activeRun?.optionId]);
+  }, [running, activeExperiment, activeRun?.optionId]);
+
+  useEffect(() => {
+    if (!running || activeExperiment !== "concentration" || !activeConcentrationRun) {
+      return undefined;
+    }
+
+    concentrationStartedAt.current = window.performance.now();
+    const timer = window.setInterval(() => {
+      const seconds = ((window.performance.now() - concentrationStartedAt.current) / 1000) * concentrationSpeedMultiplier;
+      setElapsed(Number(seconds.toFixed(1)));
+    }, 80);
+
+    return () => window.clearInterval(timer);
+  }, [running, activeExperiment, activeConcentrationRun?.optionId]);
 
   const activeProgress = useMemo(() => {
     if (!activePoints.length) {
@@ -79,29 +118,91 @@ export default function ReactionRateSimulatorPage() {
   }, [activePoints, completedRuns, selectedOptionId]);
 
   const handleFactorChange = (id) => {
+    if (running) {
+      return;
+    }
+
     setActiveFactor(id);
+    setElapsed(0);
+    setActiveRun(null);
+    setActiveConcentrationRun(null);
   };
 
   const handleOptionChange = (factorId, optionId) => {
     setSelectedOptions((current) => ({ ...current, [factorId]: optionId }));
     setElapsed(0);
     setActiveRun(null);
+    setActiveConcentrationRun(null);
+    if (factorId === "concentration") {
+      setConcentrationFeedback("Kepekatan dipilih. Tekan Mula tindak balas apabila bersedia.");
+    }
   };
 
   const startExperiment = () => {
+    if (running) {
+      return;
+    }
+
+    if (activeFactor === "concentration") {
+      setStarted(true);
+      setRunning(true);
+      setActiveExperiment("concentration");
+      setElapsed(0);
+      setActiveRun(null);
+      setActiveConcentrationRun({ optionId: selectedOptionId });
+      setConcentrationFeedback("Tindak balas bermula. Perhatikan tanda X dari pandangan atas.");
+      return;
+    }
+
     const dataset = getSizeReactionPoints(selectedOptionId);
     setStarted(true);
     setRunning(true);
+    setActiveExperiment("size");
     setElapsed(0);
     setActiveRun({ optionId: selectedOptionId, index: 0, points: [dataset[0]] });
+  };
+
+  const stopConcentrationExperiment = () => {
+    if (!running || activeExperiment !== "concentration" || !activeConcentrationRun) {
+      return;
+    }
+
+    const concentrationOption = getConcentrationOption(activeConcentrationRun.optionId);
+    const stoppedAt = Number(elapsed.toFixed(1));
+
+    if (stoppedAt < concentrationOption.targetTime * 0.9) {
+      setConcentrationFeedback("Tanda X masih kelihatan. Cuba perhatikan semula.");
+      return;
+    }
+
+    const isLate = stoppedAt > concentrationOption.targetTime * 1.35;
+    setRunning(false);
+    setActiveExperiment(null);
+    setActiveConcentrationRun(null);
+    setConcentrationRuns((runs) => ({
+      ...runs,
+      [concentrationOption.id]: {
+        concentration: concentrationOption.concentration,
+        time: stoppedAt,
+        inverseTime: getInverseTime(stoppedAt),
+        status: "Selesai",
+        timing: isLate ? "late" : "accurate",
+      },
+    }));
+    setConcentrationFeedback(isLate ? "Bacaan lewat sedikit. Cuba ulang untuk lebih tepat." : "Bacaan masa direkodkan.");
   };
 
   const resetExperiment = () => {
     setRunning(false);
     setElapsed(0);
+    setActiveExperiment(null);
     setActiveRun(null);
+    setActiveConcentrationRun(null);
     setCompletedRuns({});
+    setConcentrationRuns({});
+    setConcentrationFeedback("Pilih kepekatan dan tekan Mula tindak balas.");
     setPlotComplete(false);
+    setConcentrationPlotComplete(false);
   };
 
   return (
@@ -111,8 +212,9 @@ export default function ReactionRateSimulatorPage() {
         <span className="simulatorHero__kicker">Sains Tingkatan 5 &bull; Bab 4 Kadar Tindak Balas</span>
         <h1>Makmal Kadar Tindak Balas</h1>
         <p>
-          Jalankan eksperimen ketulan dan serbuk zink, bandingkan isi padu gas H2
-          melawan masa, kemudian cabar diri dengan plot graf sendiri.
+          {isConcentration
+            ? "Faktor kepekatan: lihat tanda X dari atas kelalang, tekan STOP apabila X tidak kelihatan."
+            : "Jalankan eksperimen ketulan dan serbuk zink, bandingkan isi padu gas H2 melawan masa, kemudian cabar diri dengan plot graf sendiri."}
         </p>
       </section>
 
@@ -121,6 +223,7 @@ export default function ReactionRateSimulatorPage() {
           activeFactor={activeFactor}
           selectedOptions={selectedOptions}
           completedRuns={completedRuns}
+          concentrationRuns={concentrationRuns}
           running={running}
           onFactorChange={handleFactorChange}
           onOptionChange={handleOptionChange}
@@ -133,12 +236,17 @@ export default function ReactionRateSimulatorPage() {
             factor={factor}
             option={option}
             running={running}
+            activeExperiment={activeExperiment}
             elapsed={elapsed}
             volume={latestPoint.volume}
             progress={activeProgress}
             completed={Boolean(completedRuns[selectedOptionId])}
-            canRun={activeFactor === "size"}
+            concentrationRuns={concentrationRuns}
+            concentrationFeedback={concentrationFeedback}
+            activeConcentrationRun={activeConcentrationRun}
+            canRun={activeFactor === "size" || activeFactor === "concentration"}
             onStart={startExperiment}
+            onStop={stopConcentrationExperiment}
             onReset={resetExperiment}
           />
         </div>
@@ -146,8 +254,9 @@ export default function ReactionRateSimulatorPage() {
         <aside className="electroProgressRail" aria-label="Progress pembelajaran kadar tindak balas">
           <ReactionProgress
             started={started}
-            completedCount={completedCount}
-            allSizeRunsComplete={allSizeRunsComplete}
+            completedCount={progressCompletedCount}
+            totalRuns={progressTotalRuns}
+            allRunsComplete={progressAllRunsComplete}
             graphComplete={graphComplete}
             quizScore={quizResult.score}
             quizTotal={quizResult.total}
@@ -156,11 +265,27 @@ export default function ReactionRateSimulatorPage() {
       </section>
 
       <section className="reactionDataGrid">
-        <ReactionObservationTable completedRuns={completedRuns} />
-        <ReactionGraph completedRuns={completedRuns} activeRun={activeRun} />
+        {isConcentration ? (
+          <>
+            <ReactionConcentrationObservationTable concentrationRuns={concentrationRuns} />
+            <ReactionConcentrationGraphs concentrationRuns={concentrationRuns} />
+          </>
+        ) : (
+          <>
+            <ReactionObservationTable completedRuns={completedRuns} />
+            <ReactionGraph completedRuns={completedRuns} activeRun={activeRun} />
+          </>
+        )}
       </section>
 
-      <ReactionPlotChallenge completedRuns={completedRuns} onComplete={() => setPlotComplete(true)} />
+      {isConcentration ? (
+        <ReactionConcentrationPlotChallenge
+          concentrationRuns={concentrationRuns}
+          onComplete={() => setConcentrationPlotComplete(true)}
+        />
+      ) : (
+        <ReactionPlotChallenge completedRuns={completedRuns} onComplete={() => setPlotComplete(true)} />
+      )}
 
       <QuizCard
         title="Science Check (Kuiz)"

@@ -1,7 +1,7 @@
-export default function ReactionProgress({ started, completedCount, allSizeRunsComplete, graphComplete, quizScore, quizTotal }) {
+export default function ReactionProgress({ started, completedCount, totalRuns = 2, allRunsComplete, graphComplete, quizScore, quizTotal }) {
   const reactionStarter = started ? 10 : 0;
-  const variableController = allSizeRunsComplete ? 10 : 0;
-  const dataCollector = allSizeRunsComplete ? 10 : 0;
+  const variableController = allRunsComplete ? 10 : 0;
+  const dataCollector = allRunsComplete ? 10 : 0;
   const graphAnalyst = graphComplete ? 10 : 0;
   const scienceCheck = quizTotal ? Math.round((quizScore / quizTotal) * 10) : 0;
   const total = reactionStarter + variableController + dataCollector + graphAnalyst + scienceCheck;
@@ -20,7 +20,7 @@ export default function ReactionProgress({ started, completedCount, allSizeRunsC
         <strong>{total}/50</strong>
       </div>
       <div className="scoreboardBadge">Makmal Kadar Tindak Balas</div>
-      <p className="reactionProgressHint">{completedCount}/2 keadaan saiz bahan selesai.</p>
+      <p className="reactionProgressHint">{completedCount}/{totalRuns} keadaan selesai.</p>
       <div className="scoreGrid">
         {items.map(([label, score]) => (
           <div key={label} className="scoreItem" style={{ "--score": `${score * 10}%` }}>

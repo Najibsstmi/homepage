@@ -1,8 +1,6 @@
 export default function MaterialTray({
   selectedMaterial,
-  dropHeight,
   onSelectMaterial,
-  onHeightChange,
 }) {
   const handleDragStart = (event, id) => {
     event.dataTransfer.setData("text/plain", id);
@@ -35,16 +33,6 @@ export default function MaterialTray({
         <strong>Bebola keluli 1 kg</strong>
         <small>Jisim tetap, sudah tergantung pada radas</small>
       </div>
-
-      <label className="alloyHeightControl">
-        <span>Ketinggian jatuhan</span>
-        <strong>{dropHeight === "low" ? "Rendah" : dropHeight === "high" ? "Tinggi" : "Sederhana"}</strong>
-        <select value={dropHeight} onChange={(event) => onHeightChange(event.target.value)}>
-          <option value="low">Rendah</option>
-          <option value="medium">Sederhana</option>
-          <option value="high">Tinggi</option>
-        </select>
-      </label>
 
       <div className="electroNote">
         <strong>Nota ringkas</strong>

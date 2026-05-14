@@ -477,7 +477,6 @@ export default function InertiaMassSimulatorPage() {
   return (
     <main className="electrolysisPage inertiaPage">
       <section className="electroHero inertiaHero">
-        <a className="linearSim__back" href="/simulator">&larr; Semua Simulator</a>
         <span className="simulatorHero__kicker">Sains Tingkatan 4 &bull; Bab 11 Daya dan Gerakan</span>
         <div className="inertiaHero__grid">
           <div>

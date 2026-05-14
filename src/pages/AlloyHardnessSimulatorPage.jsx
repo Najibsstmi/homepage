@@ -95,7 +95,6 @@ export default function AlloyHardnessSimulatorPage() {
   return (
     <main className="electrolysisPage alloyPage">
       <section className="electroHero alloyHero">
-        <a className="linearSim__back" href="/simulator">← Semua Simulator</a>
         <span className="simulatorHero__kicker">Tingkatan 4 • Bab 9 Kimia Industri</span>
         <h1>Eksperimen Mengkaji Kesan Jenis Bongkah terhadap Kedalaman Lekukan</h1>
         <p>

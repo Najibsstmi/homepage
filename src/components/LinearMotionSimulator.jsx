@@ -272,9 +272,6 @@ export default function LinearMotionSimulator() {
   return (
     <main className="linearSim">
       <section className="linearSim__hero">
-        <a className="linearSim__back" href="/simulator">
-          ← Semua Simulator
-        </a>
         <span className="simulatorHero__kicker">Tingkatan 4 • Daya dan Gerakan</span>
         <h1>Gerakan Linear / Pita Detik</h1>
         <p>

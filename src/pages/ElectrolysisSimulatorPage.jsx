@@ -118,7 +118,6 @@ export default function ElectrolysisSimulatorPage() {
   return (
     <main className="electrolysisPage">
       <section className="electroHero">
-        <a className="linearSim__back" href="/simulator">← Semua Simulator</a>
         <span className="simulatorHero__kicker">Tingkatan 5 • Bab 6 Elektrokimia</span>
         <h1>Elektrolisis Sebatian Ion: Pepejal, Leburan dan Akueus</h1>
         <p>

@@ -35,6 +35,7 @@ export default function App() {
   const [message, setMessage] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<Page>("home");
+  const [simulatorRouteVersion, setSimulatorRouteVersion] = useState(0);
   const [modulMenuOpen, setModulMenuOpen] = useState(false);
   const [readMore, setReadMore] = useState(false);
   const [eduTrackReadMore, setEduTrackReadMore] = useState(false);
@@ -192,6 +193,7 @@ export default function App() {
         window.history.replaceState(null, "", `/${homeUrl.search}`);
       } else if (page === "simulator") {
         window.history.replaceState(null, "", "/simulator");
+        setSimulatorRouteVersion((version) => version + 1);
       } else {
         const targetUrl = new URL(window.location.href);
         targetUrl.searchParams.set("page", page);
@@ -455,7 +457,7 @@ export default function App() {
       </nav>
 
       {currentPage === "simulator" ? (
-        <SimulatorPage />
+        <SimulatorPage key={simulatorRouteVersion} />
       ) : currentPage === "inovasi" ? (
         /* ─────────────── PAGE INOVASI ─────────────── */
         <div className="inovasi-page">

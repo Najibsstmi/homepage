@@ -329,7 +329,6 @@ export default function ReactionRateSimulatorPage() {
   return (
     <main className="electrolysisPage reactionRatePage">
       <section className="electroHero reactionHero">
-        <a className="linearSim__back" href="/simulator">&larr; Semua Simulator</a>
         <span className="simulatorHero__kicker">Sains Tingkatan 5 &bull; Bab 4 Kadar Tindak Balas</span>
         <h1>Makmal Kadar Tindak Balas</h1>
         <p>

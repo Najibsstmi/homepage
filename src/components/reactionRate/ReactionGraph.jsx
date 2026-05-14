@@ -33,7 +33,7 @@ export default function ReactionGraph({ completedRuns, activeRun }) {
     <section className="electroPanel reactionGraphPanel">
       <div className="reactionPanelTitle">
         <div>
-          <h2>Graf: Isi Padu Gas H2 Melawan Masa</h2>
+          <h2>Graf: Isi Padu Gas Hidrogen Melawan Masa</h2>
           <p>Line muncul apabila data eksperimen direkodkan. Bandingkan kecerunan setiap keadaan.</p>
         </div>
         <strong>{latest.volume.toFixed(1)} cm3</strong>
@@ -50,7 +50,7 @@ export default function ReactionGraph({ completedRuns, activeRun }) {
           <line className="reactionAxis" x1="54" y1="268" x2="548" y2="268" />
           <line className="reactionAxis" x1="54" y1="44" x2="54" y2="268" />
           <text className="reactionAxisLabel" x="245" y="315">Masa (s)</text>
-          <text className="reactionAxisLabel" x="18" y="174" transform="rotate(-90 18 174)">Isi padu H2 (cm3)</text>
+          <text className="reactionAxisLabel" x="18" y="174" transform="rotate(-90 18 174)">Isi padu hidrogen (cm3)</text>
           {[0, 10, 20, 30, 40, 50, 60].map((value) => (
             <text key={value} className="reactionTick" x={54 + (value / maxTime) * 486} y="291">{value}</text>
           ))}
@@ -91,7 +91,7 @@ export default function ReactionGraph({ completedRuns, activeRun }) {
       </div>
       <div className="reactionAnalysisNote">
         <strong>Analisis</strong>
-        <p>Garis paling curam menunjukkan kadar tindak balas paling tinggi. Serbuk zink mempunyai luas permukaan paling besar, maka perlanggaran zarah paling kerap. Jumlah isi padu akhir hampir sama kerana jisim Zn adalah tetap.</p>
+        <p>Garis paling curam menunjukkan kadar tindak balas paling tinggi. Serbuk zink mempunyai luas permukaan paling besar, maka perlanggaran zarah paling kerap. Jumlah isi padu akhir hampir sama kerana jisim zink adalah tetap.</p>
       </div>
     </section>
   );

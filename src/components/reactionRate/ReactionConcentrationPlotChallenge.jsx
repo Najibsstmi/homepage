@@ -100,7 +100,7 @@ export default function ReactionConcentrationPlotChallenge({ concentrationRuns, 
             ))}
             <line className="reactionAxis" x1={concentrationGraph.x} y1={concentrationGraph.y + concentrationGraph.height} x2="552" y2={concentrationGraph.y + concentrationGraph.height} />
             <line className="reactionAxis" x1={concentrationGraph.x} y1={concentrationGraph.y - 4} x2={concentrationGraph.x} y2={concentrationGraph.y + concentrationGraph.height} />
-            <text className="reactionAxisLabel" x="260" y="315">Kepekatan Na2S2O3 (mol dm-3)</text>
+            <text className="reactionAxisLabel" x="260" y="315">Kepekatan natrium tiosulfat (mol dm-3)</text>
             <text className="reactionAxisLabel" x="18" y="184" transform="rotate(-90 18 184)">{yLabel}</text>
             {[0.04, 0.08, 0.12, 0.16, 0.2].map((value) => (
               <text key={value} className="reactionTick" x={concentrationGraph.x + ((value - 0.04) / 0.16) * concentrationGraph.width} y="291">{value.toFixed(2)}</text>

@@ -26,8 +26,8 @@ export default function ReactionConcentrationObservationTable({ concentrationRun
       <div className="accordionBody">
         <div className="reactionTableMeta">
           <span>Faktor: Kepekatan</span>
-          <span>Na<sub>2</sub>S<sub>2</sub>O<sub>3</sub> berubah</span>
-          <span>H<sub>2</sub>SO<sub>4</sub> tetap</span>
+          <span>Natrium tiosulfat berubah</span>
+          <span>Asid sulfurik tetap</span>
         </div>
         <div className="electroTableWrap reactionTableWrap reactionConcentrationTableWrap">
           <table>

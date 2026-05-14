@@ -117,7 +117,7 @@ export default function ReactionPlotChallenge({ completedRuns, onComplete }) {
             <line className="reactionAxis" x1={graph.x} y1="268" x2="548" y2="268" />
             <line className="reactionAxis" x1={graph.x} y1="44" x2={graph.x} y2="268" />
             <text className="reactionAxisLabel" x="245" y="315">Masa (s)</text>
-            <text className="reactionAxisLabel" x="18" y="174" transform="rotate(-90 18 174)">Isi padu H2 (cm3)</text>
+            <text className="reactionAxisLabel" x="18" y="174" transform="rotate(-90 18 174)">Isi padu hidrogen (cm3)</text>
             {reactionTimes.map((value) => (
               <text key={value} className="reactionTick" x={graph.x + (value / graph.maxTime) * graph.width} y="291">{value}</text>
             ))}

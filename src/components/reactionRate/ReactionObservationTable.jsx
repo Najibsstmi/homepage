@@ -7,7 +7,7 @@ export default function ReactionObservationTable({ completedRuns }) {
     <section className="electroPanel electroAccordion reactionObservation">
       <div className="accordionHeader reactionStaticHeader">
         <span>Jadual Pemerhatian</span>
-        <strong>Grouped table</strong>
+        <strong>Auto rekod</strong>
       </div>
       <div className="accordionBody">
         <div className="reactionTableMeta">
@@ -20,7 +20,7 @@ export default function ReactionObservationTable({ completedRuns }) {
             <thead>
               <tr>
                 <th rowSpan="2">Masa (s)</th>
-                <th colSpan={sizeOptionIds.length}>Isi padu gas H2 (cm3)</th>
+                <th colSpan={sizeOptionIds.length}>Isi padu gas hidrogen (cm3)</th>
               </tr>
               <tr>
                 {sizeOptionIds.map((id) => {
@@ -46,7 +46,7 @@ export default function ReactionObservationTable({ completedRuns }) {
             </tbody>
           </table>
         </div>
-        <p className="reactionTableHint">Isi padu akhir hampir sama kerana jumlah jisim Zn adalah tetap, iaitu {zincMass} g.</p>
+        <p className="reactionTableHint">Isi padu akhir hampir sama kerana jumlah jisim zink adalah tetap, iaitu {zincMass} g.</p>
       </div>
     </section>
   );

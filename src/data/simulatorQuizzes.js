@@ -224,118 +224,295 @@ export const electrolysisQuiz = [
   },
 ];
 
-export const reactionRateQuiz = [
-  {
-    question: "Keadaan manakah menghasilkan kadar tindak balas paling tinggi bagi zink?",
-    options: {
-      A: "Ketulan besar",
-      B: "Ketulan",
-      C: "Serbuk",
-      D: "Bongkah sangat sejuk",
+export const reactionRateQuizzes = {
+  size: [
+    {
+      question: "Mengapakah serbuk zink bertindak balas lebih cepat daripada ketulan zink yang sama jisim?",
+      options: {
+        A: "Serbuk zink mempunyai luas permukaan lebih besar",
+        B: "Serbuk zink mempunyai suhu lebih rendah",
+        C: "Serbuk zink mengurangkan bilangan zarah",
+        D: "Serbuk zink tidak berlanggar dengan asid",
+      },
+      answer: "A",
+      explanation: "Luas permukaan yang lebih besar membolehkan lebih banyak perlanggaran berkesan berlaku dalam satu masa.",
     },
-    answer: "C",
-    explanation: "Serbuk mempunyai luas permukaan paling besar, maka perlanggaran berkesan berlaku lebih kerap.",
-  },
-  {
-    question: "Apakah yang berlaku apabila suhu asid hidroklorik dinaikkan?",
-    options: {
-      A: "Zarah bergerak lebih laju",
-      B: "Zarah hilang sepenuhnya",
-      C: "Isi padu gas sentiasa sifar",
-      D: "Zink tidak bertindak balas",
+    {
+      question: "Apakah pemboleh ubah dimanipulasikan dalam eksperimen faktor saiz bahan?",
+      options: {
+        A: "Isi padu gas hidrogen",
+        B: "Saiz zink",
+        C: "Suhu larutan",
+        D: "Masa tindak balas sahaja",
+      },
+      answer: "B",
+      explanation: "Saiz zink diubah untuk melihat kesannya terhadap kadar tindak balas.",
     },
-    answer: "A",
-    explanation: "Suhu tinggi meningkatkan tenaga kinetik zarah dan kekerapan perlanggaran berkesan.",
-  },
-  {
-    question: "Dalam graf isi padu H2 melawan masa, garisan yang lebih curam menunjukkan apa?",
-    options: {
-      A: "Kadar tindak balas lebih rendah",
-      B: "Kadar tindak balas lebih tinggi",
-      C: "Tiada gas terhasil",
-      D: "Masa tidak berubah",
+    {
+      question: "Apakah pemerhatian yang menunjukkan tindak balas zink berlaku dengan lebih cepat?",
+      options: {
+        A: "Gas hidrogen terbentuk dengan lebih cepat",
+        B: "Larutan menjadi lebih sejuk tanpa sebab",
+        C: "Jisim zink bertambah",
+        D: "Buret tidak menunjukkan sebarang perubahan",
+      },
+      answer: "A",
+      explanation: "Kadar pembentukan gas hidrogen yang lebih cepat menunjukkan kadar tindak balas lebih tinggi.",
     },
-    answer: "B",
-    explanation: "Kecerunan graf mewakili kadar tindak balas. Graf lebih curam bermaksud kadar lebih tinggi.",
-  },
-  {
-    question: "Bagaimanakah mangkin meningkatkan kadar tindak balas?",
-    options: {
-      A: "Menambah jisim produk",
-      B: "Mengurangkan tenaga pengaktifan",
-      C: "Menghapuskan semua zarah reaktan",
-      D: "Menukar gas H2 kepada oksigen",
+    {
+      question: "Apakah pemboleh ubah yang perlu dimalarkan apabila membandingkan ketulan zink dan serbuk zink?",
+      options: {
+        A: "Jisim zink, suhu, isi padu asid dan kepekatan asid",
+        B: "Saiz zink sahaja",
+        C: "Isi padu gas yang terhasil sahaja",
+        D: "Kecerunan graf sahaja",
+      },
+      answer: "A",
+      explanation: "Pemboleh ubah lain perlu dimalarkan supaya perbandingan kesan saiz bahan adalah adil.",
     },
-    answer: "B",
-    explanation: "Mangkin menyediakan laluan alternatif dengan tenaga pengaktifan yang lebih rendah.",
-  },
-  {
-    question: "Apakah maksud kadar tindak balas?",
-    options: {
-      A: "Perubahan kuantiti bahan tindak balas atau hasil tindak balas per unit masa",
-      B: "Jumlah warna larutan selepas tindak balas",
-      C: "Jisim semua radas dalam eksperimen",
-      D: "Suhu bilik sahaja",
+    {
+      question: "Apakah maksud graf yang lebih curam dalam eksperimen saiz bahan?",
+      options: {
+        A: "Kadar tindak balas lebih rendah",
+        B: "Kadar tindak balas lebih tinggi",
+        C: "Tiada gas terhasil",
+        D: "Tindak balas telah berhenti sebelum bermula",
+      },
+      answer: "B",
+      explanation: "Graf yang lebih curam menunjukkan produk terbentuk dengan lebih cepat, maka kadar tindak balas lebih tinggi.",
     },
-    answer: "A",
-    explanation: "Kadar tindak balas menerangkan seberapa cepat reaktan digunakan atau produk terbentuk.",
-  },
-  {
-    question: "Mengapakah serbuk marmar bertindak balas lebih cepat berbanding ketulan marmar yang sama jisim?",
-    options: {
-      A: "Serbuk mempunyai isipadu asid lebih kecil",
-      B: "Serbuk tidak mengandungi zarah",
-      C: "Serbuk mempunyai jumlah luas permukaan lebih besar",
-      D: "Serbuk menurunkan suhu secara automatik",
+  ],
+  temperature: [
+    {
+      question: "Apakah kesan suhu tinggi terhadap gerakan zarah?",
+      options: {
+        A: "Zarah bergerak lebih laju",
+        B: "Zarah berhenti bergerak",
+        C: "Zarah hilang daripada larutan",
+        D: "Zarah menjadi lebih besar sahaja",
+      },
+      answer: "A",
+      explanation: "Suhu tinggi meningkatkan tenaga kinetik zarah, menyebabkan zarah bergerak lebih laju.",
     },
-    answer: "C",
-    explanation: "Luas permukaan lebih besar membolehkan lebih banyak zarah berlanggar pada satu masa.",
-  },
-  {
-    question: "Apakah kesan kepekatan asid yang lebih tinggi terhadap kadar tindak balas?",
-    options: {
-      A: "Kadar tindak balas berkurang kerana zarah kurang",
-      B: "Kadar tindak balas tidak boleh berubah",
-      C: "Kadar tindak balas menjadi sifar",
-      D: "Kadar tindak balas bertambah kerana bilangan zarah per unit isi padu bertambah",
+    {
+      question: "Mengapakah kadar tindak balas meningkat apabila suhu dinaikkan?",
+      options: {
+        A: "Perlanggaran berkesan menjadi lebih kerap",
+        B: "Bilangan zarah menjadi sifar",
+        C: "Larutan tidak lagi bertindak balas",
+        D: "Masa tindak balas menjadi lebih panjang",
+      },
+      answer: "A",
+      explanation: "Pada suhu tinggi, zarah berlanggar dengan lebih kerap dan lebih banyak perlanggaran mempunyai tenaga yang mencukupi.",
     },
-    answer: "D",
-    explanation: "Kepekatan lebih tinggi meningkatkan kekerapan perlanggaran antara zarah.",
-  },
-  {
-    question: "Dalam eksperimen saiz bahan tindak balas, apakah yang perlu dimalarkan?",
-    options: {
-      A: "Saiz ketulan marmar",
-      B: "Jisim marmar, suhu, isi padu dan kepekatan asid",
-      C: "Kadar tindak balas",
-      D: "Bilangan soalan kuiz",
+    {
+      question: "Dalam eksperimen natrium tiosulfat dan asid sulfurik, apakah pemerhatian pada suhu lebih tinggi?",
+      options: {
+        A: "Tanda X hilang dalam masa yang lebih singkat",
+        B: "Tanda X menjadi lebih terang",
+        C: "Larutan kekal jernih selama-lamanya",
+        D: "Jam randik bergerak lebih perlahan",
+      },
+      answer: "A",
+      explanation: "Suhu lebih tinggi menghasilkan kekeruhan dengan lebih cepat, maka tanda X hilang lebih cepat.",
     },
-    answer: "B",
-    explanation: "Pemboleh ubah lain mesti dimalarkan supaya kesan saiz bahan dapat dibandingkan dengan adil.",
-  },
-  {
-    question: "Jika gas terkumpul dengan lebih cepat dalam satu eksperimen, apakah kesimpulan yang sesuai?",
-    options: {
-      A: "Kadar tindak balas lebih tinggi",
-      B: "Kadar tindak balas lebih rendah",
-      C: "Tindak balas tidak berlaku",
-      D: "Masa tidak mempengaruhi eksperimen",
+    {
+      question: "Apakah pemboleh ubah dimanipulasikan dalam simulator faktor suhu?",
+      options: {
+        A: "Suhu larutan natrium tiosulfat",
+        B: "Bentuk tanda X",
+        C: "Warna meja makmal",
+        D: "Saiz kelalang kon",
+      },
+      answer: "A",
+      explanation: "Suhu larutan diubah untuk mengkaji kesannya terhadap masa tanda X hilang.",
     },
-    answer: "A",
-    explanation: "Pembentukan produk yang lebih cepat menunjukkan kadar tindak balas yang lebih tinggi.",
-  },
-  {
-    question: "Apakah keadaan mangkin pada akhir tindak balas?",
-    options: {
-      A: "Mangkin habis digunakan sepenuhnya",
-      B: "Mangkin berubah menjadi reaktan utama",
-      C: "Mangkin tidak berubah secara kimia",
-      D: "Mangkin menjadi air suling",
+    {
+      question: "Apakah hubungan antara suhu dan masa tanda X hilang?",
+      options: {
+        A: "Suhu tinggi menyebabkan masa menjadi lebih singkat",
+        B: "Suhu tinggi menyebabkan masa menjadi lebih panjang",
+        C: "Suhu tidak memberi kesan langsung",
+        D: "Suhu hanya menukar bentuk kelalang",
+      },
+      answer: "A",
+      explanation: "Apabila suhu meningkat, kadar tindak balas meningkat dan masa tanda X hilang menjadi lebih singkat.",
     },
-    answer: "C",
-    explanation: "Mangkin mempercepat tindak balas tetapi tidak berubah secara kimia pada akhir tindak balas.",
-  },
-];
+  ],
+  concentration: [
+    {
+      question: "Apakah maksud larutan yang lebih pekat?",
+      options: {
+        A: "Lebih banyak zarah terlarut per unit isi padu",
+        B: "Lebih sedikit zarah terlarut per unit isi padu",
+        C: "Tiada zarah terlarut",
+        D: "Larutan tidak boleh bertindak balas",
+      },
+      answer: "A",
+      explanation: "Kepekatan tinggi bermaksud bilangan zarah terlarut per unit isi padu adalah lebih besar.",
+    },
+    {
+      question: "Mengapakah larutan natrium tiosulfat lebih pekat menghasilkan kadar tindak balas lebih tinggi?",
+      options: {
+        A: "Perlanggaran antara zarah berlaku lebih kerap",
+        B: "Zarah tidak lagi bergerak",
+        C: "Tanda X menjadi lebih besar",
+        D: "Asid sulfurik hilang sebelum tindak balas",
+      },
+      answer: "A",
+      explanation: "Bilangan zarah yang lebih banyak per unit isi padu meningkatkan kekerapan perlanggaran.",
+    },
+    {
+      question: "Apakah pemerhatian apabila kepekatan natrium tiosulfat dinaikkan?",
+      options: {
+        A: "Tanda X tidak kelihatan dalam masa lebih singkat",
+        B: "Tanda X kekal jelas lebih lama",
+        C: "Larutan tidak menjadi keruh",
+        D: "Masa tindak balas sentiasa sama",
+      },
+      answer: "A",
+      explanation: "Kepekatan lebih tinggi mempercepat pembentukan sulfur yang menyebabkan larutan menjadi keruh.",
+    },
+    {
+      question: "Dalam jadual keputusan, kadar tindak balas diwakili oleh nilai yang mana?",
+      options: {
+        A: "Satu per masa",
+        B: "Masa didarab suhu",
+        C: "Isi padu dibahagi warna",
+        D: "Jisim kelalang",
+      },
+      answer: "A",
+      explanation: "Untuk eksperimen tanda X, kadar tindak balas boleh dibandingkan menggunakan satu per masa.",
+    },
+    {
+      question: "Apakah pemboleh ubah dimalarkan dalam eksperimen faktor kepekatan ini?",
+      options: {
+        A: "Kepekatan asid sulfurik",
+        B: "Kepekatan natrium tiosulfat",
+        C: "Masa tanda X hilang",
+        D: "Kadar tindak balas",
+      },
+      answer: "A",
+      explanation: "Kepekatan asid sulfurik dimalarkan supaya kesan kepekatan natrium tiosulfat dapat dibandingkan dengan adil.",
+    },
+  ],
+  catalyst: [
+    {
+      question: "Apakah fungsi mangkin dalam tindak balas kimia?",
+      options: {
+        A: "Meningkatkan kadar tindak balas",
+        B: "Menghentikan semua perlanggaran zarah",
+        C: "Menukar semua hasil tindak balas kepada air",
+        D: "Mengurangkan suhu bilik sahaja",
+      },
+      answer: "A",
+      explanation: "Mangkin meningkatkan kadar tindak balas tanpa habis digunakan dalam tindak balas.",
+    },
+    {
+      question: "Bagaimanakah mangkin meningkatkan kadar tindak balas?",
+      options: {
+        A: "Menyediakan laluan tindak balas alternatif dengan tenaga pengaktifan lebih rendah",
+        B: "Menghapuskan semua zarah reaktan",
+        C: "Meningkatkan jisim produk secara rawak",
+        D: "Menjadikan semua perlanggaran tidak berkesan",
+      },
+      answer: "A",
+      explanation: "Tenaga pengaktifan yang lebih rendah menyebabkan lebih banyak zarah dapat bertindak balas apabila berlanggar.",
+    },
+    {
+      question: "Apakah keadaan mangkin pada akhir tindak balas?",
+      options: {
+        A: "Tidak berubah secara kimia",
+        B: "Habis digunakan sepenuhnya",
+        C: "Bertukar menjadi bahan tindak balas utama",
+        D: "Menjadi gas hidrogen",
+      },
+      answer: "A",
+      explanation: "Mangkin tidak berubah secara kimia pada akhir tindak balas walaupun mempercepat tindak balas.",
+    },
+    {
+      question: "Apakah kesan mangkin terhadap jumlah hasil akhir jika kuantiti bahan tindak balas sama?",
+      options: {
+        A: "Jumlah hasil akhir tidak semestinya bertambah",
+        B: "Jumlah hasil akhir sentiasa menjadi sifar",
+        C: "Jumlah hasil akhir sentiasa berkurang separuh",
+        D: "Jumlah hasil akhir tidak boleh diukur",
+      },
+      answer: "A",
+      explanation: "Mangkin mempercepat kadar tindak balas, tetapi tidak semestinya menambah kuantiti hasil akhir.",
+    },
+    {
+      question: "Apakah pemerhatian graf apabila mangkin digunakan?",
+      options: {
+        A: "Graf menjadi lebih curam pada awal tindak balas",
+        B: "Graf menjadi garis mendatar dari awal",
+        C: "Graf menunjukkan masa bergerak ke belakang",
+        D: "Graf tidak boleh diplot",
+      },
+      answer: "A",
+      explanation: "Kadar tindak balas yang lebih tinggi ditunjukkan oleh graf yang lebih curam.",
+    },
+  ],
+  pressure: [
+    {
+      question: "Tekanan paling jelas mempengaruhi kadar tindak balas bagi bahan dalam keadaan apa?",
+      options: {
+        A: "Gas",
+        B: "Pepejal tulen sahaja",
+        C: "Kertas kering",
+        D: "Logam yang tidak bersentuhan",
+      },
+      answer: "A",
+      explanation: "Tekanan memberi kesan besar kepada zarah gas kerana zarah gas boleh dirapatkan.",
+    },
+    {
+      question: "Apakah berlaku kepada zarah gas apabila tekanan dinaikkan?",
+      options: {
+        A: "Zarah gas menjadi lebih rapat",
+        B: "Zarah gas hilang sepenuhnya",
+        C: "Zarah gas berhenti berlanggar",
+        D: "Zarah gas menjadi pepejal serta-merta",
+      },
+      answer: "A",
+      explanation: "Tekanan tinggi merapatkan zarah gas dalam ruang yang sama.",
+    },
+    {
+      question: "Mengapakah tekanan tinggi meningkatkan kadar tindak balas gas?",
+      options: {
+        A: "Kekerapan perlanggaran zarah meningkat",
+        B: "Semua zarah bergerak keluar daripada bekas",
+        C: "Bilangan perlanggaran menjadi sifar",
+        D: "Tenaga zarah sentiasa hilang",
+      },
+      answer: "A",
+      explanation: "Zarah gas yang lebih rapat berlanggar dengan lebih kerap, lalu meningkatkan kadar tindak balas.",
+    },
+    {
+      question: "Jika isipadu bekas gas dikurangkan pada suhu yang sama, apakah berlaku kepada tekanan gas?",
+      options: {
+        A: "Tekanan meningkat",
+        B: "Tekanan menjadi sifar",
+        C: "Tekanan tidak boleh wujud",
+        D: "Tekanan sentiasa menurun",
+      },
+      answer: "A",
+      explanation: "Apabila gas dimampatkan ke dalam ruang lebih kecil, zarah gas menjadi lebih rapat dan tekanan meningkat.",
+    },
+    {
+      question: "Apakah kesimpulan yang betul tentang tekanan dan kadar tindak balas gas?",
+      options: {
+        A: "Semakin tinggi tekanan, semakin tinggi kadar tindak balas",
+        B: "Semakin tinggi tekanan, semakin rendah semua kadar tindak balas",
+        C: "Tekanan hanya mengubah warna zarah",
+        D: "Tekanan tidak berkaitan dengan perlanggaran",
+      },
+      answer: "A",
+      explanation: "Tekanan tinggi meningkatkan kekerapan perlanggaran zarah gas, maka kadar tindak balas meningkat.",
+    },
+  ],
+};
+
+export const reactionRateQuiz = reactionRateQuizzes.size;
 
 export const linearMotionQuiz = [
   {

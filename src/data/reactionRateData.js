@@ -12,12 +12,10 @@ export const reactionFactors = {
   temperature: {
     id: "temperature",
     label: "Suhu",
-    variable: "Suhu asid hidroklorik",
-    prompt: "Ubah tenaga kinetik zarah dengan menukar suhu larutan.",
+    variable: "Suhu larutan natrium tiosulfat",
+    prompt: "",
     options: [
-      { id: "low", label: "Rendah", rate: 0.62, note: "Zarah bergerak perlahan dan kurang perlanggaran berkesan." },
-      { id: "medium", label: "Sederhana", rate: 0.9, note: "Kadar sederhana apabila tenaga kinetik meningkat." },
-      { id: "high", label: "Tinggi", rate: 1.34, note: "Zarah bergerak paling laju, perlanggaran berkesan lebih kerap." },
+      { id: "temperature-slider", label: "30°C", temperature: 30, targetTime: 72, rate: 1, color: "#fbbf24" },
     ],
   },
   concentration: {
@@ -66,6 +64,14 @@ export const concentrationOptionIds = ["c020", "c016", "c012", "c008", "c004"];
 
 export const concentrationSpeedMultiplier = 5;
 
+export const temperatureSpeedMultiplier = 8;
+
+export const temperatureMin = 30;
+
+export const temperatureMax = 60;
+
+export const temperatureCompletionTarget = 5;
+
 export const sulfuricAcidConcentration = "1.0 mol dm-3";
 
 export const sizeReactionResults = {
@@ -93,6 +99,37 @@ export function getConcentrationOption(optionId) {
 
 export function getConcentrationProgress(elapsed, optionId) {
   const option = getConcentrationOption(optionId);
+  return Math.max(0, Math.min(1.18, elapsed / option.targetTime));
+}
+
+export function clampTemperature(temperature) {
+  const value = Number.isFinite(Number(temperature)) ? Number(temperature) : temperatureMin;
+  return Math.max(temperatureMin, Math.min(temperatureMax, Math.round(value)));
+}
+
+export function getTemperatureTargetTime(temperature) {
+  const selectedTemperature = clampTemperature(temperature);
+  const interpolated = 72 - ((selectedTemperature - temperatureMin) / (temperatureMax - temperatureMin)) * 52;
+  const smallVariation = Math.sin(selectedTemperature * 1.37) * 1.2;
+  return Number(Math.max(18, interpolated + smallVariation).toFixed(1));
+}
+
+export function getTemperatureOption(temperature = temperatureMin) {
+  const selectedTemperature = clampTemperature(temperature);
+  const targetTime = getTemperatureTargetTime(selectedTemperature);
+  const heatRatio = (selectedTemperature - temperatureMin) / (temperatureMax - temperatureMin);
+  return {
+    id: `temperature-${selectedTemperature}`,
+    label: `${selectedTemperature}°C`,
+    temperature: selectedTemperature,
+    targetTime,
+    rate: Number((72 / targetTime).toFixed(2)),
+    color: heatRatio < 0.34 ? "#38bdf8" : heatRatio < 0.67 ? "#fbbf24" : "#f87171",
+  };
+}
+
+export function getTemperatureProgress(elapsed, temperature) {
+  const option = typeof temperature === "object" ? temperature : getTemperatureOption(temperature);
   return Math.max(0, Math.min(1.18, elapsed / option.targetTime));
 }
 

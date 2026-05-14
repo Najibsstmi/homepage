@@ -148,14 +148,14 @@ export default function ReactionAtomicView({ factor, option, running, progress, 
         "--atomic-zinc-speed": `${speed * 1.55}s`,
         "--atomic-zinc-opacity": zincOpacity,
       }}
-      aria-label="Pandangan atomik perlanggaran ion hidrogen dengan zink"
+      aria-label="Pandangan zarah perlanggaran ion hidrogen dengan zink"
     >
       <div className="reactionAtomicView__head">
         <div>
-          <h3>Atomic View</h3>
+          <h3>Pandangan zarah</h3>
           <p>{factor.label}: {option.label}</p>
         </div>
-        <strong className="reactionAtomicMaterial">Zn sahaja</strong>
+        <strong className="reactionAtomicMaterial">Zink sahaja</strong>
       </div>
 
       <div className="reactionAtomicChamber">
@@ -172,7 +172,7 @@ export default function ReactionAtomicView({ factor, option, running, progress, 
               "--delay": `${index * -0.08}s`,
             }}
           >
-            {index % (isPowder ? 5 : 4) === 0 ? "Zn" : ""}
+            {""}
           </span>
         ))}
 
@@ -188,7 +188,7 @@ export default function ReactionAtomicView({ factor, option, running, progress, 
               "--delay": `${index * -0.16}s`,
             }}
           >
-            H+
+            {""}
           </span>
         ))}
 
@@ -202,7 +202,7 @@ export default function ReactionAtomicView({ factor, option, running, progress, 
               "--delay": `${index * -0.3}s`,
             }}
           >
-            Cl-
+            {""}
           </span>
         ))}
 
@@ -216,7 +216,7 @@ export default function ReactionAtomicView({ factor, option, running, progress, 
               "--delay": `${index * -0.55}s`,
             }}
           >
-            Zn2+
+            {""}
           </span>
         ))}
 
@@ -242,7 +242,7 @@ export default function ReactionAtomicView({ factor, option, running, progress, 
               "--delay": `${index * -0.35}s`,
             }}
           >
-            {index < 2 ? "H2" : ""}
+            {""}
           </span>
         ))}
 
@@ -250,11 +250,11 @@ export default function ReactionAtomicView({ factor, option, running, progress, 
       </div>
 
       <div className="reactionAtomicLegend" aria-label="Label zarah">
-        <span><i className="reactionAtomicLegend__dot reactionAtomicLegend__dot--h" />H+</span>
-        <span><i className="reactionAtomicLegend__dot reactionAtomicLegend__dot--cl" />Cl-</span>
-        <span><i className="reactionAtomicLegend__dot reactionAtomicLegend__dot--zn" />Zn</span>
-        <span><i className="reactionAtomicLegend__dot reactionAtomicLegend__dot--zn2" />Zn2+</span>
-        <span><i className="reactionAtomicLegend__dot reactionAtomicLegend__dot--h2" />H2</span>
+        <span><i className="reactionAtomicLegend__dot reactionAtomicLegend__dot--h" />Ion hidrogen</span>
+        <span><i className="reactionAtomicLegend__dot reactionAtomicLegend__dot--cl" />Ion klorida</span>
+        <span><i className="reactionAtomicLegend__dot reactionAtomicLegend__dot--zn" />Zink</span>
+        <span><i className="reactionAtomicLegend__dot reactionAtomicLegend__dot--zn2" />Ion zink</span>
+        <span><i className="reactionAtomicLegend__dot reactionAtomicLegend__dot--h2" />Hidrogen</span>
       </div>
     </section>
   );

@@ -3,8 +3,13 @@ import {
   reactionFactors,
   sizeOptionIds,
   sulfuricAcidConcentration,
+  temperatureCompletionTarget,
   zincMass,
 } from "../../data/reactionRateData";
+import TemperatureThermometerControl from "./TemperatureThermometerControl";
+
+const thiosulfateWordEquation = "Natrium tiosulfat + asid sulfurik → natrium sulfat + sulfur dioksida + sulfur + air";
+const zincWordEquation = "Zink + asid hidroklorik → zink klorida + gas hidrogen";
 
 function UnitLabel({ value }) {
   return (
@@ -19,13 +24,20 @@ export default function ReactionFactorPanel({
   selectedOptions,
   completedRuns,
   concentrationRuns = {},
+  temperatureRuns = {},
   running,
+  selectedTemperature = 30,
   onFactorChange,
   onOptionChange,
+  onTemperatureChange,
 }) {
   const factor = reactionFactors[activeFactor];
   const selectedOption = selectedOptions[activeFactor] || factor.options[0].id;
   const isConcentration = activeFactor === "concentration";
+  const isTemperature = activeFactor === "temperature";
+  const temperatureDoneCount = Array.isArray(temperatureRuns)
+    ? temperatureRuns.length
+    : Object.keys(temperatureRuns).length;
 
   return (
     <aside className="electroPanel reactionFactorPanel">
@@ -54,42 +66,66 @@ export default function ReactionFactorPanel({
             {!isConcentration && factor.prompt && <p>{factor.prompt}</p>}
           </div>
 
-          <div
-            className={isConcentration ? "reactionOptionList reactionOptionList--concentration" : "reactionOptionList"}
-            aria-label={`Pilihan ${factor.label}`}
-          >
-            {factor.options.map((option) => (
-              <button
-                key={option.id}
-                type="button"
-                className={selectedOption === option.id ? "reactionOption reactionOption--active" : "reactionOption"}
-                disabled={running}
-                onClick={() => onOptionChange(activeFactor, option.id)}
-              >
-                <span>{isConcentration ? <UnitLabel value={option.label} /> : option.label}</span>
-                {isConcentration ? (
-                  <small>{concentrationRuns[option.id] ? "Selesai" : "Belum diuji"}</small>
-                ) : (
-                  option.note && <small>{option.note}</small>
-                )}
-              </button>
-            ))}
-          </div>
+          {isTemperature ? (
+            <div className="reactionTemperaturePanelReadout" aria-live="polite">
+              <div className="reactionTemperaturePanelReadout__head">
+                <span>Suhu semasa</span>
+                <small>{Math.min(temperatureDoneCount, temperatureCompletionTarget)}/{temperatureCompletionTarget} bacaan selesai</small>
+              </div>
+              <TemperatureThermometerControl
+                temperature={selectedTemperature}
+                running={running}
+                onChange={onTemperatureChange}
+              />
+            </div>
+          ) : (
+            <div
+              className={isConcentration ? "reactionOptionList reactionOptionList--concentration" : "reactionOptionList"}
+              aria-label={`Pilihan ${factor.label}`}
+            >
+              {factor.options.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  className={selectedOption === option.id ? "reactionOption reactionOption--active" : "reactionOption"}
+                  disabled={running}
+                  onClick={() => onOptionChange(activeFactor, option.id)}
+                >
+                  <span>{isConcentration ? <UnitLabel value={option.label} /> : option.label}</span>
+                  {isConcentration ? (
+                    <small>{concentrationRuns[option.id] ? "Selesai" : "Belum diuji"}</small>
+                  ) : (
+                    option.note && <small>{option.note}</small>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="reactionFactorStack">
-          {isConcentration ? (
+          {isTemperature ? (
             <>
               <div className="reactionMassCard">
                 <span>Bahan tetap</span>
-                <strong>H<sub>2</sub>SO<sub>4</sub> <UnitLabel value={sulfuricAcidConcentration} /></strong>
+                <strong>Asid sulfurik <UnitLabel value={sulfuricAcidConcentration} /></strong>
               </div>
 
               <div className="electroNote reactionEquation">
                 <strong>Eksperimen utama</strong>
-                <p>
-                  Na<sub>2</sub>S<sub>2</sub>O<sub>3</sub> + H<sub>2</sub>SO<sub>4</sub> &rarr; Na<sub>2</sub>SO<sub>4</sub> + SO<sub>2</sub> + S + H<sub>2</sub>O
-                </p>
+                <p>{thiosulfateWordEquation}</p>
+              </div>
+            </>
+          ) : isConcentration ? (
+            <>
+              <div className="reactionMassCard">
+                <span>Bahan tetap</span>
+                <strong>Asid sulfurik <UnitLabel value={sulfuricAcidConcentration} /></strong>
+              </div>
+
+              <div className="electroNote reactionEquation">
+                <strong>Eksperimen utama</strong>
+                <p>{thiosulfateWordEquation}</p>
               </div>
             </>
           ) : (
@@ -101,7 +137,7 @@ export default function ReactionFactorPanel({
 
               <div className="electroNote reactionEquation">
                 <strong>Eksperimen utama</strong>
-                <p>Zn + 2HCl {'->'} ZnCl2 + H2</p>
+                <p>{zincWordEquation}</p>
               </div>
             </>
           )}

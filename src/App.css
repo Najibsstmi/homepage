@@ -5478,9 +5478,18 @@ section {
 .reactionFactorPanel small,
 .reactionRunCard small,
 .reactionRunCard strong,
+.reactionConcentrationEquation,
+.reactionStopFeedback,
+.reactionTableHint,
+.reactionPanelTitle h2,
+.reactionPanelTitle h3,
+.reactionPanelTitle p,
+.reactionApparatus__top h2,
+.reactionApparatus__top p,
 .reactionSvgLabel,
 .reactionSvgMetric {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  line-height: 1.35;
 }
 
 .reactionFactorPanel {
@@ -5781,7 +5790,8 @@ section {
   opacity: 0.58;
 }
 
-.reactionActions--concentration .reactionStopButton {
+.reactionActions--concentration .reactionStopButton,
+.reactionActions--temperature .reactionStopButton {
   border-color: rgba(248, 113, 113, 0.5);
   background: rgba(127, 29, 29, 0.42);
   color: #fecaca;
@@ -5807,6 +5817,8 @@ section {
   background: rgba(2, 6, 23, 0.34);
   color: rgba(226, 232, 240, 0.9);
   font-weight: 900;
+  line-height: 1.5;
+  overflow-wrap: break-word;
 }
 
 .reactionConcentrationStage {
@@ -5910,6 +5922,8 @@ section {
   font-style: normal;
   font-weight: 950;
   text-align: center;
+  line-height: 1.3;
+  overflow-wrap: break-word;
 }
 
 .reactionConcentrationMacro svg {
@@ -7182,6 +7196,435 @@ section {
   cursor: default;
 }
 
+.reactionTemperaturePanelReadout {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 220px;
+  border-radius: 16px;
+  padding: 0.9rem;
+  border: 1px solid rgba(251, 146, 60, 0.26);
+  background:
+    linear-gradient(135deg, rgba(127, 29, 29, 0.28), rgba(8, 47, 73, 0.24)),
+    rgba(2, 6, 23, 0.32);
+  text-align: left;
+}
+
+.reactionTemperaturePanelReadout__head {
+  display: grid;
+  justify-items: center;
+  gap: 0.22rem;
+  text-align: center;
+}
+
+.reactionTemperaturePanelReadout__head span,
+.reactionTemperaturePanelReadout__head small {
+  color: rgba(226, 232, 240, 0.78);
+  font-weight: 900;
+}
+
+.reactionTemperaturePanelReadout__head strong {
+  color: #fed7aa;
+  font-size: clamp(1.9rem, 4vw, 3.1rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.reactionTemperatureStage {
+  display: grid;
+  grid-template-columns: minmax(170px, 0.72fr) minmax(260px, 1.2fr) minmax(180px, 0.62fr);
+  gap: 0.85rem;
+  margin-top: 1rem;
+  padding: 0.85rem;
+  overflow: hidden;
+  border-radius: 24px;
+  background: rgba(2, 6, 23, 0.28);
+}
+
+.reactionTemperatureMacro,
+.reactionTemperatureStopwatch,
+.reactionTemperatureParticleCard,
+.reactionScienceConcept {
+  overflow: hidden;
+  border: 1px solid rgba(103, 232, 249, 0.14);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 18% 10%, rgba(34, 211, 238, 0.1), transparent 34%),
+    rgba(2, 6, 23, 0.44);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.reactionTemperatureParticleCard__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.reactionTemperatureParticleCard__head span {
+  color: rgba(226, 232, 240, 0.72);
+  font-weight: 950;
+}
+
+.reactionTemperatureParticleCard__head strong {
+  color: #fed7aa;
+  font-weight: 950;
+}
+
+.reactionThermometerControl {
+  display: grid;
+  align-items: stretch;
+  min-height: 162px;
+  touch-action: none;
+  user-select: none;
+}
+
+.reactionThermometerTrackWrap {
+  position: relative;
+  min-height: 162px;
+  padding: 3.15rem 2.55rem 2.15rem 4.6rem;
+  overflow: visible;
+}
+
+.reactionThermometerRail {
+  position: relative;
+  z-index: 2;
+  height: 56px;
+  margin: 0;
+  border-radius: 999px;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+}
+
+.reactionThermometerImage {
+  position: absolute;
+  inset: 2.35rem 0.45rem auto 1.4rem;
+  z-index: 1;
+  width: calc(100% - 1.85rem);
+  height: 86px;
+  object-fit: fill;
+  filter: drop-shadow(0 12px 18px rgba(2, 6, 23, 0.36));
+  pointer-events: none;
+}
+
+.reactionThermometerRail:focus-visible {
+  outline: 3px solid rgba(253, 186, 116, 0.78);
+  outline-offset: 4px;
+}
+
+.reactionThermometerRail--locked {
+  cursor: not-allowed;
+  opacity: 0.78;
+}
+
+.reactionThermometerTick {
+  position: absolute;
+  top: calc(100% + 0.12rem);
+  transform: translateX(-50%);
+  color: rgba(226, 232, 240, 0.62);
+  font-size: 0.74rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.reactionThermometerTick::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.42rem);
+  width: 1px;
+  height: 24px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgba(226, 232, 240, 0.36);
+}
+
+.reactionThermometerHandle {
+  position: absolute;
+  top: 2px;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  gap: 0.2rem;
+  transform: translate(-50%, -88%);
+  z-index: 3;
+  cursor: grab;
+  transition: left 0.12s ease;
+}
+
+.reactionThermometerHandle--dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+.reactionThermometerPointer {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 5px solid rgba(248, 250, 252, 0.92);
+  background: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.6), 0 0 18px rgba(248, 113, 113, 0.34);
+}
+
+.reactionThermometerPointer::before {
+  content: "";
+  position: absolute;
+  top: -30px;
+  width: 1px;
+  height: 28px;
+  background: rgba(226, 232, 240, 0.55);
+}
+
+.reactionThermometerReadout {
+  min-width: 94px;
+  border-radius: 12px;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid rgba(103, 232, 249, 0.26);
+  background: rgba(2, 6, 23, 0.88);
+  color: #67e8f9;
+  text-align: center;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 12px 18px rgba(2, 6, 23, 0.32);
+}
+
+.reactionTemperatureMacro {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 430px;
+}
+
+.reactionTemperatureMacro svg {
+  display: block;
+  width: 100%;
+  min-height: 390px;
+}
+
+.reactionLabWall {
+  fill: rgba(15, 23, 42, 0.38);
+  stroke: rgba(103, 232, 249, 0.1);
+}
+
+.reactionTemperatureBench {
+  fill: #64748b;
+}
+
+.reactionTemperaturePaper {
+  fill: rgba(248, 250, 252, 0.94);
+}
+
+.reactionTemperatureX {
+  fill: #111827;
+  font-size: 58px;
+  font-weight: 950;
+  text-anchor: middle;
+  transition: opacity 0.18s ease, filter 0.18s ease;
+}
+
+.reactionTemperatureMacro .reactionTemperatureFlask {
+  fill: url(#temperatureGlass);
+}
+
+.reactionTemperatureLiquid {
+  fill: url(#temperatureLiquid);
+  stroke: rgba(125, 211, 252, 0.26);
+  stroke-width: 2;
+}
+
+.reactionTemperatureCloud {
+  fill: rgba(250, 204, 21, 0.54);
+  opacity: var(--temp-cloud-opacity);
+  filter: blur(var(--temp-x-blur));
+  transition: opacity 0.18s ease, filter 0.18s ease;
+}
+
+.reactionTemperatureSulfurDot {
+  transition: opacity 0.18s ease;
+}
+
+.reactionTemperatureAcidFill {
+  fill: rgba(125, 211, 252, 0.46);
+}
+
+.reactionTemperaturePourLine {
+  stroke-width: 7;
+}
+
+.reactionTemperatureAcid--active .reactionTemperaturePourLine {
+  opacity: 1;
+  animation: reactionPourFlow 0.72s linear infinite;
+}
+
+.reactionTemperatureBubble {
+  fill: rgba(224, 242, 254, 0.8);
+  stroke: rgba(103, 232, 249, 0.36);
+  stroke-width: 1;
+}
+
+.reactionTemperatureBubble--active {
+  animation: reactionBubbleRise 1s ease-in infinite;
+}
+
+.reactionTemperatureSide {
+  display: grid;
+  gap: 0.85rem;
+  align-content: stretch;
+}
+
+.reactionTemperatureStopwatch {
+  min-height: 160px;
+}
+
+.reactionTemperatureSupportGrid {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(220px, 0.82fr) minmax(260px, 1.18fr);
+  gap: 0.85rem;
+}
+
+.reactionTemperatureParticleCard {
+  display: grid;
+  grid-template-rows: auto minmax(190px, 1fr);
+  padding: 0.9rem;
+}
+
+.reactionTemperatureParticleChamber {
+  position: relative;
+  min-height: 220px;
+  margin-top: 0.75rem;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  background:
+    radial-gradient(circle at 68% 26%, rgba(250, 204, 21, 0.14), transparent 26%),
+    linear-gradient(180deg, rgba(14, 116, 144, 0.24), rgba(15, 23, 42, 0.76));
+}
+
+.reactionTemperatureParticle {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  width: 38px;
+  height: 30px;
+  border-radius: 999px;
+  color: #f8fafc;
+  font-size: 0.62rem;
+  font-weight: 950;
+  line-height: 1;
+  white-space: nowrap;
+  animation: reactionTemperatureParticleDrift var(--temp-particle-speed) ease-in-out infinite alternate;
+  animation-delay: var(--delay);
+}
+
+.reactionTemperatureParticle--thio {
+  width: 48px;
+  background: rgba(34, 211, 238, 0.22);
+  border: 1px solid rgba(103, 232, 249, 0.4);
+}
+
+.reactionTemperatureParticle--acid {
+  width: 32px;
+  height: 32px;
+  background: rgba(244, 114, 182, 0.28);
+  border: 1px solid rgba(251, 113, 133, 0.48);
+}
+
+.reactionTemperatureParticle--sodium,
+.reactionTemperatureParticle--sulfate {
+  background: rgba(34, 197, 94, 0.22);
+  border: 1px solid rgba(134, 239, 172, 0.38);
+}
+
+.reactionTemperatureParticle--sulfur {
+  background: rgba(250, 204, 21, 0.34);
+  border: 1px solid rgba(253, 230, 138, 0.52);
+  color: #fef3c7;
+}
+
+.reactionTemperatureParticle--gas {
+  background: rgba(125, 211, 252, 0.24);
+  border: 1px solid rgba(186, 230, 253, 0.44);
+}
+
+.reactionTemperatureCollision {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid rgba(253, 230, 138, 0.78);
+  opacity: 0;
+  box-shadow: 0 0 18px rgba(250, 204, 21, 0.5);
+}
+
+.reactionTemperatureCollision--one {
+  left: 42%;
+  top: 38%;
+}
+
+.reactionTemperatureCollision--two {
+  left: 68%;
+  top: 64%;
+}
+
+.reactionTemperatureCollision--three {
+  left: 24%;
+  top: 68%;
+}
+
+.reactionTemperatureParticleCard--active .reactionTemperatureCollision {
+  animation: reactionTemperatureCollisionFlash var(--temp-particle-speed) ease-out infinite;
+}
+
+.reactionTemperatureCollision--two {
+  animation-delay: -0.42s;
+}
+
+.reactionTemperatureCollision--three {
+  animation-delay: -0.78s;
+}
+
+.reactionScienceConcept {
+  display: grid;
+  gap: 0.5rem;
+  align-content: center;
+  padding: 0.9rem;
+  border-color: rgba(250, 204, 21, 0.24);
+  background:
+    linear-gradient(135deg, rgba(120, 53, 15, 0.16), rgba(20, 83, 45, 0.16)),
+    rgba(2, 6, 23, 0.42);
+}
+
+.reactionScienceConcept strong {
+  color: #fde68a;
+  font-weight: 950;
+}
+
+.reactionScienceConcept p {
+  margin: 0;
+  color: rgba(226, 232, 240, 0.82);
+  line-height: 1.55;
+}
+
+.reactionTemperatureTableWrap {
+  max-height: 390px;
+  overflow: auto !important;
+}
+
+.reactionTemperatureTableWrap table {
+  min-width: 540px !important;
+}
+
+.reactionTemperatureGraphGrid {
+  gap: 0.9rem;
+}
+
 @keyframes reactionAtomicSurfacePulse {
   0%,
   100% {
@@ -7304,6 +7747,33 @@ section {
   }
 }
 
+@keyframes reactionTemperatureParticleDrift {
+  0% {
+    transform: translate(-50%, -50%) translate(-8px, 7px);
+  }
+  48% {
+    transform: translate(-50%, -50%) translate(13px, -10px);
+  }
+  100% {
+    transform: translate(-50%, -50%) translate(-3px, 14px);
+  }
+}
+
+@keyframes reactionTemperatureCollisionFlash {
+  0%,
+  38% {
+    transform: scale(0.24);
+    opacity: 0;
+  }
+  54% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
 @keyframes reactionParticleMove {
   from {
     transform: translate(-14px, 8px);
@@ -7331,7 +7801,8 @@ section {
   .reactionFactorPanel,
   .reactionFactorPanel__body,
   .reactionWorkspace,
-  .reactionStage {
+  .reactionStage,
+  .reactionTemperatureStage {
     grid-template-columns: 1fr;
   }
 
@@ -7353,6 +7824,14 @@ section {
   }
 
   .reactionDataGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .reactionTemperaturePanelReadout {
+    grid-template-columns: 1fr;
+  }
+
+  .reactionTemperatureSupportGrid {
     grid-template-columns: 1fr;
   }
 }
@@ -7377,14 +7856,39 @@ section {
     grid-template-columns: 1fr;
   }
 
+  .reactionTemperatureSide {
+    grid-template-columns: 1fr;
+  }
+
   .reactionMacroView,
-  .reactionAtomicView {
+  .reactionAtomicView,
+  .reactionTemperatureMacro {
     min-height: 360px;
   }
 
   .reactionMacroView svg,
-  .reactionConcentrationMacro svg {
+  .reactionConcentrationMacro svg,
+  .reactionTemperatureMacro svg {
     min-height: 360px;
+  }
+
+  .reactionThermometerControl {
+    min-height: 148px;
+  }
+
+  .reactionThermometerTrackWrap {
+    min-height: 148px;
+    padding: 2.9rem 2.2rem 2rem 4.05rem;
+  }
+
+  .reactionThermometerImage {
+    inset: 2.25rem 0.4rem auto 1.1rem;
+    width: calc(100% - 1.5rem);
+    height: 76px;
+  }
+
+  .reactionThermometerRail {
+    height: 48px;
   }
 
   .reactionApparatusFooter,
@@ -7419,9 +7923,41 @@ section {
     gap: 0.45rem;
   }
 
-  .reactionStage {
+  .reactionStage,
+  .reactionTemperatureStage {
     padding: 0.55rem;
     border-radius: 18px;
+  }
+
+  .reactionThermometerControl {
+    min-height: 138px;
+  }
+
+  .reactionThermometerTrackWrap {
+    min-height: 138px;
+    padding: 2.75rem 1.5rem 1.9rem 3.35rem;
+  }
+
+  .reactionThermometerImage {
+    inset: 2.24rem 0.2rem auto 0.9rem;
+    width: calc(100% - 1.1rem);
+    height: 64px;
+  }
+
+  .reactionThermometerRail {
+    height: 42px;
+  }
+
+  .reactionThermometerReadout {
+    min-width: 78px;
+    font-size: 0.95rem;
+    padding: 0.42rem 0.5rem;
+  }
+
+  .reactionThermometerPointer {
+    width: 28px;
+    height: 28px;
+    border-width: 4px;
   }
 
   .reactionViewHeader,

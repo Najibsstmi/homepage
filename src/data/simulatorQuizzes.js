@@ -626,3 +626,61 @@ export const linearMotionQuiz = [
     explanation: "Kecerunan graf halaju-masa mewakili pecutan.",
   },
 ];
+
+export const inertiaQuiz = [
+  {
+    question: "Apakah tujuan eksperimen bilah gergaji dan plastisin ini?",
+    options: {
+      A: "Mengkaji hubungan antara jisim plastisin dengan inersia",
+      B: "Mengkaji hubungan antara suhu dengan kadar tindak balas",
+      C: "Mengkaji kekerasan logam tulen dan aloi",
+      D: "Mengkaji pembiasan cahaya melalui kanta",
+    },
+    answer: "A",
+    explanation: "Eksperimen ini menggunakan plastisin berjisim berbeza pada bilah gergaji untuk mengkaji hubungan antara jisim dengan inersia.",
+  },
+  {
+    question: "Apakah pemboleh ubah dimanipulasikan dalam eksperimen ini?",
+    options: {
+      A: "Tempoh ayunan",
+      B: "Panjang bilah gergaji",
+      C: "Jisim plastisin",
+      D: "Bentuk plastisin",
+    },
+    answer: "C",
+    explanation: "Jisim plastisin diubah-ubah untuk melihat kesannya terhadap inersia.",
+  },
+  {
+    question: "Apakah pemboleh ubah bergerak balas dalam eksperimen ini?",
+    options: {
+      A: "Tempoh ayunan",
+      B: "Warna plastisin",
+      C: "Jenis meja makmal",
+      D: "Saiz pengapit-G",
+    },
+    answer: "A",
+    explanation: "Tempoh ayunan diukur kerana tempoh yang lebih lama menunjukkan inersia yang lebih besar.",
+  },
+  {
+    question: "Apakah hubungan antara jisim plastisin dengan inersia?",
+    options: {
+      A: "Semakin besar jisim, semakin kecil inersia",
+      B: "Semakin besar jisim, semakin besar inersia",
+      C: "Jisim tidak mempengaruhi inersia",
+      D: "Inersia hanya bergantung pada warna objek",
+    },
+    answer: "B",
+    explanation: "Objek berjisim lebih besar mempunyai inersia lebih besar dan lebih sukar mengubah keadaan gerakannya.",
+  },
+  {
+    question: "Mengapa masa untuk 10 ayunan dibahagi dengan 10?",
+    options: {
+      A: "Untuk mendapatkan tempoh bagi satu ayunan lengkap",
+      B: "Untuk menukar gram kepada kilogram",
+      C: "Untuk mencari panjang bilah gergaji",
+      D: "Untuk mengira berat pengapit-G",
+    },
+    answer: "A",
+    explanation: "Tempoh ayunan ialah masa bagi satu ayunan lengkap, jadi masa untuk 10 ayunan dibahagi dengan 10.",
+  },
+];

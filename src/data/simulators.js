@@ -10,11 +10,11 @@ export const simulators = [
   },
   {
     id: "inersia",
-    title: "Inersia",
+    title: "Jisim dan Inersia",
     level: "Tingkatan 4",
-    topic: "Daya dan Gerakan",
+    topic: "Bab 11 Daya dan Gerakan",
     description:
-      "Eksplorasi konsep inersia melalui situasi harian supaya murid dapat mengaitkan kecenderungan objek mengekalkan keadaan asalnya.",
+      "Mengkaji hubungan antara jisim plastisin dengan inersia menggunakan bilah gergaji, pengapit-G dan jam randik.",
     href: "/simulator/inersia",
   },
   {

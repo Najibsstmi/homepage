@@ -10593,6 +10593,674 @@ section {
   animation: warningPulse 1.1s ease-in-out infinite;
 }
 
+.nuclearPlantFlow {
+  position: relative;
+  display: block;
+  min-height: 650px;
+  overflow: hidden;
+  padding: 1rem;
+  background:
+    linear-gradient(180deg, rgba(2, 6, 23, 0.2), rgba(2, 6, 23, 0.82)),
+    radial-gradient(circle at 52% 45%, rgba(56, 189, 248, 0.12), transparent 28%),
+    linear-gradient(135deg, #071421 0%, #0b1826 46%, #08111d 100%);
+}
+
+.nuclearPlantFlow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(15, 23, 42, 0.78), transparent 16% 82%, rgba(15, 23, 42, 0.62)),
+    radial-gradient(circle at 18% 70%, rgba(14, 165, 233, 0.22), transparent 18%),
+    radial-gradient(circle at 78% 34%, rgba(250, 204, 21, 0.08), transparent 24%);
+  pointer-events: none;
+}
+
+.nuclearPlantFlow--warning::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 48% 46%, rgba(239, 68, 68, 0.18), transparent 36%);
+  animation: warningPulse 0.9s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.plantSceneHeader {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 8;
+  padding: 0.5rem 0.78rem;
+  border-radius: 0 0 16px 0;
+  background: rgba(2, 6, 23, 0.74);
+  color: #cbd5e1;
+  font-size: 0.86rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.plantRiver {
+  position: absolute;
+  left: -5%;
+  top: 15%;
+  bottom: -10%;
+  z-index: 1;
+  width: 28%;
+  min-width: 190px;
+  border-radius: 0 40% 30% 0;
+  background:
+    repeating-linear-gradient(135deg, rgba(224, 242, 254, 0.16) 0 10px, transparent 10px 24px),
+    linear-gradient(135deg, rgba(14, 165, 233, 0.82), rgba(8, 47, 73, 0.86));
+  box-shadow: inset -16px 0 38px rgba(2, 6, 23, 0.45), 0 0 35px rgba(14, 165, 233, 0.22);
+}
+
+.plantRiver span,
+.plantRiver small {
+  position: absolute;
+  left: 24%;
+  display: block;
+  text-shadow: 0 3px 12px rgba(2, 6, 23, 0.6);
+}
+
+.plantRiver span {
+  top: 34%;
+  color: #bae6fd;
+  font-weight: 950;
+}
+
+.plantRiver small {
+  top: calc(34% + 1.55rem);
+  color: rgba(224, 242, 254, 0.86);
+  font-weight: 800;
+}
+
+.plantCoolingTower {
+  position: absolute;
+  left: 18%;
+  top: 19%;
+  z-index: 3;
+  width: 15%;
+  min-width: 118px;
+  height: 54%;
+  border: 1px solid rgba(203, 213, 225, 0.28);
+  border-radius: 35% 35% 18% 18% / 12% 12% 34% 34%;
+  background:
+    linear-gradient(90deg, rgba(15, 23, 42, 0.52), transparent 40% 60%, rgba(15, 23, 42, 0.38)),
+    linear-gradient(180deg, #cbd5e1, #64748b 58%, #334155);
+  clip-path: polygon(23% 0, 77% 0, 92% 100%, 8% 100%);
+  box-shadow: 0 18px 34px rgba(2, 6, 23, 0.45);
+}
+
+.plantCoolingTower strong {
+  position: absolute;
+  left: 50%;
+  bottom: 9%;
+  width: max-content;
+  transform: translateX(-50%);
+  color: #e2e8f0;
+  font-size: 0.74rem;
+  text-shadow: 0 2px 8px rgba(2, 6, 23, 0.8);
+}
+
+.plantSmoke,
+.plantGreySmoke {
+  position: absolute;
+  pointer-events: none;
+}
+
+.plantSmoke {
+  left: 50%;
+  top: -12%;
+  width: 100px;
+  height: 120px;
+  transform: translateX(-50%);
+}
+
+.plantSmoke i,
+.plantGreySmoke i {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(226, 232, 240, 0.78), rgba(148, 163, 184, 0.28) 58%, transparent 72%);
+  filter: blur(1px);
+  opacity: 0;
+  animation: plantSmokePuff 2.9s ease-in-out infinite;
+}
+
+.plantSmoke i:nth-child(1) {
+  left: 12px;
+  bottom: 0;
+  width: 48px;
+  height: 38px;
+}
+
+.plantSmoke i:nth-child(2) {
+  left: 38px;
+  bottom: 24px;
+  width: 62px;
+  height: 48px;
+  animation-delay: 0.55s;
+}
+
+.plantSmoke i:nth-child(3) {
+  left: 0;
+  bottom: 48px;
+  width: 78px;
+  height: 56px;
+  animation-delay: 1.05s;
+}
+
+.plantWaterPipe,
+.plantSteamLine,
+.plantPowerLine {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.plantWaterPipe {
+  left: 24%;
+  width: 28%;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(14, 165, 233, 0.38);
+  box-shadow: 0 0 16px rgba(14, 165, 233, 0.26);
+}
+
+.plantWaterPipe--in {
+  top: 68%;
+  transform: rotate(-7deg);
+}
+
+.plantWaterPipe--out {
+  top: 77%;
+  transform: rotate(8deg);
+}
+
+.plantWaterPipe i,
+.plantSteamLine i,
+.plantPowerLine i {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+}
+
+.plantWaterPipe i {
+  inset: 0 auto 0 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+  animation: pipeFlow 1.6s linear infinite;
+}
+
+.plantReactorBuilding {
+  position: absolute;
+  left: 39%;
+  top: 21%;
+  z-index: 4;
+  width: 23%;
+  min-width: 190px;
+  height: 52%;
+}
+
+.plantReactorDome {
+  position: relative;
+  height: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 48% 48% 14% 14% / 32% 32% 12% 12%;
+  background:
+    radial-gradient(circle at 50% 43%, rgba(249, 115, 22, 0.42), transparent 24%),
+    linear-gradient(135deg, #94a3b8, #334155 52%, #111827);
+  box-shadow: 0 24px 44px rgba(2, 6, 23, 0.48), inset 0 -18px 30px rgba(2, 6, 23, 0.32);
+}
+
+.plantReactorDome > strong {
+  position: absolute;
+  left: 50%;
+  top: 16%;
+  transform: translateX(-50%);
+  padding: 0.38rem 0.72rem;
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-radius: 999px;
+  background: rgba(8, 47, 73, 0.78);
+  color: #bae6fd;
+  font-size: 0.82rem;
+  font-weight: 950;
+}
+
+.plantHeatLabel {
+  position: absolute;
+  left: 50%;
+  bottom: -2rem;
+  transform: translateX(-50%);
+  color: #fed7aa;
+  font-size: 0.8rem;
+  font-weight: 950;
+}
+
+.plantReactorCore {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  display: grid;
+  width: 42%;
+  min-width: 82px;
+  aspect-ratio: 1;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #fff7ed, #f97316 35%, #7c2d12 78%);
+  box-shadow: 0 0 30px rgba(249, 115, 22, 0.46);
+}
+
+.plantReactorCore span {
+  width: 42%;
+  aspect-ratio: 0.55;
+  border: 2px solid rgba(255, 247, 237, 0.8);
+  border-radius: 999px;
+  box-shadow: 0 0 18px rgba(255, 247, 237, 0.8);
+}
+
+.nuclearPlantFlow--active .plantReactorCore {
+  animation: reactorHeatGlow 1.3s ease-in-out infinite;
+}
+
+.nuclearPlantFlow--radioactive .plantReactorCore,
+.nuclearPlantFlow--warning .plantReactorCore {
+  background: radial-gradient(circle at 38% 32%, #ffffff, #f97316 26%, #ef4444 58%, #7f1d1d 100%);
+  box-shadow: 0 0 38px rgba(249, 115, 22, 0.8), 0 0 84px rgba(239, 68, 68, 0.34);
+}
+
+.plantRadiationSigns,
+.plantDangerSigns {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.plantRadiationSigns i,
+.plantDangerSigns i {
+  position: absolute;
+  display: grid;
+  width: 34px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(2, 6, 23, 0.72);
+  font-style: normal;
+  font-weight: 950;
+  opacity: 0;
+}
+
+.plantRadiationSigns i {
+  color: #facc15;
+  box-shadow: 0 0 16px rgba(250, 204, 21, 0.45);
+}
+
+.plantRadiationSigns i:nth-child(1) {
+  left: 18%;
+  top: 40%;
+}
+
+.plantRadiationSigns i:nth-child(2) {
+  right: 18%;
+  top: 48%;
+  animation-delay: 0.28s;
+}
+
+.plantRadiationSigns i:nth-child(3) {
+  left: 48%;
+  bottom: 16%;
+  animation-delay: 0.52s;
+}
+
+.nuclearPlantFlow--radioactive .plantRadiationSigns i {
+  animation: radiationBlink 0.85s ease-in-out infinite;
+}
+
+.plantDangerSigns i {
+  border: 1px solid rgba(248, 113, 113, 0.5);
+  color: #fecaca;
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.48);
+}
+
+.plantDangerSigns i:nth-child(1) {
+  left: 14%;
+  top: 22%;
+}
+
+.plantDangerSigns i:nth-child(2) {
+  right: 13%;
+  top: 25%;
+  animation-delay: 0.24s;
+}
+
+.nuclearPlantFlow--warning .plantDangerSigns i {
+  animation: dangerBlink 0.72s ease-in-out infinite;
+}
+
+.plantGreySmoke {
+  left: 50%;
+  top: 12%;
+  width: 120px;
+  height: 120px;
+  transform: translateX(-50%);
+}
+
+.plantGreySmoke i:nth-child(1) {
+  left: 26px;
+  bottom: 0;
+  width: 42px;
+  height: 34px;
+}
+
+.plantGreySmoke i:nth-child(2) {
+  left: 52px;
+  bottom: 26px;
+  width: 58px;
+  height: 44px;
+  animation-delay: 0.42s;
+}
+
+.plantGreySmoke i:nth-child(3) {
+  left: 12px;
+  bottom: 52px;
+  width: 70px;
+  height: 54px;
+  animation-delay: 0.82s;
+}
+
+.nuclearPlantFlow:not(.nuclearPlantFlow--radioactive):not(.nuclearPlantFlow--warning) .plantGreySmoke i {
+  animation: none;
+}
+
+.plantSteamLine {
+  left: 59%;
+  top: 45%;
+  width: 16%;
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(226, 232, 240, 0.26);
+  box-shadow: 0 0 18px rgba(226, 232, 240, 0.2);
+}
+
+.plantSteamLine i {
+  inset: 0 auto 0 0;
+  width: 34px;
+  background: linear-gradient(90deg, transparent, rgba(226, 232, 240, 0.92), transparent);
+  animation: pipeFlow 1.1s linear infinite;
+}
+
+.plantSteamLine i:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.plantSteamLine i:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.plantGeneratorBlock {
+  position: absolute;
+  left: 71%;
+  top: 34%;
+  z-index: 4;
+  display: grid;
+  width: 12%;
+  min-width: 124px;
+  gap: 0.42rem;
+  justify-items: center;
+  padding: 0.9rem 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.72);
+  box-shadow: 0 18px 30px rgba(2, 6, 23, 0.38);
+}
+
+.plantGeneratorBlock strong {
+  color: #e2e8f0;
+  font-size: 0.86rem;
+}
+
+.plantGeneratorBlock .plantTurbine {
+  width: 72px;
+}
+
+.plantGeneratorBlock .plantGenerator {
+  width: 78px;
+}
+
+.plantElectricSparks {
+  position: absolute;
+  inset: -18px -10px auto;
+  height: 44px;
+  pointer-events: none;
+}
+
+.plantElectricSparks i {
+  position: absolute;
+  color: #fde68a;
+  font-style: normal;
+  font-weight: 950;
+  opacity: 0;
+  text-shadow: 0 0 14px rgba(250, 204, 21, 0.82);
+}
+
+.plantElectricSparks i:nth-child(1) {
+  left: 18%;
+}
+
+.plantElectricSparks i:nth-child(2) {
+  left: 48%;
+  top: -6px;
+  animation-delay: 0.24s;
+}
+
+.plantElectricSparks i:nth-child(3) {
+  right: 14%;
+  animation-delay: 0.48s;
+}
+
+.nuclearPlantFlow--electric .plantElectricSparks i {
+  animation: electricBlink 0.9s ease-in-out infinite;
+}
+
+.nuclearPlantFlow--electric .plantGenerator {
+  border-color: rgba(250, 204, 21, 0.72);
+  background: radial-gradient(circle, #fef3c7, #facc15 44%, #92400e 100%);
+  color: #422006;
+  box-shadow: 0 0 34px rgba(250, 204, 21, 0.62), inset 0 0 20px rgba(255, 255, 255, 0.28);
+}
+
+.plantPowerLine {
+  left: 80%;
+  top: 42%;
+  width: 16%;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(250, 204, 21, 0.26);
+  transform: rotate(-14deg);
+  transform-origin: 0 50%;
+}
+
+.plantPowerLine i {
+  inset: -2px auto -2px 0;
+  width: 28%;
+  background: linear-gradient(90deg, transparent, #facc15, transparent);
+  opacity: 0;
+}
+
+.nuclearPlantFlow--electric .plantPowerLine i {
+  animation: electricityFlow 1s linear infinite;
+}
+
+.plantPowerLine i:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.plantPowerLine i:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.plantSubstation {
+  position: absolute;
+  right: 8%;
+  top: 16%;
+  z-index: 4;
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  width: 14%;
+  min-width: 116px;
+}
+
+.plantSubstation strong {
+  padding: 0.42rem 0.62rem;
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-radius: 999px;
+  background: rgba(8, 47, 73, 0.78);
+  color: #bae6fd;
+  font-size: 0.76rem;
+  text-align: center;
+}
+
+.plantTower {
+  position: relative;
+  width: 82px;
+  height: 148px;
+  border-bottom: 5px solid rgba(148, 163, 184, 0.75);
+}
+
+.plantTower::before,
+.plantTower::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 4px;
+  height: 100%;
+  background: rgba(148, 163, 184, 0.78);
+}
+
+.plantTower::before {
+  left: 24px;
+  transform: skewX(-14deg);
+}
+
+.plantTower::after {
+  right: 24px;
+  transform: skewX(14deg);
+}
+
+.plantTower i {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  height: 3px;
+  background: rgba(148, 163, 184, 0.78);
+}
+
+.plantTower i:nth-child(1) {
+  top: 32px;
+}
+
+.plantTower i:nth-child(2) {
+  top: 70px;
+}
+
+.plantTower i:nth-child(3) {
+  top: 108px;
+}
+
+.nuclearPlantFlow--electric .plantTower {
+  filter: drop-shadow(0 0 14px rgba(250, 204, 21, 0.48));
+}
+
+.plantCity {
+  position: absolute;
+  right: 4%;
+  bottom: 11%;
+  z-index: 4;
+  display: grid;
+  width: 25%;
+  min-width: 190px;
+  gap: 0.7rem;
+  min-height: auto;
+}
+
+.plantCity strong {
+  color: #e2e8f0;
+  font-size: 0.86rem;
+  text-align: center;
+}
+
+.plantStreetLights {
+  display: flex;
+  justify-content: space-around;
+  min-height: 58px;
+}
+
+.plantStreetLights i {
+  position: relative;
+  width: 4px;
+  height: 48px;
+  border-radius: 999px;
+  background: #64748b;
+}
+
+.plantStreetLights i::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  width: 16px;
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: #334155;
+}
+
+.plantHouses {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.45rem;
+  align-items: end;
+}
+
+.plantHouses i {
+  position: relative;
+  display: block;
+  height: 48px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px 8px 2px 2px;
+  background: #1e293b;
+}
+
+.plantHouses i:nth-child(2),
+.plantHouses i:nth-child(4) {
+  height: 64px;
+}
+
+.plantHouses i::before {
+  content: "";
+  position: absolute;
+  left: 16%;
+  right: 16%;
+  top: 18%;
+  height: 12px;
+  border-radius: 3px;
+  background: rgba(15, 23, 42, 0.84);
+}
+
+.nuclearPlantFlow--electric .plantStreetLights i::after,
+.nuclearPlantFlow--electric .plantHouses i::before {
+  background: #fde68a;
+  box-shadow: 0 0 22px rgba(250, 204, 21, 0.72);
+  animation: electricBlink 1.25s ease-in-out infinite;
+}
+
+.nuclearPlantFlow--electric .plantHouses i {
+  border-color: rgba(250, 204, 21, 0.3);
+}
+
 .nuclearLearningPanel {
   display: grid;
   gap: 1rem;
@@ -11013,6 +11681,96 @@ section {
   }
 }
 
+@keyframes plantSmokePuff {
+  0% {
+    opacity: 0;
+    transform: translate(0, 20px) scale(0.65);
+  }
+  28% {
+    opacity: 0.78;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(10px, -58px) scale(1.38);
+  }
+}
+
+@keyframes pipeFlow {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  28% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(210%);
+  }
+}
+
+@keyframes reactorHeatGlow {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.08);
+    filter: brightness(1.24);
+  }
+}
+
+@keyframes radiationBlink {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: translateY(0) scale(0.88);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-6px) scale(1.08);
+  }
+}
+
+@keyframes dangerBlink {
+  0%,
+  100% {
+    opacity: 0.1;
+    transform: scale(0.86);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes electricityFlow {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(280%);
+  }
+}
+
+@keyframes electricBlink {
+  0%,
+  100% {
+    opacity: 0.28;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.45);
+  }
+}
+
 @media (max-width: 1320px) {
   .nuclearModeGrid,
   .nuclearPlantLayout {
@@ -11049,7 +11807,7 @@ section {
   }
 
   .nuclearPlantFlow {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-height: 720px;
   }
 
   .plantNode:nth-child(2)::after,
@@ -11059,6 +11817,31 @@ section {
 
   .plantNode:nth-child(3)::after {
     display: block;
+  }
+
+  .plantCoolingTower {
+    left: 12%;
+    width: 17%;
+  }
+
+  .plantReactorBuilding {
+    left: 34%;
+    width: 28%;
+  }
+
+  .plantGeneratorBlock {
+    left: 64%;
+    top: 36%;
+  }
+
+  .plantSubstation {
+    right: 5%;
+    top: 14%;
+  }
+
+  .plantCity {
+    right: 5%;
+    width: 34%;
   }
 }
 
@@ -11150,7 +11933,7 @@ section {
   }
 
   .nuclearPlantFlow {
-    grid-template-columns: 1fr;
+    min-height: 760px;
   }
 
   .plantNode {
@@ -11160,6 +11943,121 @@ section {
   .plantNode::after,
   .plantNode:nth-child(3)::after {
     display: none;
+  }
+
+  .plantSceneHeader {
+    max-width: calc(100% - 2rem);
+    font-size: 0.72rem;
+  }
+
+  .plantRiver {
+    left: -18%;
+    top: 50%;
+    width: 58%;
+    min-width: 0;
+  }
+
+  .plantCoolingTower {
+    left: 7%;
+    top: 18%;
+    width: 26%;
+    min-width: 86px;
+    height: 36%;
+  }
+
+  .plantSmoke {
+    width: 78px;
+  }
+
+  .plantReactorBuilding {
+    left: 34%;
+    top: 17%;
+    width: 44%;
+    min-width: 145px;
+    height: 38%;
+  }
+
+  .plantReactorDome > strong {
+    font-size: 0.66rem;
+  }
+
+  .plantReactorCore {
+    min-width: 66px;
+  }
+
+  .plantWaterPipe {
+    left: 22%;
+    width: 34%;
+  }
+
+  .plantWaterPipe--in {
+    top: 57%;
+  }
+
+  .plantWaterPipe--out {
+    top: 63%;
+  }
+
+  .plantSteamLine {
+    left: 61%;
+    top: 37%;
+    width: 25%;
+    transform: rotate(12deg);
+  }
+
+  .plantGeneratorBlock {
+    left: 47%;
+    top: 55%;
+    width: 29%;
+    min-width: 102px;
+    padding: 0.7rem 0.55rem;
+  }
+
+  .plantGeneratorBlock .plantTurbine,
+  .plantGeneratorBlock .plantGenerator {
+    width: 60px;
+  }
+
+  .plantSubstation {
+    right: 3%;
+    top: 47%;
+    width: 27%;
+    min-width: 92px;
+  }
+
+  .plantTower {
+    width: 62px;
+    height: 116px;
+  }
+
+  .plantPowerLine {
+    left: 70%;
+    top: 58%;
+    width: 24%;
+  }
+
+  .plantCity {
+    right: 3%;
+    bottom: 5%;
+    width: 48%;
+    min-width: 146px;
+  }
+
+  .plantStreetLights {
+    min-height: 46px;
+  }
+
+  .plantStreetLights i {
+    height: 38px;
+  }
+
+  .plantHouses i {
+    height: 40px;
+  }
+
+  .plantHouses i:nth-child(2),
+  .plantHouses i:nth-child(4) {
+    height: 52px;
   }
 
   .nuclearSlider__top {

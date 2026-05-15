@@ -54,6 +54,15 @@ export const simulators = [
     href: "/simulator/elektrokimia-elektrolisis",
   },
   {
+    id: "tenaga-nuklear",
+    title: "Tenaga Nuklear",
+    level: "Tingkatan 4",
+    topic: "Bab 12 Tenaga Nuklear",
+    description:
+      "Simulator interaktif untuk memahami pembelahan nukleus, pelakuran nukleus dan cara stesen janakuasa nuklear menghasilkan elektrik.",
+    href: "/simulator/tenaga-nuklear",
+  },
+  {
     id: "kanta",
     title: "Pembentukan Imej oleh Kanta",
     level: "Tingkatan 5",

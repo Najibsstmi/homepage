@@ -3,6 +3,7 @@ import LinearMotionSimulator from "../components/LinearMotionSimulator";
 import AlloyHardnessSimulatorPage from "./AlloyHardnessSimulatorPage";
 import ElectrolysisSimulatorPage from "./ElectrolysisSimulatorPage";
 import InertiaMassSimulatorPage from "./InertiaMassSimulatorPage";
+import NuclearEnergySimulatorPage from "./NuclearEnergySimulatorPage";
 import ReactionRateSimulatorPage from "./ReactionRateSimulatorPage";
 import { simulators } from "../data/simulators";
 
@@ -27,6 +28,10 @@ export default function SimulatorPage() {
 
   if (path === "/simulator/inersia") {
     return <InertiaMassSimulatorPage />;
+  }
+
+  if (path === "/simulator/tenaga-nuklear") {
+    return <NuclearEnergySimulatorPage />;
   }
 
   return (

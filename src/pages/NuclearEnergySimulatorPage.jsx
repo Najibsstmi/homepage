@@ -15,10 +15,11 @@ const initialFission = {
   energy: 0,
   temperature: 260,
   boronRod: 25,
+  coolantFlow: 55,
   graphiteRod: 55,
   uraniumRod: 55,
   absorbedCount: 0,
-  message: "Laraskan rod uranium, grafit dan boron, kemudian tembak neutron pertama.",
+  message: "Laraskan rod uranium, grafit, boron dan agen penyejuk, kemudian tembak neutron pertama.",
   hasStarted: false,
 };
 
@@ -179,16 +180,44 @@ function getModeratorStatus(graphiteRod) {
   return "Moderator optimum";
 }
 
+function getNeutronMode(graphiteRod) {
+  if (graphiteRod < 35) {
+    return "fast";
+  }
+
+  if (graphiteRod > 85) {
+    return "tooSlow";
+  }
+
+  return "optimal";
+}
+
+function getModeratorConcept(graphiteRod) {
+  if (graphiteRod < 35) {
+    return "Neutron terlalu laju dan sukar diserap oleh U-235.";
+  }
+
+  if (graphiteRod > 85) {
+    return "Neutron terlalu perlahan. Kadar pembelahan menurun.";
+  }
+
+  return "Neutron diperlahankan. U-235 lebih mudah mengalami pembelahan.";
+}
+
 function getModeratorEfficiency(graphiteRod) {
   if (graphiteRod < 35) {
-    return 0.36 + graphiteRod / 110;
+    return 0.24 + graphiteRod / 160;
   }
 
-  if (graphiteRod <= 75) {
-    return 0.78 + (graphiteRod - 35) / 160;
+  if (graphiteRod <= 65) {
+    return 0.74 + (graphiteRod - 35) / 120;
   }
 
-  return clamp(1 - (graphiteRod - 75) / 170, 0.72, 1);
+  if (graphiteRod <= 85) {
+    return 1 - (graphiteRod - 65) / 260;
+  }
+
+  return clamp(0.9 - (graphiteRod - 85) / 35, 0.42, 0.9);
 }
 
 function getFissionMetrics(fission) {
@@ -206,10 +235,10 @@ function getFissionMetrics(fission) {
   const moderatorStatus = getModeratorStatus(fission.graphiteRod);
   let status = "Reaktor stabil";
 
-  if (fission.boronRod >= 95 || (fission.boronRod > 82 && reactionRate < 28)) {
-    status = "Reaktor dikawal";
-  } else if (fission.temperature > 900) {
+  if (fission.temperature > 900) {
     status = "Bahaya: suhu tinggi";
+  } else if (fission.boronRod >= 95 || (fission.boronRod > 82 && reactionRate < 28)) {
+    status = "Reaktor dikawal";
   } else if (reactionRate >= 76 && fission.neutronCount >= 8) {
     status = "Tindak balas berantai";
   } else if (reactionRate >= 54) {
@@ -229,12 +258,16 @@ function getFissionMetrics(fission) {
 }
 
 function getFissionMessage(fission, metrics) {
-  if (fission.boronRod >= 95) {
-    return "Rod boron menyerap neutron dan memperlahankan tindak balas berantai.";
+  if (fission.temperature > 900) {
+    return "AMARAN: Suhu reaktor terlalu tinggi. Masukkan Rod Boron dan tingkatkan Agen Penyejuk (Air).";
   }
 
-  if (fission.temperature > 900) {
-    return "AMARAN: Tindak balas terlalu aktif. Masukkan Rod Boron (Rod Pengawal).";
+  if ((fission.coolantFlow ?? 0) >= 82 && fission.temperature > 420) {
+    return "Agen penyejuk mengalir deras dan membuang haba daripada teras reaktor.";
+  }
+
+  if (fission.boronRod >= 95) {
+    return "Rod boron menyerap neutron bebas supaya tindak balas berantai terkawal.";
   }
 
   if (fission.uraniumRod > 84 && metrics.reactionRate > 70) {
@@ -242,15 +275,15 @@ function getFissionMessage(fission, metrics) {
   }
 
   if (fission.graphiteRod < 35) {
-    return "Moderator terlalu rendah. Neutron bergerak terlalu laju dan banyak terlepas daripada U-235.";
+    return "Neutron terlalu laju. Tanpa moderator grafit yang mencukupi, neutron sukar diserap oleh uranium-235.";
   }
 
   if (fission.graphiteRod > 85) {
-    return "Moderator terlalu tinggi. Neutron terlalu banyak diperlahankan dan kadar tindak balas menurun.";
+    return "Rod grafit terlalu banyak memperlahankan neutron. Kadar pembelahan menurun.";
   }
 
   if (metrics.reactionRate >= 55) {
-    return "Moderator optimum membantu neutron mencetuskan pembelahan U-235 secara terkawal.";
+    return "Rod grafit memperlahankan neutron. Neutron perlahan lebih mudah diserap oleh U-235 lalu mencetuskan pembelahan.";
   }
 
   return fission.message;
@@ -258,27 +291,47 @@ function getFissionMessage(fission, metrics) {
 
 function advanceFission(current) {
   const metrics = getFissionMetrics(current);
-  const boronAbsorbed = Math.round(current.neutronCount * (current.boronRod / 100) * 0.72);
-  const escaped = current.graphiteRod < 35 ? Math.max(0, Math.round(current.neutronCount * 0.24)) : 0;
-  const splitCapacity = current.uraniumRod > 82 ? 4 : current.uraniumRod > 48 ? 3 : 2;
-  const splitDemand = Math.round(metrics.reactionRate / 34 + current.neutronCount / 8);
-  const splitEvents = current.neutronCount <= 0
-    ? 0
-    : clamp(splitDemand - Math.round(boronAbsorbed / 3), 0, splitCapacity);
-  const producedNeutrons = splitEvents * (current.graphiteRod >= 35 && current.graphiteRod <= 85 ? 3 : 2);
+  const neutronMode = getNeutronMode(current.graphiteRod);
+  const uraniumDensity = current.uraniumRod / 100;
+  const coolantFlow = current.coolantFlow ?? initialFission.coolantFlow;
+  const boronAbsorptionRate = clamp((current.boronRod / 100) * 0.92, 0, 0.94);
+  const boronAbsorbed = Math.round(current.neutronCount * boronAbsorptionRate);
+  const fastEscapeRate = current.graphiteRod < 35 ? clamp((35 - current.graphiteRod) / 58, 0.12, 0.6) : 0;
+  const sparseEscapeRate = current.uraniumRod < 35 ? clamp((35 - current.uraniumRod) / 90, 0, 0.28) : 0;
+  const escaped = Math.round(Math.max(0, current.neutronCount - boronAbsorbed) * (fastEscapeRate + sparseEscapeRate));
+  const effectiveNeutrons = Math.max(0, current.neutronCount - boronAbsorbed - escaped);
+  const splitCapacity = current.uraniumRod > 82 ? 5 : current.uraniumRod > 56 ? 4 : current.uraniumRod > 28 ? 3 : 2;
+  const collisionDrive =
+    effectiveNeutrons * (0.42 + uraniumDensity * 0.95) * metrics.moderatorEfficiency;
+  const splitDemand = Math.round(collisionDrive / 2.35 + metrics.reactionRate / 38);
+  const minimumFastHit =
+    neutronMode === "fast" && current.neutronCount >= 3 && current.uraniumRod >= 45 && current.boronRod < 75
+      ? 1
+      : 0;
+  const splitEvents = current.neutronCount <= 0 ? 0 : clamp(Math.max(splitDemand, minimumFastHit), 0, splitCapacity);
+  const neutronsPerSplit = neutronMode === "optimal" ? 3 : neutronMode === "fast" ? 2 : 1;
+  const producedNeutrons = splitEvents * neutronsPerSplit;
+  const coolantCooling = Math.round(coolantFlow * (current.temperature > 900 ? 1.18 : 0.72));
   const nextNeutrons = clamp(
     current.neutronCount - boronAbsorbed - escaped + producedNeutrons,
     0,
     30
   );
   const heatGain =
-    splitEvents * (24 + Math.round(current.uraniumRod / 5)) +
-    producedNeutrons * 2 -
-    Math.round(current.boronRod * 0.36) -
-    (splitEvents === 0 ? 18 : 0);
-  const nextTemperature = clamp(Math.round(current.temperature + heatGain), 90, 1100);
+    splitEvents * (22 + Math.round(current.uraniumRod / 4.5)) +
+    producedNeutrons * 2 +
+    Math.round(metrics.reactionRate * 0.08) -
+    Math.round(current.boronRod * 0.45) -
+    coolantCooling -
+    Math.round(escaped * 4) -
+    (splitEvents === 0 ? 22 : 0);
+  const nextTemperature = clamp(Math.round(current.temperature + heatGain), 220, 1100);
   const nextEnergy = clamp(
-    current.energy + splitEvents * (10 + Math.round(current.uraniumRod / 7)) - Math.round(current.boronRod / 18),
+    current.energy +
+      splitEvents * (12 + Math.round(current.uraniumRod / 6)) -
+      Math.round(boronAbsorbed * 5.5) -
+      Math.round(escaped * 2.5) -
+      (splitEvents === 0 ? 10 : 0),
     0,
     999
   );
@@ -322,6 +375,45 @@ function NuclearMeter({ label, value, detail, fill, tone = "cyan" }) {
       {detail ? <p>{detail}</p> : null}
       <i style={{ "--fill": `${clamp(fill ?? 0, 0, 100)}%` }} aria-hidden="true" />
     </article>
+  );
+}
+
+function NuclearGauge({ label, value, detail, fill, tone = "cyan" }) {
+  const gaugeFill = clamp(fill ?? 0, 0, 100);
+
+  return (
+    <article className={`nuclearGauge nuclearGauge--${tone}`}>
+      <div className="nuclearGauge__arc">
+        <svg viewBox="0 0 120 72" aria-hidden="true">
+          <path className="nuclearGauge__track" d="M 12 60 A 48 48 0 0 1 108 60" pathLength="100" />
+          <path
+            className="nuclearGauge__value"
+            d="M 12 60 A 48 48 0 0 1 108 60"
+            pathLength="100"
+            strokeDasharray={`${gaugeFill} 100`}
+          />
+        </svg>
+        <strong>{value}</strong>
+      </div>
+      <span>{label}</span>
+      {detail ? <small>{detail}</small> : null}
+    </article>
+  );
+}
+
+function NuclearDangerOverlay({ show, message }) {
+  if (!show) {
+    return null;
+  }
+
+  return (
+    <div className="nuclearDangerOverlay" aria-hidden="true">
+      <div className="nuclearDangerOverlay__card">
+        <span className="nuclearDangerOverlay__symbol">☢</span>
+        <strong>BAHAYA</strong>
+        <small>{message}</small>
+      </div>
+    </div>
   );
 }
 
@@ -457,9 +549,50 @@ export default function NuclearEnergySimulatorPage() {
     return () => window.clearInterval(timer);
   }, [activeMode, fission.running]);
 
+  useEffect(() => {
+    if (activeMode !== "fission" || fission.temperature <= initialFission.temperature) {
+      return undefined;
+    }
+
+    const timer = window.setInterval(() => {
+      setFission((current) => {
+        if (current.temperature <= initialFission.temperature) {
+          return current;
+        }
+
+        const metrics = getFissionMetrics(current);
+        const coolantFlow = current.coolantFlow ?? initialFission.coolantFlow;
+        const coolantCooling = Math.round(coolantFlow * (current.temperature > 900 ? 1.16 : 0.68));
+        const boronCooling = Math.round(current.boronRod * 0.22);
+        const passiveCooling = current.running ? 6 : 18;
+        const activeHeat = current.running ? Math.round(metrics.reactionRate * 0.18) : 0;
+        const coolingPower = Math.max(3, coolantCooling + boronCooling + passiveCooling - activeHeat);
+        const nextTemperature = Math.max(initialFission.temperature, current.temperature - coolingPower);
+        const wasDanger = current.temperature > 900;
+        const isNowStable = nextTemperature <= 900;
+
+        return {
+          ...current,
+          temperature: nextTemperature,
+          message:
+            wasDanger && isNowStable
+              ? "Agen penyejuk berjaya menurunkan suhu reaktor ke zon selamat."
+              : current.message,
+        };
+      });
+    }, 850);
+
+    return () => window.clearInterval(timer);
+  }, [activeMode, fission.temperature, fission.coolantFlow, fission.boronRod, fission.running]);
+
   const fissionMetrics = useMemo(() => getFissionMetrics(fission), [fission]);
   const fissionStatus = fissionMetrics.status;
   const fissionMessage = getFissionMessage(fission, fissionMetrics);
+  const fissionDanger = fission.temperature > 900;
+  const coolantLevel = (fission.coolantFlow ?? initialFission.coolantFlow) / 100;
+  const neutronMode = getNeutronMode(fission.graphiteRod);
+  const moderatorConcept = getModeratorConcept(fission.graphiteRod);
+  const neutronBaseSpeed = neutronMode === "fast" ? 0.48 : neutronMode === "tooSlow" ? 4.6 : 1.95;
   const activeUraniumPositions = uraniumPositions.slice(0, fissionMetrics.uraniumCount);
   const neutronVisuals = Array.from(
     { length: Math.min(Math.max(fission.neutronCount, fission.running ? 3 : 2), 18) },
@@ -469,7 +602,8 @@ export default function NuclearEnergySimulatorPage() {
         ...path,
         id: `${fission.cycle}-${index}`,
         delay: `${(index % 6) * -0.22}s`,
-        speed: `${clamp(2.6 - fissionMetrics.moderatorEfficiency * 0.9 + index * 0.03, 1.45, 3.1)}s`,
+        speed: `${clamp(neutronBaseSpeed + index * 0.04, 0.42, 5.2)}s`,
+        rippleDelay: `${(index % 5) * -0.18}s`,
       };
     }
   );
@@ -497,7 +631,11 @@ export default function NuclearEnergySimulatorPage() {
     const coolantStress = clamp(100 - plant.waterFlow, 0, 100);
     const nuclearLoad = clamp(plant.fissionRate * (0.24 + rodEffect * 0.96), 0, 110);
     const temperature = Math.round(
-      clamp(90 + nuclearLoad * 7.4 + coolantStress * 4.2 - plant.controlRod * 1.1, 45, 1120)
+      clamp(
+        90 + nuclearLoad * 7.4 + coolantStress * 4.2 - plant.controlRod * 1.1 - plant.waterFlow * 0.62,
+        45,
+        1120
+      )
     );
     const reactorHeat = Math.round(clamp((temperature - 120) / 9.4, 0, 100));
     const steam = Math.round(clamp(nuclearLoad * 0.62 + plant.waterFlow * 0.42 - coolantStress * 0.18, 0, 100));
@@ -548,6 +686,8 @@ export default function NuclearEnergySimulatorPage() {
 
     return "Pelakuran berjaya";
   }, [fusion.active, fusion.magneticField, fusion.temperature]);
+  const fusionDanger = fusion.active && (fusion.magneticField < 35 || (fusion.temperature >= 95 && fusion.magneticField < 50));
+  const plantDanger = plantData.danger;
 
   const startCurrentMode = () => {
     if (activeMode === "fission") {
@@ -592,6 +732,26 @@ export default function NuclearEnergySimulatorPage() {
           ? "Rod boron menyerap neutron dan memperlahankan tindak balas berantai."
           : "Rod boron dilaraskan. Lebih tinggi rod masuk, lebih banyak neutron diserap.",
     }));
+  };
+
+  const setCoolantFlow = (value) => {
+    setFission((current) => {
+      const previousFlow = current.coolantFlow ?? initialFission.coolantFlow;
+      const immediateCooling = value > previousFlow ? Math.round((value - previousFlow) * 2.2) : 0;
+      const nextTemperature = Math.max(initialFission.temperature, current.temperature - immediateCooling);
+
+      return {
+        ...current,
+        coolantFlow: value,
+        temperature: nextTemperature,
+        message:
+          value >= 80
+            ? "Agen penyejuk (air) ditingkatkan untuk membawa haba keluar daripada teras reaktor."
+            : value < 25
+            ? "Agen penyejuk terlalu sedikit. Suhu reaktor boleh meningkat dengan cepat."
+            : "Agen penyejuk dilaraskan untuk mengawal suhu reaktor.",
+      };
+    });
   };
 
   const setGraphiteRod = (value) => {
@@ -709,8 +869,8 @@ export default function NuclearEnergySimulatorPage() {
 
       {activeMode === "fission" && (
         <>
-          <section className="nuclearModeGrid">
-            <aside className="nuclearPanel nuclearSteps">
+          <section className="nuclearModeGrid fissionModeGrid">
+            <aside className="nuclearPanel nuclearSteps fissionSteps">
               <div className="nuclearPanelTitle">
                 <span>Langkah</span>
                 <h2>Pembelahan Nukleus</h2>
@@ -733,12 +893,15 @@ export default function NuclearEnergySimulatorPage() {
                 fission.running ? "fissionStage--running" : "",
                 fission.splitIds.length > 0 ? "fissionStage--split" : "",
                 fissionMetrics.reactionRate > 70 ? "fissionStage--active" : "",
-                fission.temperature > 900 ? "nuclearStage--warning" : "",
+                `fissionStage--neutron-${neutronMode}`,
+                fissionDanger ? "nuclearStage--warning" : "",
               ].join(" ")}
               style={{
                 "--boron-top": `${-74 + fission.boronRod * 0.92}%`,
                 "--reactor-cyan-alpha": `${0.11 + fissionMetrics.reactionRate / 650}`,
                 "--reactor-orange-alpha": `${fissionMetrics.reactionRate / 780}`,
+                "--coolant-opacity": `${0.18 + coolantLevel * 0.62}`,
+                "--coolant-speed": `${2.8 - coolantLevel * 1.35}s`,
               }}
               aria-label="Ruang simulasi pembelahan nukleus"
             >
@@ -746,6 +909,21 @@ export default function NuclearEnergySimulatorPage() {
 
               <div className="reactorCoreShell" aria-hidden="true">
                 <div className="reactorGlowField" />
+              </div>
+
+              <div className="coolantFlowField" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </div>
+
+              <div className={`moderatorZone moderatorZone--${neutronMode}`} aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </div>
+              <div className={`moderatorZoneLabel moderatorZoneLabel--${neutronMode}`} aria-hidden="true">
+                Moderator Grafit
               </div>
 
               <div className="boronRodBank" aria-label="Rod Boron menyerap neutron">
@@ -781,7 +959,7 @@ export default function NuclearEnergySimulatorPage() {
               <div className="neutronField" aria-hidden="true">
                 {neutronVisuals.map((neutron) => (
                   <i
-                    className="chainNeutron"
+                    className={`chainNeutron chainNeutron--${neutronMode}`}
                     key={neutron.id}
                     style={{
                       "--from-x": neutron.fromX,
@@ -790,6 +968,7 @@ export default function NuclearEnergySimulatorPage() {
                       "--dy": neutron.dy,
                       "--delay": neutron.delay,
                       "--neutron-speed": neutron.speed,
+                      "--ripple-delay": neutron.rippleDelay,
                     }}
                   />
                 ))}
@@ -832,16 +1011,43 @@ export default function NuclearEnergySimulatorPage() {
                 </div>
               </div>
 
+              <div className="moderatorFlowLabel">
+                <span>Neutron laju</span>
+                <strong>→ Moderator →</strong>
+                <span>Neutron perlahan</span>
+                <strong>→</strong>
+                <span>U-235 terbelah</span>
+              </div>
+
               <div className="nuclearStageReadout">
                 <strong>{fissionStatus}</strong>
                 <span>{fission.running ? fission.message : fissionMessage}</span>
               </div>
+              <NuclearDangerOverlay show={fissionDanger} message="Suhu reaktor terlalu tinggi" />
             </section>
+
+            <section className="fissionGaugeDeck" aria-label="Data langsung reaktor pembelahan">
+              <NuclearGauge label="Bilangan neutron" value={fission.neutronCount} fill={(fission.neutronCount / 30) * 100} />
+              <NuclearGauge label="Uranium aktif" value={fissionMetrics.activeUranium} fill={(fissionMetrics.activeUranium / 12) * 100} />
+              <NuclearGauge label="Tenaga terbebas" value={`${fission.energy}`} detail="unit" fill={fission.energy / 10} tone="orange" />
+              <NuclearGauge
+                label="Suhu reaktor"
+                value={`${fission.temperature}°C`}
+                fill={fission.temperature / 11}
+                tone={fissionDanger ? "red" : "purple"}
+              />
+              <NuclearGauge label="Kadar tindak balas" value={`${fissionMetrics.reactionRate}%`} fill={fissionMetrics.reactionRate} tone="orange" />
+              <NuclearGauge label="Status reaktor" value={`${fissionMetrics.reactionRate}%`} detail={fissionStatus} fill={fissionMetrics.reactionRate} />
+            </section>
+
+            {fissionDanger ? (
+              <p className="nuclearWarning fissionWarning">AMARAN: Suhu reaktor terlalu tinggi. Tingkatkan Agen Penyejuk (Air) dan masukkan Rod Boron.</p>
+            ) : null}
 
             <aside className="nuclearPanel nuclearControls">
               <div className="nuclearPanelTitle">
                 <span>Kawalan</span>
-                <h2>Data Reaktor</h2>
+                <h2>Kawalan Reaktor</h2>
               </div>
               <div className="nuclearActionRow">
                 <button
@@ -866,6 +1072,15 @@ export default function NuclearEnergySimulatorPage() {
                 onChange={setBoronRod}
               />
               <NuclearSlider
+                label="Agen Penyejuk (Air)"
+                value={fission.coolantFlow ?? initialFission.coolantFlow}
+                min={0}
+                max={100}
+                leftLabel="Sedikit"
+                rightLabel="Deras"
+                onChange={setCoolantFlow}
+              />
+              <NuclearSlider
                 label="Rod Grafit (Moderator)"
                 value={fission.graphiteRod}
                 min={0}
@@ -884,7 +1099,10 @@ export default function NuclearEnergySimulatorPage() {
                 onChange={setUraniumRod}
               />
 
-              <p className="nuclearModeratorStatus">{fissionMetrics.moderatorStatus}</p>
+              <p className={`nuclearModeratorStatus nuclearModeratorStatus--${neutronMode}`}>
+                <strong>{fissionMetrics.moderatorStatus}</strong>
+                <span>{moderatorConcept}</span>
+              </p>
 
               <div className="nuclearMeterGrid">
                 <NuclearMeter label="Bilangan neutron" value={fission.neutronCount} fill={fission.neutronCount * 4} />
@@ -894,14 +1112,14 @@ export default function NuclearEnergySimulatorPage() {
                   label="Suhu reaktor"
                   value={`${fission.temperature}°C`}
                   fill={fission.temperature / 10}
-                  tone={fission.temperature > 900 ? "red" : "purple"}
+                  tone={fissionDanger ? "red" : "purple"}
                 />
                 <NuclearMeter label="Kadar tindak balas" value={`${fissionMetrics.reactionRate}%`} fill={fissionMetrics.reactionRate} tone="orange" />
                 <NuclearMeter label="Status reaktor" value={fissionStatus} fill={fissionMetrics.reactionRate} />
               </div>
 
-              {fission.temperature > 900 ? (
-                <p className="nuclearWarning">AMARAN: Tindak balas terlalu aktif. Masukkan Rod Boron (Rod Pengawal).</p>
+              {fissionDanger ? (
+                <p className="nuclearWarning">AMARAN: Suhu reaktor terlalu tinggi. Tingkatkan Agen Penyejuk (Air) dan masukkan Rod Boron.</p>
               ) : null}
             </aside>
           </section>
@@ -961,6 +1179,7 @@ export default function NuclearEnergySimulatorPage() {
                 <strong>{fusionStatus}</strong>
                 <span>{fusion.message}</span>
               </div>
+              <NuclearDangerOverlay show={fusionDanger} message="Plasma tidak stabil" />
             </section>
 
             <aside className="nuclearPanel nuclearControls">
@@ -1049,6 +1268,7 @@ export default function NuclearEnergySimulatorPage() {
               aria-label="Gambaran keseluruhan loji janakuasa nuklear"
             >
               <div className="plantSceneHeader">Gambaran Keseluruhan Loji</div>
+              <NuclearDangerOverlay show={plantDanger} message="Suhu reaktor tinggi" />
 
               <div className="plantRiver" aria-hidden="true">
                 <span>Sumber Air</span>
@@ -1221,6 +1441,594 @@ export default function NuclearEnergySimulatorPage() {
           </section>
         </>
       )}
+
+      <style>{`
+        .fissionModeGrid {
+          grid-template-columns: minmax(620px, 1fr) minmax(300px, 0.34fr);
+          grid-auto-rows: auto;
+          align-items: start;
+        }
+
+        .fissionModeGrid .fissionSteps {
+          display: none;
+        }
+
+        .fissionModeGrid > .fissionStage {
+          grid-column: 1;
+          min-height: clamp(680px, 72vh, 820px);
+        }
+
+        .fissionModeGrid > .nuclearControls {
+          grid-column: 2;
+          grid-row: 1 / span 3;
+        }
+
+        .fissionModeGrid .nuclearControls .nuclearMeterGrid,
+        .fissionModeGrid .nuclearControls > .nuclearWarning {
+          display: none;
+        }
+
+        .fissionGaugeDeck {
+          grid-column: 1;
+          display: grid;
+          grid-template-columns: repeat(6, minmax(112px, 1fr));
+          gap: 0.75rem;
+          padding: 0.9rem;
+          border: 1px solid rgba(56, 189, 248, 0.18);
+          border-radius: 24px;
+          background:
+            radial-gradient(circle at 14% 0%, rgba(56, 189, 248, 0.13), transparent 32%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.025)),
+            rgba(15, 23, 42, 0.82);
+          box-shadow: 0 18px 54px rgba(2, 6, 23, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+          backdrop-filter: blur(16px);
+        }
+
+        .fissionWarning {
+          grid-column: 1;
+        }
+
+        .nuclearGauge {
+          display: grid;
+          min-width: 0;
+          min-height: 142px;
+          align-content: start;
+          justify-items: center;
+          gap: 0.18rem;
+          padding: 0.72rem 0.52rem 0.78rem;
+          border: 1px solid rgba(125, 211, 252, 0.14);
+          border-radius: 18px;
+          background: rgba(2, 6, 23, 0.46);
+          color: #38bdf8;
+          text-align: center;
+        }
+
+        .nuclearGauge__arc {
+          position: relative;
+          display: grid;
+          width: min(100%, 132px);
+          min-height: 78px;
+          place-items: center;
+        }
+
+        .nuclearGauge svg {
+          display: block;
+          width: 100%;
+          overflow: visible;
+        }
+
+        .nuclearGauge path {
+          fill: none;
+          stroke-width: 12;
+          stroke-linecap: round;
+        }
+
+        .nuclearGauge__track {
+          stroke: rgba(148, 163, 184, 0.18);
+        }
+
+        .nuclearGauge__value {
+          stroke: currentColor;
+          filter: drop-shadow(0 0 10px currentColor);
+          transition: stroke-dasharray 0.3s ease;
+        }
+
+        .nuclearGauge strong {
+          position: absolute;
+          left: 50%;
+          bottom: 0.42rem;
+          max-width: 100%;
+          transform: translateX(-50%);
+          color: #f8fafc;
+          font-size: clamp(1rem, 1.7vw, 1.28rem);
+          font-weight: 950;
+          line-height: 1;
+          white-space: nowrap;
+        }
+
+        .nuclearGauge > span {
+          color: rgba(226, 232, 240, 0.86);
+          font-size: 0.78rem;
+          font-weight: 900;
+          line-height: 1.2;
+        }
+
+        .nuclearGauge small {
+          color: rgba(203, 213, 225, 0.74);
+          font-size: 0.7rem;
+          font-weight: 850;
+          line-height: 1.2;
+        }
+
+        .nuclearGauge--purple {
+          color: #a855f7;
+        }
+
+        .nuclearGauge--orange {
+          color: #f97316;
+        }
+
+        .nuclearGauge--red {
+          color: #ef4444;
+        }
+
+        .coolantFlowField {
+          position: absolute;
+          inset: 12% 9% 18%;
+          z-index: 4;
+          overflow: hidden;
+          border-radius: 24px;
+          opacity: var(--coolant-opacity, 0.52);
+          pointer-events: none;
+          mix-blend-mode: screen;
+        }
+
+        .coolantFlowField::before {
+          content: "Agen penyejuk (air)";
+          position: absolute;
+          right: 1rem;
+          top: 0.85rem;
+          padding: 0.3rem 0.62rem;
+          border: 1px solid rgba(125, 211, 252, 0.26);
+          border-radius: 999px;
+          background: rgba(2, 6, 23, 0.72);
+          color: #bae6fd;
+          font-size: 0.68rem;
+          font-weight: 950;
+          opacity: var(--coolant-opacity, 0.52);
+        }
+
+        .coolantFlowField i {
+          position: absolute;
+          left: 16%;
+          top: -18%;
+          width: clamp(52px, 7vw, 94px);
+          height: 136%;
+          border-radius: 999px;
+          background:
+            linear-gradient(180deg, transparent, rgba(125, 211, 252, 0.28), rgba(14, 165, 233, 0.18), transparent),
+            repeating-linear-gradient(180deg, transparent 0 22px, rgba(186, 230, 253, 0.24) 22px 34px);
+          filter: blur(1px);
+          animation: coolantFlow var(--coolant-speed, 1.9s) linear infinite;
+        }
+
+        .coolantFlowField i:nth-child(1) {
+          left: 16%;
+        }
+
+        .coolantFlowField i:nth-child(2) {
+          left: 44%;
+          animation-delay: -0.42s;
+        }
+
+        .coolantFlowField i:nth-child(3) {
+          left: 72%;
+          animation-delay: -0.84s;
+        }
+
+        .nuclearDangerOverlay {
+          position: absolute;
+          inset: 0;
+          z-index: 38;
+          display: grid;
+          place-items: center;
+          pointer-events: none;
+        }
+
+        .nuclearDangerOverlay__card {
+          display: grid;
+          min-width: min(230px, 72%);
+          justify-items: center;
+          gap: 0.26rem;
+          padding: 1rem 1.15rem;
+          border: 2px solid rgba(250, 204, 21, 0.86);
+          border-radius: 22px;
+          background:
+            radial-gradient(circle at 50% 18%, rgba(250, 204, 21, 0.2), transparent 48%),
+            rgba(2, 6, 23, 0.82);
+          box-shadow: 0 0 34px rgba(250, 204, 21, 0.28), 0 0 60px rgba(239, 68, 68, 0.22);
+          text-align: center;
+          animation: nuclearDangerPulse 1.8s ease-in-out infinite;
+          backdrop-filter: blur(10px);
+        }
+
+        .nuclearDangerOverlay__symbol {
+          display: grid;
+          width: clamp(74px, 10vw, 118px);
+          aspect-ratio: 1;
+          place-items: center;
+          border: 6px solid #020617;
+          border-radius: 50%;
+          background: #facc15;
+          color: #020617;
+          font-size: clamp(3rem, 7vw, 5.6rem);
+          line-height: 1;
+          box-shadow: 0 0 28px rgba(250, 204, 21, 0.58);
+        }
+
+        .nuclearDangerOverlay__card strong {
+          color: #fee2e2;
+          font-size: clamp(1.08rem, 2.2vw, 1.45rem);
+          font-weight: 950;
+          letter-spacing: 0.08em;
+        }
+
+        .nuclearDangerOverlay__card small {
+          color: #fef3c7;
+          font-size: 0.84rem;
+          font-weight: 900;
+          line-height: 1.28;
+        }
+
+        .moderatorZone {
+          position: absolute;
+          inset: 16% 14% 25%;
+          z-index: 3;
+          overflow: hidden;
+          border: 1px solid rgba(125, 211, 252, 0.2);
+          border-radius: 28px;
+          background:
+            radial-gradient(circle at 50% 48%, rgba(125, 211, 252, 0.14), transparent 48%),
+            linear-gradient(90deg, rgba(15, 23, 42, 0.12), rgba(56, 189, 248, 0.1), rgba(15, 23, 42, 0.12));
+          box-shadow: inset 0 0 32px rgba(56, 189, 248, 0.12);
+          pointer-events: none;
+          transition: opacity 0.25s ease, filter 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .moderatorZone::before {
+          content: "";
+          position: absolute;
+          inset: 12%;
+          border-radius: 24px;
+          background:
+            repeating-linear-gradient(90deg, rgba(148, 163, 184, 0.2) 0 7px, transparent 7px 34px),
+            radial-gradient(circle, rgba(56, 189, 248, 0.18), transparent 62%);
+          opacity: 0.75;
+        }
+
+        .moderatorZoneLabel {
+          position: absolute;
+          left: calc(14% + 0.85rem);
+          top: calc(16% + 0.75rem);
+          z-index: 14;
+          padding: 0.32rem 0.7rem;
+          border: 1px solid rgba(125, 211, 252, 0.28);
+          border-radius: 999px;
+          background: rgba(2, 6, 23, 0.78);
+          color: #bae6fd;
+          font-size: 0.72rem;
+          font-weight: 950;
+          white-space: nowrap;
+          pointer-events: none;
+        }
+
+        .moderatorZone i {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          z-index: 1;
+          width: 74px;
+          aspect-ratio: 1;
+          border: 1px solid rgba(125, 211, 252, 0.58);
+          border-radius: 50%;
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.25);
+          animation: moderatorRipple 2.2s ease-out infinite;
+        }
+
+        .moderatorZone i:nth-of-type(2) {
+          left: 38%;
+          top: 46%;
+          animation-delay: 0.42s;
+        }
+
+        .moderatorZone i:nth-of-type(3) {
+          left: 62%;
+          top: 56%;
+          animation-delay: 0.82s;
+        }
+
+        .moderatorZone--fast {
+          opacity: 0.34;
+          filter: saturate(0.72) brightness(0.86);
+          box-shadow: inset 0 0 18px rgba(56, 189, 248, 0.08);
+        }
+
+        .moderatorZone--optimal {
+          opacity: 0.82;
+          animation: moderatorZoneGlow 2.4s ease-in-out infinite;
+          box-shadow: inset 0 0 38px rgba(56, 189, 248, 0.2), 0 0 26px rgba(56, 189, 248, 0.14);
+        }
+
+        .moderatorZone--tooSlow {
+          opacity: 0.96;
+          filter: saturate(0.78) brightness(1.26);
+          animation: moderatorOverGlow 1.8s ease-in-out infinite;
+          box-shadow: inset 0 0 56px rgba(186, 230, 253, 0.28), 0 0 30px rgba(186, 230, 253, 0.18);
+        }
+
+        .chainNeutron {
+          z-index: 7;
+          transition: opacity 0.2s ease, filter 0.2s ease;
+        }
+
+        .chainNeutron::before {
+          content: "";
+          position: absolute;
+          inset: -18px;
+          border: 1px solid rgba(125, 211, 252, 0.7);
+          border-radius: 50%;
+          opacity: 0;
+          transform: scale(0.2);
+          animation: moderatorNeutronRipple var(--neutron-speed, 2s) linear infinite;
+          animation-delay: var(--ripple-delay, 0s);
+          pointer-events: none;
+        }
+
+        .chainNeutron--fast {
+          width: 11px;
+          background: #f8fbff;
+          box-shadow: 0 0 14px #7dd3fc, 0 0 34px rgba(56, 189, 248, 0.88);
+          filter: blur(0.15px);
+          animation-timing-function: cubic-bezier(0.16, 0.02, 0.82, 0.22);
+        }
+
+        .chainNeutron--fast::after {
+          width: 132px;
+          height: 6px;
+          background: linear-gradient(90deg, rgba(186, 230, 253, 0.94), rgba(56, 189, 248, 0.54), transparent);
+        }
+
+        .chainNeutron--optimal {
+          width: 13px;
+          background: #eff6ff;
+          box-shadow: 0 0 12px #38bdf8, 0 0 26px rgba(56, 189, 248, 0.72);
+        }
+
+        .chainNeutron--optimal::after {
+          width: 58px;
+          background: linear-gradient(90deg, rgba(56, 189, 248, 0.74), rgba(125, 211, 252, 0.38), transparent);
+        }
+
+        .chainNeutron--tooSlow {
+          width: 15px;
+          opacity: 0.72;
+          background: #dbeafe;
+          box-shadow: 0 0 10px rgba(191, 219, 254, 0.76), 0 0 22px rgba(125, 211, 252, 0.4);
+          animation-timing-function: ease-in-out;
+        }
+
+        .chainNeutron--tooSlow::after {
+          width: 34px;
+          height: 3px;
+          opacity: 0.48;
+          background: linear-gradient(90deg, rgba(191, 219, 254, 0.56), transparent);
+        }
+
+        .moderatorFlowLabel {
+          position: absolute;
+          right: 1rem;
+          bottom: 6.9rem;
+          z-index: 13;
+          display: flex;
+          max-width: min(460px, calc(100% - 2rem));
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 0.34rem;
+          padding: 0.48rem 0.65rem;
+          border: 1px solid rgba(125, 211, 252, 0.2);
+          border-radius: 999px;
+          background: rgba(2, 6, 23, 0.76);
+          color: rgba(226, 232, 240, 0.84);
+          font-size: 0.7rem;
+          font-weight: 850;
+          line-height: 1.25;
+          backdrop-filter: blur(12px);
+        }
+
+        .moderatorFlowLabel strong {
+          color: #7dd3fc;
+          font-weight: 950;
+        }
+
+        .nuclearModeratorStatus {
+          display: grid;
+          gap: 0.3rem;
+        }
+
+        .nuclearModeratorStatus strong {
+          color: inherit;
+        }
+
+        .nuclearModeratorStatus span {
+          color: rgba(226, 232, 240, 0.82);
+          font-size: 0.84rem;
+          font-weight: 750;
+          line-height: 1.45;
+        }
+
+        .nuclearModeratorStatus--fast {
+          border-color: rgba(249, 115, 22, 0.36);
+          background: rgba(124, 45, 18, 0.22);
+          color: #fed7aa;
+        }
+
+        .nuclearModeratorStatus--optimal {
+          border-color: rgba(56, 189, 248, 0.34);
+          background: rgba(14, 116, 144, 0.22);
+          color: #bae6fd;
+        }
+
+        .nuclearModeratorStatus--tooSlow {
+          border-color: rgba(168, 85, 247, 0.34);
+          background: rgba(88, 28, 135, 0.23);
+          color: #e9d5ff;
+        }
+
+        @keyframes coolantFlow {
+          0% {
+            background-position: 0 0, 0 -80px;
+            opacity: 0.5;
+          }
+          50% {
+            opacity: 0.9;
+          }
+          100% {
+            background-position: 0 0, 0 80px;
+            opacity: 0.5;
+          }
+        }
+
+        @keyframes nuclearDangerPulse {
+          0%,
+          100% {
+            opacity: 0.5;
+            transform: scale(0.82);
+          }
+          50% {
+            opacity: 0.98;
+            transform: scale(1.08);
+          }
+        }
+
+        @keyframes moderatorRipple {
+          0% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.22);
+          }
+          32% {
+            opacity: 0.72;
+          }
+          100% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(1.45);
+          }
+        }
+
+        @keyframes moderatorNeutronRipple {
+          0%,
+          38%,
+          62%,
+          100% {
+            opacity: 0;
+            transform: scale(0.22);
+          }
+          46% {
+            opacity: 0.82;
+            transform: scale(1);
+          }
+          56% {
+            opacity: 0;
+            transform: scale(1.65);
+          }
+        }
+
+        @keyframes moderatorZoneGlow {
+          0%,
+          100% {
+            filter: brightness(1);
+          }
+          50% {
+            filter: brightness(1.16);
+          }
+        }
+
+        @keyframes moderatorOverGlow {
+          0%,
+          100% {
+            filter: saturate(0.78) brightness(1.18);
+          }
+          50% {
+            filter: saturate(0.72) brightness(1.42);
+          }
+        }
+
+        @media (max-width: 1180px) {
+          .fissionModeGrid {
+            grid-template-columns: 1fr;
+          }
+
+          .fissionModeGrid > .fissionStage,
+          .fissionGaugeDeck,
+          .fissionWarning,
+          .fissionModeGrid > .nuclearControls {
+            grid-column: 1;
+          }
+
+          .fissionModeGrid > .nuclearControls {
+            grid-row: auto;
+          }
+
+          .fissionModeGrid > .fissionStage {
+            min-height: 640px;
+          }
+
+          .fissionGaugeDeck {
+            grid-template-columns: repeat(3, minmax(128px, 1fr));
+          }
+        }
+
+        @media (max-width: 760px) {
+          .fissionModeGrid > .fissionStage {
+            min-height: 560px;
+          }
+
+          .fissionGaugeDeck {
+            grid-template-columns: repeat(2, minmax(124px, 1fr));
+            gap: 0.62rem;
+            padding: 0.7rem;
+          }
+
+          .nuclearGauge {
+            min-height: 128px;
+          }
+
+          .moderatorZone {
+            inset: 18% 9% 28%;
+            border-radius: 22px;
+          }
+
+          .moderatorZoneLabel {
+            left: calc(9% + 0.6rem);
+            top: calc(18% + 0.55rem);
+            font-size: 0.66rem;
+          }
+
+          .moderatorFlowLabel {
+            left: 1rem;
+            right: 1rem;
+            bottom: 7.5rem;
+            justify-content: center;
+            border-radius: 16px;
+            font-size: 0.66rem;
+          }
+
+          .chainNeutron--fast::after {
+            width: 86px;
+          }
+        }
+      `}</style>
 
       <LearningPanel
         mode={activeMode}

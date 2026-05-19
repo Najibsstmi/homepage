@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const MODES = [
   { id: "fission", label: "Pembelahan Nukleus" },
@@ -26,10 +26,14 @@ const initialFission = {
 const initialFusion = {
   temperature: 20,
   magneticField: 55,
+  collisionSpeed: 60,
+  fuelBalance: 50,
+  deuteriumPlaced: false,
+  tritiumPlaced: false,
   active: false,
   success: false,
   energy: 0,
-  message: "Laraskan suhu plasma dan medan magnet sebelum memulakan pelakuran.",
+  message: "Drag Deuterium dan Tritium ke dalam plasma chamber sebelum memulakan pelakuran.",
 };
 
 const initialPlant = {
@@ -77,22 +81,52 @@ const learningContent = {
       {
         id: "particle",
         text: "Apakah zarah yang membedil nukleus uranium dalam pembelahan?",
-        options: ["Elektron", "Neutron", "Proton"],
+        options: ["Elektron", "Neutron", "Proton", "Ion klorida"],
         answer: "Neutron",
         explanation: "Betul. Neutron membedil uranium-235 dan mencetuskan pembelahan.",
         hint: "Zarah ini neutral dan boleh memasuki nukleus dengan lebih mudah.",
       },
       {
-        id: "rod",
-        text: "Mengapa rod kawalan digunakan dalam reaktor nuklear?",
+        id: "moderator",
+        text: "Apakah fungsi moderator dalam reaktor nuklear?",
         options: [
+          "Memperlahankan neutron",
           "Menyerap neutron",
-          "Menambah wap",
-          "Menukar turbin kepada generator",
+          "Menyalakan generator",
+          "Menyejukkan bandar",
         ],
-        answer: "Menyerap neutron",
-        explanation: "Betul. Rod kawalan menyerap neutron supaya kadar pembelahan terkawal.",
-        hint: "Rod kawalan berkaitan dengan bilangan neutron yang masih bebas bergerak.",
+        answer: "Memperlahankan neutron",
+        explanation: "Betul. Moderator memperlahankan neutron supaya U-235 lebih mudah menyerapnya.",
+        hint: "Moderator membantu neutron menjadi lebih sesuai untuk membelah U-235.",
+      },
+      {
+        id: "uranium",
+        text: "Nukleus manakah yang digunakan sebagai bahan api pembelahan dalam simulator ini?",
+        options: ["Uranium-235", "Helium", "Deuterium", "Karbon dioksida"],
+        answer: "Uranium-235",
+        explanation: "Betul. Uranium-235 ialah nukleus berat yang boleh mengalami pembelahan.",
+        hint: "Lihat label pada nukleus biru dalam reaktor.",
+      },
+      {
+        id: "chain",
+        text: "Apakah yang menyebabkan tindak balas berantai berlaku?",
+        options: [
+          "Neutron baharu membelah U-235 lain",
+          "Turbin berpusing lebih laju",
+          "Air bertukar menjadi wap",
+          "Medan magnet menjadi lemah",
+        ],
+        answer: "Neutron baharu membelah U-235 lain",
+        explanation: "Betul. Neutron baharu boleh membedil uranium lain dan meneruskan pembelahan.",
+        hint: "Perhatikan urutan neutron → U-235 terbelah → neutron baharu.",
+      },
+      {
+        id: "heat",
+        text: "Tenaga daripada pembelahan nukleus mula-mula digunakan sebagai apa?",
+        options: ["Haba", "Cahaya lampu jalan", "Bunyi", "Medan magnet"],
+        answer: "Haba",
+        explanation: "Betul. Tenaga pembelahan digunakan sebagai haba sebelum memanaskan air.",
+        hint: "Dalam janakuasa nuklear, haba memanaskan air menjadi wap.",
       },
     ],
   },
@@ -105,25 +139,59 @@ const learningContent = {
       "Pelakuran membentuk helium, membebaskan neutron dan menghasilkan tenaga yang sangat besar.",
     questions: [
       {
+        id: "fuel",
+        text: "Apakah dua isotop hidrogen yang digunakan dalam pelakuran nukleus?",
+        options: [
+          "Deuterium dan Tritium",
+          "Uranium-235 dan Boron",
+          "Helium dan Karbon",
+          "Oksigen dan Nitrogen",
+        ],
+        answer: "Deuterium dan Tritium",
+        explanation: "Betul. Deuterium dan tritium ialah isotop hidrogen yang boleh bercantum.",
+        hint: "Dalam chamber, atom dilabel D dan T.",
+      },
+      {
         id: "temperature",
         text: "Mengapa pelakuran nukleus memerlukan suhu yang sangat tinggi?",
         options: [
-          "Supaya nukleus ringan dapat bercantum",
-          "Supaya rod kawalan melebur",
-          "Supaya turbin bergerak perlahan",
+          "Supaya nukleus ringan mempunyai tenaga untuk bercantum",
+          "Supaya rod boron menyerap neutron",
+          "Supaya air membeku",
+          "Supaya turbin berhenti",
         ],
-        answer: "Supaya nukleus ringan dapat bercantum",
-        explanation:
-          "Betul. Suhu tinggi memberi tenaga kepada nukleus ringan untuk menghampiri dan bercantum.",
-        hint: "Fikirkan keadaan yang diperlukan supaya dua nukleus kecil boleh bergabung.",
+        answer: "Supaya nukleus ringan mempunyai tenaga untuk bercantum",
+        explanation: "Betul. Suhu tinggi membantu nukleus mengatasi tolakan antara cas positif.",
+        hint: "Dua nukleus bercas positif perlu cukup tenaga untuk menghampiri satu sama lain.",
       },
       {
         id: "magnet",
         text: "Apakah yang berlaku jika medan magnet terlalu rendah?",
-        options: ["Plasma bocor", "Uranium terbelah", "Generator menghasilkan elektrik"],
+        options: ["Plasma bocor", "Uranium terbelah", "Generator menghasilkan elektrik", "Air menjadi moderator"],
         answer: "Plasma bocor",
         explanation: "Betul. Medan magnet membantu mengurung plasma panas supaya lebih stabil.",
         hint: "Medan magnet bertindak seperti pengurung plasma dalam ruang pelakuran.",
+      },
+      {
+        id: "collision",
+        text: "Mengapa halaju pelanggaran nukleus perlu tinggi?",
+        options: [
+          "Supaya D dan T boleh bertembung dan bercantum",
+          "Supaya rod kawalan turun",
+          "Supaya wap menjadi sejuk",
+          "Supaya neutron berhenti bergerak",
+        ],
+        answer: "Supaya D dan T boleh bertembung dan bercantum",
+        explanation: "Betul. Pelanggaran yang cukup kuat membolehkan pelakuran berlaku.",
+        hint: "Pelakuran memerlukan nukleus ringan menghampiri dan bertembung.",
+      },
+      {
+        id: "product",
+        text: "Apakah hasil utama selepas deuterium dan tritium berjaya bercantum?",
+        options: ["Helium, neutron dan tenaga", "Uranium dan wap", "Boron dan grafit", "Elektron dan garam"],
+        answer: "Helium, neutron dan tenaga",
+        explanation: "Betul. Pelakuran D-T menghasilkan helium, neutron dan tenaga besar.",
+        hint: "Lihat objek yang muncul di tengah chamber selepas pelakuran berjaya.",
       },
     ],
   },
@@ -138,7 +206,7 @@ const learningContent = {
       {
         id: "steam",
         text: "Apakah hasil akhir yang memutarkan turbin?",
-        options: ["Wap", "Neutron", "Rod kawalan"],
+        options: ["Wap", "Neutron", "Rod kawalan", "Grafit"],
         answer: "Wap",
         explanation: "Betul. Wap bertekanan memutarkan turbin.",
         hint: "Air dipanaskan dahulu sebelum sampai ke turbin.",
@@ -150,11 +218,51 @@ const learningContent = {
           "Menghasilkan elektrik",
           "Menyerap neutron",
           "Membentuk helium",
+          "Memperlahankan neutron",
         ],
         answer: "Menghasilkan elektrik",
         explanation:
           "Betul. Generator menukar putaran turbin kepada tenaga elektrik.",
         hint: "Komponen ini berada selepas turbin dalam aliran tenaga.",
+      },
+      {
+        id: "controlRod",
+        text: "Apakah fungsi rod kawalan dalam reaktor nuklear?",
+        options: [
+          "Menyerap neutron untuk mengawal pembelahan",
+          "Memutarkan turbin secara terus",
+          "Menghasilkan rumah",
+          "Menukar wap kepada uranium",
+        ],
+        answer: "Menyerap neutron untuk mengawal pembelahan",
+        explanation: "Betul. Rod kawalan mengurangkan bilangan neutron bebas dalam reaktor.",
+        hint: "Rod kawalan berkaitan dengan kadar pembelahan nukleus.",
+      },
+      {
+        id: "cooling",
+        text: "Mengapa sistem penyejukan penting dalam loji nuklear?",
+        options: [
+          "Membawa haba keluar supaya reaktor tidak terlalu panas",
+          "Menghasilkan deuterium",
+          "Menukar elektrik kepada wap",
+          "Menghalang turbin daripada berpusing",
+        ],
+        answer: "Membawa haba keluar supaya reaktor tidak terlalu panas",
+        explanation: "Betul. Agen penyejuk membawa haba keluar dan membantu suhu kekal selamat.",
+        hint: "Perhatikan slider agen penyejuk dalam loji.",
+      },
+      {
+        id: "flow",
+        text: "Apakah urutan tenaga yang betul dalam stesen janakuasa nuklear?",
+        options: [
+          "Reaktor → wap → turbin → generator → elektrik",
+          "Generator → uranium → wap → rumah",
+          "Turbin → neutron → moderator → helium",
+          "Bandar → generator → wap → reaktor",
+        ],
+        answer: "Reaktor → wap → turbin → generator → elektrik",
+        explanation: "Betul. Haba reaktor menghasilkan wap, wap memutarkan turbin, generator menghasilkan elektrik.",
+        hint: "Ikut aliran kiri ke kanan dalam infographic loji.",
       },
     ],
   },
@@ -365,6 +473,132 @@ function advanceFission(current) {
   };
 }
 
+function getFuelRatioLabel(value) {
+  const deuterium = Math.round(value);
+  const tritium = 100 - deuterium;
+  return `D ${deuterium}:T ${tritium}`;
+}
+
+function getFusionDiagnostics(fusion) {
+  const atomsReady = fusion.deuteriumPlaced && fusion.tritiumPlaced;
+  const fuelOffset = Math.abs(fusion.fuelBalance - 50);
+  const temperatureOk = fusion.temperature >= 80 && fusion.temperature <= 95;
+  const temperatureTooHigh = fusion.temperature > 95;
+  const magneticOk = fusion.magneticField >= 60;
+  const collisionOk = fusion.collisionSpeed >= 70;
+  const fuelOk = fuelOffset <= 10;
+  const projectedEnergy = Math.round(
+    clamp(
+      fusion.temperature * 0.75 +
+        fusion.magneticField * 0.28 +
+        fusion.collisionSpeed * 0.48 +
+        45 -
+        fuelOffset * 0.45,
+      0,
+      160
+    )
+  );
+  const outputTooHigh = atomsReady && projectedEnergy > 145 && (fusion.temperature > 92 || fusion.collisionSpeed > 92);
+  const collisionUncontrolled = atomsReady && fusion.collisionSpeed > 88 && fusion.magneticField < 70;
+  const danger =
+    temperatureTooHigh ||
+    fusion.magneticField < 35 ||
+    outputTooHigh ||
+    collisionUncontrolled ||
+    (fusion.active && !fusion.success && (fusion.collisionSpeed > 88 || fusion.magneticField < 45));
+  const stability = clamp(
+    Math.round(
+      (magneticOk ? 26 : fusion.magneticField * 0.36) +
+        (temperatureOk ? 28 : fusion.temperature >= 65 ? 16 : fusion.temperature * 0.18) +
+        (collisionOk ? 22 : fusion.collisionSpeed * 0.22) +
+        (fuelOk ? 18 : Math.max(0, 18 - fuelOffset * 1.2)) +
+        (atomsReady ? 8 : 0) -
+        (temperatureTooHigh ? 30 : 0)
+    ),
+    0,
+    100
+  );
+  const almostStable =
+    atomsReady &&
+    !danger &&
+    fusion.temperature >= 70 &&
+    fusion.magneticField >= 50 &&
+    fusion.collisionSpeed >= 60 &&
+    fuelOffset <= 20;
+  const liveEnergy = fusion.success
+    ? fusion.energy
+    : fusion.active
+    ? danger
+      ? projectedEnergy
+      : Math.round(clamp((fusion.temperature + fusion.collisionSpeed + fusion.magneticField) / 3 - fuelOffset, 0, 120))
+    : fusion.energy;
+  let status = "Gagal";
+
+  if (danger) {
+    status = "Tidak stabil";
+  } else if (!fusion.active) {
+    status = almostStable ? "Hampir stabil" : "Sedia";
+  } else if (fusion.success) {
+    status = "Berjaya";
+  } else if (almostStable) {
+    status = "Hampir stabil";
+  }
+
+  return {
+    atomsReady,
+    temperatureOk,
+    temperatureTooHigh,
+    magneticOk,
+    collisionOk,
+    fuelOk,
+    fuelOffset,
+    projectedEnergy,
+    outputTooHigh,
+    collisionUncontrolled,
+    danger,
+    stability,
+    almostStable,
+    liveEnergy,
+    status,
+  };
+}
+
+function getFusionFailureMessage(fusion, diagnostics) {
+  if (!diagnostics.atomsReady) {
+    return "Masukkan Deuterium dan Tritium ke dalam plasma chamber dahulu.";
+  }
+
+  if (diagnostics.temperatureTooHigh) {
+    return "AMARAN: Plasma terlalu panas. Kurangkan suhu dan kuatkan medan magnet.";
+  }
+
+  if (diagnostics.outputTooHigh) {
+    return "AMARAN: Output tenaga terlalu tinggi. Kurangkan suhu atau halaju pelanggaran.";
+  }
+
+  if (diagnostics.collisionUncontrolled) {
+    return "Pelanggaran terlalu agresif untuk medan magnet semasa. Kuatkan medan magnet atau kurangkan halaju.";
+  }
+
+  if (fusion.temperature < 80) {
+    return "Suhu rendah. Nukleus D dan T belum mempunyai tenaga mencukupi untuk bercantum.";
+  }
+
+  if (!diagnostics.magneticOk) {
+    return "Medan magnet lemah. Plasma bocor dan pelakuran gagal.";
+  }
+
+  if (!diagnostics.collisionOk) {
+    return "Halaju pelanggaran rendah. D dan T berlanggar tetapi terpisah semula.";
+  }
+
+  if (!diagnostics.fuelOk) {
+    return "Nisbah Deuterium:Tritium tidak seimbang. Laraskan nisbah ke hampir 50:50.";
+  }
+
+  return "Keadaan hampir stabil. Laraskan pembolehubah sedikit lagi sebelum cuba semula.";
+}
+
 function NuclearMeter({ label, value, detail, fill, tone = "cyan" }) {
   return (
     <article className={`nuclearMeter nuclearMeter--${tone}`}>
@@ -414,6 +648,102 @@ function NuclearDangerOverlay({ show, message }) {
         <small>{message}</small>
       </div>
     </div>
+  );
+}
+
+function FusionGaugeControl({
+  label,
+  value,
+  min = 0,
+  max = 100,
+  unit = "%",
+  tone = "cyan",
+  leftLabel,
+  centerLabel,
+  rightLabel,
+  displayValue,
+  optimal = false,
+  onChange,
+}) {
+  const gaugeRef = useRef(null);
+  const [dragging, setDragging] = useState(false);
+  const percent = clamp(((value - min) / (max - min)) * 100, 0, 100);
+  const angle = -90 + percent * 1.8;
+
+  const updateFromPointer = (event) => {
+    const element = gaugeRef.current;
+
+    if (!element) {
+      return;
+    }
+
+    const rect = element.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height * 0.78;
+    const x = event.clientX - centerX;
+    const y = centerY - event.clientY;
+    const pointerAngle = clamp((Math.atan2(y, x) * 180) / Math.PI, 0, 180);
+    const nextPercent = clamp(((180 - pointerAngle) / 180) * 100, 0, 100);
+    const nextValue = Math.round(min + (nextPercent / 100) * (max - min));
+
+    onChange(nextValue);
+  };
+
+  const handlePointerDown = (event) => {
+    setDragging(true);
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+    updateFromPointer(event);
+  };
+
+  const handlePointerMove = (event) => {
+    if (dragging) {
+      updateFromPointer(event);
+    }
+  };
+
+  const stopDragging = () => setDragging(false);
+
+  return (
+    <article className={`fusionGauge fusionGauge--${tone}${optimal ? " fusionGauge--optimal" : ""}`}>
+      <button
+        type="button"
+        ref={gaugeRef}
+        className="fusionGauge__dial"
+        style={{ "--gauge-fill": `${percent}%`, "--needle-angle": `${angle}deg` }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={stopDragging}
+        onPointerCancel={stopDragging}
+        aria-label={`${label}: ${displayValue ?? `${value}${unit}`}`}
+      >
+        <svg viewBox="0 0 140 92" aria-hidden="true">
+          <defs>
+            <linearGradient id="fusionHeatGradient" x1="18" y1="74" x2="122" y2="74" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#38bdf8" />
+              <stop offset="52%" stopColor="#f97316" />
+              <stop offset="100%" stopColor="#ef4444" />
+            </linearGradient>
+          </defs>
+          <path className="fusionGauge__track" d="M 18 74 A 52 52 0 0 1 122 74" pathLength="100" />
+          <path
+            className="fusionGauge__value"
+            d="M 18 74 A 52 52 0 0 1 122 74"
+            pathLength="100"
+            strokeDasharray={`${percent} 100`}
+          />
+        </svg>
+        <span className="fusionGauge__needle" />
+        <strong>{displayValue ?? `${value}${unit}`}</strong>
+      </button>
+      <div className="fusionGauge__meta">
+        <span>{label}</span>
+        <div>
+          <small>{leftLabel}</small>
+          {centerLabel ? <small>{centerLabel}</small> : null}
+          <small>{rightLabel}</small>
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -527,6 +857,114 @@ function LearningPanel({ mode, answers, onAnswer }) {
   );
 }
 
+function LearningPanelV2({ mode, answers, submitted, onAnswer, onSubmit, onRetry }) {
+  const content = learningContent[mode];
+  const [panelTab, setPanelTab] = useState("nota");
+  const answeredCount = content.questions.filter((question) => answers[question.id]).length;
+  const score = content.questions.filter((question) => answers[question.id] === question.answer).length;
+
+  useEffect(() => {
+    setPanelTab("nota");
+  }, [mode]);
+
+  return (
+    <section className="nuclearLearningPanel">
+      <div className="learningPanelTabs" role="tablist" aria-label="Panel pembelajaran">
+        <button type="button" className={panelTab === "nota" ? "active" : ""} onClick={() => setPanelTab("nota")}>
+          Nota
+        </button>
+        <button type="button" className={panelTab === "kuiz" ? "active" : ""} onClick={() => setPanelTab("kuiz")}>
+          Kuiz
+        </button>
+      </div>
+
+      {panelTab === "nota" ? (
+        <div className="nuclearLearningGrid">
+          <article>
+            <span>Pemerhatian</span>
+            <p>{content.observation}</p>
+          </article>
+          <article>
+            <span>Inferens</span>
+            <p>{content.inference}</p>
+          </article>
+          <article>
+            <span>Kesimpulan</span>
+            <p>{content.conclusion}</p>
+          </article>
+        </div>
+      ) : (
+        <div className="nuclearQuiz">
+          <div className="nuclearQuizHeader">
+            <div className="nuclearPanelTitle">
+              <span>Semak Kefahaman</span>
+              <h2>Kuiz {MODES.find((modeItem) => modeItem.id === mode)?.label}</h2>
+            </div>
+            <div className="nuclearQuizScore">
+              <span>Skor</span>
+              <strong>
+                {submitted ? score : answeredCount}/{content.questions.length}
+              </strong>
+            </div>
+          </div>
+
+          <div className="nuclearQuizGrid">
+            {content.questions.map((question, index) => {
+              const selected = answers[question.id];
+              const correct = selected === question.answer;
+
+              return (
+                <article className="nuclearQuizCard" key={question.id}>
+                  <span className="nuclearQuizNumber">Soalan {index + 1}</span>
+                  <h3>{question.text}</h3>
+                  <div className="nuclearQuizOptions">
+                    {question.options.map((option) => (
+                      <button
+                        type="button"
+                        key={option}
+                        className={[
+                          "nuclearQuizOption",
+                          selected === option ? "nuclearQuizOption--selected" : "",
+                          submitted && option === question.answer ? "nuclearQuizOption--correct" : "",
+                          submitted && selected === option && !correct ? "nuclearQuizOption--wrong" : "",
+                        ].join(" ")}
+                        onClick={() => onAnswer(question.id, option)}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                  {submitted && selected ? (
+                    <p
+                      className={
+                        correct
+                          ? "nuclearQuizFeedback nuclearQuizFeedback--correct"
+                          : "nuclearQuizFeedback nuclearQuizFeedback--wrong"
+                      }
+                    >
+                      {correct ? "Betul. " : "Salah. "}
+                      {correct ? question.explanation : question.hint}
+                    </p>
+                  ) : null}
+                </article>
+              );
+            })}
+          </div>
+
+          <div className="nuclearQuizActions">
+            <button type="button" className="nuclearButton nuclearButton--primary" onClick={onSubmit}>
+              Semak Jawapan
+            </button>
+            <button type="button" className="nuclearButton nuclearButton--ghost" onClick={onRetry}>
+              Cuba Lagi
+            </button>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
 export default function NuclearEnergySimulatorPage() {
   const [activeMode, setActiveMode] = useState("fission");
   const [fission, setFission] = useState(initialFission);
@@ -536,6 +974,11 @@ export default function NuclearEnergySimulatorPage() {
     fission: {},
     fusion: {},
     plant: {},
+  });
+  const [quizSubmitted, setQuizSubmitted] = useState({
+    fission: false,
+    fusion: false,
+    plant: false,
   });
   useEffect(() => {
     if (activeMode !== "fission" || !fission.running) {
@@ -671,22 +1114,9 @@ export default function NuclearEnergySimulatorPage() {
     };
   }, [plant]);
 
-  const fusionStatus = useMemo(() => {
-    if (!fusion.active) {
-      return "Sedia";
-    }
-
-    if (fusion.magneticField < 35) {
-      return "Plasma tidak stabil";
-    }
-
-    if (fusion.temperature < 80) {
-      return "Suhu belum mencukupi";
-    }
-
-    return "Pelakuran berjaya";
-  }, [fusion.active, fusion.magneticField, fusion.temperature]);
-  const fusionDanger = fusion.active && (fusion.magneticField < 35 || (fusion.temperature >= 95 && fusion.magneticField < 50));
+  const fusionDiagnostics = useMemo(() => getFusionDiagnostics(fusion), [fusion]);
+  const fusionStatus = fusionDiagnostics.status;
+  const fusionDanger = fusionDiagnostics.danger;
   const plantDanger = plantData.danger;
 
   const startCurrentMode = () => {
@@ -705,6 +1135,7 @@ export default function NuclearEnergySimulatorPage() {
     setFusion(initialFusion);
     setPlant(initialPlant);
     setQuizAnswers({ fission: {}, fusion: {}, plant: {} });
+    setQuizSubmitted({ fission: false, fusion: false, plant: false });
   };
 
   const resetFission = () => {
@@ -778,33 +1209,73 @@ export default function NuclearEnergySimulatorPage() {
     }));
   };
 
+  const setFusionValue = (key, value) => {
+    setFusion((current) => ({
+      ...current,
+      [key]: value,
+      active: false,
+      success: false,
+      energy: 0,
+      message: "Pembolehubah plasma dilaraskan. Tekan Mulakan Pelakuran untuk menguji keadaan.",
+    }));
+  };
+
+  const placeFusionAtom = (atom) => {
+    setFusion((current) => ({
+      ...current,
+      [`${atom}Placed`]: true,
+      active: false,
+      success: false,
+      message:
+        atom === "deuterium"
+          ? "Deuterium dimasukkan ke dalam plasma chamber."
+          : "Tritium dimasukkan ke dalam plasma chamber.",
+    }));
+  };
+
+  const handleFusionAtomDragStart = (atom, event) => {
+    event.dataTransfer.setData("text/plain", atom);
+  };
+
+  const handleFusionDrop = (event) => {
+    event.preventDefault();
+    const atom = event.dataTransfer.getData("text/plain");
+
+    if (atom === "deuterium" || atom === "tritium") {
+      placeFusionAtom(atom);
+    }
+  };
+
   const startFusion = () => {
     setFusion((current) => {
-      if (current.magneticField < 35) {
+      const diagnostics = getFusionDiagnostics(current);
+
+      if (
+        !diagnostics.atomsReady ||
+        !diagnostics.temperatureOk ||
+        !diagnostics.magneticOk ||
+        !diagnostics.collisionOk ||
+        !diagnostics.fuelOk ||
+        diagnostics.danger
+      ) {
         return {
           ...current,
           active: true,
           success: false,
-          energy: 8,
-          message: "Plasma bocor. Tingkatkan medan magnet.",
+          energy: diagnostics.danger ? diagnostics.projectedEnergy : diagnostics.liveEnergy,
+          message: getFusionFailureMessage(current, diagnostics),
         };
       }
 
-      if (current.temperature < 80) {
-        return {
-          ...current,
-          active: true,
-          success: false,
-          energy: 14,
-          message: "Suhu belum mencukupi untuk pelakuran.",
-        };
-      }
+      const energy = Math.round(
+        clamp(current.temperature * 0.75 + current.magneticField * 0.28 + current.collisionSpeed * 0.48 + 45, 0, 160)
+      );
 
       return {
         ...current,
         active: true,
         success: true,
-        energy: Math.round(clamp(current.temperature * 1.1 + current.magneticField * 0.35, 0, 140)),
+        energy,
         message: "Deuterium dan tritium bercantum membentuk helium. Tenaga besar dibebaskan.",
       };
     });
@@ -825,6 +1296,28 @@ export default function NuclearEnergySimulatorPage() {
         ...current[activeMode],
         [questionId]: option,
       },
+    }));
+    setQuizSubmitted((current) => ({
+      ...current,
+      [activeMode]: false,
+    }));
+  };
+
+  const submitQuiz = () => {
+    setQuizSubmitted((current) => ({
+      ...current,
+      [activeMode]: true,
+    }));
+  };
+
+  const retryQuiz = () => {
+    setQuizAnswers((current) => ({
+      ...current,
+      [activeMode]: {},
+    }));
+    setQuizSubmitted((current) => ({
+      ...current,
+      [activeMode]: false,
     }));
   };
 
@@ -1134,40 +1627,74 @@ export default function NuclearEnergySimulatorPage() {
 
       {activeMode === "fusion" && (
         <>
-          <section className="nuclearModeGrid">
-            <aside className="nuclearPanel nuclearSteps">
-              <div className="nuclearPanelTitle">
-                <span>Langkah</span>
-                <h2>Pelakuran Nukleus</h2>
-              </div>
-              <ol>
-                <li>Naikkan suhu plasma sehingga menghampiri 100 juta °C.</li>
-                <li>Kuatkan medan magnet untuk mengurung plasma.</li>
-                <li>Mulakan pelakuran dan perhatikan pembentukan helium.</li>
-              </ol>
-              <p className="nuclearMiniNote">
-                Pelakuran berlaku pada suhu sangat tinggi, seperti di dalam bintang.
-              </p>
-            </aside>
-
+          <section className="nuclearModeGrid fusionModeGrid">
             <section
               className={[
                 "nuclearStage",
                 "fusionStage",
                 fusion.active ? "fusionStage--active" : "",
                 fusion.success ? "fusionStage--success" : "",
-                fusion.active && fusion.magneticField < 35 ? "fusionStage--unstable" : "",
+                fusion.active && !fusion.success ? "fusionStage--failed" : "",
+                fusionDiagnostics.almostStable ? "fusionStage--near" : "",
+                fusionDanger ? "fusionStage--unstable" : "",
               ].join(" ")}
-              style={{ "--fusion-speed": fusion.temperature >= 80 ? "1.4s" : "4.2s" }}
+              style={{
+                "--fusion-speed": `${clamp(4.4 - fusion.collisionSpeed / 26, 0.75, 4.2)}s`,
+                "--fusion-glow": `${fusionDiagnostics.stability}%`,
+                "--fusion-glow-alpha": `${0.14 + fusionDiagnostics.stability / 500}`,
+              }}
               aria-label="Ruang simulasi pelakuran nukleus"
             >
-              <div className="plasmaChamber">
+              <button
+                type="button"
+                draggable={!fusion.deuteriumPlaced}
+                className={`fusionAtomDock fusionAtomDock--deuterium${fusion.deuteriumPlaced ? " fusionAtomDock--placed" : ""}`}
+                onDragStart={(event) => handleFusionAtomDragStart("deuterium", event)}
+              >
+                <span>D</span>
+                <small>Deuterium</small>
+              </button>
+
+              <button
+                type="button"
+                draggable={!fusion.tritiumPlaced}
+                className={`fusionAtomDock fusionAtomDock--tritium${fusion.tritiumPlaced ? " fusionAtomDock--placed" : ""}`}
+                onDragStart={(event) => handleFusionAtomDragStart("tritium", event)}
+              >
+                <span>T</span>
+                <small>Tritium</small>
+              </button>
+
+              <div className="plasmaChamber fusionPlasmaChamber" onDragOver={(event) => event.preventDefault()} onDrop={handleFusionDrop}>
                 <div className="plasmaSwirl" aria-hidden="true" />
-                <div className="fusionNucleus fusionNucleus--deuterium">Deuterium</div>
-                <div className="fusionNucleus fusionNucleus--tritium">Tritium</div>
+                <div className="fusionMagneticField" aria-hidden="true" />
+                {fusion.deuteriumPlaced ? (
+                  <div className="fusionNucleus fusionNucleus--deuterium">D</div>
+                ) : (
+                  <div className="fusionDropGhost fusionDropGhost--deuterium">D</div>
+                )}
+                {fusion.tritiumPlaced ? (
+                  <div className="fusionNucleus fusionNucleus--tritium">T</div>
+                ) : (
+                  <div className="fusionDropGhost fusionDropGhost--tritium">T</div>
+                )}
                 <div className="fusionHelium">Helium</div>
                 <div className="fusionNeutron">neutron</div>
                 <div className="fusionFlash" aria-hidden="true" />
+                <div className="fusionShockwave" aria-hidden="true" />
+                <div className="fusionParticleField" aria-hidden="true">
+                  {Array.from({ length: 12 }).map((_, index) => (
+                    <i
+                      key={`fusion-particle-${index}`}
+                      style={{
+                        "--particle-angle": `${index * 30}deg`,
+                        "--chaos-angle-a": `${index * 41}deg`,
+                        "--chaos-angle-b": `${index * 67}deg`,
+                        "--particle-delay": `${index * 0.035}s`,
+                      }}
+                    />
+                  ))}
+                </div>
                 <div className="electricSparks" aria-hidden="true">
                   <i />
                   <i />
@@ -1179,49 +1706,64 @@ export default function NuclearEnergySimulatorPage() {
                 <strong>{fusionStatus}</strong>
                 <span>{fusion.message}</span>
               </div>
-              <NuclearDangerOverlay show={fusionDanger} message="Plasma tidak stabil" />
+              <NuclearDangerOverlay show={fusionDanger} message="AMARAN: Plasma tidak stabil" />
             </section>
 
             <aside className="nuclearPanel nuclearControls">
               <div className="nuclearPanelTitle">
                 <span>Kawalan</span>
-                <h2>Plasma & Medan Magnet</h2>
+                <h2>Gauge Pelakuran</h2>
               </div>
-              <NuclearSlider
-                label="Suhu plasma"
-                value={fusion.temperature}
-                min={1}
-                max={100}
-                suffix=" juta °C"
-                leftLabel="1 juta °C"
-                rightLabel="100 juta °C"
-                onChange={(value) =>
-                  setFusion((current) => ({
-                    ...current,
-                    temperature: value,
-                    active: false,
-                    success: false,
-                    message: "Suhu diubah. Tekan Mulakan Pelakuran untuk menguji keadaan.",
-                  }))
-                }
-              />
-              <NuclearSlider
-                label="Medan magnet"
-                value={fusion.magneticField}
-                min={0}
-                max={100}
-                leftLabel="Lemah"
-                rightLabel="Kuat"
-                onChange={(value) =>
-                  setFusion((current) => ({
-                    ...current,
-                    magneticField: value,
-                    active: false,
-                    success: false,
-                    message: "Medan magnet diubah. Tekan Mulakan Pelakuran untuk menguji keadaan.",
-                  }))
-                }
-              />
+              <div className="fusionGaugeGrid">
+                <FusionGaugeControl
+                  label="Suhu plasma"
+                  value={fusion.temperature}
+                  min={1}
+                  max={100}
+                  unit=" juta °C"
+                  tone={fusion.temperature > 95 ? "red" : "heat"}
+                  leftLabel="Rendah"
+                  rightLabel="Tinggi"
+                  displayValue={`${fusion.temperature} juta °C`}
+                  optimal={fusionDiagnostics.temperatureOk}
+                  onChange={(value) => setFusionValue("temperature", value)}
+                />
+                <FusionGaugeControl
+                  label="Medan magnet"
+                  value={fusion.magneticField}
+                  min={0}
+                  max={100}
+                  tone="purple"
+                  leftLabel="Lemah"
+                  rightLabel="Kuat"
+                  optimal={fusionDiagnostics.magneticOk}
+                  onChange={(value) => setFusionValue("magneticField", value)}
+                />
+                <FusionGaugeControl
+                  label="Halaju pelanggaran"
+                  value={fusion.collisionSpeed}
+                  min={0}
+                  max={100}
+                  tone="cyan"
+                  leftLabel="Perlahan"
+                  rightLabel="Laju"
+                  optimal={fusionDiagnostics.collisionOk}
+                  onChange={(value) => setFusionValue("collisionSpeed", value)}
+                />
+                <FusionGaugeControl
+                  label="Nisbah Deuterium : Tritium"
+                  value={fusion.fuelBalance}
+                  min={0}
+                  max={100}
+                  tone="green"
+                  leftLabel="D kurang"
+                  centerLabel="Seimbang"
+                  rightLabel="T kurang"
+                  displayValue={getFuelRatioLabel(fusion.fuelBalance)}
+                  optimal={fusionDiagnostics.fuelOk}
+                  onChange={(value) => setFusionValue("fuelBalance", value)}
+                />
+              </div>
 
               <div className="nuclearActionRow">
                 <button type="button" className="nuclearButton nuclearButton--primary" onClick={startFusion}>
@@ -1232,19 +1774,14 @@ export default function NuclearEnergySimulatorPage() {
                 </button>
               </div>
 
-              <div className="nuclearMeterGrid">
-                <NuclearMeter label="Suhu" value={`${fusion.temperature} juta °C`} fill={fusion.temperature} />
-                <NuclearMeter label="Medan magnet" value={`${fusion.magneticField}%`} fill={fusion.magneticField} tone="purple" />
-                <NuclearMeter label="Tenaga" value={`${fusion.energy} unit`} fill={fusion.energy} tone="orange" />
-                <NuclearMeter label="Status" value={fusionStatus} fill={fusion.success ? 100 : fusion.active ? 40 : 12} />
+              <div className="fusionInfoPanel">
+                <NuclearMeter label="Suhu plasma" value={`${fusion.temperature} juta °C`} fill={fusion.temperature} tone={fusion.temperature > 95 ? "red" : "orange"} />
+                <NuclearMeter label="Kestabilan plasma" value={`${fusionDiagnostics.stability}%`} fill={fusionDiagnostics.stability} tone={fusionDanger ? "red" : "purple"} />
+                <NuclearMeter label="Halaju pelanggaran" value={`${fusion.collisionSpeed}%`} fill={fusion.collisionSpeed} />
+                <NuclearMeter label="Output tenaga" value={`${fusionDiagnostics.liveEnergy} unit`} fill={fusionDiagnostics.liveEnergy} tone="orange" />
+                <NuclearMeter label="Status fusion" value={fusionStatus} fill={fusion.success ? 100 : fusionDiagnostics.stability} />
               </div>
             </aside>
-          </section>
-
-          <section className="nuclearConceptNote">
-            Pelakuran nukleus berlaku apabila dua nukleus ringan bercantum membentuk
-            nukleus yang lebih berat dengan pembebasan tenaga yang sangat besar. Proses
-            ini memerlukan suhu yang sangat tinggi.
           </section>
         </>
       )}
@@ -1268,7 +1805,7 @@ export default function NuclearEnergySimulatorPage() {
               aria-label="Gambaran keseluruhan loji janakuasa nuklear"
             >
               <div className="plantSceneHeader">Gambaran Keseluruhan Loji</div>
-              <NuclearDangerOverlay show={plantDanger} message="Suhu reaktor tinggi" />
+              <NuclearDangerOverlay show={plantDanger} message="AMARAN: Reaktor tidak stabil" />
 
               <div className="plantRiver" aria-hidden="true">
                 <span>Sumber Air</span>
@@ -1443,6 +1980,560 @@ export default function NuclearEnergySimulatorPage() {
       )}
 
       <style>{`
+        .fusionModeGrid {
+          grid-template-columns: minmax(650px, 1fr) minmax(340px, 0.42fr);
+          align-items: start;
+        }
+
+        .fusionModeGrid > .fusionStage {
+          min-height: clamp(720px, 74vh, 880px);
+          overflow: hidden;
+        }
+
+        .fusionModeGrid > .nuclearControls {
+          gap: 1rem;
+        }
+
+        .fusionPlasmaChamber {
+          width: min(660px, 72vw);
+          max-width: calc(100% - 11rem);
+          border-color: rgba(56, 189, 248, 0.48);
+          background:
+            radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), transparent 13%),
+            radial-gradient(circle at 50% 48%, rgba(168, 85, 247, 0.34), transparent 28%),
+            radial-gradient(circle, rgba(56, 189, 248, var(--fusion-glow-alpha, 0.22)), rgba(15, 23, 42, 0.3) 58%, rgba(2, 6, 23, 0.88));
+          box-shadow:
+            0 0 78px rgba(56, 189, 248, 0.25),
+            inset 0 0 72px rgba(168, 85, 247, 0.18);
+        }
+
+        .fusionStage--near .fusionPlasmaChamber,
+        .fusionStage--success .fusionPlasmaChamber {
+          box-shadow:
+            0 0 92px rgba(56, 189, 248, 0.34),
+            0 0 60px rgba(249, 115, 22, 0.16),
+            inset 0 0 84px rgba(168, 85, 247, 0.24);
+        }
+
+        .fusionStage--unstable {
+          animation: warningPulse 1.15s ease-in-out infinite, heatDistortion 0.52s linear infinite;
+        }
+
+        .fusionStage--unstable .fusionPlasmaChamber {
+          border-color: rgba(239, 68, 68, 0.58);
+          background:
+            radial-gradient(circle at 50% 50%, rgba(239, 68, 68, 0.22), transparent 28%),
+            radial-gradient(circle, rgba(168, 85, 247, 0.22), rgba(15, 23, 42, 0.36) 58%, rgba(2, 6, 23, 0.9));
+          box-shadow: 0 0 72px rgba(239, 68, 68, 0.3), inset 0 0 70px rgba(239, 68, 68, 0.18);
+        }
+
+        .fusionMagneticField {
+          position: absolute;
+          inset: 7%;
+          border: 1px dashed rgba(168, 85, 247, 0.36);
+          border-radius: 50%;
+          animation: plasmaSwirl 7s linear infinite;
+        }
+
+        .fusionMagneticField::before,
+        .fusionMagneticField::after {
+          content: "";
+          position: absolute;
+          inset: 14%;
+          border: 1px solid rgba(56, 189, 248, 0.2);
+          border-radius: 50%;
+        }
+
+        .fusionMagneticField::after {
+          inset: 28%;
+          border-color: rgba(168, 85, 247, 0.24);
+        }
+
+        .fusionAtomDock {
+          position: absolute;
+          z-index: 12;
+          display: grid;
+          width: 116px;
+          aspect-ratio: 1;
+          place-items: center;
+          gap: 0.12rem;
+          border: 1px solid rgba(226, 232, 240, 0.18);
+          border-radius: 50%;
+          color: #f8fafc;
+          font-weight: 950;
+          cursor: grab;
+          user-select: none;
+          transition: transform 0.22s ease, opacity 0.22s ease;
+        }
+
+        .fusionAtomDock span {
+          display: grid;
+          width: 52px;
+          aspect-ratio: 1;
+          place-items: center;
+          border-radius: 50%;
+          font-size: 1.55rem;
+        }
+
+        .fusionAtomDock small {
+          margin-top: -0.65rem;
+          color: rgba(226, 232, 240, 0.82);
+          font-size: 0.72rem;
+          font-weight: 900;
+        }
+
+        .fusionAtomDock:hover {
+          transform: translateY(-4px) scale(1.03);
+        }
+
+        .fusionAtomDock--placed {
+          opacity: 0.34;
+          cursor: default;
+          filter: grayscale(0.4);
+        }
+
+        .fusionAtomDock--deuterium {
+          left: clamp(0.8rem, 3vw, 2rem);
+          top: 46%;
+          background: radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.82), #38bdf8 42%, #1d4ed8 100%);
+          box-shadow: 0 0 34px rgba(56, 189, 248, 0.42);
+        }
+
+        .fusionAtomDock--tritium {
+          right: clamp(0.8rem, 3vw, 2rem);
+          top: 46%;
+          background: radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.82), #fb7185 42%, #9d174d 100%);
+          box-shadow: 0 0 34px rgba(244, 114, 182, 0.42);
+        }
+
+        .fusionPlasmaChamber .fusionNucleus {
+          z-index: 8;
+          display: grid;
+          width: clamp(72px, 7vw, 102px);
+          aspect-ratio: 1;
+          place-items: center;
+          border-radius: 50%;
+          color: #f8fafc;
+          font-size: 1.35rem;
+          font-weight: 950;
+          text-align: center;
+          opacity: 1;
+          transform: none;
+        }
+
+        .fusionPlasmaChamber .fusionNucleus--deuterium {
+          left: 25%;
+          top: 48%;
+          background: radial-gradient(circle at 35% 30%, #ffffff, #38bdf8 36%, #1e40af 100%);
+        }
+
+        .fusionPlasmaChamber .fusionNucleus--tritium {
+          right: 25%;
+          top: 48%;
+          background: radial-gradient(circle at 35% 30%, #ffffff, #fb7185 36%, #9d174d 100%);
+        }
+
+        .fusionDropGhost {
+          position: absolute;
+          z-index: 4;
+          display: grid;
+          width: clamp(70px, 7vw, 98px);
+          aspect-ratio: 1;
+          place-items: center;
+          border: 1px dashed rgba(226, 232, 240, 0.32);
+          border-radius: 50%;
+          color: rgba(226, 232, 240, 0.48);
+          font-size: 1.35rem;
+          font-weight: 950;
+          background: rgba(15, 23, 42, 0.34);
+        }
+
+        .fusionDropGhost--deuterium {
+          left: 25%;
+          top: 48%;
+        }
+
+        .fusionDropGhost--tritium {
+          right: 25%;
+          top: 48%;
+        }
+
+        .fusionStage--active .fusionNucleus--deuterium {
+          animation: fusionCollideLeft var(--fusion-speed, 1.4s) ease-in-out infinite alternate;
+        }
+
+        .fusionStage--active .fusionNucleus--tritium {
+          animation: fusionCollideRight var(--fusion-speed, 1.4s) ease-in-out infinite alternate;
+        }
+
+        .fusionStage--failed .fusionNucleus--deuterium {
+          animation: fusionFailLeft 1.35s ease-in-out infinite;
+        }
+
+        .fusionStage--failed .fusionNucleus--tritium {
+          animation: fusionFailRight 1.35s ease-in-out infinite;
+        }
+
+        .fusionStage--success .fusionNucleus {
+          opacity: 0.18;
+          transition: opacity 0.35s ease;
+        }
+
+        .fusionShockwave {
+          position: absolute;
+          z-index: 7;
+          width: 150px;
+          aspect-ratio: 1;
+          border: 2px solid rgba(125, 211, 252, 0.74);
+          border-radius: 50%;
+          opacity: 0;
+        }
+
+        .fusionStage--success .fusionShockwave {
+          animation: fusionShockwave 1.25s ease-out infinite;
+        }
+
+        .fusionStage--success .fusionFlash {
+          animation: fusionFlash 1s ease-out infinite;
+        }
+
+        .fusionStage--success .fusionHelium {
+          opacity: 1;
+          transform: scale(1);
+        }
+
+        .fusionParticleField {
+          position: absolute;
+          inset: 10%;
+          z-index: 6;
+          pointer-events: none;
+        }
+
+        .fusionParticleField i {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 8px;
+          aspect-ratio: 1;
+          border-radius: 50%;
+          background: #e0f2fe;
+          box-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+          opacity: 0;
+          transform: rotate(var(--particle-angle)) translateX(0);
+        }
+
+        .fusionStage--success .fusionParticleField i {
+          animation: fusionParticleBurst 1.4s ease-out infinite;
+          animation-delay: var(--particle-delay);
+        }
+
+        .fusionStage--unstable .fusionParticleField i {
+          background: #fecaca;
+          box-shadow: 0 0 14px rgba(239, 68, 68, 0.84);
+          animation: fusionChaoticParticle 0.85s ease-in-out infinite alternate;
+          animation-delay: var(--particle-delay);
+        }
+
+        .fusionGaugeGrid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(138px, 1fr));
+          gap: 0.75rem;
+        }
+
+        .fusionInfoPanel {
+          display: grid;
+          gap: 0.72rem;
+        }
+
+        .fusionGauge {
+          display: grid;
+          gap: 0.44rem;
+          min-width: 0;
+          padding: 0.72rem;
+          border: 1px solid rgba(56, 189, 248, 0.14);
+          border-radius: 18px;
+          background: rgba(2, 6, 23, 0.38);
+          color: #38bdf8;
+          box-shadow: inset 0 0 18px rgba(56, 189, 248, 0.04);
+        }
+
+        .fusionGauge--purple {
+          color: #a855f7;
+        }
+
+        .fusionGauge--green {
+          color: #22c55e;
+        }
+
+        .fusionGauge--red {
+          color: #ef4444;
+        }
+
+        .fusionGauge--heat {
+          color: #f97316;
+        }
+
+        .fusionGauge--optimal {
+          border-color: color-mix(in srgb, currentColor 42%, transparent);
+          box-shadow: 0 0 22px color-mix(in srgb, currentColor 20%, transparent), inset 0 0 18px rgba(255, 255, 255, 0.04);
+        }
+
+        .fusionGauge__dial {
+          position: relative;
+          display: grid;
+          min-height: 104px;
+          place-items: center;
+          border: 0;
+          background: transparent;
+          color: inherit;
+          cursor: grab;
+          touch-action: none;
+        }
+
+        .fusionGauge__dial:active {
+          cursor: grabbing;
+        }
+
+        .fusionGauge__dial svg {
+          width: 100%;
+          max-width: 170px;
+          overflow: visible;
+        }
+
+        .fusionGauge__dial path {
+          fill: none;
+          stroke-width: 12;
+          stroke-linecap: round;
+        }
+
+        .fusionGauge__track {
+          stroke: rgba(148, 163, 184, 0.18);
+        }
+
+        .fusionGauge__value {
+          stroke: currentColor;
+          filter: drop-shadow(0 0 10px currentColor);
+          transition: stroke-dasharray 0.22s ease;
+        }
+
+        .fusionGauge--heat .fusionGauge__value {
+          stroke: url(#fusionHeatGradient);
+        }
+
+        .fusionGauge__needle {
+          position: absolute;
+          left: 50%;
+          bottom: 26px;
+          width: 4px;
+          height: 52px;
+          border-radius: 999px;
+          background: linear-gradient(180deg, #f8fafc, currentColor);
+          box-shadow: 0 0 14px currentColor;
+          transform: translateX(-50%) rotate(var(--needle-angle));
+          transform-origin: 50% 100%;
+          transition: transform 0.2s ease;
+        }
+
+        .fusionGauge__needle::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          bottom: -7px;
+          width: 16px;
+          aspect-ratio: 1;
+          transform: translateX(-50%);
+          border-radius: 50%;
+          background: #f8fafc;
+          box-shadow: 0 0 12px currentColor;
+        }
+
+        .fusionGauge__dial strong {
+          position: absolute;
+          left: 50%;
+          bottom: 0.2rem;
+          transform: translateX(-50%);
+          width: 100%;
+          color: #f8fafc;
+          font-size: clamp(0.88rem, 1.4vw, 1.08rem);
+          font-weight: 950;
+          line-height: 1.1;
+          text-align: center;
+        }
+
+        .fusionGauge__meta {
+          display: grid;
+          gap: 0.28rem;
+          text-align: center;
+        }
+
+        .fusionGauge__meta > span {
+          color: rgba(226, 232, 240, 0.9);
+          font-size: 0.82rem;
+          font-weight: 950;
+          line-height: 1.22;
+        }
+
+        .fusionGauge__meta div {
+          display: flex;
+          justify-content: space-between;
+          gap: 0.3rem;
+          color: rgba(148, 163, 184, 0.86);
+          font-size: 0.64rem;
+          font-weight: 850;
+        }
+
+        .learningPanelTabs {
+          display: inline-flex;
+          gap: 0.45rem;
+          margin-bottom: 1rem;
+          padding: 0.32rem;
+          border: 1px solid rgba(56, 189, 248, 0.16);
+          border-radius: 999px;
+          background: rgba(2, 6, 23, 0.48);
+        }
+
+        .learningPanelTabs button {
+          border: 0;
+          border-radius: 999px;
+          background: transparent;
+          color: rgba(226, 232, 240, 0.74);
+          padding: 0.5rem 0.9rem;
+          font-weight: 950;
+          cursor: pointer;
+        }
+
+        .learningPanelTabs button.active {
+          background: linear-gradient(135deg, rgba(56, 189, 248, 0.28), rgba(168, 85, 247, 0.2));
+          color: #ffffff;
+          box-shadow: 0 0 18px rgba(56, 189, 248, 0.16);
+        }
+
+        .nuclearQuizHeader {
+          display: flex;
+          align-items: start;
+          justify-content: space-between;
+          gap: 1rem;
+          margin-bottom: 1rem;
+        }
+
+        .nuclearQuizScore {
+          display: grid;
+          justify-items: center;
+          min-width: 92px;
+          padding: 0.65rem 0.85rem;
+          border: 1px solid rgba(34, 197, 94, 0.28);
+          border-radius: 18px;
+          background: rgba(20, 83, 45, 0.2);
+        }
+
+        .nuclearQuizScore span,
+        .nuclearQuizNumber {
+          color: #86efac;
+          font-size: 0.72rem;
+          font-weight: 950;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+
+        .nuclearQuizScore strong {
+          color: #f8fafc;
+          font-size: 1.42rem;
+          line-height: 1;
+        }
+
+        .nuclearQuizActions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.75rem;
+          justify-content: flex-end;
+          margin-top: 1rem;
+        }
+
+        .nuclearQuizOption--correct {
+          box-shadow: 0 0 18px rgba(34, 197, 94, 0.24);
+        }
+
+        .nuclearQuizOption--wrong {
+          box-shadow: 0 0 18px rgba(239, 68, 68, 0.24);
+        }
+
+        @keyframes fusionCollideLeft {
+          to {
+            left: 47%;
+            transform: translate(-50%, -50%) scale(1.05);
+          }
+        }
+
+        @keyframes fusionCollideRight {
+          to {
+            right: 47%;
+            transform: translate(50%, -50%) scale(1.05);
+          }
+        }
+
+        @keyframes fusionFailLeft {
+          0%,
+          100% {
+            left: 25%;
+            transform: translate(-50%, -50%) scale(1);
+          }
+          50% {
+            left: 43%;
+            transform: translate(-50%, -50%) scale(0.96);
+          }
+        }
+
+        @keyframes fusionFailRight {
+          0%,
+          100% {
+            right: 25%;
+            transform: translate(50%, -50%) scale(1);
+          }
+          50% {
+            right: 43%;
+            transform: translate(50%, -50%) scale(0.96);
+          }
+        }
+
+        @keyframes fusionShockwave {
+          0% {
+            opacity: 0;
+            transform: scale(0.24);
+          }
+          35% {
+            opacity: 0.78;
+          }
+          100% {
+            opacity: 0;
+            transform: scale(2.9);
+          }
+        }
+
+        @keyframes fusionParticleBurst {
+          0% {
+            opacity: 0;
+            transform: rotate(var(--particle-angle)) translateX(0) scale(0.6);
+          }
+          25% {
+            opacity: 1;
+          }
+          100% {
+            opacity: 0;
+            transform: rotate(var(--particle-angle)) translateX(190px) scale(0.2);
+          }
+        }
+
+        @keyframes fusionChaoticParticle {
+          0% {
+            opacity: 0.2;
+            transform: rotate(var(--chaos-angle-a)) translateX(40px) translateY(-12px);
+          }
+          100% {
+            opacity: 0.9;
+            transform: rotate(var(--chaos-angle-b)) translateX(180px) translateY(20px);
+          }
+        }
+
         .fissionModeGrid {
           grid-template-columns: minmax(620px, 1fr) minmax(300px, 0.34fr);
           grid-auto-rows: auto;
@@ -1965,7 +3056,8 @@ export default function NuclearEnergySimulatorPage() {
         }
 
         @media (max-width: 1180px) {
-          .fissionModeGrid {
+          .fissionModeGrid,
+          .fusionModeGrid {
             grid-template-columns: 1fr;
           }
 
@@ -1986,6 +3078,14 @@ export default function NuclearEnergySimulatorPage() {
 
           .fissionGaugeDeck {
             grid-template-columns: repeat(3, minmax(128px, 1fr));
+          }
+
+          .fusionModeGrid > .fusionStage {
+            min-height: 680px;
+          }
+
+          .fusionPlasmaChamber {
+            max-width: calc(100% - 8rem);
           }
         }
 
@@ -2027,13 +3127,47 @@ export default function NuclearEnergySimulatorPage() {
           .chainNeutron--fast::after {
             width: 86px;
           }
+
+          .fusionModeGrid > .fusionStage {
+            min-height: 620px;
+          }
+
+          .fusionPlasmaChamber {
+            width: min(430px, 92vw);
+            max-width: calc(100% - 1.5rem);
+          }
+
+          .fusionAtomDock {
+            width: 82px;
+            top: auto;
+            bottom: 6.5rem;
+          }
+
+          .fusionAtomDock--deuterium {
+            left: 1rem;
+          }
+
+          .fusionAtomDock--tritium {
+            right: 1rem;
+          }
+
+          .fusionGaugeGrid {
+            grid-template-columns: 1fr;
+          }
+
+          .nuclearQuizHeader {
+            display: grid;
+          }
         }
       `}</style>
 
-      <LearningPanel
+      <LearningPanelV2
         mode={activeMode}
         answers={quizAnswers[activeMode]}
+        submitted={quizSubmitted[activeMode]}
         onAnswer={handleQuizAnswer}
+        onSubmit={submitQuiz}
+        onRetry={retryQuiz}
       />
     </main>
   );

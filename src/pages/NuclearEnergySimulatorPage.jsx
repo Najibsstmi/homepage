@@ -38,9 +38,9 @@ const initialFusion = {
 
 const initialPlant = {
   active: false,
-  fissionRate: 55,
-  waterFlow: 70,
-  controlRod: 45,
+  uranium235: 55,
+  coolantAgent: 70,
+  steamVelocity: 45,
 };
 
 const uraniumPositions = [
@@ -1053,64 +1053,102 @@ export default function NuclearEnergySimulatorPage() {
   const graphiteRodCount = Math.round(fission.graphiteRod / 20);
 
   const plantData = useMemo(() => {
+    const steamLimit = Math.round(clamp((plant.uranium235 - 20) * 1.55, 18, 100));
+
     if (!plant.active) {
       return {
         temperature: 35,
         steam: 0,
+        requestedSteam: plant.steamVelocity,
+        effectiveSteam: 0,
+        steamLimit,
         turbine: 0,
         output: 0,
-        homes: 0,
+        outputMW: 0,
+        outputPercent: 0,
+        electricSymbols: 0,
+        lampPower: 0,
+        smokePuffs: 0,
+        smokePower: 0,
         reactorHeat: 0,
-        nuclearLoad: 0,
-        coolantStress: 0,
+        nuclearLoad: plant.uranium235,
+        coolantStress: clamp(100 - plant.coolantAgent, 0, 100),
         radioactive: false,
         danger: false,
         electricHigh: false,
+        turbineFast: false,
+        steamLimited: false,
         status: "Loji belum aktif",
+        statusDetail: "Tekan Hidupkan Loji untuk menjana elektrik.",
       };
     }
 
-    const rodEffect = 1 - plant.controlRod / 100;
-    const coolantStress = clamp(100 - plant.waterFlow, 0, 100);
-    const nuclearLoad = clamp(plant.fissionRate * (0.24 + rodEffect * 0.96), 0, 110);
+    const coolantStress = clamp(100 - plant.coolantAgent, 0, 100);
+    const nuclearLoad = clamp(plant.uranium235, 0, 100);
+    const reactorHeat = Math.round(clamp(plant.uranium235 * 1.15 - plant.coolantAgent * 0.55 + 32, 0, 100));
     const temperature = Math.round(
       clamp(
-        90 + nuclearLoad * 7.4 + coolantStress * 4.2 - plant.controlRod * 1.1 - plant.waterFlow * 0.62,
+        80 + reactorHeat * 9.2,
         45,
-        1120
+        1000
       )
     );
-    const reactorHeat = Math.round(clamp((temperature - 120) / 9.4, 0, 100));
-    const steam = Math.round(clamp(nuclearLoad * 0.62 + plant.waterFlow * 0.42 - coolantStress * 0.18, 0, 100));
-    const turbine = Math.round(clamp(steam * (0.48 + plant.waterFlow / 150), 0, 100));
-    const output = Math.round(clamp(turbine * 0.98, 0, 100));
-    const homes = Math.round(output * 12);
-    const radioactive = plant.controlRod < 35 && reactorHeat > 42;
-    const danger = temperature > 900 || plant.waterFlow < 28;
-    const electricHigh = output >= 62;
+    const requestedSteam = plant.steamVelocity;
+    const effectiveSteam = Math.round(clamp(Math.min(requestedSteam, steamLimit), 0, 100));
+    const steam = effectiveSteam;
+    const turbine = Math.round(clamp(effectiveSteam * (0.78 + reactorHeat / 360), 0, 100));
+    const outputMW = Math.round(clamp(turbine * (0.42 + reactorHeat / 155) * 10, 0, 1000));
+    const outputPercent = Math.round((outputMW / 1000) * 100);
+    const electricSymbols = Math.floor(outputMW / 250);
+    const radioactive = reactorHeat > 86 && plant.coolantAgent < 35;
+    const danger = temperature > 850 || (plant.coolantAgent < 22 && plant.uranium235 > 62);
+    const electricHigh = electricSymbols > 0;
+    const turbineFast = turbine >= 70;
+    const steamLimited = requestedSteam > steamLimit;
+    const lampPower = outputMW / 1000;
+    const smokePower = outputMW / 1000;
+    const smokePuffs = outputMW <= 0 ? 0 : Math.ceil(clamp(outputMW / 165, 1, 7));
     let status = "Loji stabil";
+    let statusDetail = "Uranium-235, agen penyejuk dan stim berada dalam julat seimbang.";
 
     if (danger) {
       status = "Amaran suhu tinggi";
-    } else if (output < 35) {
+      statusDetail = "Kurangkan Uranium-235 atau tambah agen penyejuk untuk menurunkan suhu reaktor.";
+    } else if (steamLimited) {
+      status = "Stim terhad";
+      statusDetail = "Halaju stim tidak boleh meningkat lagi kerana Uranium-235 belum cukup panas.";
+    } else if (outputMW < 250) {
       status = "Output rendah";
-    } else if (output >= 68 && temperature < 850) {
+      statusDetail = "Naikkan halaju stim atau jumlah Uranium-235 untuk menambah output elektrik.";
+    } else if (outputMW >= 750 && temperature < 850) {
       status = "Output optimum";
+      statusDetail = "Turbin berpusing laju dan pencawang menerima bekalan elektrik tinggi.";
     }
 
     return {
       temperature,
       steam,
+      requestedSteam,
+      effectiveSteam,
+      steamLimit,
       turbine,
-      output,
-      homes,
+      output: outputPercent,
+      outputMW,
+      outputPercent,
+      electricSymbols,
+      lampPower,
+      smokePuffs,
+      smokePower,
       reactorHeat,
       nuclearLoad: Math.round(nuclearLoad),
       coolantStress,
       radioactive,
       danger,
       electricHigh,
+      turbineFast,
+      steamLimited,
       status,
+      statusDetail,
     };
   }, [plant]);
 
@@ -1789,6 +1827,36 @@ export default function NuclearEnergySimulatorPage() {
       {activeMode === "plant" && (
         <>
           <section className="nuclearPlantLayout">
+            <div className="plantGaugeDeck">
+              <NuclearGauge
+                label="Uranium-235"
+                value={`${plant.uranium235}%`}
+                detail="Lebih banyak, reaktor lebih panas"
+                fill={plant.uranium235}
+                tone="orange"
+              />
+              <NuclearGauge
+                label="Agen penyejukan"
+                value={`${plant.coolantAgent}%`}
+                detail="Lebih banyak, reaktor lebih sejuk"
+                fill={plant.coolantAgent}
+              />
+              <NuclearGauge
+                label="Halaju stim"
+                value={`${plant.steamVelocity}%`}
+                detail={plantData.steamLimited ? `Terhad kepada ${plantData.steamLimit}%` : "Memusingkan turbin"}
+                fill={plant.steamVelocity}
+                tone={plantData.steamLimited ? "red" : "purple"}
+              />
+              <NuclearGauge
+                label="Output elektrik"
+                value={`${plantData.outputMW.toLocaleString("ms-MY")} MW`}
+                detail="Maksimum 1000 MW"
+                fill={plantData.outputPercent}
+                tone="orange"
+              />
+            </div>
+
             <section
               className={[
                 "nuclearPlantFlow",
@@ -1796,111 +1864,78 @@ export default function NuclearEnergySimulatorPage() {
                 plantData.danger ? "nuclearPlantFlow--warning" : "",
                 plantData.radioactive ? "nuclearPlantFlow--radioactive" : "",
                 plantData.electricHigh ? "nuclearPlantFlow--electric" : "",
+                plantData.turbineFast ? "nuclearPlantFlow--turbineFast" : "",
               ].join(" ")}
               style={{
-                "--turbine-speed": `${Math.max(0.75, 3.2 - plantData.turbine / 40)}s`,
+                "--turbine-speed": `${clamp(2.2 - plantData.turbine / 58, 0.34, 2.2)}s`,
                 "--plant-heat": `${plantData.reactorHeat}%`,
-                "--plant-output": `${plantData.output}%`,
+                "--plant-output": `${plantData.outputPercent}%`,
+                "--reactor-alpha": plant.active ? `${clamp(0.18 + plantData.reactorHeat / 95, 0.08, 1).toFixed(2)}` : "0.08",
+                "--reactor-brightness": `${clamp(1 + plantData.reactorHeat / 46, 1, 3.15).toFixed(2)}`,
+                "--lamp-alpha": `${clamp(plantData.lampPower, 0, 1).toFixed(2)}`,
+                "--steam-alpha": plant.active ? `${clamp(0.16 + plantData.effectiveSteam / 110, 0.08, 1).toFixed(2)}` : "0.08",
+                "--smoke-alpha": `${clamp(0.14 + plantData.smokePower * 0.9, 0, 1).toFixed(2)}`,
+                "--smoke-scale": `${clamp(0.78 + plantData.smokePower * 0.48, 0.78, 1.26).toFixed(2)}`,
               }}
               aria-label="Gambaran keseluruhan loji janakuasa nuklear"
             >
-              <div className="plantSceneHeader">Gambaran Keseluruhan Loji</div>
               <NuclearDangerOverlay show={plantDanger} message="AMARAN: Reaktor tidak stabil" />
 
-              <div className="plantRiver" aria-hidden="true">
-                <span>Sumber Air</span>
-                <small>Agen penyejuk</small>
+              <div className="plantCoolingSmoke" aria-hidden="true">
+                {Array.from({ length: plantData.smokePuffs }, (_, index) => (
+                  <i key={`plant-smoke-${index}`} />
+                ))}
               </div>
-
-              <div className="plantCoolingTower" aria-label="Menara penyejuk">
-                <div className="plantSmoke">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <strong>Menara Penyejuk</strong>
+              <div className="plantReactorGlow" aria-hidden="true">
+                <span />
               </div>
-
-              <div className="plantWaterPipe plantWaterPipe--in" aria-hidden="true">
-                <i />
-              </div>
-              <div className="plantWaterPipe plantWaterPipe--out" aria-hidden="true">
-                <i />
-              </div>
-
-              <div className="plantReactorBuilding" aria-label="Reaktor nuklear">
-                <div className="plantReactorDome">
-                  <strong>REAKTOR</strong>
-                  <div className="plantReactorCore" aria-hidden="true">
-                    <span />
-                  </div>
-                  <div className="plantRadiationSigns" aria-hidden="true">
-                    <i>☢</i>
-                    <i>☢</i>
-                    <i>☢</i>
-                  </div>
-                  <div className="plantDangerSigns" aria-hidden="true">
-                    <i>!</i>
-                    <i>!</i>
-                  </div>
-                  <div className="plantGreySmoke" aria-hidden="true">
-                    <i />
-                    <i />
-                    <i />
-                  </div>
-                </div>
-                <span className="plantHeatLabel">haba nuklear</span>
-              </div>
-
-              <div className="plantSteamLine" aria-hidden="true">
+              <div className="plantSteamTrace" aria-hidden="true">
                 <i />
                 <i />
                 <i />
               </div>
-
-              <div className="plantGeneratorBlock" aria-label="Turbin dan generator">
-                <div className="plantTurbine" aria-hidden="true">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <div className="plantGenerator" aria-hidden="true">G</div>
-                <strong>Generator</strong>
-                <div className="plantElectricSparks" aria-hidden="true">
-                  <i>⚡</i>
-                  <i>⚡</i>
-                  <i>⚡</i>
-                </div>
-              </div>
-
-              <div className="plantPowerLine" aria-hidden="true">
+              <div className="plantTurbineShakeLayer" aria-hidden="true" />
+              <div className="plantTurbineIndicator" aria-hidden="true">
+                <span />
                 <i />
                 <i />
                 <i />
               </div>
-
-              <div className="plantSubstation" aria-label="Pencawang elektrik">
-                <strong>Pencawang Elektrik</strong>
-                <div className="plantTower">
-                  <i />
-                  <i />
-                  <i />
-                </div>
+              <div className="plantTurbineIndicator plantTurbineIndicator--middle" aria-hidden="true">
+                <span />
+                <i />
+                <i />
+                <i />
               </div>
-
-              <div className="plantCity" aria-label="Kawasan rumah dan lampu jalan">
-                <div className="plantStreetLights" aria-hidden="true">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <div className="plantHouses" aria-hidden="true">
-                  <i />
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <strong>Kawasan Rumah</strong>
+              <div className="plantTurbineIndicator plantTurbineIndicator--rear" aria-hidden="true">
+                <span />
+                <i />
+                <i />
+                <i />
+              </div>
+              <div className="plantLampGlows" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+              </div>
+              <div className="plantElectricSymbols" aria-label={`${plantData.electricSymbols} simbol elektrik dikeluarkan`}>
+                {Array.from({ length: plantData.electricSymbols }, (_, index) => (
+                  <i key={`plant-electric-${index}`} />
+                ))}
+              </div>
+              <div className="plantOutputBadge" aria-live="polite">
+                <span>Elektrik Dihasilkan</span>
+                <strong>{plantData.outputMW.toLocaleString("ms-MY")} MW</strong>
+                <small>Maksimum 1000 MW</small>
               </div>
             </section>
 
@@ -1910,37 +1945,37 @@ export default function NuclearEnergySimulatorPage() {
                 <h2>Stesen Janakuasa</h2>
               </div>
               <NuclearSlider
-                label="Kadar Pembelahan"
-                value={plant.fissionRate}
-                min={0}
-                max={100}
-                leftLabel="Rendah"
-                rightLabel="Tinggi"
-                onChange={(value) => setPlant((current) => ({ ...current, fissionRate: value }))}
-              />
-              <NuclearSlider
-                label="Agen Penyejuk"
-                value={plant.waterFlow}
+                label="Jumlah Uranium-235"
+                value={plant.uranium235}
                 min={0}
                 max={100}
                 leftLabel="Sedikit"
                 rightLabel="Banyak"
-                onChange={(value) => setPlant((current) => ({ ...current, waterFlow: value }))}
+                onChange={(value) => setPlant((current) => ({ ...current, uranium235: value }))}
               />
               <NuclearSlider
-                label="Rod Pengawal"
-                value={plant.controlRod}
+                label="Agen Penyejukan"
+                value={plant.coolantAgent}
                 min={0}
                 max={100}
                 leftLabel="Sedikit"
-                rightLabel="Penuh"
-                onChange={(value) => setPlant((current) => ({ ...current, controlRod: value }))}
+                rightLabel="Banyak"
+                onChange={(value) => setPlant((current) => ({ ...current, coolantAgent: value }))}
+              />
+              <NuclearSlider
+                label="Halaju Stim"
+                value={plant.steamVelocity}
+                min={0}
+                max={100}
+                leftLabel="Perlahan"
+                rightLabel="Laju"
+                onChange={(value) => setPlant((current) => ({ ...current, steamVelocity: value }))}
               />
 
               <div className="nuclearActionRow">
                 <button
                   type="button"
-                  className="nuclearButton nuclearButton--primary"
+                  className="nuclearButton nuclearButton--primary plantStartButton"
                   onClick={() => setPlant((current) => ({ ...current, active: true }))}
                 >
                   Hidupkan Loji
@@ -1950,23 +1985,23 @@ export default function NuclearEnergySimulatorPage() {
                 </button>
               </div>
 
-              <div className="nuclearMeterGrid">
+              <div className="nuclearMeterGrid plantStatusGrid">
                 <NuclearMeter
                   label="Suhu reaktor"
-                  value={`${plantData.temperature}°C`}
+                  value={`${plantData.temperature} C`}
                   fill={plantData.temperature / 10}
                   tone={plantData.danger ? "red" : "purple"}
                 />
-                <NuclearMeter label="Tenaga nuklear" value={`${plantData.nuclearLoad}%`} fill={plantData.nuclearLoad} tone="orange" />
-                <NuclearMeter label="Tekanan wap" value={`${plantData.steam}%`} fill={plantData.steam} />
+                <NuclearMeter label="Stim berkesan" value={`${plantData.effectiveSteam}%`} fill={plantData.effectiveSteam} />
                 <NuclearMeter label="Kelajuan turbin" value={`${plantData.turbine}%`} fill={plantData.turbine} tone="orange" />
-                <NuclearMeter label="Output elektrik" value={`${plantData.output}%`} fill={plantData.output} />
-                <NuclearMeter label="Rumah dibekalkan" value={`${plantData.homes} rumah`} fill={plantData.output} />
+                <NuclearMeter label="Simbol elektrik" value={`${plantData.electricSymbols} / 4`} fill={plantData.outputPercent} tone="orange" />
                 <NuclearMeter label="Status" value={plantData.status} fill={plant.active ? 80 : 10} />
               </div>
 
+              <p className="nuclearMiniNote plantStatusNote">{plantData.statusDetail}</p>
+
               {plantData.danger ? (
-                <p className="nuclearWarning">Bahaya: reaktor terlalu panas. Tambah agen penyejuk atau masukkan rod pengawal.</p>
+                <p className="nuclearWarning">Bahaya: reaktor terlalu panas. Tambah agen penyejukan atau kurangkan Uranium-235.</p>
               ) : null}
             </aside>
           </section>

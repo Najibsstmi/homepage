@@ -424,16 +424,16 @@ function getFissionMessage(fission, metrics) {
     return "Bahaya: Tingkatkan Rod Boron";
   }
 
-  if (metrics.highUranium) {
-    return "Kadar tindak balas tinggi. Tingkatkan Rod Boron sekurang-kurangnya 50% untuk menyerap neutron berlebihan.";
-  }
-
   if ((fission.coolantFlow ?? 0) >= 82 && fission.temperature > 420) {
     return "Agen penyejuk mengalir deras dan membuang haba daripada teras reaktor.";
   }
 
   if (fission.boronRod >= 95) {
-    return "Rod boron menyerap neutron bebas supaya tindak balas berantai terkawal.";
+    return "Rod boron menyerap hampir semua neutron. Tindak balas pembelahan menjadi sangat rendah.";
+  }
+
+  if (metrics.highUranium) {
+    return "Kadar tindak balas tinggi. Tingkatkan Rod Boron sekurang-kurangnya 50% untuk menyerap neutron berlebihan.";
   }
 
   if (fission.uraniumRod > 84 && metrics.reactionRate > 70) {
@@ -462,6 +462,10 @@ function getFissionDisplayStatus(fission, metrics) {
 function getFissionPhaseIndex(fission, metrics) {
   if (!fission.hasStarted) {
     return 0;
+  }
+
+  if (fission.boronRod >= 95 && Math.round(fission.neutronCount ?? 0) <= 0) {
+    return 1;
   }
 
   if (fission.splitIds.length > 0 && metrics.reactionRate >= 64) {

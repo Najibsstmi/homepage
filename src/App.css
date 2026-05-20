@@ -586,6 +586,27 @@ a {
   transform: translateY(-1px);
 }
 
+.navbar__edusim-btn {
+  background: linear-gradient(135deg, #facc15, #f59e0b);
+  color: #422006;
+  border: none;
+  border-radius: 999px;
+  font: inherit;
+  cursor: pointer;
+  padding: 8px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: 0.22s ease;
+}
+
+.navbar__edusim-btn:hover,
+.navbar__edusim-btn--active {
+  background: linear-gradient(135deg, #fde047, #facc15);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(250, 204, 21, 0.3);
+}
+
 .navDropdown {
   position: relative;
   display: inline-flex;
@@ -5004,6 +5025,7 @@ section {
   }
 
   .navbar__linkBtn,
+  .navbar__edusim-btn,
   .navbar__inovasi-btn,
   .navDropdownTrigger {
     width: 100%;

@@ -416,10 +416,10 @@ export default function App() {
           </button>
           <button className="navbar__linkBtn" onClick={() => goToHomeSection("journey")}>Perjalanan</button>
           <button
-            className={`navbar__linkBtn${currentPage === "simulator" ? " navbar__linkBtn--active" : ""}`}
+            className={`navbar__edusim-btn${currentPage === "simulator" ? " navbar__edusim-btn--active" : ""}`}
             onClick={() => navigateTo("simulator")}
           >
-            Simulator
+            EduSim
           </button>
           <button className="navbar__linkBtn" onClick={() => goToHomeSection("achievements")}>Pencapaian</button>
 

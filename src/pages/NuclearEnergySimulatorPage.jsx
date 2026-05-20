@@ -6,11 +6,16 @@ const MODES = [
   { id: "plant", label: "Janakuasa Nuklear" },
 ];
 
+const INITIAL_CHAIN_NEUTRONS = 1;
+const NEUTRONS_PER_FISSION = 3;
+const MAX_CHAIN_NEUTRONS = 90;
+
 const initialFission = {
   running: false,
+  paused: false,
   cycle: 0,
   splitIds: [],
-  neutronCount: 2,
+  neutronCount: INITIAL_CHAIN_NEUTRONS,
   splitCount: 0,
   energy: 0,
   temperature: 260,
@@ -18,8 +23,12 @@ const initialFission = {
   coolantFlow: 55,
   graphiteRod: 55,
   uraniumRod: 55,
+  showLabels: true,
+  showPaths: true,
   absorbedCount: 0,
-  message: "Laraskan rod uranium, grafit, boron dan agen penyejuk, kemudian tembak neutron pertama.",
+  fragmentBursts: [],
+  neutronFadeOut: false,
+  message: "Laraskan Rod Boron, Rod Grafit dan Uranium-235, kemudian mulakan simulasi.",
   hasStarted: false,
 };
 
@@ -44,18 +53,18 @@ const initialPlant = {
 };
 
 const uraniumPositions = [
-  { id: "u0", left: "22%", top: "22%" },
-  { id: "u1", left: "50%", top: "18%" },
-  { id: "u2", left: "76%", top: "25%" },
-  { id: "u3", left: "33%", top: "40%" },
-  { id: "u4", left: "62%", top: "42%" },
-  { id: "u5", left: "19%", top: "58%" },
-  { id: "u6", left: "48%", top: "62%" },
-  { id: "u7", left: "78%", top: "58%" },
-  { id: "u8", left: "34%", top: "76%" },
-  { id: "u9", left: "64%", top: "78%" },
-  { id: "u10", left: "12%", top: "38%" },
-  { id: "u11", left: "88%", top: "42%" },
+  { id: "u0", left: "30%", top: "50%", scale: 1.85, primary: true },
+  { id: "u1", left: "58%", top: "24%", scale: 0.92 },
+  { id: "u2", left: "75%", top: "36%", scale: 0.86 },
+  { id: "u3", left: "55%", top: "54%", scale: 0.86 },
+  { id: "u4", left: "78%", top: "58%", scale: 0.82 },
+  { id: "u5", left: "61%", top: "76%", scale: 0.82 },
+  { id: "u6", left: "89%", top: "45%", scale: 0.74 },
+  { id: "u7", left: "47%", top: "32%", scale: 0.76 },
+  { id: "u8", left: "43%", top: "70%", scale: 0.76 },
+  { id: "u9", left: "88%", top: "72%", scale: 0.7 },
+  { id: "u10", left: "66%", top: "41%", scale: 0.72 },
+  { id: "u11", left: "70%", top: "82%", scale: 0.68 },
 ];
 
 const neutronPaths = [
@@ -69,6 +78,50 @@ const neutronPaths = [
   { fromX: "90%", fromY: "48%", dx: "-82%", dy: "4%" },
 ];
 
+const fissionAssets = {
+  background: "/asset/reactor%20core%20background.png",
+  uranium: "/asset/uranium_235_glow.png",
+  neutron: "/asset/neutron_blue_glow.png",
+  fragment: "/asset/fission_fragment.png",
+  energy: "/asset/energy_burst_orange.png",
+  trail: "/asset/neutron_trail.png",
+  controlRod: "/asset/control_rod.png",
+};
+
+const fissionProcessSteps = [
+  "Neutron bergerak",
+  "Neutron diserap",
+  "Nukleus tidak stabil",
+  "Nukleus terbelah",
+  "Tenaga dibebaskan",
+  "Neutron baharu",
+  "Pembelahan seterusnya",
+  "Tindak balas berantai",
+];
+
+const fissionObservationRows = [
+  {
+    step: 1,
+    event: "Neutron menghentam U-235",
+    observation: "Nukleus menjadi tidak stabil",
+  },
+  {
+    step: 2,
+    event: "Nukleus terbelah",
+    observation: "Dua serpihan dan tenaga terhasil",
+  },
+  {
+    step: 3,
+    event: "Neutron baharu keluar",
+    observation: "Tindak balas berantai bermula",
+  },
+  {
+    step: 4,
+    event: "Rod boron diturunkan",
+    observation: "Sebahagian neutron diserap",
+  },
+];
+
 const learningContent = {
   fission: {
     observation:
@@ -76,7 +129,7 @@ const learningContent = {
     inference:
       "Neutron baharu boleh membedil nukleus uranium lain lalu menghasilkan tindak balas berantai.",
     conclusion:
-      "Rod kawalan menyerap neutron untuk memperlahankan pembelahan dan mengawal suhu reaktor.",
+      "Rod Boron menyerap neutron untuk memperlahankan pembelahan dan mengawal tindak balas.",
     questions: [
       {
         id: "particle",
@@ -273,101 +326,106 @@ function clamp(value, min, max) {
 }
 
 function getUraniumCount(uraniumRod) {
-  return clamp(6 + Math.round((uraniumRod / 100) * 6), 6, uraniumPositions.length);
+  return clamp(2 + Math.round((uraniumRod / 100) * 10), 2, uraniumPositions.length);
 }
 
 function getModeratorStatus(graphiteRod) {
-  if (graphiteRod < 35) {
-    return "Moderator terlalu rendah";
+  if (graphiteRod < 40) {
+    return "Neutron laju";
   }
 
-  if (graphiteRod > 85) {
-    return "Moderator terlalu tinggi";
+  if (graphiteRod >= 70) {
+    return "Neutron perlahan";
   }
 
-  return "Moderator optimum";
+  return "Neutron sederhana";
 }
 
 function getNeutronMode(graphiteRod) {
-  if (graphiteRod < 35) {
+  if (graphiteRod < 40) {
     return "fast";
-  }
-
-  if (graphiteRod > 85) {
-    return "tooSlow";
   }
 
   return "optimal";
 }
 
 function getModeratorConcept(graphiteRod) {
-  if (graphiteRod < 35) {
+  if (graphiteRod < 40) {
     return "Neutron terlalu laju dan sukar diserap oleh U-235.";
   }
 
-  if (graphiteRod > 85) {
-    return "Neutron terlalu perlahan. Kadar pembelahan menurun.";
+  if (graphiteRod >= 70) {
+    return "Rod Grafit tinggi memperlahankan neutron. Neutron perlahan lebih mudah membelah U-235.";
   }
 
   return "Neutron diperlahankan. U-235 lebih mudah mengalami pembelahan.";
 }
 
 function getModeratorEfficiency(graphiteRod) {
-  if (graphiteRod < 35) {
-    return 0.24 + graphiteRod / 160;
-  }
-
-  if (graphiteRod <= 65) {
-    return 0.74 + (graphiteRod - 35) / 120;
-  }
-
-  if (graphiteRod <= 85) {
-    return 1 - (graphiteRod - 65) / 260;
-  }
-
-  return clamp(0.9 - (graphiteRod - 85) / 35, 0.42, 0.9);
+  return 0.5 + (graphiteRod / 100) * 1.5;
 }
 
 function getFissionMetrics(fission) {
   const uraniumCount = getUraniumCount(fission.uraniumRod);
   const moderatorEfficiency = getModeratorEfficiency(fission.graphiteRod);
-  const boronBrake = 1 - (fission.boronRod / 100) * 0.88;
-  const densityDrive = (fission.uraniumRod / 100) * 72;
-  const neutronDrive = Math.min(fission.neutronCount, 18) * 3.1;
-  const reactionRate = clamp(
-    Math.round((densityDrive + neutronDrive) * moderatorEfficiency * boronBrake),
-    0,
-    100
-  );
+  const uranium235 = fission.uraniumRod;
+  const graphiteRod = fission.graphiteRod;
+  const boronRod = fission.boronRod;
+  const uraniumFactor = uranium235 / 100;
+  const graphiteFactor = 0.5 + (graphiteRod / 100) * 1.5;
+  const boronAbsorption = boronRod / 100;
+  const activeNeutron = uraniumFactor * graphiteFactor * (1 - boronAbsorption);
+  const reactionRate = Math.min(100, Math.round(activeNeutron * 100));
+  const energyOutput = Math.round(reactionRate * 15);
+  const neutronCount = Math.max(0, Math.round(uranium235 * graphiteFactor - boronRod * 0.8));
+  const neutronSpeed = graphiteRod >= 70 ? "Perlahan" : graphiteRod >= 40 ? "Sederhana" : "Laju";
   const activeUranium = Math.max(0, uraniumCount - fission.splitIds.length);
   const moderatorStatus = getModeratorStatus(fission.graphiteRod);
-  let status = "Reaktor stabil";
+  let status = "RENDAH";
+  let warning = false;
 
-  if (fission.temperature > 900) {
-    status = "Bahaya: suhu tinggi";
-  } else if (fission.boronRod >= 95 || (fission.boronRod > 82 && reactionRate < 28)) {
-    status = "Reaktor dikawal";
-  } else if (reactionRate >= 76 && fission.neutronCount >= 8) {
-    status = "Tindak balas berantai";
-  } else if (reactionRate >= 54) {
-    status = "Tindak balas aktif";
-  } else if (reactionRate < 26) {
-    status = "Tindak balas perlahan";
+  if (uranium235 >= 75 && boronRod < 50) {
+    status = "BAHAYA";
+    warning = true;
+  } else if (reactionRate >= 80) {
+    status = "TINGGI";
+    warning = true;
+  } else if (reactionRate >= 40) {
+    status = "STABIL";
   }
 
   return {
+    uranium235,
+    graphiteRod,
+    boronRod,
     uraniumCount,
     activeUranium,
     moderatorEfficiency,
+    uraniumFactor,
+    graphiteFactor,
+    boronAbsorption,
+    activeNeutron,
+    activeNeutronFactor: activeNeutron,
     reactionRate,
+    energyOutput,
+    neutronCount,
+    neutronSpeed,
     moderatorStatus,
     status,
+    statusDisplay: status.charAt(0) + status.slice(1).toLowerCase(),
+    warning,
+    highUranium: uranium235 >= 75,
+    criticalDanger: uranium235 >= 75 && boronRod < 50,
   };
 }
 
 function getFissionMessage(fission, metrics) {
-  if (fission.temperature > 900) {
-    return "AMARAN: Suhu reaktor terlalu tinggi. Masukkan Rod Boron dan tingkatkan Agen Penyejuk (Air).";
+  if (metrics.criticalDanger) {
+    return "Bahaya: Tingkatkan Rod Boron";
+  }
+
+  if (metrics.highUranium) {
+    return "Kadar tindak balas tinggi. Tingkatkan Rod Boron sekurang-kurangnya 50% untuk menyerap neutron berlebihan.";
   }
 
   if ((fission.coolantFlow ?? 0) >= 82 && fission.temperature > 420) {
@@ -382,49 +440,117 @@ function getFissionMessage(fission, metrics) {
     return "Rod uranium tinggi: lebih banyak U-235 menyebabkan neutron mudah mencetuskan pembelahan berantai.";
   }
 
-  if (fission.graphiteRod < 35) {
-    return "Neutron terlalu laju. Tanpa moderator grafit yang mencukupi, neutron sukar diserap oleh uranium-235.";
+  if (fission.graphiteRod < 40) {
+    return "Rod Grafit rendah. Neutron bergerak laju, maka pembelahan Uranium-235 kurang berkesan.";
   }
 
-  if (fission.graphiteRod > 85) {
-    return "Rod grafit terlalu banyak memperlahankan neutron. Kadar pembelahan menurun.";
+  if (fission.graphiteRod >= 70) {
+    return "Rod Grafit tinggi memperlahankan neutron. Neutron perlahan meningkatkan peluang pembelahan Uranium-235.";
   }
 
   if (metrics.reactionRate >= 55) {
-    return "Rod grafit memperlahankan neutron. Neutron perlahan lebih mudah diserap oleh U-235 lalu mencetuskan pembelahan.";
+    return "Rod Grafit memperlahankan neutron. Kadar pembelahan meningkat apabila neutron lebih mudah mengenai U-235.";
   }
 
   return fission.message;
 }
 
+function getFissionDisplayStatus(fission, metrics) {
+  return metrics.statusDisplay;
+}
+
+function getFissionPhaseIndex(fission, metrics) {
+  if (!fission.hasStarted) {
+    return 0;
+  }
+
+  if (fission.splitIds.length > 0 && metrics.reactionRate >= 64) {
+    return 7;
+  }
+
+  if (fission.splitIds.length > 0) {
+    return clamp(3 + Math.min(fission.cycle, 3), 3, 6);
+  }
+
+  if (fission.running && fission.cycle <= 1) {
+    return 1;
+  }
+
+  if (fission.running) {
+    return 2;
+  }
+
+  return Math.min(fissionProcessSteps.length - 1, Math.max(0, fission.cycle));
+}
+
 function advanceFission(current) {
   const metrics = getFissionMetrics(current);
-  const neutronMode = getNeutronMode(current.graphiteRod);
+  const visibleUraniumIds = uraniumPositions.slice(0, metrics.uraniumCount).map((position) => position.id);
+  const currentSplitIds = (current.splitIds ?? []).filter((id) => visibleUraniumIds.includes(id));
+  const currentFragments = (current.fragmentBursts ?? []).filter((burst) => currentSplitIds.includes(burst.id));
+  const setFullySplit = visibleUraniumIds.length > 0 && currentSplitIds.length >= visibleUraniumIds.length;
+  const nextEnergy = current.hasStarted ? Math.max(0, metrics.energyOutput) : 0;
+  const activeNeutronsInput = current.hasStarted
+    ? Math.max(0, Math.round(current.neutronCount ?? INITIAL_CHAIN_NEUTRONS))
+    : INITIAL_CHAIN_NEUTRONS;
+
+  if (setFullySplit) {
+    if (current.neutronFadeOut) {
+      return {
+        ...current,
+        running: true,
+        paused: false,
+        cycle: current.cycle + 1,
+        splitIds: [],
+        fragmentBursts: [],
+        neutronFadeOut: false,
+        neutronCount: INITIAL_CHAIN_NEUTRONS,
+        energy: nextEnergy,
+        temperature: clamp(Math.round(current.temperature - 18), 220, 1100),
+        message: "Set Uranium-235 baharu muncul. Satu neutron pertama memulakan pembelahan semula.",
+      };
+    }
+
+    return {
+      ...current,
+      running: true,
+      cycle: current.cycle + 1,
+      splitIds: currentSplitIds,
+      fragmentBursts: currentFragments,
+      neutronFadeOut: true,
+      neutronCount: Math.max(activeNeutronsInput, INITIAL_CHAIN_NEUTRONS),
+      energy: nextEnergy,
+      temperature: clamp(Math.round(current.temperature - 18), 220, 1100),
+      message: "Semua Uranium-235 dalam set ini telah dibelah. Neutron bebas fade out sebelum set baharu bermula.",
+    };
+  }
+
   const uraniumDensity = current.uraniumRod / 100;
   const coolantFlow = current.coolantFlow ?? initialFission.coolantFlow;
-  const boronAbsorptionRate = clamp((current.boronRod / 100) * 0.92, 0, 0.94);
-  const boronAbsorbed = Math.round(current.neutronCount * boronAbsorptionRate);
-  const fastEscapeRate = current.graphiteRod < 35 ? clamp((35 - current.graphiteRod) / 58, 0.12, 0.6) : 0;
-  const sparseEscapeRate = current.uraniumRod < 35 ? clamp((35 - current.uraniumRod) / 90, 0, 0.28) : 0;
-  const escaped = Math.round(Math.max(0, current.neutronCount - boronAbsorbed) * (fastEscapeRate + sparseEscapeRate));
-  const effectiveNeutrons = Math.max(0, current.neutronCount - boronAbsorbed - escaped);
-  const splitCapacity = current.uraniumRod > 82 ? 5 : current.uraniumRod > 56 ? 4 : current.uraniumRod > 28 ? 3 : 2;
-  const collisionDrive =
-    effectiveNeutrons * (0.42 + uraniumDensity * 0.95) * metrics.moderatorEfficiency;
-  const splitDemand = Math.round(collisionDrive / 2.35 + metrics.reactionRate / 38);
-  const minimumFastHit =
-    neutronMode === "fast" && current.neutronCount >= 3 && current.uraniumRod >= 45 && current.boronRod < 75
-      ? 1
-      : 0;
-  const splitEvents = current.neutronCount <= 0 ? 0 : clamp(Math.max(splitDemand, minimumFastHit), 0, splitCapacity);
-  const neutronsPerSplit = neutronMode === "optimal" ? 3 : neutronMode === "fast" ? 2 : 1;
-  const producedNeutrons = splitEvents * neutronsPerSplit;
-  const coolantCooling = Math.round(coolantFlow * (current.temperature > 900 ? 1.18 : 0.72));
-  const nextNeutrons = clamp(
-    current.neutronCount - boronAbsorbed - escaped + producedNeutrons,
-    0,
-    30
+  const boronAbsorptionRate = clamp((current.boronRod / 100) * 0.86, 0, 0.94);
+  const boronAbsorbed = Math.min(activeNeutronsInput, Math.round(activeNeutronsInput * boronAbsorptionRate));
+  const fastEscapeRate = current.graphiteRod < 40 ? clamp((40 - current.graphiteRod) / 80, 0.08, 0.5) : 0;
+  const sparseEscapeRate = current.uraniumRod < 35 ? clamp((35 - current.uraniumRod) / 140, 0.02, 0.22) : 0;
+  const escaped = Math.min(
+    Math.max(0, activeNeutronsInput - boronAbsorbed),
+    Math.round(Math.max(0, activeNeutronsInput - boronAbsorbed) * (fastEscapeRate + sparseEscapeRate))
   );
+  const effectiveNeutrons = Math.max(0, activeNeutronsInput - boronAbsorbed - escaped);
+  const collisionEfficiency = clamp(
+    0.22 + uraniumDensity * 0.45 + Math.min(metrics.graphiteFactor / 2, 1) * 0.35,
+    0.08,
+    1
+  );
+  const splitDemand = Math.round(effectiveNeutrons * collisionEfficiency);
+  const minimumHit = metrics.reactionRate >= 12 && effectiveNeutrons > 0 && current.boronRod < 94 ? 1 : 0;
+  const unsplitIds = visibleUraniumIds.filter((id) => !currentSplitIds.includes(id));
+  const splitEvents = effectiveNeutrons <= 0
+    ? 0
+    : clamp(Math.max(splitDemand, minimumHit), 0, Math.min(1, effectiveNeutrons, unsplitIds.length));
+  const producedNeutrons = splitEvents * NEUTRONS_PER_FISSION;
+  const remainingNeutrons = Math.max(0, activeNeutronsInput - splitEvents - boronAbsorbed - escaped);
+  const nextNeutrons = clamp(remainingNeutrons + producedNeutrons, 0, MAX_CHAIN_NEUTRONS);
+  const coolantCooling = Math.round(coolantFlow * (current.temperature > 900 ? 1.18 : 0.72));
   const heatGain =
     splitEvents * (22 + Math.round(current.uraniumRod / 4.5)) +
     producedNeutrons * 2 +
@@ -434,41 +560,48 @@ function advanceFission(current) {
     Math.round(escaped * 4) -
     (splitEvents === 0 ? 22 : 0);
   const nextTemperature = clamp(Math.round(current.temperature + heatGain), 220, 1100);
-  const nextEnergy = clamp(
-    current.energy +
-      splitEvents * (12 + Math.round(current.uraniumRod / 6)) -
-      Math.round(boronAbsorbed * 5.5) -
-      Math.round(escaped * 2.5) -
-      (splitEvents === 0 ? 10 : 0),
-    0,
-    999
-  );
-  const splitIds = Array.from({ length: splitEvents }, (_, index) => {
-    const targetIndex = (current.cycle * 3 + index * 2) % metrics.uraniumCount;
-    return uraniumPositions[targetIndex].id;
-  });
+  const newSplitIds = unsplitIds.slice(0, splitEvents);
+  const nextSplitIds = [...currentSplitIds, ...newSplitIds.filter((id) => id && !currentSplitIds.includes(id))];
+  const fragmentBursts = [
+    ...currentFragments,
+    ...newSplitIds.filter(Boolean).map((id, index) => ({
+      id,
+      cycle: current.cycle + 1,
+      key: `${current.cycle + 1}-${id}-${index}`,
+    })),
+  ].slice(-uraniumPositions.length);
   const nextMetrics = getFissionMetrics({
     ...current,
     neutronCount: nextNeutrons,
     temperature: nextTemperature,
     energy: nextEnergy,
-    splitIds,
+    splitIds: nextSplitIds,
   });
-  const controlledStop = current.boronRod >= 95 && nextNeutrons <= 2;
+  const completedSet = nextSplitIds.length >= visibleUraniumIds.length && visibleUraniumIds.length > 0;
+  const controlledStop = !completedSet && current.boronRod >= 95 && nextNeutrons <= 1;
+  const displayNeutronCount = completedSet
+    ? Math.max(nextNeutrons, producedNeutrons, INITIAL_CHAIN_NEUTRONS)
+    : nextNeutrons;
 
   return {
     ...current,
-    running: !controlledStop && nextNeutrons > 0,
+    running: completedSet || (!controlledStop && nextNeutrons > 0),
     cycle: current.cycle + 1,
-    splitIds,
-    neutronCount: nextNeutrons,
+    splitIds: nextSplitIds,
+    fragmentBursts,
+    neutronFadeOut: completedSet,
+    neutronCount: displayNeutronCount,
     splitCount: current.splitCount + splitEvents,
     absorbedCount: current.absorbedCount + boronAbsorbed,
     energy: nextEnergy,
     temperature: nextTemperature,
     message:
       splitEvents > 0
-        ? `${splitEvents} nukleus U-235 terbelah dan melepaskan ${producedNeutrons} neutron baharu.`
+        ? completedSet
+          ? "Semua Uranium-235 dalam set ini telah dibelah. Set baharu akan bermula selepas serpihan kelihatan."
+          : `${splitEvents} nukleus U-235 terbelah dan melepaskan ${producedNeutrons} neutron baharu.`
+        : nextNeutrons <= 0
+        ? "Neutron aktif tiada. Rod Boron menyerap neutron atau neutron terlalu laju untuk mencetuskan pembelahan."
         : getFissionMessage(current, nextMetrics),
   };
 }
@@ -749,17 +882,19 @@ function FusionGaugeControl({
 
 function NuclearSlider({
   label,
+  caption,
   value,
   min,
   max,
   step = 1,
   suffix = "%",
+  tone = "cyan",
   leftLabel,
   rightLabel,
   onChange,
 }) {
   return (
-    <label className="nuclearSlider">
+    <label className={`nuclearSlider nuclearSlider--${tone}`}>
       <div className="nuclearSlider__top">
         <span>{label}</span>
         <strong>
@@ -767,6 +902,7 @@ function NuclearSlider({
           {suffix}
         </strong>
       </div>
+      {caption ? <small className="nuclearSlider__caption">{caption}</small> : null}
       <input
         type="range"
         min={min}
@@ -965,6 +1101,357 @@ function LearningPanelV2({ mode, answers, submitted, onAnswer, onSubmit, onRetry
   );
 }
 
+function FissionReactorLab({
+  fission,
+  metrics,
+  neutronVisuals,
+  activeUraniumPositions,
+  fissionMessage,
+  fissionDanger,
+  onStart,
+  onPause,
+  onReset,
+  onBoronChange,
+  onGraphiteChange,
+  onUraniumChange,
+  onToggleLabels,
+  onTogglePaths,
+}) {
+  const phaseIndex = getFissionPhaseIndex(fission, metrics);
+  const displayStatus = getFissionDisplayStatus(fission, metrics);
+  const statusTone =
+    metrics.status === "BAHAYA" ? "danger" : metrics.status === "TINGGI" ? "rising" : metrics.status === "STABIL" ? "stable" : "low";
+  const neutronDuration = clamp(0.75 + (metrics.graphiteRod / 100) * 4.2, 0.75, 4.95);
+  const trailWidth = clamp(112 - metrics.graphiteRod * 0.72, 36, 112);
+  const controlOffset = -58 + fission.boronRod * 0.62;
+  const displayNeutronCount = fission.hasStarted
+    ? Math.max(0, Math.round(fission.neutronCount ?? INITIAL_CHAIN_NEUTRONS))
+    : INITIAL_CHAIN_NEUTRONS;
+  const hasSplit = fission.splitIds.length > 0;
+  const visualChainCount =
+    hasSplit || fission.neutronFadeOut
+      ? Math.min(Math.max(displayNeutronCount, fission.neutronFadeOut ? 1 : 0), 18)
+      : 0;
+  const chainNeutrons = neutronVisuals.slice(0, visualChainCount);
+  const activeMessage =
+    metrics.criticalDanger || metrics.highUranium
+      ? fissionMessage
+      : fission.hasStarted
+      ? fission.message
+      : fissionMessage;
+  const visibleAtomPositions = activeUraniumPositions.filter((position) => !fission.splitIds.includes(position.id));
+  const absorbedVisualCount = Math.min(8, Math.round(metrics.boronRod / 14));
+  const fragmentBursts =
+    fission.fragmentBursts?.length > 0
+      ? fission.fragmentBursts
+      : fission.splitIds.map((id, index) => ({ id, key: `${fission.cycle}-${id}-${index}` }));
+  const activeObservationIndex = Math.min(
+    fissionObservationRows.length - 1,
+    fission.hasStarted ? Math.floor(phaseIndex / 2) : 0
+  );
+
+  return (
+    <section className="nuclearFissionLab" aria-label="Simulator pembelahan nukleus">
+      <aside className="nuclearPanel fissionControlPanel">
+        <div className="nuclearPanelTitle">
+          <span>Kawalan</span>
+          <h2>Pembelahan Nukleus</h2>
+        </div>
+
+        <div className="fissionActionRow">
+          <button type="button" className="nuclearButton fissionButton fissionButton--start" onClick={onStart}>
+            <span>Mula Simulasi</span>
+          </button>
+          <button type="button" className="nuclearButton fissionButton fissionButton--stop" onClick={onPause}>
+            <span>Hentikan</span>
+          </button>
+          <button type="button" className="nuclearButton fissionButton fissionButton--reset" onClick={onReset}>
+            <span>Reset</span>
+          </button>
+        </div>
+
+        <NuclearSlider
+          label="Rod Boron"
+          caption="Menyerap neutron"
+          value={fission.boronRod}
+          min={0}
+          max={100}
+          suffix="%"
+          leftLabel="Rendah"
+          rightLabel="Tinggi"
+          tone="boron"
+          onChange={onBoronChange}
+        />
+        <NuclearSlider
+          label="Rod Grafit"
+          caption="Memperlahankan neutron"
+          value={fission.graphiteRod}
+          min={0}
+          max={100}
+          suffix="%"
+          leftLabel="Rendah"
+          rightLabel="Tinggi"
+          tone="graphite"
+          onChange={onGraphiteChange}
+        />
+        <NuclearSlider
+          label="Uranium-235"
+          caption="Bahan api nuklear"
+          value={fission.uraniumRod}
+          min={0}
+          max={100}
+          suffix="%"
+          leftLabel="Sedikit"
+          rightLabel="Banyak"
+          tone="uranium"
+          onChange={onUraniumChange}
+        />
+
+        <div className="fissionToggleGrid">
+          <label className="fissionSwitch">
+            <input
+              type="checkbox"
+              checked={fission.showLabels}
+              onChange={(event) => onToggleLabels(event.target.checked)}
+            />
+            <span />
+            <strong>Tunjuk label</strong>
+          </label>
+          <label className="fissionSwitch">
+            <input
+              type="checkbox"
+              checked={fission.showPaths}
+              onChange={(event) => onTogglePaths(event.target.checked)}
+            />
+            <span />
+            <strong>Tunjuk laluan neutron</strong>
+          </label>
+        </div>
+
+        <p className="fissionControlHint">
+          Uranium-235 menaikkan peluang pembelahan. Rod grafit memperlahankan neutron. Rod boron menyerap neutron
+          berlebihan.
+        </p>
+      </aside>
+
+      <section
+        className={[
+          "nuclearFissionStage",
+          fission.running ? "nuclearFissionStage--running" : "",
+          fission.paused ? "nuclearFissionStage--paused" : "",
+          fission.splitIds.length > 0 ? "nuclearFissionStage--split" : "",
+          fission.neutronFadeOut ? "nuclearFissionStage--neutron-fade" : "",
+          fission.showLabels ? "nuclearFissionStage--labels" : "",
+          fission.showPaths ? "nuclearFissionStage--paths" : "",
+          fissionDanger ? "nuclearFissionStage--danger" : "",
+        ].join(" ")}
+        style={{
+          "--reactor-background": `url(${fissionAssets.background})`,
+          "--uranium-image": `url(${fissionAssets.uranium})`,
+          "--neutron-image": `url(${fissionAssets.neutron})`,
+          "--fragment-image": `url(${fissionAssets.fragment})`,
+          "--energy-image": `url(${fissionAssets.energy})`,
+          "--trail-image": `url(${fissionAssets.trail})`,
+          "--control-rod-image": `url(${fissionAssets.controlRod})`,
+          "--control-offset": `${controlOffset}%`,
+          "--neutron-duration": `${neutronDuration}s`,
+          "--chain-duration": `${neutronDuration * 0.86}s`,
+          "--trail-width": `${trailWidth}px`,
+          "--reaction-glow": `${0.16 + metrics.reactionRate / 220}`,
+          "--reaction-green-alpha": `${0.08 + metrics.reactionRate / 340}`,
+          "--energy-alpha": `${0.06 + metrics.reactionRate / 170}`,
+        }}
+        aria-label="Kawasan simulasi utama pembelahan nukleus"
+      >
+        <div className="fissionReactorBackdrop" aria-hidden="true" />
+        <div className="fissionReactorShade" aria-hidden="true" />
+
+        {fission.showPaths ? (
+          <div className="fissionPathLayer" aria-hidden="true">
+            <span className="fissionPath fissionPath--incoming" />
+            <span className="fissionPath fissionPath--upper" />
+            <span className="fissionPath fissionPath--middle" />
+            <span className="fissionPath fissionPath--lower" />
+          </div>
+        ) : null}
+
+        <div className="fissionControlRodAssembly" aria-hidden="true">
+          {[0, 1, 2, 3].map((rod) => (
+            <span key={rod} className="fissionControlRod" style={{ "--rod-index": rod }} />
+          ))}
+        </div>
+
+        <div className="fissionAtomLayer" aria-hidden="true">
+          {visibleAtomPositions.map((position, index) => {
+            return (
+              <div
+                className={[
+                  "fissionAtom",
+                  position.primary ? "fissionAtom--primary" : "",
+                ].join(" ")}
+                key={position.id}
+                style={{
+                  left: position.left,
+                  top: position.top,
+                  "--atom-scale": position.scale ?? 1,
+                  "--atom-delay": `${index * 0.08}s`,
+                }}
+              >
+                {fission.showLabels && (position.primary || index === 1) ? <span>Uranium-235</span> : null}
+              </div>
+            );
+          })}
+        </div>
+
+        {!hasSplit && !fission.neutronFadeOut ? (
+          <div className="fissionIncomingNeutron" aria-hidden="true">
+            <span className="fissionNeutronTrail" />
+            <span className="fissionNeutronOrb" />
+            {fission.showLabels ? <strong>Neutron</strong> : null}
+          </div>
+        ) : null}
+
+        <div className="fissionChainNeutronLayer" aria-hidden="true">
+          {fission.hasStarted
+            ? chainNeutrons.map((neutron, index) => (
+                <span
+                  className="fissionChainNeutron"
+                  key={neutron.id}
+                  style={{
+                    "--from-x": neutron.fromX,
+                    "--from-y": neutron.fromY,
+                    "--dx": neutron.dx,
+                    "--dy": neutron.dy,
+                    "--neutron-delay": `${(index % 6) * -0.28}s`,
+                    "--neutron-size": `${index < 3 ? 30 : 22}px`,
+                  }}
+                >
+                  <i />
+                </span>
+              ))
+            : null}
+        </div>
+
+        {absorbedVisualCount > 0 ? (
+          <div className="fissionAbsorbedNeutronLayer" aria-hidden="true">
+            {Array.from({ length: absorbedVisualCount }).map((_, index) => (
+              <span key={`absorbed-${index}`} style={{ "--absorbed-index": index }} />
+            ))}
+          </div>
+        ) : null}
+
+        <div className="fissionFragmentLayer" aria-hidden="true">
+          {fragmentBursts.map((burst, index) => {
+            const position = uraniumPositions.find((item) => item.id === burst.id) || uraniumPositions[0];
+
+            return (
+              <div
+                className="fissionFragmentBurst"
+                key={burst.key}
+                style={{ left: position.left, top: position.top, "--fragment-delay": `${index * 0.08}s` }}
+              >
+                <span className="fissionFragment fissionFragment--a" />
+                <span className="fissionFragment fissionFragment--b" />
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="fissionEnergyBurst" aria-hidden="true">
+          <span />
+        </div>
+
+        <div className="fissionSparkField" aria-hidden="true">
+          {[0, 1, 2, 3, 4, 5, 6, 7].map((spark) => (
+            <span key={spark} style={{ "--spark-index": spark }} />
+          ))}
+        </div>
+
+        {fission.showLabels ? (
+          <div className="fissionStageLabels" aria-hidden="true">
+            {fission.hasStarted ? <span className="fissionLabel fissionLabel--unstable">Nukleus tidak stabil</span> : null}
+            {hasSplit ? <span className="fissionLabel fissionLabel--fragments">Serpihan pembelahan</span> : null}
+            {hasSplit ? <span className="fissionLabel fissionLabel--energy">Tenaga dibebaskan</span> : null}
+            {hasSplit ? <span className="fissionLabel fissionLabel--new">Neutron baharu</span> : null}
+            {hasSplit ? <span className="fissionLabel fissionLabel--chain">Tindak balas berantai</span> : null}
+            <span className="fissionLabel fissionLabel--rod">Rod boron</span>
+          </div>
+        ) : null}
+
+        {metrics.criticalDanger ? (
+          <div className="fissionDangerBadge" aria-hidden="true">
+            <span>!</span>
+            <strong>Bahaya: Tingkatkan Rod Boron</strong>
+          </div>
+        ) : null}
+
+        <div className="fissionStageReadout">
+          <strong>{fissionProcessSteps[phaseIndex]}</strong>
+          <span>{activeMessage}</span>
+        </div>
+      </section>
+
+      <aside className="nuclearPanel fissionInfoPanel">
+        <div className="nuclearPanelTitle">
+          <span>Status</span>
+          <h2>Maklumat Proses</h2>
+        </div>
+
+        <div className="fissionStatusGrid">
+          <article className="fissionStatusMetric fissionStatusMetric--neutron">
+            <span>Neutron aktif</span>
+            <strong>{displayNeutronCount}</strong>
+          </article>
+          <article className="fissionStatusMetric fissionStatusMetric--speed">
+            <span>Kelajuan neutron</span>
+            <strong>{metrics.neutronSpeed}</strong>
+          </article>
+          <article className="fissionStatusMetric fissionStatusMetric--rate">
+            <span>Kadar tindak balas</span>
+            <strong>{metrics.reactionRate}%</strong>
+          </article>
+          <article className="fissionStatusMetric fissionStatusMetric--energy">
+            <span>Tenaga terhasil</span>
+            <strong>{metrics.energyOutput.toLocaleString()} MW</strong>
+          </article>
+          <article className={`fissionStatusCard fissionStatusCard--${statusTone}`}>
+            <span>Status sistem</span>
+            <strong>{displayStatus}</strong>
+          </article>
+        </div>
+
+      </aside>
+
+      <section className="fissionObservationPanel" aria-label="Jadual pemerhatian pembelahan nukleus">
+        <div className="nuclearPanelTitle">
+          <span>Pemerhatian</span>
+          <h2>Status Simulasi</h2>
+        </div>
+        <div className="fissionObservationTableWrap">
+          <table className="fissionObservationTable">
+            <thead>
+              <tr>
+                <th>Langkah</th>
+                <th>Peristiwa</th>
+                <th>Pemerhatian</th>
+              </tr>
+            </thead>
+            <tbody>
+              {fissionObservationRows.map((row, index) => (
+                <tr key={row.step} className={index === activeObservationIndex ? "active" : ""}>
+                  <td>{row.step}</td>
+                  <td>{row.event}</td>
+                  <td>{row.observation}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  );
+}
+
 export default function NuclearEnergySimulatorPage() {
   const [activeMode, setActiveMode] = useState("fission");
   const [fission, setFission] = useState(initialFission);
@@ -981,16 +1468,17 @@ export default function NuclearEnergySimulatorPage() {
     plant: false,
   });
   useEffect(() => {
-    if (activeMode !== "fission" || !fission.running) {
+    if (activeMode !== "fission" || !fission.running || fission.paused) {
       return undefined;
     }
 
+    const tickMs = Math.round(clamp(620 + fission.graphiteRod * 9.8, 620, 1600));
     const timer = window.setInterval(() => {
       setFission((current) => advanceFission(current));
-    }, 1150);
+    }, tickMs);
 
     return () => window.clearInterval(timer);
-  }, [activeMode, fission.running]);
+  }, [activeMode, fission.running, fission.paused, fission.graphiteRod]);
 
   useEffect(() => {
     if (activeMode !== "fission" || fission.temperature <= initialFission.temperature) {
@@ -1031,14 +1519,21 @@ export default function NuclearEnergySimulatorPage() {
   const fissionMetrics = useMemo(() => getFissionMetrics(fission), [fission]);
   const fissionStatus = fissionMetrics.status;
   const fissionMessage = getFissionMessage(fission, fissionMetrics);
-  const fissionDanger = fission.temperature > 900;
+  const fissionDanger = fissionMetrics.criticalDanger;
   const coolantLevel = (fission.coolantFlow ?? initialFission.coolantFlow) / 100;
   const neutronMode = getNeutronMode(fission.graphiteRod);
   const moderatorConcept = getModeratorConcept(fission.graphiteRod);
-  const neutronBaseSpeed = neutronMode === "fast" ? 0.48 : neutronMode === "tooSlow" ? 4.6 : 1.95;
+  const neutronBaseSpeed = fissionMetrics.neutronSpeed === "Laju" ? 0.8 : fissionMetrics.neutronSpeed === "Perlahan" ? 3.6 : 2.05;
   const activeUraniumPositions = uraniumPositions.slice(0, fissionMetrics.uraniumCount);
+  const activeChainNeutronCount = fission.hasStarted
+    ? Math.max(0, Math.round(fission.neutronCount ?? INITIAL_CHAIN_NEUTRONS))
+    : INITIAL_CHAIN_NEUTRONS;
+  const visualNeutronCount =
+    !fission.hasStarted || (activeChainNeutronCount <= 0 && !fission.neutronFadeOut)
+      ? 0
+      : Math.min(Math.max(activeChainNeutronCount, fission.neutronFadeOut ? 1 : 0), 18);
   const neutronVisuals = Array.from(
-    { length: Math.min(Math.max(fission.neutronCount, fission.running ? 3 : 2), 18) },
+    { length: visualNeutronCount },
     (_, index) => {
       const path = neutronPaths[(index + fission.cycle) % neutronPaths.length];
       return {
@@ -1180,26 +1675,99 @@ export default function NuclearEnergySimulatorPage() {
     setFission(initialFission);
   };
 
+  const pauseFission = () => {
+    setFission((current) => {
+      if (!current.hasStarted) {
+        return {
+          ...current,
+          running: false,
+          paused: false,
+          message: "Simulasi belum dimulakan.",
+        };
+      }
+
+      return {
+        ...current,
+        running: true,
+        paused: true,
+        message: "Simulasi dihentikan sementara. Tekan Mula Simulasi untuk sambung.",
+      };
+    });
+  };
+
   const shootNeutron = () => {
-    setFission((current) => ({
-      ...current,
-      running: true,
-      cycle: current.cycle + 1,
-      splitIds: [],
-      neutronCount: Math.max(current.neutronCount, 3),
-      hasStarted: true,
-      message: "Neutron pertama memasuki teras reaktor dan mencari nukleus U-235.",
-    }));
+    setFission((current) => {
+      if (current.paused && current.hasStarted) {
+        const resumed = {
+          ...current,
+          running: true,
+          paused: false,
+        };
+        const metrics = getFissionMetrics(resumed);
+
+        return {
+          ...resumed,
+          neutronCount: Math.max(0, current.neutronCount ?? INITIAL_CHAIN_NEUTRONS),
+          energy: metrics.energyOutput,
+          message: "Simulasi disambung mengikut nilai slider semasa.",
+        };
+      }
+
+      const next = {
+        ...current,
+        running: true,
+        paused: false,
+        cycle: current.cycle + 1,
+        splitIds: [],
+        fragmentBursts: [],
+        neutronFadeOut: false,
+        neutronCount: INITIAL_CHAIN_NEUTRONS,
+        hasStarted: true,
+      };
+      const metrics = getFissionMetrics(next);
+
+      return {
+        ...next,
+        energy: metrics.energyOutput,
+        message: "Neutron bergerak menuju nukleus Uranium-235.",
+      };
+    });
   };
 
   const setBoronRod = (value) => {
+    setFission((current) => {
+      const currentNeutrons = Math.max(0, Math.round(current.neutronCount ?? INITIAL_CHAIN_NEUTRONS));
+      const boronIncrease = Math.max(0, value - current.boronRod);
+      const absorbedNow = current.hasStarted ? Math.round(currentNeutrons * (boronIncrease / 100) * 0.9) : 0;
+      const next = {
+        ...current,
+        boronRod: value,
+        neutronCount: current.hasStarted ? Math.max(0, currentNeutrons - absorbedNow) : INITIAL_CHAIN_NEUTRONS,
+      };
+      const metrics = getFissionMetrics(next);
+
+      return {
+        ...next,
+        energy: current.hasStarted ? metrics.energyOutput : current.energy,
+        message:
+          value >= 95
+            ? "Rod boron menyerap neutron dan memperlahankan tindak balas berantai."
+            : "Rod boron dilaraskan. Lebih tinggi keberkesanan, lebih banyak neutron diserap.",
+      };
+    });
+  };
+
+  const setShowFissionLabels = (value) => {
     setFission((current) => ({
       ...current,
-      boronRod: value,
-      message:
-        value >= 95
-          ? "Rod boron menyerap neutron dan memperlahankan tindak balas berantai."
-          : "Rod boron dilaraskan. Lebih tinggi rod masuk, lebih banyak neutron diserap.",
+      showLabels: value,
+    }));
+  };
+
+  const setShowFissionPaths = (value) => {
+    setFission((current) => ({
+      ...current,
+      showPaths: value,
     }));
   };
 
@@ -1224,27 +1792,55 @@ export default function NuclearEnergySimulatorPage() {
   };
 
   const setGraphiteRod = (value) => {
-    setFission((current) => ({
-      ...current,
-      graphiteRod: value,
-      message:
-        value < 35
-          ? "Moderator terlalu rendah. Neutron terlalu laju dan kurang menyebabkan pembelahan."
-          : value > 85
-          ? "Moderator terlalu tinggi. Neutron menjadi terlalu perlahan dan tindak balas menurun."
-          : "Moderator optimum. Neutron diperlahankan supaya lebih mudah membelah U-235.",
-    }));
+    setFission((current) => {
+      const next = {
+        ...current,
+        graphiteRod: value,
+      };
+      const metrics = getFissionMetrics(next);
+
+      return {
+        ...next,
+        neutronCount: current.hasStarted
+          ? Math.max(0, Math.round(current.neutronCount ?? INITIAL_CHAIN_NEUTRONS))
+          : INITIAL_CHAIN_NEUTRONS,
+        energy: current.hasStarted ? metrics.energyOutput : current.energy,
+        message:
+          value < 40
+            ? "Rod grafit rendah. Neutron terlalu laju dan pembelahan kurang berkesan."
+            : value >= 70
+            ? "Rod grafit tinggi. Neutron menjadi perlahan dan lebih mudah membelah Uranium-235."
+            : "Rod grafit dilaraskan. Neutron bergerak pada kelajuan sederhana.",
+      };
+    });
   };
 
   const setUraniumRod = (value) => {
-    setFission((current) => ({
-      ...current,
-      uraniumRod: value,
-      message:
-        value > 85
-          ? "Rod uranium tinggi. Reaktor semakin padat dan tindak balas berantai lebih aktif."
-          : "Rod uranium dilaraskan. Lebih banyak U-235 memberi lebih banyak sasaran neutron.",
-    }));
+    setFission((current) => {
+      const allowedIds = uraniumPositions.slice(0, getUraniumCount(value)).map((position) => position.id);
+      const nextSplitIds = current.splitIds.filter((id) => allowedIds.includes(id));
+      const setStillFullySplit = allowedIds.length > 0 && nextSplitIds.length >= allowedIds.length;
+      const next = {
+        ...current,
+        uraniumRod: value,
+        splitIds: nextSplitIds,
+        fragmentBursts: (current.fragmentBursts ?? []).filter((burst) => allowedIds.includes(burst.id)),
+        neutronFadeOut: setStillFullySplit ? current.neutronFadeOut : false,
+      };
+      const metrics = getFissionMetrics(next);
+
+      return {
+        ...next,
+        neutronCount: current.hasStarted
+          ? Math.max(0, Math.round(current.neutronCount ?? INITIAL_CHAIN_NEUTRONS))
+          : INITIAL_CHAIN_NEUTRONS,
+        energy: current.hasStarted ? metrics.energyOutput : current.energy,
+        message:
+          value >= 75
+            ? "Kadar tindak balas tinggi. Tingkatkan Rod Boron sekurang-kurangnya 50% untuk menyerap neutron berlebihan."
+            : "Uranium-235 dilaraskan. Lebih banyak U-235 memberi lebih banyak sasaran neutron.",
+      };
+    });
   };
 
   const setFusionValue = (key, value) => {
@@ -1399,6 +1995,25 @@ export default function NuclearEnergySimulatorPage() {
       </section>
 
       {activeMode === "fission" && (
+        <FissionReactorLab
+          fission={fission}
+          metrics={fissionMetrics}
+          neutronVisuals={neutronVisuals}
+          activeUraniumPositions={activeUraniumPositions}
+          fissionMessage={fissionMessage}
+          fissionDanger={fissionDanger}
+          onStart={shootNeutron}
+          onPause={pauseFission}
+          onReset={resetFission}
+          onBoronChange={setBoronRod}
+          onGraphiteChange={setGraphiteRod}
+          onUraniumChange={setUraniumRod}
+          onToggleLabels={setShowFissionLabels}
+          onTogglePaths={setShowFissionPaths}
+        />
+      )}
+
+      {false && activeMode === "fission" && (
         <>
           <section className="nuclearModeGrid fissionModeGrid">
             <aside className="nuclearPanel nuclearSteps fissionSteps">

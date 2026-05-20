@@ -10155,6 +10155,13 @@ section {
   font-size: 0.95rem;
 }
 
+.nuclearSlider__caption {
+  color: rgba(203, 213, 225, 0.72);
+  font-size: 0.78rem;
+  font-weight: 850;
+  line-height: 1.28;
+}
+
 .nuclearSlider input[type="range"] {
   width: 100%;
   min-height: 38px;
@@ -10195,6 +10202,54 @@ section {
   border-radius: 50%;
   background: #0f172a;
   box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.16), 0 0 20px rgba(56, 189, 248, 0.42);
+}
+
+.nuclearSlider--boron .nuclearSlider__top strong {
+  color: #f0abfc;
+}
+
+.nuclearSlider--boron input[type="range"] {
+  accent-color: #e879f9;
+}
+
+.nuclearSlider--boron input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(90deg, rgba(244, 114, 182, 0.78), rgba(190, 24, 93, 0.82), rgba(127, 29, 29, 0.86));
+}
+
+.nuclearSlider--boron input[type="range"]::-moz-range-track {
+  background: linear-gradient(90deg, rgba(244, 114, 182, 0.78), rgba(190, 24, 93, 0.82), rgba(127, 29, 29, 0.86));
+}
+
+.nuclearSlider--graphite .nuclearSlider__top strong {
+  color: #67e8f9;
+}
+
+.nuclearSlider--graphite input[type="range"] {
+  accent-color: #38bdf8;
+}
+
+.nuclearSlider--graphite input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(90deg, rgba(14, 165, 233, 0.7), rgba(103, 232, 249, 0.82), rgba(59, 130, 246, 0.78));
+}
+
+.nuclearSlider--graphite input[type="range"]::-moz-range-track {
+  background: linear-gradient(90deg, rgba(14, 165, 233, 0.7), rgba(103, 232, 249, 0.82), rgba(59, 130, 246, 0.78));
+}
+
+.nuclearSlider--uranium .nuclearSlider__top strong {
+  color: #86efac;
+}
+
+.nuclearSlider--uranium input[type="range"] {
+  accent-color: #22c55e;
+}
+
+.nuclearSlider--uranium input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(90deg, rgba(22, 163, 74, 0.68), rgba(132, 204, 22, 0.82), rgba(21, 128, 61, 0.86));
+}
+
+.nuclearSlider--uranium input[type="range"]::-moz-range-track {
+  background: linear-gradient(90deg, rgba(22, 163, 74, 0.68), rgba(132, 204, 22, 0.82), rgba(21, 128, 61, 0.86));
 }
 
 .nuclearSlider__ticks {
@@ -12341,7 +12396,9 @@ section {
   }
 
   .nuclearHero p {
-    max-width: 100%;
+    max-width: 31ch;
+    font-size: 0.96rem;
+    line-height: 1.65;
   }
 
   .nuclearHero__actions,
@@ -12968,5 +13025,1047 @@ section {
   .nuclearPlantLayout > .plantGaugeDeck,
   .nuclearPlantLayout > .nuclearControls .plantStatusGrid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Cinematic fission simulator */
+.nuclearFissionLab {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr) minmax(270px, 340px);
+  grid-template-areas:
+    "controls stage info"
+    "observation observation observation";
+  gap: 1rem;
+  align-items: start;
+  min-width: 0;
+}
+
+.fissionControlPanel {
+  grid-area: controls;
+}
+
+.fissionInfoPanel {
+  grid-area: info;
+}
+
+.fissionActionRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.fissionActionRow .nuclearButton {
+  width: min(100%, 74px);
+  min-height: 0;
+  aspect-ratio: 1;
+  justify-self: center;
+  min-width: 0;
+  border-radius: 50%;
+  padding: 0.34rem;
+  text-align: center;
+  white-space: normal;
+}
+
+.fissionButton {
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #f8fafc;
+  font-size: 0.82rem;
+  line-height: 1.12;
+  overflow: hidden;
+  overflow-wrap: normal;
+  word-break: normal;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 12px 28px rgba(2, 6, 23, 0.28);
+}
+
+.fissionButton span {
+  display: block;
+  max-width: 100%;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  text-align: center;
+}
+
+.fissionButton--start {
+  background: linear-gradient(135deg, #22c55e, #84cc16);
+  color: #04130a;
+  box-shadow: 0 0 22px rgba(34, 197, 94, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.fissionButton--stop {
+  background: linear-gradient(135deg, #38bdf8, #2563eb);
+  color: #eff6ff;
+  box-shadow: 0 0 22px rgba(56, 189, 248, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.fissionButton--reset {
+  background: linear-gradient(135deg, #fb7185, #dc2626);
+  color: #fff1f2;
+  box-shadow: 0 0 22px rgba(248, 113, 113, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.fissionToggleGrid {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.fissionSwitch {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 0.7rem;
+  align-items: center;
+  min-width: 0;
+  color: rgba(226, 232, 240, 0.86);
+  cursor: pointer;
+}
+
+.fissionSwitch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fissionSwitch span {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  border: 1px solid rgba(125, 211, 252, 0.22);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.92);
+  box-shadow: inset 0 0 14px rgba(2, 6, 23, 0.72);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.fissionSwitch span::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  width: 18px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #94a3b8;
+  box-shadow: 0 0 12px rgba(148, 163, 184, 0.28);
+  transform: translateY(-50%);
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fissionSwitch input:checked + span {
+  border-color: rgba(56, 189, 248, 0.58);
+  background: rgba(8, 47, 73, 0.92);
+}
+
+.fissionSwitch input:checked + span::after {
+  background: #67e8f9;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.72);
+  transform: translate(20px, -50%);
+}
+
+.fissionSwitch strong {
+  min-width: 0;
+  font-size: 0.86rem;
+  line-height: 1.3;
+}
+
+.fissionControlHint {
+  margin: 0;
+  padding: 0.72rem 0.8rem;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 14px;
+  background: rgba(20, 83, 45, 0.18);
+  color: rgba(220, 252, 231, 0.84);
+  font-size: 0.82rem;
+  font-weight: 780;
+  line-height: 1.48;
+}
+
+.nuclearFissionStage {
+  position: relative;
+  grid-area: stage;
+  overflow: hidden;
+  min-height: clamp(620px, 70vh, 780px);
+  border: 1px solid rgba(125, 211, 252, 0.18);
+  border-radius: 24px;
+  background: #020617;
+  box-shadow:
+    0 24px 70px rgba(2, 6, 23, 0.42),
+    inset 0 0 70px rgba(56, 189, 248, 0.1);
+  isolation: isolate;
+}
+
+.nuclearFissionStage--danger {
+  border-color: rgba(249, 115, 22, 0.48);
+  animation: fissionStageWarning 1.1s ease-in-out infinite;
+}
+
+.fissionReactorBackdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--reactor-background);
+  background-position: center;
+  background-size: cover;
+  filter: brightness(0.7) contrast(1.08) saturate(1.18);
+  transform: scale(1.02);
+}
+
+.fissionReactorShade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 30% 50%, rgba(57, 255, 20, var(--reaction-green-alpha)), transparent 24%),
+    radial-gradient(circle at 42% 50%, rgba(249, 115, 22, var(--energy-alpha)), transparent 28%),
+    radial-gradient(circle at 78% 18%, rgba(56, 189, 248, 0.22), transparent 28%),
+    linear-gradient(90deg, rgba(2, 6, 23, 0.28), rgba(2, 6, 23, 0.08) 46%, rgba(2, 6, 23, 0.38));
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.fissionPathLayer,
+.fissionControlRodAssembly,
+.fissionAtomLayer,
+.fissionIncomingNeutron,
+.fissionChainNeutronLayer,
+.fissionFragmentLayer,
+.fissionEnergyBurst,
+.fissionSparkField,
+.fissionStageLabels,
+.fissionStageReadout {
+  position: absolute;
+  pointer-events: none;
+}
+
+.fissionPathLayer,
+.fissionAtomLayer,
+.fissionChainNeutronLayer,
+.fissionFragmentLayer,
+.fissionSparkField,
+.fissionStageLabels {
+  inset: 0;
+}
+
+.fissionPath {
+  position: absolute;
+  z-index: 3;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(103, 232, 249, 0.76), transparent);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.42);
+  opacity: 0.7;
+  transform-origin: left center;
+}
+
+.fissionPath--incoming {
+  left: 7%;
+  top: 50%;
+  width: 26%;
+}
+
+.fissionPath--upper {
+  left: 35%;
+  top: 49%;
+  width: 35%;
+  transform: rotate(-28deg);
+}
+
+.fissionPath--middle {
+  left: 35%;
+  top: 50%;
+  width: 48%;
+  transform: rotate(4deg);
+}
+
+.fissionPath--lower {
+  left: 35%;
+  top: 51%;
+  width: 40%;
+  transform: rotate(32deg);
+}
+
+.fissionControlRodAssembly {
+  left: 16%;
+  right: 12%;
+  top: 0;
+  z-index: 11;
+  display: flex;
+  height: 68%;
+  justify-content: space-around;
+  transform: translateY(var(--control-offset));
+  transition: transform 0.32s ease;
+}
+
+.fissionControlRod {
+  width: clamp(28px, 3.4vw, 42px);
+  height: 100%;
+  border-radius: 0 0 999px 999px;
+  background-image: var(--control-rod-image);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  filter: drop-shadow(0 0 18px rgba(15, 23, 42, 0.9));
+  opacity: 0.9;
+}
+
+.fissionAtom {
+  position: absolute;
+  z-index: 8;
+  display: grid;
+  width: clamp(102px, 11vw, 140px);
+  aspect-ratio: 1;
+  place-items: center;
+  background-image: var(--uranium-image);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 230%;
+  filter:
+    drop-shadow(0 0 18px rgba(57, 255, 20, 0.52))
+    drop-shadow(0 0 38px rgba(34, 197, 94, 0.28));
+  transform: translate(-50%, -50%) scale(var(--atom-scale));
+  animation: fissionAtomFloat 3.2s ease-in-out infinite;
+  animation-delay: var(--atom-delay);
+}
+
+.fissionAtom--primary {
+  z-index: 9;
+  filter:
+    drop-shadow(0 0 24px rgba(57, 255, 20, 0.76))
+    drop-shadow(0 0 54px rgba(34, 197, 94, 0.4));
+}
+
+.nuclearFissionStage--running .fissionAtom--primary {
+  animation: fissionAtomInstability 0.46s ease-in-out infinite;
+}
+
+.fissionAtom--splitting {
+  z-index: 13;
+  animation: fissionAtomSplitShake 0.18s linear infinite;
+}
+
+.fissionAtom--splitting::after {
+  content: "";
+  position: absolute;
+  inset: 23%;
+  border-radius: 48%;
+  border-left: 3px solid rgba(254, 240, 138, 0.88);
+  border-right: 2px solid rgba(249, 115, 22, 0.72);
+  filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.82));
+  transform: rotate(18deg);
+}
+
+.fissionAtom span,
+.fissionLabel,
+.fissionIncomingNeutron strong {
+  border: 1px solid rgba(125, 211, 252, 0.18);
+  border-radius: 999px;
+  background: rgba(2, 6, 23, 0.72);
+  color: #d9f99d;
+  font-size: 0.68rem;
+  font-weight: 950;
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 0 18px rgba(2, 6, 23, 0.34);
+  backdrop-filter: blur(10px);
+}
+
+.fissionAtom span {
+  position: absolute;
+  left: 50%;
+  bottom: 7%;
+  padding: 0.28rem 0.56rem;
+  transform: translateX(-50%);
+}
+
+.fissionAtom--primary span {
+  bottom: 14%;
+  transform: translateX(-50%) scale(0.58);
+}
+
+.fissionIncomingNeutron {
+  left: 5%;
+  top: 50%;
+  z-index: 12;
+  display: grid;
+  width: 130px;
+  height: 64px;
+  align-items: center;
+  opacity: 0.55;
+  transform: translateY(-50%);
+  animation: fissionIncomingMove var(--neutron-duration) cubic-bezier(0.25, 0.7, 0.24, 1) infinite;
+  animation-play-state: paused;
+}
+
+.nuclearFissionStage--running .fissionIncomingNeutron {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+.nuclearFissionStage--paused .fissionAtom,
+.nuclearFissionStage--paused .fissionIncomingNeutron,
+.nuclearFissionStage--paused .fissionChainNeutron,
+.nuclearFissionStage--paused .fissionAbsorbedNeutronLayer span,
+.nuclearFissionStage--paused .fissionFragment,
+.nuclearFissionStage--paused .fissionEnergyBurst span,
+.nuclearFissionStage--paused .fissionSparkField span {
+  animation-play-state: paused !important;
+}
+
+.nuclearFissionStage--paused .fissionIncomingNeutron {
+  opacity: 1;
+}
+
+.nuclearFissionStage--neutron-fade .fissionIncomingNeutron,
+.nuclearFissionStage--neutron-fade .fissionChainNeutron {
+  opacity: 0 !important;
+  transition: opacity 0.72s ease;
+  animation-play-state: paused !important;
+}
+
+.fissionNeutronTrail {
+  position: absolute;
+  left: -34px;
+  width: calc(var(--trail-width, 62px) + 28px);
+  height: 40px;
+  background-image: var(--trail-image);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 360%;
+  filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.6));
+  opacity: 0.86;
+}
+
+.fissionNeutronOrb,
+.fissionChainNeutron i {
+  display: block;
+  border-radius: 50%;
+  background-image: var(--neutron-image);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 360%;
+  filter:
+    drop-shadow(0 0 12px rgba(103, 232, 249, 0.86))
+    drop-shadow(0 0 26px rgba(56, 189, 248, 0.58));
+}
+
+.fissionNeutronOrb {
+  position: absolute;
+  left: 58px;
+  width: 34px;
+  aspect-ratio: 1;
+}
+
+.fissionIncomingNeutron strong {
+  position: absolute;
+  left: 52px;
+  top: 44px;
+  padding: 0.28rem 0.54rem;
+  color: #bae6fd;
+}
+
+.fissionChainNeutron {
+  position: absolute;
+  z-index: 10;
+  left: var(--from-x);
+  top: var(--from-y);
+  display: block;
+  width: var(--neutron-size);
+  aspect-ratio: 1;
+  opacity: 1;
+  animation: fissionChainTravel var(--chain-duration) linear infinite;
+  animation-delay: var(--neutron-delay);
+}
+
+.fissionChainNeutron::after {
+  content: "";
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  width: var(--trail-width, 62px);
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(125, 211, 252, 0.82), rgba(56, 189, 248, 0.3), transparent);
+  filter: blur(0.2px);
+  transform: translateY(-50%);
+}
+
+.fissionAbsorbedNeutronLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.fissionAbsorbedNeutronLayer span {
+  position: absolute;
+  left: calc(22% + (var(--absorbed-index) * 8%));
+  top: calc(18% + (var(--absorbed-index) * 7%));
+  width: 18px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #67e8f9;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.8);
+  animation: fissionAbsorbNeutron 1.7s ease-out infinite;
+  animation-delay: calc(var(--absorbed-index) * 0.12s);
+}
+
+.fissionChainNeutron i {
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.fissionFragmentBurst {
+  position: absolute;
+  z-index: 14;
+  width: 1px;
+  height: 1px;
+  transform: translate(-50%, -50%);
+}
+
+.fissionFragment {
+  position: absolute;
+  display: block;
+  width: clamp(74px, 8vw, 112px);
+  aspect-ratio: 1;
+  background-image: var(--fragment-image);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 240%;
+  filter:
+    drop-shadow(0 0 20px rgba(251, 146, 60, 0.7))
+    drop-shadow(0 0 42px rgba(249, 115, 22, 0.34));
+  opacity: 0;
+  animation: fissionFragmentSettleA 0.82s ease-out forwards;
+  animation-delay: var(--fragment-delay);
+}
+
+.fissionFragment--b {
+  animation-name: fissionFragmentSettleB;
+}
+
+.fissionEnergyBurst {
+  left: 30%;
+  top: 50%;
+  z-index: 12;
+  width: clamp(230px, 31vw, 430px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+
+.fissionEnergyBurst span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-image: var(--energy-image);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 230%;
+  filter: drop-shadow(0 0 30px rgba(249, 115, 22, 0.7));
+  opacity: 0;
+  transform: scale(0.36);
+}
+
+.nuclearFissionStage--split .fissionEnergyBurst span {
+  animation: fissionEnergyBloom 1.25s ease-out forwards;
+}
+
+.fissionSparkField span {
+  position: absolute;
+  left: 30%;
+  top: 50%;
+  z-index: 15;
+  width: 58px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #fff7ed, #facc15, transparent);
+  box-shadow: 0 0 14px rgba(250, 204, 21, 0.84);
+  opacity: 0;
+  transform: rotate(calc(var(--spark-index) * 45deg)) translateX(0);
+}
+
+.nuclearFissionStage--split .fissionSparkField span {
+  animation: fissionSpark 0.72s ease-out forwards;
+  animation-delay: calc(var(--spark-index) * 0.025s);
+}
+
+.fissionLabel {
+  position: absolute;
+  z-index: 18;
+  padding: 0.34rem 0.62rem;
+  color: #e0f2fe;
+}
+
+.fissionLabel--unstable {
+  left: 18%;
+  top: 25%;
+}
+
+.fissionLabel--fragments {
+  left: 38%;
+  top: 33%;
+  color: #fed7aa;
+}
+
+.fissionLabel--energy {
+  left: 33%;
+  top: 58%;
+  color: #fef3c7;
+}
+
+.fissionLabel--new {
+  right: 19%;
+  top: 28%;
+  color: #bae6fd;
+}
+
+.fissionLabel--chain {
+  right: 11%;
+  bottom: 24%;
+  color: #bbf7d0;
+}
+
+.fissionLabel--rod {
+  right: 18%;
+  top: 11%;
+  color: #cbd5e1;
+}
+
+.fissionStageReadout {
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 20;
+  display: grid;
+  gap: 0.32rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  border-radius: 16px;
+  background: rgba(2, 6, 23, 0.72);
+  box-shadow: 0 0 28px rgba(2, 6, 23, 0.38);
+  backdrop-filter: blur(14px);
+}
+
+.fissionStageReadout strong {
+  color: #67e8f9;
+  font-size: 0.98rem;
+  line-height: 1.2;
+}
+
+.fissionStageReadout span {
+  color: rgba(226, 232, 240, 0.84);
+  font-size: 0.86rem;
+  font-weight: 760;
+  line-height: 1.38;
+}
+
+.fissionStatusGrid {
+  display: grid;
+  gap: 0.66rem;
+}
+
+.fissionStatusGrid article {
+  display: grid;
+  gap: 0.18rem;
+  min-width: 0;
+  padding: 0.75rem 0.82rem;
+  border: 1px solid rgba(125, 211, 252, 0.13);
+  border-radius: 14px;
+  background: rgba(2, 6, 23, 0.36);
+}
+
+.fissionStatusMetric--uranium strong {
+  color: #86efac;
+}
+
+.fissionStatusMetric--graphite strong,
+.fissionStatusMetric--speed strong,
+.fissionStatusMetric--neutron strong {
+  color: #67e8f9;
+}
+
+.fissionStatusMetric--boron strong {
+  color: #f0abfc;
+}
+
+.fissionStatusMetric--rate strong {
+  color: #fb923c;
+}
+
+.fissionStatusMetric--energy strong {
+  color: #fbbf24;
+}
+
+.fissionStatusGrid span {
+  color: rgba(226, 232, 240, 0.72);
+  font-size: 0.78rem;
+  font-weight: 850;
+  line-height: 1.3;
+}
+
+.fissionStatusGrid strong {
+  color: #f8fafc;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  font-weight: 950;
+  line-height: 1.05;
+  text-shadow: 0 0 18px rgba(56, 189, 248, 0.22);
+}
+
+.fissionStatusCard--stable strong {
+  color: #86efac;
+}
+
+.fissionStatusCard--low strong {
+  color: #93c5fd;
+}
+
+.fissionStatusCard--rising strong {
+  color: #facc15;
+}
+
+.fissionStatusCard--danger strong {
+  color: #fb7185;
+}
+
+.fissionDangerBadge {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 24;
+  display: inline-flex;
+  max-width: min(360px, calc(100% - 2rem));
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid rgba(250, 204, 21, 0.72);
+  border-radius: 16px;
+  background: rgba(127, 29, 29, 0.72);
+  color: #fef3c7;
+  box-shadow: 0 0 28px rgba(239, 68, 68, 0.32), 0 0 38px rgba(250, 204, 21, 0.18);
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+}
+
+.fissionDangerBadge span {
+  display: grid;
+  width: 32px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  background: #facc15;
+  color: #7f1d1d;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.fissionDangerBadge strong {
+  min-width: 0;
+  color: #fff7ed;
+  font-size: 0.88rem;
+  font-weight: 950;
+  line-height: 1.22;
+}
+
+.fissionObservationPanel {
+  grid-area: observation;
+  min-width: 0;
+  padding: clamp(1rem, 2vw, 1.25rem);
+  border: 1px solid rgba(125, 211, 252, 0.16);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(56, 189, 248, 0.12), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    rgba(15, 23, 42, 0.78);
+  box-shadow: 0 18px 54px rgba(2, 6, 23, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+}
+
+.fissionObservationTableWrap {
+  overflow-x: auto;
+  margin-top: 0.75rem;
+}
+
+.fissionObservationTable {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  color: rgba(226, 232, 240, 0.86);
+}
+
+.fissionObservationTable th,
+.fissionObservationTable td {
+  padding: 0.72rem 0.8rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+  text-align: left;
+  vertical-align: top;
+}
+
+.fissionObservationTable th {
+  color: #7dd3fc;
+  font-size: 0.76rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.fissionObservationTable td {
+  font-size: 0.88rem;
+  font-weight: 760;
+  line-height: 1.36;
+}
+
+.fissionObservationTable tr.active td {
+  background: rgba(14, 116, 144, 0.18);
+  color: #f8fafc;
+}
+
+@keyframes fissionAtomFloat {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(var(--atom-scale)) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(var(--atom-scale)) translateY(-5px);
+  }
+}
+
+@keyframes fissionAtomInstability {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(var(--atom-scale)) rotate(0deg);
+  }
+  25% {
+    transform: translate(calc(-50% - 2px), calc(-50% + 1px)) scale(var(--atom-scale)) rotate(-1deg);
+  }
+  50% {
+    transform: translate(calc(-50% + 2px), calc(-50% - 1px)) scale(var(--atom-scale)) rotate(1.2deg);
+  }
+  75% {
+    transform: translate(calc(-50% - 1px), calc(-50% - 2px)) scale(var(--atom-scale)) rotate(-0.8deg);
+  }
+}
+
+@keyframes fissionAtomSplitShake {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(var(--atom-scale)) rotate(0deg);
+  }
+  50% {
+    transform: translate(calc(-50% + 3px), calc(-50% - 3px)) scale(var(--atom-scale)) rotate(2deg);
+  }
+}
+
+@keyframes fissionIncomingMove {
+  0% {
+    opacity: 1;
+    transform: translate(0, -50%) scale(0.92);
+  }
+  58% {
+    opacity: 1;
+  }
+  72% {
+    transform: translate(clamp(165px, 22vw, 300px), -50%) scale(1);
+    opacity: 1;
+  }
+  78%,
+  100% {
+    transform: translate(clamp(165px, 22vw, 300px), -50%) scale(0.4);
+    opacity: 1;
+  }
+}
+
+@keyframes fissionChainTravel {
+  0% {
+    left: var(--from-x);
+    top: var(--from-y);
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.72);
+  }
+  16% {
+    opacity: 1;
+  }
+  76% {
+    opacity: 1;
+  }
+  100% {
+    left: calc(var(--from-x) + var(--dx));
+    top: calc(var(--from-y) + var(--dy));
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+}
+
+@keyframes fissionAbsorbNeutron {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.6);
+  }
+  28% {
+    opacity: 0.95;
+  }
+  72% {
+    opacity: 0.8;
+    transform: translateY(-32px) scale(0.82);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-62px) scale(0.18);
+  }
+}
+
+@keyframes fissionFragmentSettleA {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.28) rotate(-8deg);
+  }
+  55% {
+    opacity: 0.96;
+    transform: translate(-112px, -78px) scale(0.86) rotate(-20deg);
+  }
+  100% {
+    opacity: 0.96;
+    transform: translate(-104px, -72px) scale(0.9) rotate(-18deg);
+  }
+}
+
+@keyframes fissionFragmentSettleB {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.28) rotate(8deg);
+  }
+  55% {
+    opacity: 0.96;
+    transform: translate(104px, 70px) scale(0.86) rotate(18deg);
+  }
+  100% {
+    opacity: 0.96;
+    transform: translate(98px, 66px) scale(0.9) rotate(16deg);
+  }
+}
+
+@keyframes fissionEnergyBloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.22);
+  }
+  18% {
+    opacity: 0.96;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.24);
+  }
+}
+
+@keyframes fissionSpark {
+  0% {
+    opacity: 0;
+    transform: rotate(calc(var(--spark-index) * 45deg)) translateX(0) scaleX(0.25);
+  }
+  28% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(calc(var(--spark-index) * 45deg)) translateX(128px) scaleX(0.92);
+  }
+}
+
+@keyframes fissionStageWarning {
+  0%,
+  100% {
+    box-shadow:
+      0 24px 70px rgba(2, 6, 23, 0.42),
+      inset 0 0 70px rgba(249, 115, 22, 0.08);
+  }
+  50% {
+    box-shadow:
+      0 24px 78px rgba(249, 115, 22, 0.18),
+      inset 0 0 94px rgba(249, 115, 22, 0.2);
+  }
+}
+
+@media (max-width: 1280px) {
+  .nuclearFissionLab {
+    grid-template-columns: minmax(0, 1fr) minmax(270px, 0.82fr);
+    grid-template-areas:
+      "stage stage"
+      "controls info"
+      "observation observation";
+  }
+
+  .nuclearFissionStage {
+    min-height: 640px;
+  }
+}
+
+@media (max-width: 820px) {
+  .nuclearFissionLab {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "stage"
+      "controls"
+      "info"
+      "observation";
+  }
+
+  .nuclearFissionStage {
+    min-height: 540px;
+    border-radius: 18px;
+  }
+
+  .fissionActionRow {
+    grid-template-columns: 1fr;
+  }
+
+  .fissionAtom {
+    width: clamp(76px, 18vw, 112px);
+  }
+
+  .fissionAtom--primary {
+    left: 32%;
+  }
+
+  .fissionLabel {
+    font-size: 0.62rem;
+    padding: 0.28rem 0.48rem;
+  }
+
+  .fissionLabel--chain,
+  .fissionLabel--new {
+    right: 0.75rem;
+  }
+
+  .fissionStageReadout {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .nuclearFissionStage {
+    min-height: 500px;
+  }
+
+  .fissionControlRodAssembly {
+    left: 10%;
+    right: 8%;
+  }
+
+  .fissionPath--upper,
+  .fissionPath--middle,
+  .fissionPath--lower {
+    left: 38%;
+    width: 42%;
+  }
+
+  .fissionStatusGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .fissionObservationTable {
+    min-width: 560px;
   }
 }

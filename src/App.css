@@ -11844,6 +11844,28 @@ section {
   gap: 0.85rem;
 }
 
+.nuclearQuizGrid--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.nuclearQuizProgress {
+  overflow: hidden;
+  height: 10px;
+  border: 1px solid rgba(125, 211, 252, 0.14);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.82);
+  box-shadow: inset 0 0 14px rgba(2, 6, 23, 0.48);
+}
+
+.nuclearQuizProgress i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #22c55e, #67e8f9);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.36);
+  transition: width 0.28s ease;
+}
+
 .nuclearQuizCard h3 {
   margin: 0 0 0.82rem;
   color: #f8fafc;
@@ -11875,6 +11897,10 @@ section {
   color: #ffffff;
 }
 
+.nuclearQuizOption:disabled {
+  cursor: default;
+}
+
 .nuclearQuizOption--correct {
   border-color: rgba(34, 197, 94, 0.48);
   background: rgba(20, 83, 45, 0.38);
@@ -11892,6 +11918,16 @@ section {
   font-size: 0.9rem;
 }
 
+.nuclearQuizFeedback strong {
+  display: block;
+  margin-bottom: 0.28rem;
+  color: inherit;
+}
+
+.nuclearQuizFeedback button {
+  margin-top: 0.75rem;
+}
+
 .nuclearQuizFeedback--correct {
   border: 1px solid rgba(34, 197, 94, 0.34);
   background: rgba(20, 83, 45, 0.22);
@@ -11902,6 +11938,37 @@ section {
   border: 1px solid rgba(239, 68, 68, 0.34);
   background: rgba(127, 29, 29, 0.22);
   color: #fecaca !important;
+}
+
+.nuclearQuizComplete {
+  display: grid;
+  gap: 0.55rem;
+  justify-items: start;
+  min-width: 0;
+  padding: 1.1rem;
+  border: 1px solid rgba(34, 197, 94, 0.24);
+  border-radius: 20px;
+  background: rgba(20, 83, 45, 0.18);
+}
+
+.nuclearQuizComplete span {
+  color: #86efac;
+  font-size: 0.78rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.nuclearQuizComplete strong {
+  color: #f8fafc;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1;
+}
+
+.nuclearQuizComplete p {
+  margin: 0;
+  color: rgba(226, 232, 240, 0.84);
+  font-weight: 760;
+  line-height: 1.5;
 }
 
 @keyframes neutronMove {
@@ -13090,6 +13157,8 @@ section {
 }
 
 .fissionButton {
+  position: relative;
+  isolation: isolate;
   display: grid;
   place-items: center;
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -13100,9 +13169,13 @@ section {
   overflow-wrap: normal;
   word-break: normal;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 12px 28px rgba(2, 6, 23, 0.28);
+  transform: translateY(0) scale(1);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease, transform 0.18s ease;
 }
 
 .fissionButton span {
+  position: relative;
+  z-index: 2;
   display: block;
   max-width: 100%;
   color: inherit;
@@ -13111,22 +13184,83 @@ section {
   text-align: center;
 }
 
+.fissionButton--active {
+  border-color: rgba(255, 255, 255, 0.86);
+  filter: saturate(1.12) brightness(1.08);
+  transform: translateY(2px) scale(0.95);
+}
+
+.fissionButton--active::before,
+.fissionButton--active::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.fissionButton--active::before {
+  inset: 5px;
+  z-index: 0;
+  border: 2px solid var(--button-active-ring);
+  border-radius: 50%;
+  box-shadow: inset 0 0 14px var(--button-active-glow), 0 0 18px var(--button-active-glow);
+  animation: fissionButtonActivePulse 1.15s ease-in-out infinite;
+}
+
+.fissionButton--active::after {
+  left: 50%;
+  bottom: 8px;
+  z-index: 1;
+  width: 18px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--button-active-ring);
+  box-shadow: 0 0 12px var(--button-active-glow);
+  transform: translateX(-50%);
+}
+
 .fissionButton--start {
+  --button-active-ring: #bbf7d0;
+  --button-active-glow: rgba(34, 197, 94, 0.78);
   background: linear-gradient(135deg, #22c55e, #84cc16);
   color: #04130a;
   box-shadow: 0 0 22px rgba(34, 197, 94, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .fissionButton--stop {
+  --button-active-ring: #bae6fd;
+  --button-active-glow: rgba(56, 189, 248, 0.8);
   background: linear-gradient(135deg, #38bdf8, #2563eb);
   color: #eff6ff;
   box-shadow: 0 0 22px rgba(56, 189, 248, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 
 .fissionButton--reset {
+  --button-active-ring: #ffe4e6;
+  --button-active-glow: rgba(248, 113, 113, 0.78);
   background: linear-gradient(135deg, #fb7185, #dc2626);
   color: #fff1f2;
   box-shadow: 0 0 22px rgba(248, 113, 113, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.fissionButton--start.fissionButton--active {
+  box-shadow:
+    0 0 0 4px rgba(34, 197, 94, 0.22),
+    0 0 34px rgba(34, 197, 94, 0.48),
+    inset 0 6px 14px rgba(4, 19, 10, 0.26);
+}
+
+.fissionButton--stop.fissionButton--active {
+  box-shadow:
+    0 0 0 4px rgba(56, 189, 248, 0.22),
+    0 0 34px rgba(56, 189, 248, 0.48),
+    inset 0 6px 14px rgba(2, 6, 23, 0.26);
+}
+
+.fissionButton--reset.fissionButton--active {
+  box-shadow:
+    0 0 0 4px rgba(248, 113, 113, 0.22),
+    0 0 34px rgba(248, 113, 113, 0.5),
+    inset 0 6px 14px rgba(69, 10, 10, 0.28);
 }
 
 .fissionToggleGrid {
@@ -13840,6 +13974,18 @@ section {
 .fissionObservationTable tr.active td {
   background: rgba(14, 116, 144, 0.18);
   color: #f8fafc;
+}
+
+@keyframes fissionButtonActivePulse {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
 }
 
 @keyframes fissionAtomFloat {

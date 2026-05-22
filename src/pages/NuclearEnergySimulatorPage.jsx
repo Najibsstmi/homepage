@@ -28,6 +28,7 @@ const initialFission = {
   absorbedCount: 0,
   fragmentBursts: [],
   neutronFadeOut: false,
+  lastAction: "idle",
   message: "Laraskan Rod Boron, Rod Grafit dan Uranium-235, kemudian mulakan simulasi.",
   hasStarted: false,
 };
@@ -532,14 +533,24 @@ function advanceFission(current) {
   const uraniumDensity = current.uraniumRod / 100;
   const coolantFlow = current.coolantFlow ?? initialFission.coolantFlow;
   const boronAbsorptionRate = clamp((current.boronRod / 100) * 0.86, 0, 0.94);
-  const boronAbsorbed = Math.min(activeNeutronsInput, Math.round(activeNeutronsInput * boronAbsorptionRate));
+  const shouldPreserveCollision =
+    activeNeutronsInput > 0 && metrics.reactionRate >= 40 && current.boronRod < 95;
+  const protectedCollisionNeutrons = shouldPreserveCollision ? 1 : 0;
+  const absorbableNeutrons = Math.max(0, activeNeutronsInput - protectedCollisionNeutrons);
+  const boronAbsorbed =
+    current.boronRod >= 95
+      ? Math.min(activeNeutronsInput, Math.ceil(activeNeutronsInput * boronAbsorptionRate))
+      : Math.min(absorbableNeutrons, Math.floor(absorbableNeutrons * boronAbsorptionRate));
   const fastEscapeRate = current.graphiteRod < 40 ? clamp((40 - current.graphiteRod) / 80, 0.08, 0.5) : 0;
   const sparseEscapeRate = current.uraniumRod < 35 ? clamp((35 - current.uraniumRod) / 140, 0.02, 0.22) : 0;
   const escaped = Math.min(
     Math.max(0, activeNeutronsInput - boronAbsorbed),
     Math.round(Math.max(0, activeNeutronsInput - boronAbsorbed) * (fastEscapeRate + sparseEscapeRate))
   );
-  const effectiveNeutrons = Math.max(0, activeNeutronsInput - boronAbsorbed - escaped);
+  const effectiveNeutrons = Math.max(
+    protectedCollisionNeutrons,
+    activeNeutronsInput - boronAbsorbed - escaped
+  );
   const collisionEfficiency = clamp(
     0.22 + uraniumDensity * 0.45 + Math.min(metrics.graphiteFactor / 2, 1) * 0.35,
     0.08,
@@ -997,15 +1008,109 @@ function LearningPanel({ mode, answers, onAnswer }) {
   );
 }
 
-function LearningPanelV2({ mode, answers, submitted, onAnswer, onSubmit, onRetry }) {
+function createNuclearQuizState() {
+  return {
+    index: 0,
+    selected: "",
+    wrongSelections: {},
+    missedFirstAttempt: {},
+    score: 0,
+    done: false,
+  };
+}
+
+function LearningPanelV2({ mode }) {
   const content = learningContent[mode];
   const [panelTab, setPanelTab] = useState("nota");
-  const answeredCount = content.questions.filter((question) => answers[question.id]).length;
-  const score = content.questions.filter((question) => answers[question.id] === question.answer).length;
+  const [quizStateByMode, setQuizStateByMode] = useState(() => ({
+    fission: createNuclearQuizState(),
+    fusion: createNuclearQuizState(),
+    plant: createNuclearQuizState(),
+  }));
+  const quizState = quizStateByMode[mode] ?? createNuclearQuizState();
+  const currentQuestion = content.questions[quizState.index] ?? content.questions[0];
+  const selected = quizState.selected;
+  const isCorrectSelection = selected === currentQuestion.answer;
+  const attempted = Boolean(selected);
+  const currentWrongSelections = quizState.wrongSelections[currentQuestion.id] ?? [];
+  const progressStep = quizState.done ? content.questions.length : isCorrectSelection ? quizState.index + 1 : quizState.index;
+  const progress = content.questions.length ? (progressStep / content.questions.length) * 100 : 0;
 
   useEffect(() => {
     setPanelTab("nota");
   }, [mode]);
+
+  const updateQuizState = (updater) => {
+    setQuizStateByMode((current) => {
+      const activeState = current[mode] ?? createNuclearQuizState();
+      return {
+        ...current,
+        [mode]: updater(activeState),
+      };
+    });
+  };
+
+  const chooseQuizOption = (option) => {
+    updateQuizState((state) => {
+      const activeQuestion = content.questions[state.index] ?? content.questions[0];
+
+      if (state.done || state.selected === activeQuestion.answer) {
+        return state;
+      }
+
+      if (option === activeQuestion.answer) {
+        return {
+          ...state,
+          selected: option,
+          score: state.missedFirstAttempt[activeQuestion.id] ? state.score : state.score + 1,
+        };
+      }
+
+      const previousWrongSelections = state.wrongSelections[activeQuestion.id] ?? [];
+
+      return {
+        ...state,
+        selected: option,
+        missedFirstAttempt: {
+          ...state.missedFirstAttempt,
+          [activeQuestion.id]: true,
+        },
+        wrongSelections: {
+          ...state.wrongSelections,
+          [activeQuestion.id]: previousWrongSelections.includes(option)
+            ? previousWrongSelections
+            : [...previousWrongSelections, option],
+        },
+      };
+    });
+  };
+
+  const goToNextQuizQuestion = () => {
+    updateQuizState((state) => {
+      const activeQuestion = content.questions[state.index] ?? content.questions[0];
+
+      if (state.selected !== activeQuestion.answer) {
+        return state;
+      }
+
+      if (state.index < content.questions.length - 1) {
+        return {
+          ...state,
+          index: state.index + 1,
+          selected: "",
+        };
+      }
+
+      return {
+        ...state,
+        done: true,
+      };
+    });
+  };
+
+  const retryQuizForMode = () => {
+    updateQuizState(() => createNuclearQuizState());
+  };
 
   return (
     <section className="nuclearLearningPanel">
@@ -1041,64 +1146,91 @@ function LearningPanelV2({ mode, answers, submitted, onAnswer, onSubmit, onRetry
               <h2>Kuiz {MODES.find((modeItem) => modeItem.id === mode)?.label}</h2>
             </div>
             <div className="nuclearQuizScore">
-              <span>Skor</span>
+              <span>{quizState.done ? "Skor" : "Kemajuan"}</span>
               <strong>
-                {submitted ? score : answeredCount}/{content.questions.length}
+                {quizState.done ? quizState.score : progressStep}/{content.questions.length}
               </strong>
             </div>
           </div>
 
-          <div className="nuclearQuizGrid">
-            {content.questions.map((question, index) => {
-              const selected = answers[question.id];
-              const correct = selected === question.answer;
+          <div className="nuclearQuizProgress" aria-hidden="true">
+            <i style={{ width: `${progress}%` }} />
+          </div>
 
-              return (
-                <article className="nuclearQuizCard" key={question.id}>
-                  <span className="nuclearQuizNumber">Soalan {index + 1}</span>
-                  <h3>{question.text}</h3>
+          {quizState.done ? (
+            <div className="nuclearQuizComplete">
+              <span>Skor cubaan pertama</span>
+              <strong>{quizState.score}/{content.questions.length}</strong>
+              <p>{quizState.score === content.questions.length ? "Hebat! Semua konsep utama dikuasai." : "Ulang kuiz untuk kukuhkan semula konsep."}</p>
+              <button type="button" className="nuclearButton nuclearButton--primary" onClick={retryQuizForMode}>
+                Ulang Kuiz
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className="nuclearQuizGrid nuclearQuizGrid--single">
+                <article className="nuclearQuizCard" key={currentQuestion.id}>
+                  <span className="nuclearQuizNumber">
+                    Soalan {quizState.index + 1}/{content.questions.length}
+                  </span>
+                  <h3>{currentQuestion.text}</h3>
                   <div className="nuclearQuizOptions">
-                    {question.options.map((option) => (
-                      <button
-                        type="button"
-                        key={option}
-                        className={[
-                          "nuclearQuizOption",
-                          selected === option ? "nuclearQuizOption--selected" : "",
-                          submitted && option === question.answer ? "nuclearQuizOption--correct" : "",
-                          submitted && selected === option && !correct ? "nuclearQuizOption--wrong" : "",
-                        ].join(" ")}
-                        onClick={() => onAnswer(question.id, option)}
-                      >
-                        {option}
-                      </button>
-                    ))}
+                    {currentQuestion.options.map((option) => {
+                      const isWrong = currentWrongSelections.includes(option);
+                      const isCorrect = isCorrectSelection && option === currentQuestion.answer;
+
+                      return (
+                        <button
+                          type="button"
+                          key={option}
+                          disabled={isCorrectSelection || isWrong}
+                          className={[
+                            "nuclearQuizOption",
+                            selected === option ? "nuclearQuizOption--selected" : "",
+                            isCorrect ? "nuclearQuizOption--correct" : "",
+                            isWrong ? "nuclearQuizOption--wrong" : "",
+                          ].join(" ")}
+                          onClick={() => chooseQuizOption(option)}
+                        >
+                          {option}
+                        </button>
+                      );
+                    })}
                   </div>
-                  {submitted && selected ? (
-                    <p
+                  {attempted ? (
+                    <div
                       className={
-                        correct
+                        isCorrectSelection
                           ? "nuclearQuizFeedback nuclearQuizFeedback--correct"
                           : "nuclearQuizFeedback nuclearQuizFeedback--wrong"
                       }
                     >
-                      {correct ? "Betul. " : "Salah. "}
-                      {correct ? question.explanation : question.hint}
-                    </p>
+                      {isCorrectSelection ? (
+                        <>
+                          <strong>Betul.</strong>
+                          <p>{currentQuestion.explanation}</p>
+                          <button type="button" className="nuclearButton nuclearButton--primary" onClick={goToNextQuizQuestion}>
+                            {quizState.index < content.questions.length - 1 ? "Soalan Seterusnya" : "Lihat Skor"}
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <strong>Cuba lagi.</strong>
+                          <p>Jawapan betul belum dipaparkan. Pilih pilihan lain sehingga tepat.</p>
+                        </>
+                      )}
+                    </div>
                   ) : null}
                 </article>
-              );
-            })}
-          </div>
+              </div>
 
-          <div className="nuclearQuizActions">
-            <button type="button" className="nuclearButton nuclearButton--primary" onClick={onSubmit}>
-              Semak Jawapan
-            </button>
-            <button type="button" className="nuclearButton nuclearButton--ghost" onClick={onRetry}>
-              Cuba Lagi
-            </button>
-          </div>
+              <div className="nuclearQuizActions">
+                <button type="button" className="nuclearButton nuclearButton--ghost" onClick={retryQuizForMode}>
+                  Cuba Lagi
+                </button>
+              </div>
+            </>
+          )}
         </div>
       )}
     </section>
@@ -1138,7 +1270,7 @@ function FissionReactorLab({
       : 0;
   const chainNeutrons = neutronVisuals.slice(0, visualChainCount);
   const activeMessage =
-    metrics.criticalDanger || metrics.highUranium
+    metrics.criticalDanger
       ? fissionMessage
       : fission.hasStarted
       ? fission.message
@@ -1149,6 +1281,14 @@ function FissionReactorLab({
     fission.fragmentBursts?.length > 0
       ? fission.fragmentBursts
       : fission.splitIds.map((id, index) => ({ id, key: `${fission.cycle}-${id}-${index}` }));
+  const activeControlAction =
+    fission.paused
+      ? "pause"
+      : fission.running
+      ? "start"
+      : fission.lastAction === "reset"
+      ? "reset"
+      : fission.lastAction ?? "idle";
   const activeObservationIndex = Math.min(
     fissionObservationRows.length - 1,
     fission.hasStarted ? Math.floor(phaseIndex / 2) : 0
@@ -1163,13 +1303,37 @@ function FissionReactorLab({
         </div>
 
         <div className="fissionActionRow">
-          <button type="button" className="nuclearButton fissionButton fissionButton--start" onClick={onStart}>
+          <button
+            type="button"
+            className={[
+              "nuclearButton fissionButton fissionButton--start",
+              activeControlAction === "start" ? "fissionButton--active" : "",
+            ].join(" ")}
+            aria-pressed={activeControlAction === "start"}
+            onClick={onStart}
+          >
             <span>Mula Simulasi</span>
           </button>
-          <button type="button" className="nuclearButton fissionButton fissionButton--stop" onClick={onPause}>
+          <button
+            type="button"
+            className={[
+              "nuclearButton fissionButton fissionButton--stop",
+              activeControlAction === "pause" ? "fissionButton--active" : "",
+            ].join(" ")}
+            aria-pressed={activeControlAction === "pause"}
+            onClick={onPause}
+          >
             <span>Hentikan</span>
           </button>
-          <button type="button" className="nuclearButton fissionButton fissionButton--reset" onClick={onReset}>
+          <button
+            type="button"
+            className={[
+              "nuclearButton fissionButton fissionButton--reset",
+              activeControlAction === "reset" ? "fissionButton--active" : "",
+            ].join(" ")}
+            aria-pressed={activeControlAction === "reset"}
+            onClick={onReset}
+          >
             <span>Reset</span>
           </button>
         </div>
@@ -1668,7 +1832,7 @@ export default function NuclearEnergySimulatorPage() {
 
   const resetAll = () => {
     setActiveMode("fission");
-    setFission(initialFission);
+    setFission({ ...initialFission, lastAction: "reset" });
     setFusion(initialFusion);
     setPlant(initialPlant);
     setQuizAnswers({ fission: {}, fusion: {}, plant: {} });
@@ -1676,7 +1840,11 @@ export default function NuclearEnergySimulatorPage() {
   };
 
   const resetFission = () => {
-    setFission(initialFission);
+    setFission({
+      ...initialFission,
+      lastAction: "reset",
+      message: "Simulasi telah direset. Tekan Mula Simulasi untuk mulakan semula.",
+    });
   };
 
   const pauseFission = () => {
@@ -1686,6 +1854,7 @@ export default function NuclearEnergySimulatorPage() {
           ...current,
           running: false,
           paused: false,
+          lastAction: "pause",
           message: "Simulasi belum dimulakan.",
         };
       }
@@ -1694,6 +1863,7 @@ export default function NuclearEnergySimulatorPage() {
         ...current,
         running: true,
         paused: true,
+        lastAction: "pause",
         message: "Simulasi dihentikan sementara. Tekan Mula Simulasi untuk sambung.",
       };
     });
@@ -1713,6 +1883,7 @@ export default function NuclearEnergySimulatorPage() {
           ...resumed,
           neutronCount: Math.max(0, current.neutronCount ?? INITIAL_CHAIN_NEUTRONS),
           energy: metrics.energyOutput,
+          lastAction: "start",
           message: "Simulasi disambung mengikut nilai slider semasa.",
         };
       }
@@ -1726,6 +1897,7 @@ export default function NuclearEnergySimulatorPage() {
         fragmentBursts: [],
         neutronFadeOut: false,
         neutronCount: INITIAL_CHAIN_NEUTRONS,
+        lastAction: "start",
         hasStarted: true,
       };
       const metrics = getFissionMetrics(next);

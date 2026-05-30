@@ -332,7 +332,7 @@ export default function App() {
     const text = encodeURIComponent(`Jom lihat ${title} di CikguSTEM.`);
 
     const shareLinkByPlatform: Record<SharePlatform, string> = {
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`,
       whatsapp: `https://wa.me/?text=${text}%20${url}`,
       telegram: `https://t.me/share/url?url=${url}&text=${text}`,
       x: `https://x.com/intent/tweet?url=${url}&text=${text}`,

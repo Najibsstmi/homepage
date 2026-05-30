@@ -16,6 +16,7 @@ export default function App() {
     "smartlab-pengiktirafan",
   ]);
   const journeySectionIds = new Set([
+    "journey-catatan-seorang-menantu",
     "journey-guru-cemerlang-ksl",
     "journey-padang-line",
     "journey-microbit",
@@ -303,6 +304,8 @@ export default function App() {
       ? "share-eduslot.html"
       : smartLabSectionIds.has(targetId)
       ? "share-smartlab.html"
+      : targetId === "journey-catatan-seorang-menantu"
+      ? "share-catatan-seorang-menantu.html"
       : targetId === "journey-guru-cemerlang-ksl"
       ? "share-guru-cemerlang.html"
       : isJourneyTarget
@@ -369,6 +372,17 @@ export default function App() {
       </button>
     </div>
   );
+
+  const menantuImageBase = "/PERJALANAN/Catatan seorang menantu";
+  const menantuImages = {
+    memorial: `${menantuImageBase}/WhatsApp Image 2026-05-25 at 02.42.31.jpeg`,
+    hospitalFarewell: `${menantuImageBase}/WhatsApp Image 2026-05-25 at 04.53.14.jpeg`,
+    burial: `${menantuImageBase}/WhatsApp Image 2026-05-25 at 13.32.58.jpeg`,
+    familyMemory: `${menantuImageBase}/WhatsApp Image 2026-05-26 at 00.27.30.jpeg`,
+    vanJenazah: `${menantuImageBase}/WhatsApp Image 2026-05-26 at 18.31.12.jpeg`,
+    ambulanceInside: `${menantuImageBase}/WhatsApp Image 2026-05-30 at 09.42.23.jpeg`,
+    ambulanceArrival: `${menantuImageBase}/WhatsApp Image 2026-05-30 at 09.42.24.jpeg`,
+  };
 
   const achievements = [
     "Johan pertandingan Inovasi cetakan 3D Malaysia Techlympics Zon Selatan Peringkat Kebangsaan 2022",
@@ -1249,10 +1263,262 @@ export default function App() {
           </div>
         </div>
 
-        <article id="journey-guru-cemerlang-ksl" className="journey-post journey-post--latest">
+        <article id="journey-catatan-seorang-menantu" className="journey-post journey-post--latest journey-post--memorial">
           <div className="journey-post__header">
             <div>
-              <span className="section-kicker">Catatan Terkini • 28 April 2026</span>
+              <span className="section-kicker">Catatan Keluarga - 25 Mei 2026</span>
+              <h3>Tatapan Terakhir Dalam Ambulans - Catatan seorang menantu</h3>
+              <ShareBar title="Tatapan Terakhir Dalam Ambulans" anchor="#journey-catatan-seorang-menantu" />
+            </div>
+          </div>
+
+          <div className="journey-post__lead journey-post__lead--single">
+            <div className="journey-post__text">
+              <p className="journey-post__dateLine">25 Mei 2026. Tarikh yang tidak akan saya lupakan.</p>
+              <p>
+                Pada jam 2.00 pagi, bapa mertua saya yang tercinta, Allahyarham Abd Manan
+                bin Omar, telah menghembuskan nafas terakhir di Hospital Sultan Ismail
+                (HSI), Johor Bahru pada usia 76 tahun. Sudah hampir seminggu beliau berada
+                di hospital sebelum akhirnya ditidurkan akibat keadaan jantung yang semakin
+                lemah. Namun hakikatnya, perjuangan beliau bermula lebih awal daripada itu.
+              </p>
+              <p>
+                Segalanya bermula sekitar pertengahan April 2026 apabila beliau menjalani
+                pemeriksaan CT Scan di KPJ. Pada 16 April, doktor memaklumkan terdapat
+                kemungkinan besar beliau menghidap kanser. Untuk mendapatkan kepastian,
+                biopsi dilakukan. Beberapa hari kemudian, keputusan awal mengesahkan
+                kewujudan kanser. Namun doktor masih belum dapat menentukan jenis kanser
+                tersebut. Sampel dan laporan dihantar semula ke HSI untuk ujian yang lebih
+                terperinci.
+              </p>
+              <p>
+                Di sinilah bermulanya satu fasa yang amat menyeksakan. Bukan kerana kami
+                tidak menerima takdir Allah, tetapi kerana menunggu dalam keadaan melihat
+                orang yang kita sayang semakin lemah setiap hari adalah satu ujian yang
+                sukar digambarkan dengan kata-kata.
+              </p>
+            </div>
+
+            <div className="journey-post__inlineVisual journey-post__inlineVisual--memorial">
+              <img src={menantuImages.memorial} alt="Poster Al-Fatihah Allahyarham Abd Manan bin Omar" />
+              <div>
+                <span className="section-kicker">Al-Fatihah</span>
+                <h4>Kenangan dan doa buat Allahyarham Abd Manan bin Omar.</h4>
+                <p>
+                  07 Disember 1950 hingga 25 Mei 2026. Semoga Allah SWT merahmati roh
+                  beliau, mengampuni segala dosanya, memuliakan kepulangannya, dan
+                  menempatkan beliau dalam kalangan orang beriman.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <ReadMore
+            className="journey-post__readmore"
+            contentClassName="journey-post__more"
+            expandLabel="Baca Catatan Penuh"
+            collapseLabel="Lihat Ringkas"
+          >
+            <div className="journey-post__body">
+              <p>
+                Saya masih ingat bagaimana keadaan bapa mertua saya berubah dengan begitu
+                pantas. Seolah-olah setiap dua atau tiga hari, ada sahaja nikmat yang
+                ditarik sedikit demi sedikit. Mula-mula pergerakan tangan menjadi lemah.
+                Kemudian kaki pula tidak lagi mampu menampung badan. Tidak lama selepas
+                itu, beliau tidak lagi mampu berjalan.
+              </p>
+              <p>
+                Sebagai seorang menantu, saya hanya mampu melihat dan berdoa. Dalam hati
+                saya sentiasa berharap agar segala kesakitan yang ditanggung menjadi asbab
+                penghapusan dosa-dosa beliau di sisi Allah SWT.
+              </p>
+
+              <div className="journey-post__inlineVisual journey-post__inlineVisual--wide">
+                <img src={menantuImages.familyMemory} alt="Kenangan Allahyarham Abd Manan bin Omar bersama anak cucu" />
+                <div>
+                  <span className="section-kicker">Kenangan Yang Tertinggal</span>
+                  <h4>Sebelum sakit itu mengubah segalanya, beliau adalah ayah dan datuk yang diraikan.</h4>
+                  <p>
+                    Gambar keluarga seperti ini menjadi lebih bermakna selepas pemergian
+                    seseorang yang kita sayang. Ia menyimpan wajah, suasana dan kasih yang
+                    tidak mampu diulang semula.
+                  </p>
+                </div>
+              </div>
+
+              <p>
+                Namun di sebalik segala penderitaan itu, saya melihat sesuatu yang luar
+                biasa. Saya melihat ketabahan. Saya melihat kekuatan seorang ayah. Saya
+                melihat seorang lelaki tua yang sedang berjuang sedaya upaya menerima ujian
+                daripada Tuhan.
+              </p>
+
+              <p>
+                Sepanjang tempoh itu juga saya menyaksikan satu perkara yang sangat menyentuh
+                hati saya, iaitu kesatuan adik-beradik dalam keluarga isteri saya. Mereka
+                bergilir-gilir menjaga ayah mereka tanpa mengira masa. Isteri saya pula
+                hampir setiap hari datang melawat dari pagi hingga petang. Beberapa kelas
+                tuisyen yang biasanya menjadi rutin terpaksa dibatalkan demi menemani
+                ayahanda tercinta.
+              </p>
+              <p>
+                Saya melihat sendiri bagaimana beliau mengurut tangan dan kaki bapanya.
+                Saya melihat bagaimana beliau cuba menyuapkan makanan. Saya melihat
+                bagaimana beliau cuba menyembunyikan kesedihan di hadapan ayahnya.
+                Dan saya juga melihat air mata yang akhirnya gugur apabila hati seorang anak
+                sudah tidak mampu lagi menanggung rasa.
+              </p>
+
+              <p>
+                Peristiwa ini memberi kesan yang sangat mendalam kepada saya kerana ia
+                mengingatkan saya kepada kehilangan ibu saya suatu ketika dahulu. Ketika
+                saya kehilangan ibu, insan yang banyak menguatkan semangat saya ialah isteri
+                saya. Kini apabila beliau melalui kesakitan yang sama, saya hanya mampu
+                berada di sisinya sebagaimana beliau pernah berada di sisi saya dahulu.
+              </p>
+              <p>
+                Dalam tempoh menunggu keputusan biopsi yang penuh debaran itu, banyak pihak
+                tampil membantu. Antaranya pihak UMNO Plentong yang menyumbangkan katil
+                pesakit dan pelbagai bantuan lain bagi memudahkan urusan penjagaan
+                Allahyarham di rumah. Bantuan-bantuan kecil seperti inilah yang sebenarnya
+                memberi makna besar kepada keluarga yang sedang diuji.
+              </p>
+
+              <p className="journey-post__dateLine">20 Mei 2026. Tarikh yang juga akan sentiasa terpahat dalam ingatan saya.</p>
+              <p>
+                Secara kebetulan, saya sedang bercuti sakit pada hari tersebut. Jadi saya
+                berpeluang menemani bapa mertua saya ke Hospital Sultan Ismail untuk
+                mendapatkan keputusan biopsi yang ditunggu-tunggu. Pada sekitar jam 10 pagi,
+                ambulans AraMedik yang ditempah oleh biras saya, Yusri, seorang pemandu
+                ambulans kerajaan, tiba di rumah. Saya membantu mengiringi bapa mertua
+                menaiki ambulans.
+              </p>
+
+              <div className="journey-post__inlineVisual journey-post__inlineVisual--reverse">
+                <img src={menantuImages.ambulanceArrival} alt="Saya menemani Allahyarham di dalam ambulans AraMedik" />
+                <div>
+                  <span className="section-kicker">Dalam Ambulans</span>
+                  <h4>Saya tidak tahu ketika itu bahawa perjalanan ini akan menjadi kenangan terakhir.</h4>
+                  <p>
+                    Detik menaiki ambulans itu kelihatan seperti urusan biasa ke hospital.
+                    Namun selepas semuanya berlalu, gambar ini menjadi antara ingatan yang
+                    paling kuat dalam catatan saya sebagai seorang menantu.
+                  </p>
+                </div>
+              </div>
+
+              <p>
+                Sepanjang perjalanan menuju ke HSI, beliau beberapa kali mengadu kesakitan.
+                Setiap kali beliau mengerang, hati saya terasa begitu berat.
+                Sebagai manusia, kita mungkin boleh melihat penderitaan orang lain. Tetapi
+                apabila orang yang kita sayang berada di hadapan mata sedang menanggung
+                kesakitan, perasaan itu sangat berbeza. Ia menusuk jauh ke dalam hati.
+              </p>
+              <p>
+                Saya cuba berbual dengan beliau sepanjang perjalanan. Kami bercakap
+                perkara-perkara biasa. Tiada apa yang luar biasa. Tiada kata-kata besar.
+                Tiada ucapan perpisahan. Hanya perbualan biasa antara seorang menantu dan
+                bapa mertuanya.
+              </p>
+
+              <div className="journey-post__inlineVisual">
+                <img src={menantuImages.ambulanceInside} alt="Allahyarham Abd Manan bin Omar dalam ambulans menuju ke Hospital Sultan Ismail" />
+                <div>
+                  <span className="section-kicker">Tatapan Terakhir Dalam Ambulans</span>
+                  <h4>Perjalanan kira-kira tiga puluh minit itu rupanya menjadi perbualan terakhir kami.</h4>
+                  <p>
+                    Di ruang sempit ambulans inilah saya duduk bersebelahan dengan beliau,
+                    mendengar suaranya dan menatap wajahnya dalam keadaan masih mampu
+                    berbicara.
+                  </p>
+                </div>
+              </div>
+
+              <p>
+                Namun tanpa saya sedari ketika itu, perjalanan selama kira-kira tiga puluh
+                minit itulah sebenarnya tatapan dan perbualan terakhir saya bersama beliau.
+                Saya tidak pernah menyangka bahawa itulah kali terakhir saya mendengar suara
+                beliau secara jelas. Itulah kali terakhir saya duduk bersebelahan dengannya.
+                Dan itulah kali terakhir saya berpeluang menatap wajahnya dalam keadaan masih
+                mampu berbicara.
+              </p>
+
+              <p>
+                Keesokan harinya, 21 Mei 2026, keadaan beliau semakin merosot. Beliau
+                mengalami kesukaran bernafas dan terpaksa dibawa ke Jabatan Kecemasan HSI.
+                Sejak hari itu, kesihatannya jatuh dengan sangat pantas. Hari demi hari
+                berlalu. Kami hanya mampu berdoa.
+              </p>
+              <p>
+                Dan akhirnya, pada 25 Mei 2026 jam 2.00 pagi, Allah SWT menjemput beliau
+                pulang menghadap-Nya. Sesungguhnya daripada Allah kita datang dan kepada-Nya
+                kita kembali.
+              </p>
+
+              <div className="journey-post__inlineVisual journey-post__inlineVisual--reverse">
+                <img src={menantuImages.hospitalFarewell} alt="Urusan terakhir Allahyarham di Hospital Sultan Ismail" />
+                <div>
+                  <span className="section-kicker">Tatapan Terakhir</span>
+                  <h4>Saat terakhir itu mengajar kami tentang rapuhnya masa.</h4>
+                  <p>
+                    Di hospital, setiap wajah menyimpan doa yang sama: semoga Allah
+                    mengampuni, merahmati, dan memuliakan kepulangan beliau.
+                  </p>
+                </div>
+              </div>
+
+              <div className="journey-post__inlineVisual">
+                <img src={menantuImages.vanJenazah} alt="Van jenazah Masjid Jamek Taman Pasir Putih" />
+                <div>
+                  <span className="section-kicker">Perjalanan Terakhir</span>
+                  <h4>Ada perjalanan yang hanya kita faham maknanya selepas semuanya selesai.</h4>
+                  <p>
+                    Dari perjalanan ke hospital hinggalah urusan terakhir, semuanya menjadi
+                    ingatan tentang betapa singkatnya jarak antara sakit, doa dan pulang.
+                  </p>
+                </div>
+              </div>
+
+              <div className="journey-post__inlineVisual journey-post__inlineVisual--reverse">
+                <img src={menantuImages.burial} alt="Suasana pengebumian Allahyarham bersama ahli keluarga dan masyarakat" />
+                <div>
+                  <span className="section-kicker">Pemergian</span>
+                  <h4>Yang tinggal ialah doa, kenangan dan amanah kasih keluarga.</h4>
+                  <p>
+                    Pemergian Allahyarham meninggalkan kekosongan yang besar, namun ia juga
+                    memperlihatkan betapa kuatnya kasih sebuah keluarga ketika diuji.
+                  </p>
+                </div>
+              </div>
+
+              <p>
+                Pemergian Allahyarham meninggalkan kekosongan yang besar dalam keluarga kami.
+                Namun saya bersyukur kerana Allah memberi peluang kepada saya untuk menjadi
+                sebahagian daripada perjalanan akhir hidup beliau. Saya bersyukur kerana
+                sempat menemani beliau pada perjalanan terakhir ke hospital. Saya bersyukur
+                kerana sempat mendengar suaranya buat kali terakhir.
+                Dan saya bersyukur kerana dipertemukan dengan seorang bapa mertua yang begitu
+                tabah menghadapi ujian sehingga ke penghujung hayatnya.
+              </p>
+
+              <p className="journey-post__prayer">
+                Semoga Allah SWT mengampuni segala dosa Allahyarham Abd Manan bin Omar,
+                melapangkan kuburnya, menjadikan kuburnya taman daripada taman-taman syurga,
+                serta menghimpunkannya bersama golongan yang beriman dan beramal soleh.
+              </p>
+              <p className="journey-post__dateLine">Al-Fatihah.</p>
+            </div>
+
+            <div className="journey-post__shareFooter">
+              <ShareBar title="Tatapan Terakhir Dalam Ambulans" anchor="#journey-catatan-seorang-menantu" />
+            </div>
+          </ReadMore>
+        </article>
+
+        <article id="journey-guru-cemerlang-ksl" className="journey-post">
+          <div className="journey-post__header">
+            <div>
+              <span className="section-kicker">Catatan Guru - 28 April 2026</span>
               <h3>
                 Selagi ada peluang, saya akan terus berjalan dalam laluan ini sebagai seorang
                 Guru Cemerlang.

@@ -314,7 +314,9 @@ export default function App() {
 
     if (landingFile) {
       shareLandingUrl.pathname = `/${landingFile}`;
-      shareLandingUrl.searchParams.set("target", targetId);
+      if (landingFile === "share-journey.html" && targetId) {
+        shareLandingUrl.searchParams.set("target", targetId);
+      }
       return shareLandingUrl.toString();
     }
 

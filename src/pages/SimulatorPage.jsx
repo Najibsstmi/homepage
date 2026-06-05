@@ -1,6 +1,7 @@
 import SimulatorCard from "../components/SimulatorCard";
 import LinearMotionSimulator from "../components/LinearMotionSimulator";
 import AlloyHardnessSimulatorPage from "./AlloyHardnessSimulatorPage";
+import AtomMoleculeCompoundSimulatorPage from "./AtomMoleculeCompoundSimulatorPage";
 import ElectrolysisSimulatorPage from "./ElectrolysisSimulatorPage";
 import InertiaMassSimulatorPage from "./InertiaMassSimulatorPage";
 import NuclearEnergySimulatorPage from "./NuclearEnergySimulatorPage";
@@ -16,6 +17,10 @@ export default function SimulatorPage() {
 
   if (path === "/simulator/elektrokimia-elektrolisis") {
     return <ElectrolysisSimulatorPage />;
+  }
+
+  if (path === "/simulator/atom-molekul-sebatian") {
+    return <AtomMoleculeCompoundSimulatorPage />;
   }
 
   if (path === "/simulator/aloi" || path === "/simulator/alloy-hardness") {

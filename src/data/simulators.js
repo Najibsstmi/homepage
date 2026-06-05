@@ -54,6 +54,15 @@ export const simulators = [
     href: "/simulator/elektrokimia-elektrolisis",
   },
   {
+    id: "atom-molekul-sebatian",
+    title: "Atom, Molekul dan Sebatian",
+    level: "Tingkatan 5",
+    topic: "Bab 6 Elektrokimia",
+    description:
+      "Membina model zarah untuk membezakan atom, unsur, molekul unsur, sebatian molekul, sebatian ionik dan campuran.",
+    href: "/simulator/atom-molekul-sebatian",
+  },
+  {
     id: "tenaga-nuklear",
     title: "Tenaga Nuklear",
     level: "Tingkatan 4",

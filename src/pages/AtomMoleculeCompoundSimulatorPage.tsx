@@ -18,18 +18,6 @@ type Position = {
   y: number;
 };
 
-const fallbackPositions: Position[] = [
-  { x: 32, y: 34 },
-  { x: 45, y: 34 },
-  { x: 58, y: 34 },
-  { x: 38, y: 48 },
-  { x: 52, y: 48 },
-  { x: 66, y: 48 },
-  { x: 34, y: 62 },
-  { x: 48, y: 62 },
-  { x: 62, y: 62 },
-];
-
 export default function AtomMoleculeCompoundSimulatorPage({
   reviewPanel,
 }: {
@@ -37,12 +25,18 @@ export default function AtomMoleculeCompoundSimulatorPage({
 }) {
   const [atoms, setAtoms] = useState<AtomNode[]>([]);
   const [bonds, setBonds] = useState<AtomBond[]>([]);
+  const [structureVersion, setStructureVersion] = useState(0);
   const atomCounter = useRef(0);
   const bondCounter = useRef(0);
   const analysis = useMemo(() => classifyMatter(atoms, bonds), [atoms, bonds]);
 
+  const markStructureChanged = () => {
+    setStructureVersion((version) => version + 1);
+  };
+
   const addAtomAt = (element: ElementSymbol, position: Position) => {
     atomCounter.current += 1;
+    markStructureChanged();
     setAtoms((current) => [
       ...current,
       {
@@ -54,9 +48,8 @@ export default function AtomMoleculeCompoundSimulatorPage({
     ]);
   };
 
-  const addAtomFromPanel = (element: ElementSymbol) => {
-    const position = fallbackPositions[atoms.length % fallbackPositions.length];
-    addAtomAt(element, position);
+  const addAtomToBoardCenter = (element: ElementSymbol) => {
+    addAtomAt(element, { x: 50, y: 50 });
   };
 
   const handlePaletteDragStart = (event: DragEvent<HTMLButtonElement>, element: ElementSymbol) => {
@@ -83,12 +76,17 @@ export default function AtomMoleculeCompoundSimulatorPage({
 
     const pairKey = getBondKey(firstId, secondId);
 
+    if (bonds.some((bond) => getBondKey(bond.from, bond.to) === pairKey)) {
+      return;
+    }
+
+    bondCounter.current += 1;
+    markStructureChanged();
     setBonds((current) => {
       if (current.some((bond) => getBondKey(bond.from, bond.to) === pairKey)) {
         return current;
       }
 
-      bondCounter.current += 1;
       return [
         ...current,
         {
@@ -103,15 +101,24 @@ export default function AtomMoleculeCompoundSimulatorPage({
 
   const removeAtoms = (atomIds: string[]) => {
     const ids = new Set(atomIds);
+    if (atomIds.length) {
+      markStructureChanged();
+    }
     setAtoms((current) => current.filter((atom) => !ids.has(atom.id)));
     setBonds((current) => current.filter((bond) => !ids.has(bond.from) && !ids.has(bond.to)));
   };
 
   const removeBond = (bondId: string) => {
+    if (bonds.some((bond) => bond.id === bondId)) {
+      markStructureChanged();
+    }
     setBonds((current) => current.filter((bond) => bond.id !== bondId));
   };
 
   const clearBoard = () => {
+    if (atoms.length || bonds.length) {
+      markStructureChanged();
+    }
     setAtoms([]);
     setBonds([]);
   };
@@ -122,8 +129,14 @@ export default function AtomMoleculeCompoundSimulatorPage({
         <span className="simulatorHero__kicker">Tingkatan 5 - Bab Elektrokimia</span>
         <h1>Simulator Atom, Molekul dan Sebatian</h1>
         <p>
-          Seret dan lepaskan atom untuk membina model zarah serta mengenal pasti atom,
-          unsur, molekul, sebatian dan campuran.
+          <span className="atomInstructionDesktop">
+            Seret atom ke papan binaan untuk membina model zarah serta mengenal pasti atom,
+            unsur, molekul, sebatian dan campuran.
+          </span>
+          <span className="atomInstructionMobile">
+            Tekan atom untuk menambah ke papan binaan, kemudian alihkan kedudukannya untuk
+            membina model zarah.
+          </span>
         </p>
       </section>
 
@@ -131,7 +144,7 @@ export default function AtomMoleculeCompoundSimulatorPage({
 
       <section className="atomLabLayout" aria-label="Simulator atom molekul dan sebatian">
         <AtomPanel
-          onAddAtom={addAtomFromPanel}
+          onTapAtom={addAtomToBoardCenter}
           onDragStart={handlePaletteDragStart}
           onClear={clearBoard}
         />
@@ -146,7 +159,7 @@ export default function AtomMoleculeCompoundSimulatorPage({
           onRemoveAtoms={removeAtoms}
           onClear={clearBoard}
         />
-        <AnalysisPanel analysis={analysis} />
+        <AnalysisPanel analysis={analysis} structureVersion={structureVersion} />
       </section>
 
       <ChallengeSection analysis={analysis} onClearBoard={clearBoard} />

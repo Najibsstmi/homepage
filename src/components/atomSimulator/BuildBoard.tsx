@@ -314,11 +314,14 @@ export default function BuildBoard({
   return (
     <section className="atomBuildPanel atomSimPanel">
       <div className="atomBuildPanel__header">
-        <div>
-          <span>Papan Binaan</span>
-          <strong>
-            <ChemicalFormula value={analysis.formula} />
-          </strong>
+        <div className="atomBuildPanel__title">
+          <span className="atomBuildPanel__eyebrow">Papan Binaan</span>
+          <div className="atomFormulaBadge" aria-label={`Formula semasa ${analysis.formula || "-"}`}>
+            <span>Formula Semasa</span>
+            <strong>
+              <ChemicalFormula value={analysis.formula} />
+            </strong>
+          </div>
         </div>
         <div className="atomBuildPanel__actions">
           <div className="atomMoveMode" aria-label="Mod gerakan atom">
@@ -354,7 +357,8 @@ export default function BuildBoard({
         {!atoms.length && (
           <div className="atomBoard__empty">
             <strong>Papan kosong</strong>
-            <span>Seret atom ke kawasan putih untuk mula membina model zarah.</span>
+            <span className="atomInstructionDesktop">Seret atom ke papan binaan</span>
+            <span className="atomInstructionMobile">Tekan atom untuk menambah ke papan binaan</span>
           </div>
         )}
 

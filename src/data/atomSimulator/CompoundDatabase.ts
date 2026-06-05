@@ -17,6 +17,8 @@ export type MatterCategory =
   | "SEBATIAN IONIK"
   | "ION"
   | "SEBATIAN MOLEKUL TIDAK DIKENALI"
+  | "STRUKTUR TIDAK STABIL"
+  | "LARUTAN AKUEUS"
   | "CAMPURAN"
   | "BELUM DIBINA";
 
@@ -170,6 +172,15 @@ export const KNOWN_COMPOUNDS: KnownCompound[] = [
     expectedBonds: 4,
     composition: { C: 1, H: 4 },
     description: "Mengandungi atom karbon dan hidrogen yang membentuk molekul sebatian.",
+  },
+  {
+    formula: "HCl",
+    name: "Hidrogen klorida",
+    category: "SEBATIAN MOLEKUL",
+    typeLabel: "Sebatian kovalen diskrit",
+    expectedBonds: 1,
+    composition: { H: 1, Cl: 1 },
+    description: "Hidrogen klorida ialah sebatian molekul yang boleh membentuk asid hidroklorik apabila larut dalam air.",
   },
   {
     formula: "NaCl",

@@ -14738,9 +14738,42 @@ section {
   display: grid;
   width: 100%;
   max-width: 100%;
-  grid-template-columns: 230px minmax(0, 1fr) 310px;
+  grid-template-columns: 230px minmax(0, 1fr);
+  grid-template-areas:
+    "palette board"
+    "palette analysis";
   gap: 1rem;
   align-items: start;
+}
+
+.atomPanel {
+  grid-area: palette;
+}
+
+.atomBuildPanel {
+  grid-area: board;
+}
+
+.atomAnalysis {
+  display: grid;
+  grid-area: analysis;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  align-content: start;
+}
+
+.atomAnalysis > .atomResultCard,
+.atomAnalysis > .atomIonicCard,
+.atomAnalysis > .atomAqueousCard,
+.atomAnalysis > .atomExplanation,
+.atomAnalysis > .atomElementBreakdown,
+.atomAnalysis > .atomUnitList,
+.atomAnalysis > .atomAnalysisGrid {
+  margin-top: 0;
+}
+
+.atomAnalysis__header {
+  grid-column: 1 / -1;
 }
 
 .atomSimPanel {
@@ -14757,6 +14790,51 @@ section {
   align-items: center;
   justify-content: space-between;
   gap: 0.8rem;
+}
+
+.atomBuildPanel__title {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.atomFormulaBadge {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgba(250, 204, 21, 0.24);
+  border-radius: 999px;
+  padding: 0.38rem 0.62rem;
+  background: rgba(120, 53, 15, 0.18);
+  color: #fef3c7;
+  line-height: 1.15;
+}
+
+.atomFormulaBadge span {
+  color: #fde68a;
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.atomFormulaBadge strong {
+  display: inline-flex;
+  align-items: center;
+  min-height: 0;
+  color: #f8fafc;
+  font-size: 1rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.atomFormulaBadge strong span {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  text-transform: none;
 }
 
 .atomBuildPanel__actions {
@@ -14805,6 +14883,18 @@ section {
   margin-top: 1rem;
 }
 
+.atomPanel__hint {
+  margin: 0.7rem 0 0;
+  color: rgba(226, 232, 240, 0.76);
+  font-size: 0.85rem;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.atomInstructionMobile {
+  display: none;
+}
+
 .atomPalette__item {
   display: grid;
   min-width: 0;
@@ -14819,6 +14909,7 @@ section {
   color: #f8fafc;
   text-align: left;
   cursor: grab;
+  touch-action: manipulation;
   transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
@@ -14927,6 +15018,29 @@ section {
   color: #f8fafc;
   font-size: 1.45rem;
   line-height: 1.1;
+}
+
+.atomBuildPanel__header .atomFormulaBadge > span {
+  color: #fde68a;
+  font-size: 0.68rem;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.atomBuildPanel__header .atomFormulaBadge strong {
+  min-height: 0;
+  color: #f8fafc;
+  font-size: 1rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.atomBuildPanel__header .atomFormulaBadge strong span {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  text-transform: none;
 }
 
 .atomBoard {
@@ -15184,6 +15298,11 @@ section {
   color: #cffafe;
 }
 
+.atomCategoryBadge--teal {
+  background: rgba(13, 148, 136, 0.28);
+  color: #ccfbf1;
+}
+
 .atomCategoryBadge--green {
   background: rgba(22, 163, 74, 0.26);
   color: #dcfce7;
@@ -15201,6 +15320,7 @@ section {
 
 .atomResultCard,
 .atomIonicCard,
+.atomAqueousCard,
 .atomExplanation,
 .atomElementBreakdown,
 .atomUnitList {
@@ -15221,6 +15341,7 @@ section {
 
 .atomResultCard p,
 .atomIonicCard p,
+.atomAqueousCard p,
 .atomExplanation p,
 .atomElementBreakdown p,
 .atomUnitList p,
@@ -15255,6 +15376,189 @@ section {
   );
 }
 
+.atomAqueousCard {
+  display: grid;
+  gap: 0.8rem;
+  border-color: rgba(45, 212, 191, 0.2);
+  background:
+    radial-gradient(circle at top right, rgba(45, 212, 191, 0.13), transparent 34%),
+    rgba(8, 47, 73, 0.3);
+}
+
+.atomAqueousCard > span {
+  color: #5eead4;
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.atomAqueousCard > strong {
+  color: #f8fafc;
+  font-size: 0.98rem;
+  line-height: 1.35;
+}
+
+.atomAqueousActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.atomAqueousActions button {
+  border: 1px solid rgba(45, 212, 191, 0.24);
+  border-radius: 14px;
+  padding: 0.68rem 0.8rem;
+  background: rgba(15, 23, 42, 0.48);
+  color: #ccfbf1;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.atomAqueousActions button:hover,
+.atomAqueousAction--active {
+  transform: translateY(-1px);
+  border-color: rgba(45, 212, 191, 0.52) !important;
+  background: rgba(20, 184, 166, 0.18) !important;
+}
+
+.atomAqueousResult {
+  display: grid;
+  gap: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 16px;
+  padding: 0.85rem;
+  background: rgba(15, 23, 42, 0.46);
+}
+
+.atomAqueousResult__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+}
+
+.atomAqueousResult__header > strong {
+  color: #f8fafc;
+  font-size: 1.12rem;
+}
+
+.atomElectrolyteBadge {
+  border-radius: 999px;
+  padding: 0.42rem 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.atomElectrolyteBadge--strong {
+  background: rgba(34, 197, 94, 0.18);
+  color: #bbf7d0;
+}
+
+.atomElectrolyteBadge--weak {
+  background: rgba(250, 204, 21, 0.16);
+  color: #fef3c7;
+}
+
+.atomIonSplit {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(64px, 1fr) auto minmax(64px, 1fr);
+  align-items: center;
+  min-height: 92px;
+  overflow: hidden;
+  border: 1px solid rgba(45, 212, 191, 0.18);
+  border-radius: 16px;
+  padding: 0.8rem;
+  background:
+    linear-gradient(90deg, rgba(8, 47, 73, 0.42), rgba(15, 23, 42, 0.72), rgba(8, 47, 73, 0.42));
+}
+
+.atomIonSplit::before,
+.atomIonSplit::after {
+  position: absolute;
+  top: 50%;
+  width: 30%;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(94, 234, 212, 0.74), transparent);
+  content: "";
+  transform: translateY(-50%);
+}
+
+.atomIonSplit::before {
+  left: 13%;
+}
+
+.atomIonSplit::after {
+  right: 13%;
+}
+
+.atomIonSplit__source {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 74px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(125, 211, 252, 0.28);
+  border-radius: 50%;
+  background: rgba(8, 47, 73, 0.92);
+  color: #e0f2fe;
+  font-size: 0.72rem;
+  font-weight: 950;
+  text-align: center;
+  box-shadow: 0 0 22px rgba(45, 212, 191, 0.12);
+}
+
+.atomIonSplit__source i {
+  position: absolute;
+  inset: -7px;
+  border: 1px dashed rgba(94, 234, 212, 0.34);
+  border-radius: 50%;
+  animation: atomSolventPulse 1.8s ease-in-out infinite;
+}
+
+.atomIonChip {
+  position: relative;
+  z-index: 3;
+  display: inline-grid;
+  justify-self: center;
+  min-width: 64px;
+  min-height: 44px;
+  place-items: center;
+  border: 1px solid rgba(45, 212, 191, 0.28);
+  border-radius: 999px;
+  padding: 0.5rem 0.7rem;
+  background: rgba(13, 148, 136, 0.24);
+  color: #ccfbf1;
+  font-size: 1rem;
+  font-weight: 950;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.22);
+}
+
+.atomIonChip--left {
+  animation: atomIonDriftLeft 1.8s ease-in-out infinite;
+}
+
+.atomIonChip--right {
+  animation: atomIonDriftRight 1.8s ease-in-out infinite;
+}
+
+.atomIonFormula sup,
+.atomIonFormula sub {
+  font-size: 0.68em;
+  line-height: 0;
+}
+
+.atomAqueousResult p {
+  color: rgba(226, 232, 240, 0.8);
+}
+
 .atomAnalysisGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -15285,6 +15589,12 @@ section {
   font-size: 0.98rem;
   font-weight: 900;
   line-height: 1.25;
+}
+
+.atomIonPresence {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.24rem;
 }
 
 .atomElementBreakdown,
@@ -15621,9 +15931,48 @@ section {
   }
 }
 
+@keyframes atomIonDriftLeft {
+  0%,
+  100% {
+    transform: translateX(8px) scale(0.96);
+  }
+
+  48% {
+    transform: translateX(-14px) scale(1.04);
+  }
+}
+
+@keyframes atomIonDriftRight {
+  0%,
+  100% {
+    transform: translateX(-8px) scale(0.96);
+  }
+
+  48% {
+    transform: translateX(14px) scale(1.04);
+  }
+}
+
+@keyframes atomSolventPulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.92);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: scale(1.08);
+  }
+}
+
 @media (max-width: 1180px) {
   .atomLabLayout {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "palette"
+      "board"
+      "analysis";
   }
 
   .atomPalette {
@@ -15643,6 +15992,7 @@ section {
   .atomAnalysis__header,
   .atomResultCard,
   .atomIonicCard,
+  .atomAqueousCard,
   .atomExplanation,
   .atomElementBreakdown,
   .atomUnitList {
@@ -15651,6 +16001,20 @@ section {
 
   .atomAnalysis__header {
     grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 767px) {
+  .atomInstructionDesktop {
+    display: none;
+  }
+
+  .atomInstructionMobile {
+    display: inline;
+  }
+
+  .atomPalette__item {
+    cursor: pointer;
   }
 }
 
@@ -15682,9 +16046,18 @@ section {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .atomInstructionDesktop {
+    display: none;
+  }
+
+  .atomInstructionMobile {
+    display: inline;
+  }
+
   .atomPalette__item {
     grid-template-columns: 48px minmax(0, 1fr);
     padding: 0.6rem;
+    cursor: pointer;
   }
 
   .atomPalette__orb {
@@ -15707,6 +16080,21 @@ section {
     flex-direction: column;
   }
 
+  .atomBuildPanel__title {
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .atomFormulaBadge {
+    max-width: 100%;
+    border-radius: 14px;
+  }
+
+  .atomBuildPanel__header .atomFormulaBadge strong {
+    white-space: normal;
+  }
+
   .atomBuildPanel__actions,
   .atomMoveMode {
     width: 100%;
@@ -15721,6 +16109,37 @@ section {
   .atomChallenge__main,
   .atomQuiz__options {
     grid-template-columns: 1fr;
+  }
+
+  .atomAqueousActions,
+  .atomAqueousResult__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .atomAqueousActions button {
+    width: 100%;
+  }
+
+  .atomIonSplit {
+    grid-template-columns: 1fr;
+    gap: 0.55rem;
+  }
+
+  .atomIonSplit::before,
+  .atomIonSplit::after {
+    display: none;
+  }
+
+  .atomIonSplit__source {
+    order: -1;
+    width: 68px;
+    justify-self: center;
+  }
+
+  .atomIonChip--left,
+  .atomIonChip--right {
+    animation-name: atomIonDriftRight;
   }
 
   .atomChallenge__track {

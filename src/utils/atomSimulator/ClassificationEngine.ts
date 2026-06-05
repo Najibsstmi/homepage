@@ -38,12 +38,14 @@ export type UnitAnalysis = {
   elementCounts: ElementCounts;
   atomIds: string[];
   description: string;
-  tone: "neutral" | "cyan" | "green" | "amber" | "rose";
+  tone: "neutral" | "cyan" | "green" | "amber" | "rose" | "teal";
 };
 
 export type MatterAnalysis = UnitAnalysis & {
   isEmpty: boolean;
   isMixture: boolean;
+  isStable: boolean;
+  instabilityReason?: string;
   unitCount: number;
   units: UnitAnalysis[];
 };
@@ -171,10 +173,6 @@ export function canFormBond(firstId: string, secondId: string, atoms: AtomNode[]
   const firstBondCount = bonds.filter((bond) => bond.from === firstId || bond.to === firstId).length;
   const secondBondCount = bonds.filter((bond) => bond.from === secondId || bond.to === secondId).length;
 
-  if (canFormAmmoniumBond(first, second, atoms, bonds, firstBondCount, secondBondCount)) {
-    return true;
-  }
-
   return firstBondCount < firstDefinition.valency && secondBondCount < secondDefinition.valency;
 }
 
@@ -196,6 +194,33 @@ export function classifyMatter(atoms: AtomNode[], bonds: AtomBond[]): MatterAnal
       tone: "neutral",
       isEmpty: true,
       isMixture: false,
+      isStable: true,
+      unitCount: 0,
+      units: [],
+    };
+  }
+
+  const instabilityReason = getStructureInstabilityReason(atoms, bonds);
+
+  if (instabilityReason) {
+    return {
+      id: "unstable-structure",
+      category: "STRUKTUR TIDAK STABIL",
+      formula: getFormula(countElements(atoms)) || "-",
+      primaryFormula: getFormula(countElements(atoms)) || "-",
+      name: "Struktur tidak stabil",
+      typeLabel: "Struktur tidak sah",
+      atomCount: atoms.length,
+      bondCount: bonds.length,
+      uniqueElementCount: countUniqueElements(atoms),
+      elementCounts: countElements(atoms),
+      atomIds: atoms.map((atom) => atom.id),
+      description: `Struktur tidak stabil. ${instabilityReason}`,
+      tone: "rose",
+      isEmpty: false,
+      isMixture: false,
+      isStable: false,
+      instabilityReason,
       unitCount: 0,
       units: [],
     };
@@ -209,6 +234,7 @@ export function classifyMatter(atoms: AtomNode[], bonds: AtomBond[]): MatterAnal
       ...units[0],
       isEmpty: false,
       isMixture: false,
+      isStable: true,
       unitCount: 1,
       units,
     };
@@ -237,6 +263,7 @@ export function classifyMatter(atoms: AtomNode[], bonds: AtomBond[]): MatterAnal
       tone: "cyan",
       isEmpty: false,
       isMixture: false,
+      isStable: true,
       unitCount: atoms.length,
       units,
     };
@@ -256,6 +283,7 @@ export function classifyMatter(atoms: AtomNode[], bonds: AtomBond[]): MatterAnal
       description: `${units.length} unit ${first.name.toLowerCase()} yang sama. Unit diskrit yang sama bukan campuran.`,
       isEmpty: false,
       isMixture: false,
+      isStable: true,
       unitCount: units.length,
       units,
     };
@@ -294,6 +322,7 @@ export function classifyMatter(atoms: AtomNode[], bonds: AtomBond[]): MatterAnal
     tone: "amber",
     isEmpty: false,
     isMixture: true,
+    isStable: true,
     unitCount: units.length,
     units,
   };
@@ -427,36 +456,29 @@ function fromKnownCompound(
   };
 }
 
-function canFormAmmoniumBond(
-  first: AtomNode,
-  second: AtomNode,
-  atoms: AtomNode[],
-  bonds: AtomBond[],
-  firstBondCount: number,
-  secondBondCount: number,
-) {
-  const nitrogen = first.element === "N" ? first : second.element === "N" ? second : undefined;
-  const hydrogen = first.element === "H" ? first : second.element === "H" ? second : undefined;
-
-  if (!nitrogen || !hydrogen) {
-    return false;
-  }
-
-  const nitrogenBondCount = nitrogen.id === first.id ? firstBondCount : secondBondCount;
-  const hydrogenBondCount = hydrogen.id === first.id ? firstBondCount : secondBondCount;
-
-  if (nitrogenBondCount !== 3 || hydrogenBondCount !== 0) {
-    return false;
-  }
-
-  const groupIds = new Set(getMoleculeGroup(nitrogen.id, atoms, bonds));
-  groupIds.add(hydrogen.id);
-  const groupAtoms = atoms.filter((atom) => groupIds.has(atom.id));
-  const counts = countElements(groupAtoms);
-
-  return counts.N === 1 && counts.H === 4 && Object.keys(counts).length === 2;
-}
-
 function countUniqueElements(atoms: AtomNode[]) {
   return new Set(atoms.map((atom) => atom.element)).size;
+}
+
+function getStructureInstabilityReason(atoms: AtomNode[], bonds: AtomBond[]) {
+  for (const atom of atoms) {
+    const element = ATOM_ELEMENTS[atom.element];
+    const atomBonds = bonds.filter((bond) => bond.from === atom.id || bond.to === atom.id);
+
+    if (atom.element === "Na") {
+      if (atomBonds.length > 1) {
+        return "Natrium (Na) hanya dibenarkan mempunyai maksimum 1 ikatan ionik.";
+      }
+
+      if (atomBonds.some((bond) => bond.kind !== "ionic")) {
+        return "Natrium (Na) mesti membentuk ikatan ionik sahaja dalam simulator ini.";
+      }
+    }
+
+    if (atomBonds.length > element.valency) {
+      return `${element.name} (${element.symbol}) melebihi valensi maksimum ${element.valency}.`;
+    }
+  }
+
+  return "";
 }

@@ -1,24 +1,41 @@
-import type { CSSProperties, DragEvent } from "react";
+import { useEffect, useState, type CSSProperties, type DragEvent } from "react";
 import {
   ATOM_ELEMENTS,
   type ElementSymbol,
 } from "../../data/atomSimulator/CompoundDatabase";
 
 type AtomPanelProps = {
-  onAddAtom: (element: ElementSymbol) => void;
+  onTapAtom: (element: ElementSymbol) => void;
   onDragStart: (event: DragEvent<HTMLButtonElement>, element: ElementSymbol) => void;
   onClear: () => void;
 };
 
 const panelOrder: ElementSymbol[] = ["H", "O", "C", "N", "Na", "Cl"];
 
-export default function AtomPanel({ onAddAtom, onDragStart, onClear }: AtomPanelProps) {
+export default function AtomPanel({ onTapAtom, onDragStart, onClear }: AtomPanelProps) {
+  const [isTapMode, setIsTapMode] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 767px)");
+    const updateMode = () => setIsTapMode(query.matches);
+
+    updateMode();
+    query.addEventListener("change", updateMode);
+
+    return () => query.removeEventListener("change", updateMode);
+  }, []);
+
   return (
     <aside className="atomPanel atomSimPanel" aria-label="Panel atom">
       <div className="atomPanel__header">
         <span>Panel Atom</span>
         <strong>6 unsur</strong>
       </div>
+
+      <p className="atomPanel__hint">
+        <span className="atomInstructionDesktop">Seret atom ke papan binaan</span>
+        <span className="atomInstructionMobile">Tekan atom untuk menambah ke papan binaan</span>
+      </p>
 
       <div className="atomPalette">
         {panelOrder.map((symbol) => {
@@ -32,11 +49,22 @@ export default function AtomPanel({ onAddAtom, onDragStart, onClear }: AtomPanel
             <button
               key={symbol}
               type="button"
-              draggable
+              draggable={!isTapMode}
               className="atomPalette__item"
               style={style}
-              onClick={() => onAddAtom(symbol)}
-              onDragStart={(event) => onDragStart(event, symbol)}
+              onClick={() => {
+                if (isTapMode) {
+                  onTapAtom(symbol);
+                }
+              }}
+              onDragStart={(event) => {
+                if (isTapMode) {
+                  event.preventDefault();
+                  return;
+                }
+
+                onDragStart(event, symbol);
+              }}
             >
               <span className="atomPalette__orb">{element.symbol}</span>
               <span className="atomPalette__name">{element.name}</span>

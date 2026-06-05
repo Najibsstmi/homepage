@@ -171,6 +171,10 @@ export function canFormBond(firstId: string, secondId: string, atoms: AtomNode[]
   const firstBondCount = bonds.filter((bond) => bond.from === firstId || bond.to === firstId).length;
   const secondBondCount = bonds.filter((bond) => bond.from === secondId || bond.to === secondId).length;
 
+  if (canFormAmmoniumBond(first, second, atoms, bonds, firstBondCount, secondBondCount)) {
+    return true;
+  }
+
   return firstBondCount < firstDefinition.valency && secondBondCount < secondDefinition.valency;
 }
 
@@ -266,7 +270,13 @@ export function classifyMatter(atoms: AtomNode[], bonds: AtomBond[]): MatterAnal
     .map(([formula, count]) => (count > 1 ? `${count}${formula}` : formula))
     .join(" + ");
   const hasCompound = units.some((unit) => unit.category.includes("SEBATIAN"));
+  const hasIon = units.some((unit) => unit.category === "ION");
   const hasElement = units.some((unit) => unit.category === "ATOM" || unit.category === "UNSUR" || unit.category === "MOLEKUL UNSUR");
+  const mixtureLabels = [
+    hasElement ? "unsur" : "",
+    hasCompound ? "sebatian" : "",
+    hasIon ? "ion" : "",
+  ].filter(Boolean);
 
   return {
     id: "mixture",
@@ -274,7 +284,7 @@ export function classifyMatter(atoms: AtomNode[], bonds: AtomBond[]): MatterAnal
     formula: mixtureFormula,
     primaryFormula: mixtureFormula,
     name: "Campuran",
-    typeLabel: hasCompound && hasElement ? "Campuran unsur dan sebatian" : hasCompound ? "Campuran sebatian" : "Campuran unsur",
+    typeLabel: mixtureLabels.length ? `Campuran ${mixtureLabels.join(" dan ")}` : "Campuran bahan",
     atomCount: atoms.length,
     bondCount: bonds.length,
     uniqueElementCount: countUniqueElements(atoms),
@@ -409,8 +419,42 @@ function fromKnownCompound(
     elementCounts,
     atomIds,
     description: compound.description,
-    tone: compound.category === "SEBATIAN IONIK" ? "green" : compound.category === "MOLEKUL UNSUR" ? "cyan" : "green",
+    tone: compound.category === "SEBATIAN IONIK" || compound.category === "ION"
+      ? "green"
+      : compound.category === "MOLEKUL UNSUR"
+        ? "cyan"
+        : "green",
   };
+}
+
+function canFormAmmoniumBond(
+  first: AtomNode,
+  second: AtomNode,
+  atoms: AtomNode[],
+  bonds: AtomBond[],
+  firstBondCount: number,
+  secondBondCount: number,
+) {
+  const nitrogen = first.element === "N" ? first : second.element === "N" ? second : undefined;
+  const hydrogen = first.element === "H" ? first : second.element === "H" ? second : undefined;
+
+  if (!nitrogen || !hydrogen) {
+    return false;
+  }
+
+  const nitrogenBondCount = nitrogen.id === first.id ? firstBondCount : secondBondCount;
+  const hydrogenBondCount = hydrogen.id === first.id ? firstBondCount : secondBondCount;
+
+  if (nitrogenBondCount !== 3 || hydrogenBondCount !== 0) {
+    return false;
+  }
+
+  const groupIds = new Set(getMoleculeGroup(nitrogen.id, atoms, bonds));
+  groupIds.add(hydrogen.id);
+  const groupAtoms = atoms.filter((atom) => groupIds.has(atom.id));
+  const counts = countElements(groupAtoms);
+
+  return counts.N === 1 && counts.H === 4 && Object.keys(counts).length === 2;
 }
 
 function countUniqueElements(atoms: AtomNode[]) {

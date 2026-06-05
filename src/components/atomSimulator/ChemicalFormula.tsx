@@ -23,7 +23,9 @@ export default function ChemicalFormula({ value, className = "" }: ChemicalFormu
 }
 
 function FormulaPart({ value }: { value: string }) {
-  const tokens = Array.from(value.matchAll(/(\d*)([A-Z][a-z]?)(\d*)/g));
+  const chargeMatch = value.match(/([+-])$/);
+  const formulaValue = chargeMatch ? value.slice(0, -1) : value;
+  const tokens = Array.from(formulaValue.matchAll(/(\d*)([A-Z][a-z]?)(\d*)/g));
 
   if (!tokens.length) {
     return <>{value}</>;
@@ -38,6 +40,7 @@ function FormulaPart({ value }: { value: string }) {
           {token[3] && <sub>{token[3]}</sub>}
         </span>
       ))}
+      {chargeMatch && <sup>{chargeMatch[1]}</sup>}
     </>
   );
 }

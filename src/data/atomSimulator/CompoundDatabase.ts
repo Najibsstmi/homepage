@@ -15,6 +15,7 @@ export type MatterCategory =
   | "MOLEKUL UNSUR"
   | "SEBATIAN MOLEKUL"
   | "SEBATIAN IONIK"
+  | "ION"
   | "SEBATIAN MOLEKUL TIDAK DIKENALI"
   | "CAMPURAN"
   | "BELUM DIBINA";
@@ -156,10 +157,10 @@ export const KNOWN_COMPOUNDS: KnownCompound[] = [
     formula: "NH3",
     name: "Ammonia",
     category: "SEBATIAN MOLEKUL",
-    typeLabel: "Sebatian kovalen diskrit",
+    typeLabel: "Molekul / sebatian molekul",
     expectedBonds: 3,
     composition: { N: 1, H: 3 },
-    description: "Mengandungi atom nitrogen dan hidrogen yang membentuk molekul sebatian.",
+    description: "Ammonia ialah molekul sebatian yang mengandungi satu atom nitrogen dan tiga atom hidrogen.",
   },
   {
     formula: "CH4",
@@ -191,21 +192,39 @@ export const KNOWN_COMPOUNDS: KnownCompound[] = [
   },
   {
     formula: "NO",
-    name: "Nitrogen monoksida",
+    name: "Nitrogen oksida",
     category: "SEBATIAN MOLEKUL",
-    typeLabel: "Sebatian kovalen diskrit",
+    typeLabel: "Molekul / sebatian molekul",
     expectedBonds: 1,
     composition: { N: 1, O: 1 },
-    description: "Mengandungi atom nitrogen dan oksigen yang berikatan secara kimia.",
+    description: "Nitrogen oksida ialah molekul sebatian yang mengandungi nitrogen dan oksigen.",
   },
   {
     formula: "NO2",
     name: "Nitrogen dioksida",
     category: "SEBATIAN MOLEKUL",
-    typeLabel: "Sebatian kovalen diskrit",
+    typeLabel: "Molekul / sebatian molekul",
     expectedBonds: 2,
     composition: { N: 1, O: 2 },
-    description: "Mengandungi atom nitrogen dan oksigen yang membentuk molekul sebatian.",
+    description: "Nitrogen dioksida ialah molekul sebatian yang mengandungi satu atom nitrogen dan dua atom oksigen.",
+  },
+  {
+    formula: "NO3-",
+    name: "Ion nitrat",
+    category: "ION",
+    typeLabel: "Ion poliatom",
+    expectedBonds: 3,
+    composition: { N: 1, O: 3 },
+    description: "Ion nitrat ialah ion poliatom bercas negatif yang mengandungi satu atom nitrogen dan tiga atom oksigen.",
+  },
+  {
+    formula: "NH4+",
+    name: "Ion ammonium",
+    category: "ION",
+    typeLabel: "Ion poliatom",
+    expectedBonds: 4,
+    composition: { N: 1, H: 4 },
+    description: "Ion ammonium ialah ion poliatom bercas positif yang mengandungi satu atom nitrogen dan empat atom hidrogen.",
   },
   {
     formula: "H2O2",

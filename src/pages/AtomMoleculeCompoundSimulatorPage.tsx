@@ -103,6 +103,10 @@ export default function AtomMoleculeCompoundSimulatorPage() {
     setBonds((current) => current.filter((bond) => !ids.has(bond.from) && !ids.has(bond.to)));
   };
 
+  const removeBond = (bondId: string) => {
+    setBonds((current) => current.filter((bond) => bond.id !== bondId));
+  };
+
   const clearBoard = () => {
     setAtoms([]);
     setBonds([]);
@@ -132,6 +136,7 @@ export default function AtomMoleculeCompoundSimulatorPage() {
           onAddAtomAt={addAtomAt}
           onMoveAtoms={moveAtoms}
           onCreateBond={createBond}
+          onRemoveBond={removeBond}
           onRemoveAtoms={removeAtoms}
           onClear={clearBoard}
         />

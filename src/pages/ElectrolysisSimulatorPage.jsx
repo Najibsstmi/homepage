@@ -13,7 +13,7 @@ const initialBulbAnswers = { solid: "", molten: "", aqueous: "" };
 const initialInferences = { solid: "", molten: "", aqueous: "" };
 const initialAqueousItems = { water: false, powder: false, electrodes: false };
 
-export default function ElectrolysisSimulatorPage() {
+export default function ElectrolysisSimulatorPage({ reviewPanel }) {
   const [mode, setMode] = useState("solid-molten");
   const [hasPowder, setHasPowder] = useState(false);
   const [hasBurner, setHasBurner] = useState(false);
@@ -125,6 +125,8 @@ export default function ElectrolysisSimulatorPage() {
           sebatian ion mengkonduksikan elektrik.
         </p>
       </section>
+
+      {reviewPanel}
 
       <section className="electroModeBar" aria-label="Pilihan mode simulator">
         {[

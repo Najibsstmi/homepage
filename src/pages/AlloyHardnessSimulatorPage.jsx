@@ -16,7 +16,7 @@ const initialTableAnswers = {
 
 const isWithinTolerance = (value, expected) => Math.abs(value - expected) <= 0.2;
 
-export default function AlloyHardnessSimulatorPage() {
+export default function AlloyHardnessSimulatorPage({ reviewPanel }) {
   const [selectedMaterial, setSelectedMaterial] = useState("");
   const [dropping, setDropping] = useState(false);
   const [results, setResults] = useState({});
@@ -102,6 +102,8 @@ export default function AlloyHardnessSimulatorPage() {
           selepas bebola keluli dijatuhkan ke atas bongkah.
         </p>
       </section>
+
+      {reviewPanel}
 
       <section className="electroLayout alloyLayout">
         <MaterialTray

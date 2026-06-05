@@ -1,5 +1,7 @@
 import SimulatorCard from "../components/SimulatorCard";
 import LinearMotionSimulator from "../components/LinearMotionSimulator";
+import SimulatorReviewPanel from "../components/reviews/SimulatorReviewPanel";
+import useRatingSummaries from "../components/reviews/useRatingSummaries";
 import AlloyHardnessSimulatorPage from "./AlloyHardnessSimulatorPage";
 import AtomMoleculeCompoundSimulatorPage from "./AtomMoleculeCompoundSimulatorPage";
 import ElectrolysisSimulatorPage from "./ElectrolysisSimulatorPage";
@@ -10,33 +12,65 @@ import { simulators } from "../data/simulators";
 
 export default function SimulatorPage() {
   const path = typeof window === "undefined" ? "/simulator" : window.location.pathname;
+  const { refresh, status: ratingStatus, summaries } = useRatingSummaries();
+  const getSimulator = (id) => simulators.find((simulator) => simulator.id === id);
+  const getReviewPanel = (simulatorId) => {
+    const simulator = getSimulator(simulatorId);
+
+    return (
+      <div className="simulatorDetailReviewSlot">
+        <SimulatorReviewPanel
+          simulatorId={simulatorId}
+          simulatorTitle={simulator?.title}
+          summary={summaries[simulatorId]}
+          summaryStatus={ratingStatus}
+          compact
+          onReviewSubmitted={refresh}
+        />
+      </div>
+    );
+  };
 
   if (path === "/simulator/gerakan-linear") {
-    return <LinearMotionSimulator />;
+    return <LinearMotionSimulator reviewPanel={getReviewPanel("gerakan-linear")} />;
   }
 
   if (path === "/simulator/elektrokimia-elektrolisis") {
-    return <ElectrolysisSimulatorPage />;
+    return (
+      <ElectrolysisSimulatorPage
+        reviewPanel={getReviewPanel("elektrokimia-elektrolisis")}
+      />
+    );
   }
 
   if (path === "/simulator/atom-molekul-sebatian") {
-    return <AtomMoleculeCompoundSimulatorPage />;
+    return (
+      <AtomMoleculeCompoundSimulatorPage
+        reviewPanel={getReviewPanel("atom-molekul-sebatian")}
+      />
+    );
   }
 
   if (path === "/simulator/aloi" || path === "/simulator/alloy-hardness") {
-    return <AlloyHardnessSimulatorPage />;
+    return <AlloyHardnessSimulatorPage reviewPanel={getReviewPanel("aloi")} />;
   }
 
   if (path === "/simulator/kadar-tindak-balas") {
-    return <ReactionRateSimulatorPage />;
+    return (
+      <ReactionRateSimulatorPage
+        reviewPanel={getReviewPanel("kadar-tindak-balas")}
+      />
+    );
   }
 
   if (path === "/simulator/inersia") {
-    return <InertiaMassSimulatorPage />;
+    return <InertiaMassSimulatorPage reviewPanel={getReviewPanel("inersia")} />;
   }
 
   if (path === "/simulator/tenaga-nuklear") {
-    return <NuclearEnergySimulatorPage />;
+    return (
+      <NuclearEnergySimulatorPage reviewPanel={getReviewPanel("tenaga-nuklear")} />
+    );
   }
 
   return (
@@ -53,7 +87,13 @@ export default function SimulatorPage() {
 
       <section className="simulatorGrid" aria-label="Senarai simulator eksperimen">
         {simulators.map((simulator) => (
-          <SimulatorCard key={simulator.id} simulator={simulator} />
+          <SimulatorCard
+            key={simulator.id}
+            simulator={simulator}
+            ratingSummary={summaries[simulator.id]}
+            ratingStatus={ratingStatus}
+            onReviewSubmitted={refresh}
+          />
         ))}
       </section>
     </main>

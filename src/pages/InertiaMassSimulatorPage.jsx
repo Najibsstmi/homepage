@@ -315,7 +315,7 @@ function InertiaGraph({ records }) {
   );
 }
 
-export default function InertiaMassSimulatorPage() {
+export default function InertiaMassSimulatorPage({ reviewPanel }) {
   const [mass, setMass] = useState(30);
   const [phase, setPhase] = useState("idle");
   const [pullAmount, setPullAmount] = useState(0);
@@ -494,6 +494,8 @@ export default function InertiaMassSimulatorPage() {
           <InertiaIntroCards />
         </div>
       </section>
+
+      {reviewPanel}
 
       <section className="inertiaLabGrid">
         <aside className="inertiaCard inertiaControlPanel">

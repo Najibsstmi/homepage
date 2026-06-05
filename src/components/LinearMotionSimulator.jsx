@@ -137,7 +137,7 @@ function LinearProgressPanel({ heightCm, started, completed, tapeCut, showData, 
   );
 }
 
-export default function LinearMotionSimulator() {
+export default function LinearMotionSimulator({ reviewPanel }) {
   const [heightCm, setHeightCm] = useState(0);
   const [massKg, setMassKg] = useState(1);
   const [cartCount, setCartCount] = useState(1);
@@ -280,6 +280,8 @@ export default function LinearMotionSimulator() {
           2.0 m dan menggunakan ticker timer 50 Hz seperti aktiviti KSSM.
         </p>
       </section>
+
+      {reviewPanel}
 
       <section className="linearSim__workspace">
         <ControlsPanel

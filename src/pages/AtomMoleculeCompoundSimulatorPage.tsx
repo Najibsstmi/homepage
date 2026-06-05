@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type DragEvent } from "react";
+import { useMemo, useRef, useState, type DragEvent, type ReactNode } from "react";
 import AnalysisPanel from "../components/atomSimulator/AnalysisPanel";
 import AtomPanel from "../components/atomSimulator/AtomPanel";
 import BuildBoard from "../components/atomSimulator/BuildBoard";
@@ -30,7 +30,11 @@ const fallbackPositions: Position[] = [
   { x: 62, y: 62 },
 ];
 
-export default function AtomMoleculeCompoundSimulatorPage() {
+export default function AtomMoleculeCompoundSimulatorPage({
+  reviewPanel,
+}: {
+  reviewPanel?: ReactNode;
+}) {
   const [atoms, setAtoms] = useState<AtomNode[]>([]);
   const [bonds, setBonds] = useState<AtomBond[]>([]);
   const atomCounter = useRef(0);
@@ -122,6 +126,8 @@ export default function AtomMoleculeCompoundSimulatorPage() {
           unsur, molekul, sebatian dan campuran.
         </p>
       </section>
+
+      {reviewPanel}
 
       <section className="atomLabLayout" aria-label="Simulator atom molekul dan sebatian">
         <AtomPanel

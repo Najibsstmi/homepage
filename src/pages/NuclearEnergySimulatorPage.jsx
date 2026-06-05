@@ -1620,7 +1620,7 @@ function FissionReactorLab({
   );
 }
 
-export default function NuclearEnergySimulatorPage() {
+export default function NuclearEnergySimulatorPage({ reviewPanel }) {
   const [activeMode, setActiveMode] = useState("fission");
   const [fission, setFission] = useState(initialFission);
   const [fusion, setFusion] = useState(initialFusion);
@@ -2156,6 +2156,8 @@ export default function NuclearEnergySimulatorPage() {
           <div className="nuclearHero__core" />
         </div>
       </section>
+
+      {reviewPanel}
 
       <section className="nuclearTabs" aria-label="Pilihan mod simulator tenaga nuklear">
         {MODES.map((mode) => (

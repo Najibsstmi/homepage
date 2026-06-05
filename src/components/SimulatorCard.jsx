@@ -1,4 +1,11 @@
-export default function SimulatorCard({ simulator }) {
+import SimulatorReviewPanel from "./reviews/SimulatorReviewPanel";
+
+export default function SimulatorCard({
+  simulator,
+  ratingSummary,
+  ratingStatus,
+  onReviewSubmitted,
+}) {
   return (
     <article className="simulatorCard">
       <div className="simulatorCard__meta">
@@ -8,6 +15,15 @@ export default function SimulatorCard({ simulator }) {
 
       <h3>{simulator.title}</h3>
       <p>{simulator.description}</p>
+
+      <SimulatorReviewPanel
+        simulatorId={simulator.id}
+        simulatorTitle={simulator.title}
+        summary={ratingSummary}
+        summaryStatus={ratingStatus}
+        compact
+        onReviewSubmitted={onReviewSubmitted}
+      />
 
       <a className="simulatorCard__button" href={simulator.href}>
         Buka Simulator

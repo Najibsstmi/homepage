@@ -33,7 +33,7 @@ const initialOptions = factorOrder.reduce((options, factorId) => {
   return options;
 }, {});
 
-export default function ReactionRateSimulatorPage() {
+export default function ReactionRateSimulatorPage({ reviewPanel }) {
   const [activeFactor, setActiveFactor] = useState("temperature");
   const [selectedOptions, setSelectedOptions] = useState(initialOptions);
   const [selectedTemperature, setSelectedTemperature] = useState(30);
@@ -339,6 +339,8 @@ export default function ReactionRateSimulatorPage() {
             : "Jalankan eksperimen ketulan dan serbuk zink, bandingkan isi padu gas hidrogen melawan masa, kemudian cabar diri dengan plot graf sendiri."}
         </p>
       </section>
+
+      {reviewPanel}
 
       <section className="reactionControlDeck">
         <ReactionFactorPanel

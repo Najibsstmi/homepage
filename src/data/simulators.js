@@ -18,15 +18,6 @@ export const simulators = [
     href: "/simulator/inersia",
   },
   {
-    id: "pola-pertumbuhan",
-    title: "Pola Pertumbuhan Anak Benih",
-    level: "Tingkatan 4",
-    topic: "Sokongan, Pergerakan dan Pertumbuhan",
-    description:
-      "Simulator pemerhatian pertumbuhan anak benih untuk membandingkan perubahan tinggi, masa dan pola pertumbuhan secara topikal.",
-    href: "/simulator/pola-pertumbuhan",
-  },
-  {
     id: "aloi",
     title: "Kekerasan Logam Tulen dan Aloi",
     level: "Tingkatan 4",
@@ -70,14 +61,5 @@ export const simulators = [
     description:
       "Simulator interaktif untuk memahami pembelahan nukleus, pelakuran nukleus dan cara stesen janakuasa nuklear menghasilkan elektrik.",
     href: "/simulator/tenaga-nuklear",
-  },
-  {
-    id: "kanta",
-    title: "Pembentukan Imej oleh Kanta",
-    level: "Tingkatan 5",
-    topic: "Cahaya dan Optik",
-    description:
-      "Simulator optik untuk meneroka kedudukan objek, jarak fokus dan sifat imej yang terbentuk oleh kanta.",
-    href: "/simulator/kanta",
   },
 ];

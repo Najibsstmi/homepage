@@ -87,6 +87,7 @@ export const fetchRatingSummaries = ({ simulatorId } = {}) =>
       action: "summary",
       callback: callbackName,
       simulator_id: simulatorId,
+      _: Date.now(),
     });
     script.async = true;
     script.onerror = () => {

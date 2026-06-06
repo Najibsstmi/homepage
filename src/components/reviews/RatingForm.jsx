@@ -4,7 +4,13 @@ import StarRatingInput from "./StarRatingInput";
 
 const userTypes = ["Murid", "Guru", "Orang Awam"];
 
-export default function RatingForm({ simulatorId, compact = false, onSubmitted }) {
+export default function RatingForm({
+  simulatorId,
+  compact = false,
+  previewAverage = 0,
+  previewCount = 0,
+  onSubmitted,
+}) {
   const [rating, setRating] = useState(0);
   const [userType, setUserType] = useState("");
   const [comment, setComment] = useState("");
@@ -55,7 +61,13 @@ export default function RatingForm({ simulatorId, compact = false, onSubmitted }
       className={`ratingForm${compact ? " ratingForm--compact" : ""}`}
       onSubmit={handleSubmit}
     >
-      <StarRatingInput value={rating} onChange={handleRatingChange} disabled={isSubmitting} />
+      <StarRatingInput
+        value={rating}
+        previewValue={previewAverage}
+        previewCount={previewCount}
+        onChange={handleRatingChange}
+        disabled={isSubmitting}
+      />
 
       {rating > 0 && (
         <div className="ratingForm__fields">

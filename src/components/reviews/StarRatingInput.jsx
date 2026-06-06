@@ -8,10 +8,18 @@ export const ratingLabels = {
   5: "sangat suka",
 };
 
-export default function StarRatingInput({ value = 0, onChange, disabled = false }) {
+export default function StarRatingInput({
+  value = 0,
+  previewValue = 0,
+  previewCount = 0,
+  onChange,
+  disabled = false,
+}) {
   const [hoveredRating, setHoveredRating] = useState(0);
   const [poppingRating, setPoppingRating] = useState(0);
-  const activeRating = hoveredRating || value;
+  const previewRating = previewCount > 0 ? Math.max(1, Math.min(5, Math.round(Number(previewValue || 0)))) : 0;
+  const activeRating = hoveredRating || value || previewRating;
+  const isPreviewingAverage = !hoveredRating && !value && previewRating > 0;
 
   useEffect(() => {
     if (!poppingRating) {
@@ -41,6 +49,7 @@ export default function StarRatingInput({ value = 0, onChange, disabled = false 
             className={[
               "starRatingInput__button",
               activeRating >= rating ? "starRatingInput__button--active" : "",
+              isPreviewingAverage && activeRating >= rating ? "starRatingInput__button--preview" : "",
               poppingRating === rating ? "starRatingInput__button--pop" : "",
             ]
               .filter(Boolean)
@@ -58,7 +67,13 @@ export default function StarRatingInput({ value = 0, onChange, disabled = false 
       </div>
 
       <span className="starRatingInput__hint">
-        {activeRating ? `${activeRating} bintang - ${ratingLabels[activeRating]}` : "Pilih rating"}
+        {value
+          ? `${value} bintang - ${ratingLabels[value]}`
+          : isPreviewingAverage
+            ? `Purata ${Number(previewValue || 0).toFixed(1)} bintang - pilih rating anda`
+            : hoveredRating
+              ? `${hoveredRating} bintang - ${ratingLabels[hoveredRating]}`
+              : "Pilih rating"}
       </span>
     </div>
   );

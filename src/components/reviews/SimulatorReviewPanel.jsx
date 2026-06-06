@@ -41,6 +41,9 @@ export default function SimulatorReviewPanel({
     refreshCurrentSummary();
   };
 
+  const previewAverage = Number(localSummary?.average || 0);
+  const previewCount = Number(localSummary?.count || 0);
+
   return (
     <section
       className={`simulatorReviewPanel${compact ? " simulatorReviewPanel--compact" : ""}`}
@@ -54,7 +57,13 @@ export default function SimulatorReviewPanel({
       )}
 
       <RatingSummary summary={localSummary} status={localStatus} compact={compact} />
-      <RatingForm simulatorId={simulatorId} compact={compact} onSubmitted={handleSubmitted} />
+      <RatingForm
+        simulatorId={simulatorId}
+        compact={compact}
+        previewAverage={previewAverage}
+        previewCount={previewCount}
+        onSubmitted={handleSubmitted}
+      />
     </section>
   );
 }

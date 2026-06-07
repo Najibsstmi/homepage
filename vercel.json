@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/simulator",
-      "destination": "/index.html"
+      "destination": "/simulator.html"
     },
     {
       "source": "/simulator/:path*",
-      "destination": "/index.html"
+      "destination": "/simulator.html"
     }
   ]
 }

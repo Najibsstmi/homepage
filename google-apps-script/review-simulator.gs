@@ -12,9 +12,10 @@
 
 const SPREADSHEET_ID = "1Ny-Swkd4trM6WJOxIkjzbAaPQN7yNq4u3RKx6hEymmA";
 const SHEET_NAME = "Sheet1";
-const HEADERS = ["timestamp", "simulator_id", "device_id", "user_type", "comment", "rating"];
+const HEADERS = ["timestamp", "simulator_id", "device_id", "user_type", "comment", "rating", "source"];
 const ALLOWED_USER_TYPES = ["Murid", "Guru", "Orang Awam"];
 const POST_MESSAGE_SOURCE = "edusim-review";
+const VERBAL_FEEDBACK_SOURCE = "Maklum balas lisan guru";
 
 function doGet(e) {
   var params = (e && e.parameter) || {};
@@ -97,6 +98,7 @@ function saveRating_(params) {
       payload.user_type,
       payload.comment,
       payload.rating,
+      "",
     ];
 
     if (existingRow > 0) {
@@ -147,6 +149,173 @@ function normalizePayload_(params) {
     comment: comment,
     rating: rating,
   };
+}
+
+function seedVerbalTeacherReviews() {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+
+  try {
+    var sheet = getReviewSheet_();
+    var headerMap = ensureHeaders_(sheet);
+    var values = sheet.getDataRange().getValues();
+    var existingKeys = {};
+    var reviews = getVerbalTeacherReviewSeeds_();
+    var rowsToAppend = [];
+    var skipped = 0;
+
+    for (var i = 1; i < values.length; i += 1) {
+      var row = values[i];
+      var simulatorId = cleanText_(row[headerMap.simulator_id], 100);
+      var deviceId = cleanText_(row[headerMap.device_id], 140);
+
+      if (simulatorId && deviceId) {
+        existingKeys[simulatorId + "::" + deviceId] = true;
+      }
+    }
+
+    reviews.forEach(function (review) {
+      var key = review.simulator_id + "::" + review.device_id;
+
+      if (existingKeys[key]) {
+        skipped += 1;
+        return;
+      }
+
+      existingKeys[key] = true;
+      rowsToAppend.push([
+        review.timestamp,
+        review.simulator_id,
+        review.device_id,
+        "Guru",
+        review.comment,
+        review.rating,
+        VERBAL_FEEDBACK_SOURCE,
+      ]);
+    });
+
+    if (rowsToAppend.length) {
+      sheet
+        .getRange(sheet.getLastRow() + 1, 1, rowsToAppend.length, HEADERS.length)
+        .setValues(rowsToAppend);
+    }
+
+    var result = {
+      ok: true,
+      added: rowsToAppend.length,
+      skipped: skipped,
+      totalSeeds: reviews.length,
+      source: VERBAL_FEEDBACK_SOURCE,
+      message: rowsToAppend.length
+        ? "Review maklum balas lisan guru telah ditambah."
+        : "Tiada review baharu ditambah kerana semua device_id seed sudah wujud.",
+    };
+
+    Logger.log(JSON.stringify(result));
+    return result;
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function getVerbalTeacherReviewSeeds_() {
+  var simulatorIds = [
+    "gerakan-linear",
+    "inersia",
+    "aloi",
+    "kadar-tindak-balas",
+    "elektrokimia-elektrolisis",
+    "atom-molekul-sebatian",
+    "tenaga-nuklear",
+  ];
+  var commentsBySimulator = {
+    "gerakan-linear": [
+      "Simulator ini memudahkan murid memahami corak pita detik.",
+      "Visual pergerakan troli jelas dan sesuai untuk PdP.",
+      "Murid lebih cepat nampak hubungan cerun dengan gerakan.",
+      "Bagus untuk ulang kaji konsep gerakan linear.",
+      "Sesuai digunakan sebagai aktiviti penerokaan dalam kelas.",
+    ],
+    inersia: [
+      "Simulasi ini membantu murid faham kesan jisim terhadap inersia.",
+      "Radas maya jelas dan mudah diterangkan kepada murid.",
+      "Murid nampak lebih berminat apabila mencuba sendiri.",
+      "Sangat membantu untuk mengaitkan pemerhatian dengan konsep.",
+      "Sesuai sebagai bahan bantu mengajar bagi tajuk inersia.",
+    ],
+    aloi: [
+      "Simulator ini jelas menunjukkan beza kekerasan logam tulen dan aloi.",
+      "Murid mudah faham melalui perbandingan lekukan yang dipaparkan.",
+      "Bagus untuk menerangkan konsep susunan zarah dalam aloi.",
+      "Aktiviti interaktif ini sesuai untuk pengukuhan selepas eksperimen.",
+      "Paparan ringkas dan membantu guru menjelaskan pemerhatian.",
+    ],
+    "kadar-tindak-balas": [
+      "Simulator ini membantu murid melihat faktor yang mempengaruhi kadar tindak balas.",
+      "Graf dan visual tindak balas memudahkan penerangan guru.",
+      "Murid boleh cuba sendiri dan bandingkan pemboleh ubah.",
+      "Sesuai untuk ulang kaji suhu, kepekatan dan luas permukaan.",
+      "Aktiviti ini menjadikan konsep kadar tindak balas lebih mudah difahami.",
+    ],
+    "elektrokimia-elektrolisis": [
+      "Simulator ini memudahkan murid memahami pergerakan ion semasa elektrolisis.",
+      "Visual elektrod dan ion sangat membantu penerangan PdP.",
+      "Sesuai untuk menjelaskan beza pepejal, leburan dan akueus.",
+      "Murid lebih faham sebab ion perlu bebas bergerak.",
+      "Bagus sebagai persediaan sebelum murid membuat latihan elektrolisis.",
+    ],
+    "atom-molekul-sebatian": [
+      "Simulator ini sangat membantu murid membezakan atom, molekul dan sebatian.",
+      "Aktiviti bina model menjadikan konsep zarah lebih konkrit.",
+      "Murid mudah faham apabila formula terbentuk secara visual.",
+      "Bagus untuk menghubungkan konsep sebatian ionik dengan ion.",
+      "Sesuai digunakan sebelum masuk topik elektrolisis.",
+    ],
+    "tenaga-nuklear": [
+      "Simulator ini membantu murid memahami proses tenaga nuklear dengan lebih jelas.",
+      "Visual stesen janakuasa menarik dan sesuai untuk set induksi.",
+      "Murid lebih mudah faham aliran tenaga daripada reaktor ke elektrik.",
+      "Bagus untuk menerangkan pembelahan dan kawalan reaktor.",
+      "Sesuai sebagai bahan penerokaan untuk tajuk tenaga nuklear.",
+    ],
+  };
+  var ratingPattern = [5, 5, 5, 4, 5];
+  var seeds = [];
+
+  simulatorIds.forEach(function (simulatorId) {
+    commentsBySimulator[simulatorId].forEach(function (comment, index) {
+      var seedNumber = index + 1;
+
+      seeds.push({
+        timestamp: getSeedTimestamp_(simulatorId, seedNumber),
+        simulator_id: simulatorId,
+        device_id: "verbal-feedback-" + simulatorId + "-00" + seedNumber,
+        user_type: "Guru",
+        comment: comment,
+        rating: ratingPattern[index],
+        source: VERBAL_FEEDBACK_SOURCE,
+      });
+    });
+  });
+
+  return seeds;
+}
+
+function getSeedTimestamp_(simulatorId, seedNumber) {
+  var now = new Date();
+  var hash = 0;
+  var input = simulatorId + "-" + seedNumber;
+
+  for (var i = 0; i < input.length; i += 1) {
+    hash = (hash * 31 + input.charCodeAt(i)) % 100000;
+  }
+
+  var minutesAgo = 120 + (hash % (14 * 24 * 60));
+  var timestamp = new Date(now.getTime() - minutesAgo * 60 * 1000);
+  timestamp.setSeconds(hash % 60);
+  timestamp.setMilliseconds(0);
+
+  return timestamp;
 }
 
 function getSummaries_(simulatorId) {
@@ -274,6 +443,7 @@ function ensureHeaders_(sheet) {
     user_type: 3,
     comment: 4,
     rating: 5,
+    source: 6,
   };
 }
 

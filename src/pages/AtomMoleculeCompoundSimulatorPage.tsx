@@ -3,6 +3,7 @@ import AnalysisPanel from "../components/atomSimulator/AnalysisPanel";
 import AtomPanel from "../components/atomSimulator/AtomPanel";
 import BuildBoard from "../components/atomSimulator/BuildBoard";
 import ChallengeSection from "../components/atomSimulator/ChallengeSection";
+import MobileControlDrawer from "../components/MobileControlDrawer";
 import QuizSection from "../components/atomSimulator/QuizSection";
 import type { ElementSymbol } from "../data/atomSimulator/CompoundDatabase";
 import {
@@ -143,11 +144,13 @@ export default function AtomMoleculeCompoundSimulatorPage({
       {reviewPanel}
 
       <section className="atomLabLayout" aria-label="Simulator atom molekul dan sebatian">
-        <AtomPanel
-          onTapAtom={addAtomToBoardCenter}
-          onDragStart={handlePaletteDragStart}
-          onClear={clearBoard}
-        />
+        <MobileControlDrawer title="Panel atom" summary="Tambah atom ke papan binaan">
+          <AtomPanel
+            onTapAtom={addAtomToBoardCenter}
+            onDragStart={handlePaletteDragStart}
+            onClear={clearBoard}
+          />
+        </MobileControlDrawer>
         <BuildBoard
           atoms={atoms}
           bonds={bonds}

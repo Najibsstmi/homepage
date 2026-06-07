@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import MobileControlDrawer from "../components/MobileControlDrawer";
 import QuizCard from "../components/quiz/QuizCard";
 import ReactionConcentrationGraphs from "../components/reactionRate/ReactionConcentrationGraphs";
 import ReactionConcentrationObservationTable from "../components/reactionRate/ReactionConcentrationObservationTable";
@@ -343,18 +344,20 @@ export default function ReactionRateSimulatorPage({ reviewPanel }) {
       {reviewPanel}
 
       <section className="reactionControlDeck">
-        <ReactionFactorPanel
-          activeFactor={activeFactor}
-          selectedOptions={selectedOptions}
-          completedRuns={completedRuns}
-          concentrationRuns={concentrationRuns}
-          temperatureRuns={temperatureRuns}
-          running={running}
-          selectedTemperature={selectedTemperature}
-          onFactorChange={handleFactorChange}
-          onOptionChange={handleOptionChange}
-          onTemperatureChange={handleTemperatureChange}
-        />
+        <MobileControlDrawer title="Faktor & bahan" summary="Pilih faktor eksperimen">
+          <ReactionFactorPanel
+            activeFactor={activeFactor}
+            selectedOptions={selectedOptions}
+            completedRuns={completedRuns}
+            concentrationRuns={concentrationRuns}
+            temperatureRuns={temperatureRuns}
+            running={running}
+            selectedTemperature={selectedTemperature}
+            onFactorChange={handleFactorChange}
+            onOptionChange={handleOptionChange}
+            onTemperatureChange={handleTemperatureChange}
+          />
+        </MobileControlDrawer>
       </section>
 
       <section className="reactionWorkspace">
@@ -381,17 +384,19 @@ export default function ReactionRateSimulatorPage({ reviewPanel }) {
           />
         </div>
 
-        <aside className="electroProgressRail" aria-label="Progress pembelajaran kadar tindak balas">
-          <ReactionProgress
-            started={started}
-            completedCount={progressCompletedCount}
-            totalRuns={progressTotalRuns}
-            allRunsComplete={progressAllRunsComplete}
-            graphComplete={graphComplete}
-            quizScore={activeQuizResult.score}
-            quizTotal={activeQuiz.length}
-          />
-        </aside>
+        <MobileControlDrawer title="Progress" summary="Bacaan, graf dan kuiz">
+          <aside className="electroProgressRail" aria-label="Progress pembelajaran kadar tindak balas">
+            <ReactionProgress
+              started={started}
+              completedCount={progressCompletedCount}
+              totalRuns={progressTotalRuns}
+              allRunsComplete={progressAllRunsComplete}
+              graphComplete={graphComplete}
+              quizScore={activeQuizResult.score}
+              quizTotal={activeQuiz.length}
+            />
+          </aside>
+        </MobileControlDrawer>
       </section>
 
       <section className="reactionDataGrid">

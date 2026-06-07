@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import MobileControlDrawer from "../components/MobileControlDrawer";
 import QuizCard from "../components/quiz/QuizCard";
 import { inertiaQuiz } from "../data/simulatorQuizzes";
 
@@ -483,34 +484,40 @@ export default function InertiaMassSimulatorPage({ reviewPanel }) {
             <h1>Hubungan antara Jisim dengan Inersia</h1>
             <p>Eksperimen bilah gergaji dan plastisin</p>
           </div>
-          <InertiaProgressPanel
-            phase={phase}
-            pulled={pulled}
-            records={records}
-            graphReady={graphReady}
-            quizScore={quizResult.score}
-            quizTotal={quizResult.total}
-          />
-          <InertiaIntroCards />
+          <MobileControlDrawer title="Progress inersia" summary="Skor dan status eksperimen">
+            <InertiaProgressPanel
+              phase={phase}
+              pulled={pulled}
+              records={records}
+              graphReady={graphReady}
+              quizScore={quizResult.score}
+              quizTotal={quizResult.total}
+            />
+          </MobileControlDrawer>
+          <MobileControlDrawer title="Info eksperimen" summary="Tujuan, masalah dan hipotesis">
+            <InertiaIntroCards />
+          </MobileControlDrawer>
         </div>
       </section>
 
       {reviewPanel}
 
       <section className="inertiaLabGrid">
-        <aside className="inertiaCard inertiaControlPanel">
-          <div className="inertiaPanelTitle">
-            <div>
-              <h2>Pemboleh ubah dimanipulasikan</h2>
-              <p>Jisim plastisin</p>
+        <MobileControlDrawer title="Kawalan jisim" summary="Pilih jisim plastisin">
+          <aside className="inertiaCard inertiaControlPanel">
+            <div className="inertiaPanelTitle">
+              <div>
+                <h2>Pemboleh ubah dimanipulasikan</h2>
+                <p>Jisim plastisin</p>
+              </div>
             </div>
-          </div>
-          <InertiaMassSlider mass={mass} disabled={phase === "running"} onChange={updateMass} />
-          <div className="inertiaMassPreview">
-            <img src="/assets/plasticine.png" alt="" draggable="false" style={{ "--mass-scale": 0.82 + ((mass - minMass) / (maxMass - minMass)) * 0.52 }} />
-            <span>Saiz plastisin berubah mengikut jisim.</span>
-          </div>
-        </aside>
+            <InertiaMassSlider mass={mass} disabled={phase === "running"} onChange={updateMass} />
+            <div className="inertiaMassPreview">
+              <img src="/assets/plasticine.png" alt="" draggable="false" style={{ "--mass-scale": 0.82 + ((mass - minMass) / (maxMass - minMass)) * 0.52 }} />
+              <span>Saiz plastisin berubah mengikut jisim.</span>
+            </div>
+          </aside>
+        </MobileControlDrawer>
 
         <InertiaApparatus
           mass={mass}

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import MobileControlDrawer from "../components/MobileControlDrawer";
 import AqueousMode from "../components/electrolysis/AqueousMode";
 import ChallengeMode from "../components/electrolysis/ChallengeMode";
 import ComparisonTable from "../components/electrolysis/ComparisonTable";
@@ -141,7 +142,8 @@ export default function ElectrolysisSimulatorPage({ reviewPanel }) {
       </section>
 
       <section className="electroLayout">
-        <aside className="electroPanel materialTray">
+        <MobileControlDrawer title="Bahan" summary="Seret bahan ke radas">
+          <aside className="electroPanel materialTray">
           <h2>Bahan</h2>
           {mode === "solid-molten" ? (
             <>
@@ -161,7 +163,8 @@ export default function ElectrolysisSimulatorPage({ reviewPanel }) {
             <strong>Nota ringkas</strong>
             <p>Sebatian ion hanya boleh mengkonduksikan elektrik apabila ion-ionnya bebas bergerak, iaitu dalam keadaan leburan atau akueus.</p>
           </div>
-        </aside>
+          </aside>
+        </MobileControlDrawer>
 
         <div className="electroMain">
           {mode === "solid-molten" ? (
@@ -188,17 +191,19 @@ export default function ElectrolysisSimulatorPage({ reviewPanel }) {
           )}
         </div>
 
-        <aside className="electroProgressRail" aria-label="Progress pembelajaran">
-          <ChallengeMode
-            solidReady={hasPowder && hasElectrodes}
-            moltenReady={hasPowder && hasElectrodes && burnerOn && solidCircuitOn}
-            aqueousReady={aqueousReady}
-            bulbAnswers={bulbAnswers}
-            inferences={inferences}
-            quizScore={quizResult.score}
-            quizTotal={quizResult.total}
-          />
-        </aside>
+        <MobileControlDrawer title="Progress" summary="Cabaran dan status pembelajaran">
+          <aside className="electroProgressRail" aria-label="Progress pembelajaran">
+            <ChallengeMode
+              solidReady={hasPowder && hasElectrodes}
+              moltenReady={hasPowder && hasElectrodes && burnerOn && solidCircuitOn}
+              aqueousReady={aqueousReady}
+              bulbAnswers={bulbAnswers}
+              inferences={inferences}
+              quizScore={quizResult.score}
+              quizTotal={quizResult.total}
+            />
+          </aside>
+        </MobileControlDrawer>
       </section>
 
       <section className="electroPanel learningPanel">

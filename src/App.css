@@ -2908,6 +2908,15 @@ section {
   box-shadow: 0 12px 26px rgba(34, 211, 238, 0.18);
 }
 
+.mobileControlDrawer,
+.mobileControlDrawer__body {
+  display: contents;
+}
+
+.mobileControlDrawer__toggle {
+  display: none;
+}
+
 .simulatorReviewPanel {
   display: grid;
   gap: 1rem;
@@ -5428,6 +5437,116 @@ section {
     min-width: 0;
     margin-top: 0.55rem;
     box-shadow: none;
+  }
+
+  .mobileControlDrawer {
+    display: block;
+    width: 100%;
+  }
+
+  .mobileControlDrawer__toggle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.72rem;
+    border: 1px solid rgba(103, 232, 249, 0.24);
+    border-radius: 16px;
+    padding: 0.82rem 0.92rem;
+    background: rgba(15, 23, 42, 0.78);
+    color: #f8fafc;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 0 12px 28px rgba(2, 6, 23, 0.18);
+  }
+
+  .mobileControlDrawer__toggle > span:last-child {
+    display: grid;
+    min-width: 0;
+    gap: 0.14rem;
+  }
+
+  .mobileControlDrawer__toggle strong {
+    color: #67e8f9;
+    font-size: 0.88rem;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .mobileControlDrawer__toggle small {
+    color: rgba(226, 232, 240, 0.78);
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1.25;
+  }
+
+  .mobileControlDrawer__icon {
+    display: grid;
+    flex: 0 0 auto;
+    gap: 0.22rem;
+    width: 2.1rem;
+    height: 2.1rem;
+    place-content: center;
+    border-radius: 50%;
+    background: rgba(34, 211, 238, 0.16);
+  }
+
+  .mobileControlDrawer__icon i {
+    display: block;
+    width: 1rem;
+    height: 2px;
+    border-radius: 999px;
+    background: #67e8f9;
+  }
+
+  .mobileControlDrawer__body {
+    display: grid;
+    gap: 0.85rem;
+    margin-top: 0.72rem;
+  }
+
+  .mobileControlDrawer__body[hidden] {
+    display: none;
+  }
+
+  .linearSim__hero,
+  .electroHero,
+  .atomHero,
+  .nuclearHero {
+    overflow: hidden;
+  }
+
+  .linearSim__hero h1,
+  .electroHero h1,
+  .atomHero h1,
+  .nuclearHero h1 {
+    max-width: 100%;
+    font-size: clamp(1.85rem, 10vw, 2.55rem);
+    line-height: 1.12;
+    overflow-wrap: anywhere;
+  }
+
+  .linearSim__hero p,
+  .electroHero p,
+  .atomHero p,
+  .nuclearHero p {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .electroModeBar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
+  .electroModeBar button {
+    min-height: 44px;
+    padding: 0.7rem 0.72rem;
+  }
+
+  .electroModeBar button:last-child {
+    grid-column: 1 / -1;
   }
 
   .hero,
@@ -16201,5 +16320,161 @@ section {
 
   .atomBoard__empty span {
     overflow-wrap: anywhere;
+  }
+}
+
+/* Mobile simulator pass: keep the learning surface close to the first screen. */
+@media (max-width: 768px) {
+  .simulatorHero,
+  .linearSim__hero,
+  .electroHero,
+  .inertiaHero,
+  .alloyHero,
+  .reactionHero,
+  .nuclearHero {
+    margin-bottom: 0.75rem;
+    padding: 1.05rem;
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .simulatorHero__kicker {
+    display: inline-flex;
+    flex-wrap: wrap;
+    max-width: min(100%, 34ch);
+    margin-bottom: 0.5rem;
+    font-size: 0.68rem;
+    line-height: 1.25;
+    white-space: normal;
+  }
+
+  .simulatorHero h1,
+  .linearSim__hero h1,
+  .electroHero h1,
+  .inertiaHero h1,
+  .alloyHero h1,
+  .reactionHero h1,
+  .nuclearHero h1 {
+    max-width: min(100%, 16ch);
+    font-size: clamp(1.55rem, 7.2vw, 1.95rem);
+    line-height: 1.08;
+    overflow-wrap: break-word;
+    text-wrap: balance;
+    word-break: normal;
+  }
+
+  .simulatorHero p,
+  .linearSim__hero p,
+  .electroHero p,
+  .inertiaHero p,
+  .alloyHero p,
+  .reactionHero p,
+  .nuclearHero p {
+    display: block;
+    max-width: min(100%, 34ch);
+    margin-top: 0.65rem;
+    overflow: visible;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    overflow-wrap: normal;
+    text-wrap: pretty;
+    white-space: normal;
+    word-break: normal;
+  }
+
+  .inertiaHero__grid {
+    grid-template-rows: auto;
+    gap: 0.65rem;
+  }
+
+  .simulatorDetailReviewSlot {
+    margin: 0 0 0.75rem;
+    padding: 0.85rem;
+    border-radius: 18px;
+  }
+
+  .mobileControlDrawer__toggle {
+    padding: 0.72rem 0.84rem;
+  }
+
+  .mobileControlDrawer__body {
+    margin-top: 0.6rem;
+  }
+
+  .linearStage {
+    padding: 0.9rem;
+  }
+
+  .linearStage__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.55rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .linearStage__metrics div {
+    padding: 0.68rem;
+    border-radius: 14px;
+  }
+
+  .linearStage__metrics div:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .linearStage__metrics span {
+    margin-bottom: 0.2rem;
+    font-size: 0.72rem;
+  }
+
+  .linearStage__metrics strong {
+    font-size: 0.92rem;
+  }
+
+  .linearTrackWrap {
+    min-height: 210px;
+  }
+
+  .linearTrackSvg {
+    min-height: 205px;
+  }
+
+  .reactionApparatus__top > div:first-child,
+  .electroApparatus__top > div:first-child,
+  .alloyApparatus__top > div:first-child {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .reactionApparatus__top p,
+  .electroApparatus__top p,
+  .alloyApparatus__top p {
+    max-width: min(100%, 34ch);
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .reactionEquation,
+  .reactionEquation p,
+  .reactionConcentrationEquation {
+    display: block;
+    width: min(100%, 30ch);
+    min-width: 0;
+    max-width: min(100%, 30ch);
+    overflow-wrap: anywhere;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .nuclearHero {
+    gap: 0.85rem;
+  }
+
+  .nuclearHero__actions,
+  .nuclearActionRow {
+    gap: 0.55rem;
+    margin-top: 0.8rem;
+  }
+
+  .nuclearHero__reactor {
+    width: min(210px, 68vw);
   }
 }

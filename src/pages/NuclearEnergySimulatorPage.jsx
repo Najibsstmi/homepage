@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import MobileControlDrawer from "../components/MobileControlDrawer";
 
 const MODES = [
   { id: "fission", label: "Pembelahan Nukleus" },
@@ -1296,11 +1297,12 @@ function FissionReactorLab({
 
   return (
     <section className="nuclearFissionLab" aria-label="Simulator pembelahan nukleus">
-      <aside className="nuclearPanel fissionControlPanel">
-        <div className="nuclearPanelTitle">
-          <span>Kawalan</span>
-          <h2>Pembelahan Nukleus</h2>
-        </div>
+      <MobileControlDrawer title="Kawalan pembelahan" summary="Rod boron, grafit dan uranium">
+        <aside className="nuclearPanel fissionControlPanel">
+          <div className="nuclearPanelTitle">
+            <span>Kawalan</span>
+            <h2>Pembelahan Nukleus</h2>
+          </div>
 
         <div className="fissionActionRow">
           <button
@@ -1396,11 +1398,12 @@ function FissionReactorLab({
           </label>
         </div>
 
-        <p className="fissionControlHint">
-          Uranium-235 menaikkan peluang pembelahan. Rod grafit memperlahankan neutron. Rod boron menyerap neutron
-          berlebihan.
-        </p>
-      </aside>
+          <p className="fissionControlHint">
+            Uranium-235 menaikkan peluang pembelahan. Rod grafit memperlahankan neutron. Rod boron menyerap neutron
+            berlebihan.
+          </p>
+        </aside>
+      </MobileControlDrawer>
 
       <section
         className={[
@@ -1559,11 +1562,12 @@ function FissionReactorLab({
         </div>
       </section>
 
-      <aside className="nuclearPanel fissionInfoPanel">
-        <div className="nuclearPanelTitle">
-          <span>Status</span>
-          <h2>Maklumat Proses</h2>
-        </div>
+      <MobileControlDrawer title="Status proses" summary="Neutron, tenaga dan kadar tindak balas">
+        <aside className="nuclearPanel fissionInfoPanel">
+          <div className="nuclearPanelTitle">
+            <span>Status</span>
+            <h2>Maklumat Proses</h2>
+          </div>
 
         <div className="fissionStatusGrid">
           <article className="fissionStatusMetric fissionStatusMetric--neutron">
@@ -1587,35 +1591,37 @@ function FissionReactorLab({
             <strong>{displayStatus}</strong>
           </article>
         </div>
+        </aside>
+      </MobileControlDrawer>
 
-      </aside>
-
-      <section className="fissionObservationPanel" aria-label="Jadual pemerhatian pembelahan nukleus">
-        <div className="nuclearPanelTitle">
-          <span>Pemerhatian</span>
-          <h2>Status Simulasi</h2>
-        </div>
-        <div className="fissionObservationTableWrap">
-          <table className="fissionObservationTable">
-            <thead>
-              <tr>
-                <th>Langkah</th>
-                <th>Peristiwa</th>
-                <th>Pemerhatian</th>
-              </tr>
-            </thead>
-            <tbody>
-              {fissionObservationRows.map((row, index) => (
-                <tr key={row.step} className={index === activeObservationIndex ? "active" : ""}>
-                  <td>{row.step}</td>
-                  <td>{row.event}</td>
-                  <td>{row.observation}</td>
+      <MobileControlDrawer title="Pemerhatian" summary="Jadual status simulasi">
+        <section className="fissionObservationPanel" aria-label="Jadual pemerhatian pembelahan nukleus">
+          <div className="nuclearPanelTitle">
+            <span>Pemerhatian</span>
+            <h2>Status Simulasi</h2>
+          </div>
+          <div className="fissionObservationTableWrap">
+            <table className="fissionObservationTable">
+              <thead>
+                <tr>
+                  <th>Langkah</th>
+                  <th>Peristiwa</th>
+                  <th>Pemerhatian</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+              </thead>
+              <tbody>
+                {fissionObservationRows.map((row, index) => (
+                  <tr key={row.step} className={index === activeObservationIndex ? "active" : ""}>
+                    <td>{row.step}</td>
+                    <td>{row.event}</td>
+                    <td>{row.observation}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </MobileControlDrawer>
     </section>
   );
 }
@@ -2368,7 +2374,8 @@ export default function NuclearEnergySimulatorPage({ reviewPanel }) {
               <p className="nuclearWarning fissionWarning">AMARAN: Suhu reaktor terlalu tinggi. Tingkatkan Agen Penyejuk (Air) dan masukkan Rod Boron.</p>
             ) : null}
 
-            <aside className="nuclearPanel nuclearControls">
+            <MobileControlDrawer title="Kawalan pembelahan" summary="Rod boron, grafit dan uranium">
+              <aside className="nuclearPanel nuclearControls">
               <div className="nuclearPanelTitle">
                 <span>Kawalan</span>
                 <h2>Kawalan Reaktor</h2>
@@ -2445,7 +2452,8 @@ export default function NuclearEnergySimulatorPage({ reviewPanel }) {
               {fissionDanger ? (
                 <p className="nuclearWarning">AMARAN: Suhu reaktor terlalu tinggi. Tingkatkan Agen Penyejuk (Air) dan masukkan Rod Boron.</p>
               ) : null}
-            </aside>
+              </aside>
+            </MobileControlDrawer>
           </section>
 
           <section className="nuclearConceptNote">
@@ -2540,7 +2548,8 @@ export default function NuclearEnergySimulatorPage({ reviewPanel }) {
               <NuclearDangerOverlay show={fusionDanger} message="AMARAN: Plasma tidak stabil" />
             </section>
 
-            <aside className="nuclearPanel nuclearControls">
+            <MobileControlDrawer title="Kawalan pelakuran" summary="Suhu, medan magnet dan bahan api">
+              <aside className="nuclearPanel nuclearControls">
               <div className="nuclearPanelTitle">
                 <span>Kawalan</span>
                 <h2>Gauge Pelakuran</h2>
@@ -2612,7 +2621,8 @@ export default function NuclearEnergySimulatorPage({ reviewPanel }) {
                 <NuclearMeter label="Output tenaga" value={`${fusionDiagnostics.liveEnergy} unit`} fill={fusionDiagnostics.liveEnergy} tone="orange" />
                 <NuclearMeter label="Status fusion" value={fusionStatus} fill={fusion.success ? 100 : fusionDiagnostics.stability} />
               </div>
-            </aside>
+              </aside>
+            </MobileControlDrawer>
           </section>
         </>
       )}
@@ -2620,35 +2630,37 @@ export default function NuclearEnergySimulatorPage({ reviewPanel }) {
       {activeMode === "plant" && (
         <>
           <section className="nuclearPlantLayout">
-            <div className="plantGaugeDeck">
-              <NuclearGauge
-                label="Uranium-235"
-                value={`${plant.uranium235}%`}
-                detail="Lebih banyak, reaktor lebih panas"
-                fill={plant.uranium235}
-                tone="orange"
-              />
-              <NuclearGauge
-                label="Agen penyejukan"
-                value={`${plant.coolantAgent}%`}
-                detail="Lebih banyak, reaktor lebih sejuk"
-                fill={plant.coolantAgent}
-              />
-              <NuclearGauge
-                label="Halaju stim"
-                value={`${plant.steamVelocity}%`}
-                detail={plantData.steamLimited ? `Terhad kepada ${plantData.steamLimit}%` : "Memusingkan turbin"}
-                fill={plant.steamVelocity}
-                tone={plantData.steamLimited ? "red" : "purple"}
-              />
-              <NuclearGauge
-                label="Output elektrik"
-                value={`${plantData.outputMW.toLocaleString("ms-MY")} MW`}
-                detail="Maksimum 1000 MW"
-                fill={plantData.outputPercent}
-                tone="orange"
-              />
-            </div>
+            <MobileControlDrawer title="Data loji" summary="Uranium, penyejukan, stim dan output">
+              <div className="plantGaugeDeck">
+                <NuclearGauge
+                  label="Uranium-235"
+                  value={`${plant.uranium235}%`}
+                  detail="Lebih banyak, reaktor lebih panas"
+                  fill={plant.uranium235}
+                  tone="orange"
+                />
+                <NuclearGauge
+                  label="Agen penyejukan"
+                  value={`${plant.coolantAgent}%`}
+                  detail="Lebih banyak, reaktor lebih sejuk"
+                  fill={plant.coolantAgent}
+                />
+                <NuclearGauge
+                  label="Halaju stim"
+                  value={`${plant.steamVelocity}%`}
+                  detail={plantData.steamLimited ? `Terhad kepada ${plantData.steamLimit}%` : "Memusingkan turbin"}
+                  fill={plant.steamVelocity}
+                  tone={plantData.steamLimited ? "red" : "purple"}
+                />
+                <NuclearGauge
+                  label="Output elektrik"
+                  value={`${plantData.outputMW.toLocaleString("ms-MY")} MW`}
+                  detail="Maksimum 1000 MW"
+                  fill={plantData.outputPercent}
+                  tone="orange"
+                />
+              </div>
+            </MobileControlDrawer>
 
             <section
               className={[
@@ -2732,11 +2744,12 @@ export default function NuclearEnergySimulatorPage({ reviewPanel }) {
               </div>
             </section>
 
-            <aside className="nuclearPanel nuclearControls">
-              <div className="nuclearPanelTitle">
-                <span>Kawalan Loji</span>
-                <h2>Stesen Janakuasa</h2>
-              </div>
+            <MobileControlDrawer title="Kawalan loji" summary="Uranium, penyejukan dan stim">
+              <aside className="nuclearPanel nuclearControls">
+                <div className="nuclearPanelTitle">
+                  <span>Kawalan Loji</span>
+                  <h2>Stesen Janakuasa</h2>
+                </div>
               <NuclearSlider
                 label="Jumlah Uranium-235"
                 value={plant.uranium235}
@@ -2796,7 +2809,8 @@ export default function NuclearEnergySimulatorPage({ reviewPanel }) {
               {plantData.danger ? (
                 <p className="nuclearWarning">Bahaya: reaktor terlalu panas. Tambah agen penyejukan atau kurangkan Uranium-235.</p>
               ) : null}
-            </aside>
+              </aside>
+            </MobileControlDrawer>
           </section>
 
           <section className="nuclearConceptNote">

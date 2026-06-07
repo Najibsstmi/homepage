@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import MobileControlDrawer from "../components/MobileControlDrawer";
 import AlloyApparatus from "../components/alloy/AlloyApparatus";
 import AlloyObservationTable from "../components/alloy/AlloyObservationTable";
 import AlloyProgress from "../components/alloy/AlloyProgress";
@@ -106,10 +107,12 @@ export default function AlloyHardnessSimulatorPage({ reviewPanel }) {
       {reviewPanel}
 
       <section className="electroLayout alloyLayout">
-        <MaterialTray
-          selectedMaterial={selectedMaterial}
-          onSelectMaterial={setSelectedMaterial}
-        />
+        <MobileControlDrawer title="Bahan & radas" summary="Pilih logam tulen atau aloi">
+          <MaterialTray
+            selectedMaterial={selectedMaterial}
+            onSelectMaterial={setSelectedMaterial}
+          />
+        </MobileControlDrawer>
 
         <div className="electroMain alloyMain">
           <AlloyApparatus
@@ -123,14 +126,16 @@ export default function AlloyHardnessSimulatorPage({ reviewPanel }) {
           />
         </div>
 
-        <aside className="electroProgressRail" aria-label="Progress pembelajaran aloi">
-          <AlloyProgress
-            results={results}
-            measurementCorrect={measurementCorrect}
-            quizScore={quizResult.score}
-            quizTotal={quizResult.total}
-          />
-        </aside>
+        <MobileControlDrawer title="Progress" summary="Kemajuan pemerhatian dan kuiz">
+          <aside className="electroProgressRail" aria-label="Progress pembelajaran aloi">
+            <AlloyProgress
+              results={results}
+              measurementCorrect={measurementCorrect}
+              quizScore={quizResult.score}
+              quizTotal={quizResult.total}
+            />
+          </aside>
+        </MobileControlDrawer>
       </section>
 
       <section className="alloyDataGrid">

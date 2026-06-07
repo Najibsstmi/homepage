@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import AnalysisPanel from "./AnalysisPanel";
 import ControlsPanel from "./ControlsPanel";
+import MobileControlDrawer from "./MobileControlDrawer";
 import QuizCard from "./quiz/QuizCard";
 import TapeChart from "./TapeChart";
 import TickerTape from "./TickerTape";
@@ -284,20 +285,22 @@ export default function LinearMotionSimulator({ reviewPanel }) {
       {reviewPanel}
 
       <section className="linearSim__workspace">
-        <ControlsPanel
-          heightCm={heightCm}
-          setHeightCm={setHeightCm}
-          massKg={massKg}
-          setMassKg={setMassKg}
-          cartCount={cartCount}
-          setCartCount={setCartCount}
-          running={running}
-          paused={paused}
-          onStart={start}
-          onPause={pause}
-          onReset={reset}
-          onGenerateData={() => setShowData((value) => !value)}
-        />
+        <MobileControlDrawer title="Kawalan simulasi" summary="Ketinggian, jisim dan bilangan troli">
+          <ControlsPanel
+            heightCm={heightCm}
+            setHeightCm={setHeightCm}
+            massKg={massKg}
+            setMassKg={setMassKg}
+            cartCount={cartCount}
+            setCartCount={setCartCount}
+            running={running}
+            paused={paused}
+            onStart={start}
+            onPause={pause}
+            onReset={reset}
+            onGenerateData={() => setShowData((value) => !value)}
+          />
+        </MobileControlDrawer>
 
         <TrackAnimation
           heightCm={heightCm}
@@ -314,16 +317,18 @@ export default function LinearMotionSimulator({ reviewPanel }) {
           statusMessage={message}
         />
 
-        <LinearProgressPanel
-          heightCm={heightCm}
-          started={elapsedTime > 0 || running || paused || completed}
-          completed={completed}
-          tapeCut={tapeCut}
-          showData={showData}
-          segmentCount={completedSegments.length || liveData.segments.length}
-          quizScore={quizResult.score}
-          quizTotal={quizResult.total}
-        />
+        <MobileControlDrawer title="Progress" summary="Skor aktiviti dan pencapaian">
+          <LinearProgressPanel
+            heightCm={heightCm}
+            started={elapsedTime > 0 || running || paused || completed}
+            completed={completed}
+            tapeCut={tapeCut}
+            showData={showData}
+            segmentCount={completedSegments.length || liveData.segments.length}
+            quizScore={quizResult.score}
+            quizTotal={quizResult.total}
+          />
+        </MobileControlDrawer>
       </section>
 
       <TickerTape

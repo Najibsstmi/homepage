@@ -18048,3 +18048,823 @@ section {
     height: 38px;
   }
 }
+
+/* Chemical cell simulator */
+.chemicalCellPage {
+  min-height: 100vh;
+  padding: clamp(1rem, 2vw, 1.4rem) clamp(0.75rem, 2.4vw, 1.5rem) 3rem;
+  background:
+    linear-gradient(180deg, #f8fbff 0%, #eef8ff 44%, #fdfcf7 100%);
+  color: #0f172a;
+}
+
+.chemicalCellHero {
+  width: min(980px, 100%);
+  margin: 0 auto 1rem;
+  text-align: center;
+}
+
+.chemicalCellHero .simulatorHero__kicker {
+  color: #0f766e;
+  font-weight: 850;
+}
+
+.chemicalCellHero h1 {
+  margin: 0.35rem 0 0.5rem;
+  border: 1px solid rgba(30, 64, 175, 0.28);
+  border-radius: 8px;
+  padding: 0.55rem 1rem;
+  background: linear-gradient(180deg, #0b4f97, #062f67);
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.15);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 950;
+  line-height: 1.05;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.chemicalCellHero p {
+  width: min(820px, 100%);
+  margin: 0 auto;
+  color: #334155;
+  font-size: clamp(1rem, 1.6vw, 1.18rem);
+  font-weight: 650;
+  line-height: 1.55;
+}
+
+.chemicalCellPage .simulatorDetailReviewSlot {
+  width: min(1460px, 100%);
+  margin: 0 auto 1rem;
+  border-color: rgba(37, 99, 235, 0.18);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.chemicalCellLayout {
+  display: grid;
+  grid-template-columns: minmax(230px, 300px) minmax(0, 1fr) minmax(250px, 330px);
+  gap: 0.75rem;
+  width: min(1500px, 100%);
+  margin: 0 auto;
+  align-items: start;
+}
+
+.chemicalCellPanel,
+.chemicalApparatusPanel {
+  border: 2px solid rgba(21, 101, 192, 0.82);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(244, 250, 255, 0.94));
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+}
+
+.chemicalCellPanel {
+  display: grid;
+  gap: 0.8rem;
+  padding: clamp(0.75rem, 1.4vw, 1rem);
+}
+
+.chemicalPanelHeader {
+  display: grid;
+  gap: 0.18rem;
+  border: 1px solid rgba(34, 197, 94, 0.42);
+  border-radius: 8px;
+  padding: 0.68rem;
+  background: linear-gradient(180deg, #f0fdf4, #dcfce7);
+  text-align: center;
+}
+
+.chemicalPanelHeader--blue {
+  border-color: rgba(37, 99, 235, 0.36);
+  background: linear-gradient(180deg, #0b63b6, #07559d);
+}
+
+.chemicalPanelHeader span {
+  color: #052e16;
+  font-size: clamp(1rem, 1.6vw, 1.22rem);
+  font-weight: 950;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.chemicalPanelHeader strong {
+  color: #14532d;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.chemicalPanelHeader--blue span,
+.chemicalPanelHeader--blue strong {
+  color: #ffffff;
+}
+
+.chemicalMetalList,
+.chemicalElectrolyteList {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.chemicalMetalButton,
+.chemicalElectrolyteButton {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 54px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  border-radius: 8px;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.chemicalMetalButton {
+  border: 2px solid #4d9f27;
+  padding: 0.66rem 0.74rem;
+  background: linear-gradient(180deg, #c8f28f, #91d755);
+  color: #07130a;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.chemicalMetalButton span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: clamp(0.95rem, 1.45vw, 1.08rem);
+  font-weight: 900;
+  line-height: 1.25;
+  text-align: left;
+}
+
+.chemicalMetalButton strong {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 0.28rem 0.42rem;
+  background: rgba(255, 255, 255, 0.82);
+  color: #991b1b;
+  font-size: 0.72rem;
+  font-weight: 950;
+}
+
+.chemicalMetalButton:hover,
+.chemicalElectrolyteButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.13);
+}
+
+.chemicalMetalButton--selected {
+  border-color: #991b1b;
+  background: linear-gradient(180deg, #ef4444, #b91c1c);
+  color: #ffffff;
+}
+
+.chemicalSelectionHint,
+.chemicalConceptNote {
+  border: 1px dashed rgba(15, 23, 42, 0.34);
+  border-radius: 8px;
+  padding: 0.72rem;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.chemicalSelectionHint strong,
+.chemicalConceptNote strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #1d4ed8;
+  font-size: 0.92rem;
+  font-weight: 950;
+}
+
+.chemicalSelectionHint p,
+.chemicalConceptNote p {
+  margin: 0;
+  color: #1f2937;
+  font-size: 0.92rem;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.chemicalWarning {
+  border: 1px solid rgba(220, 38, 38, 0.42);
+  border-radius: 8px;
+  padding: 0.68rem 0.78rem;
+  background: #fef2f2;
+  color: #991b1b;
+  font-weight: 850;
+  line-height: 1.45;
+}
+
+.chemicalWarning--center {
+  margin-top: 0.7rem;
+  text-align: center;
+}
+
+.chemicalApparatusPanel {
+  min-width: 0;
+  padding: clamp(0.75rem, 1.4vw, 1rem);
+}
+
+.chemicalApparatusTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.7rem;
+}
+
+.chemicalApparatusTop h2 {
+  margin: 0;
+  color: #082f49;
+  font-size: clamp(1.28rem, 2.3vw, 1.8rem);
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+.chemicalApparatusTop p {
+  margin: 0.25rem 0 0;
+  color: #475569;
+  font-size: 0.95rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.chemicalCircuitBadge {
+  flex: 0 0 auto;
+  border: 1px solid rgba(15, 23, 42, 0.16);
+  border-radius: 999px;
+  padding: 0.42rem 0.68rem;
+  font-size: 0.82rem;
+  font-weight: 950;
+}
+
+.chemicalCircuitBadge--off {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.chemicalCircuitBadge--on {
+  border-color: rgba(22, 163, 74, 0.34);
+  background: #dcfce7;
+  color: #166534;
+}
+
+.chemicalApparatusFrame {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.06);
+  isolation: isolate;
+}
+
+.chemicalApparatusFrame img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  user-select: none;
+}
+
+.chemicalLiquid {
+  position: absolute;
+  left: 32.1%;
+  top: 59.4%;
+  z-index: 2;
+  display: block;
+  width: 35.9%;
+  height: 30.6%;
+  clip-path: polygon(7% 0, 93% 0, 90% 82%, 82% 96%, 68% 100%, 32% 100%, 18% 96%, 10% 82%);
+  border-radius: 5% 5% 20% 20% / 5% 5% 18% 18%;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35), transparent 20%),
+    linear-gradient(180deg, rgba(var(--liquid-color), 0.43), rgba(var(--liquid-color), 0.62));
+  box-shadow:
+    inset 0 12px 16px rgba(255, 255, 255, 0.28),
+    inset 0 -18px 28px rgba(15, 23, 42, 0.08);
+  pointer-events: none;
+}
+
+.chemicalLiquid i {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: -3.8%;
+  display: block;
+  height: 17%;
+  border: 2px solid rgba(255, 255, 255, 0.62);
+  border-radius: 50%;
+  background: rgba(var(--liquid-color), 0.22);
+}
+
+.chemicalBulbGlow {
+  position: absolute;
+  left: 48.7%;
+  top: 16.1%;
+  z-index: 5;
+  display: block;
+  width: 7.8%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) scale(0.58);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.96) 0 15%, rgba(254, 240, 138, 0.92) 27%, rgba(250, 204, 21, 0.58) 50%, rgba(250, 204, 21, 0.18) 68%, transparent 78%);
+  filter: blur(0.4px) drop-shadow(0 0 14px rgba(250, 204, 21, 0.8));
+  opacity: 0;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.chemicalApparatusFrame--dim .chemicalBulbGlow {
+  opacity: 0.42;
+  transform: translate(-50%, -50%) scale(0.66);
+}
+
+.chemicalApparatusFrame--medium .chemicalBulbGlow {
+  opacity: 0.68;
+  transform: translate(-50%, -50%) scale(0.82);
+}
+
+.chemicalApparatusFrame--bright .chemicalBulbGlow {
+  opacity: 0.95;
+  transform: translate(-50%, -50%) scale(1);
+  animation: chemicalBulbPulse 1.35s ease-in-out infinite;
+}
+
+.chemicalAmmeter {
+  position: absolute;
+  left: 61.1%;
+  top: 15.3%;
+  z-index: 7;
+  display: grid;
+  width: 11.8%;
+  min-width: 0;
+  gap: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.chemicalAmmeter span {
+  display: none;
+}
+
+.chemicalAmmeter strong {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  color: #0b3f7d;
+  font-family: "Courier New", monospace;
+  font-size: clamp(0.82rem, 2.2vw, 1.95rem);
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.78),
+    0 0 8px rgba(59, 130, 246, 0.26);
+  white-space: nowrap;
+}
+
+.chemicalCurrentBadge {
+  position: absolute;
+  right: 1.2%;
+  top: 23%;
+  z-index: 8;
+  display: grid;
+  min-width: min(170px, 22%);
+  gap: 0.18rem;
+  border: 2px solid rgba(21, 101, 192, 0.45);
+  border-radius: 8px;
+  padding: clamp(0.46rem, 1vw, 0.72rem);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.16);
+  text-align: center;
+}
+
+.chemicalCurrentBadge span {
+  color: #1d4ed8;
+  font-size: clamp(0.58rem, 1vw, 0.82rem);
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.chemicalCurrentBadge strong {
+  color: #0b3f7d;
+  font-family: "Courier New", monospace;
+  font-size: clamp(1.12rem, 2.8vw, 2.2rem);
+  font-weight: 950;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.chemicalElectrodeOverlay {
+  position: absolute;
+  z-index: 4;
+  display: block;
+  width: 2.8%;
+  height: 25.5%;
+  border-radius: 2px;
+  box-shadow:
+    inset 0 8px 12px rgba(255, 255, 255, 0.22),
+    inset 0 -10px 14px rgba(15, 23, 42, 0.18);
+  opacity: 0.52;
+  pointer-events: none;
+}
+
+.chemicalElectrodeOverlay--one {
+  left: 39%;
+  top: 62.6%;
+  transform: rotate(-3deg);
+  background: var(--electrode-one-color);
+}
+
+.chemicalElectrodeOverlay--two {
+  left: 59.6%;
+  top: 62.6%;
+  transform: rotate(3deg);
+  background: var(--electrode-two-color);
+}
+
+.chemicalElectrodeTag {
+  position: absolute;
+  z-index: 8;
+  display: grid;
+  gap: 0.08rem;
+  min-width: 92px;
+  border: 1px solid rgba(15, 23, 42, 0.16);
+  border-radius: 8px;
+  padding: clamp(0.35rem, 0.8vw, 0.5rem);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.14);
+  text-align: center;
+}
+
+.chemicalElectrodeTag--one {
+  left: 15%;
+  bottom: 15%;
+}
+
+.chemicalElectrodeTag--two {
+  right: 13%;
+  bottom: 15%;
+}
+
+.chemicalElectrodeTag span {
+  color: #991b1b;
+  font-size: clamp(0.62rem, 1.1vw, 0.82rem);
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.chemicalElectrodeTag strong {
+  color: #0f172a;
+  font-size: clamp(0.95rem, 2vw, 1.35rem);
+  font-weight: 950;
+  line-height: 1;
+}
+
+.chemicalActionBar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+
+.chemicalActionBar button {
+  display: inline-flex;
+  min-width: 128px;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border: 0;
+  border-radius: 8px;
+  color: #ffffff;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 950;
+  cursor: pointer;
+  box-shadow: 0 12px 22px rgba(15, 23, 42, 0.2);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.chemicalActionBar button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 26px rgba(15, 23, 42, 0.25);
+}
+
+.chemicalActionBar button:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.chemicalStartButton {
+  background: linear-gradient(180deg, #22c55e, #15803d);
+}
+
+.chemicalStartButton span {
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 12px solid #ffffff;
+}
+
+.chemicalResetButton {
+  background: linear-gradient(180deg, #64748b, #334155);
+}
+
+.chemicalResetButton span {
+  width: 17px;
+  height: 17px;
+  border: 3px solid #ffffff;
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+
+.chemicalReadoutGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.58rem;
+  margin-top: 0.85rem;
+}
+
+.chemicalReadoutGrid article {
+  display: grid;
+  gap: 0.22rem;
+  min-width: 0;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  border-radius: 8px;
+  padding: 0.7rem;
+  background: #ffffff;
+}
+
+.chemicalReadoutGrid span,
+.chemicalInferencePanel span {
+  color: #1d4ed8;
+  font-size: 0.82rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.chemicalReadoutGrid strong {
+  min-width: 0;
+  color: #0f172a;
+  font-size: 0.96rem;
+  font-weight: 850;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.chemicalInferencePanel {
+  display: grid;
+  gap: 0.28rem;
+  margin-top: 0.75rem;
+  border: 1px dashed rgba(217, 119, 6, 0.48);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  background: linear-gradient(180deg, #fffbeb, #fff7ed);
+  text-align: center;
+}
+
+.chemicalInferencePanel span {
+  color: #7e22ce;
+  font-size: 1.1rem;
+}
+
+.chemicalInferencePanel p {
+  margin: 0;
+  color: #111827;
+  font-size: clamp(1rem, 1.45vw, 1.12rem);
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+.chemicalElectrolyteButton {
+  justify-content: flex-start;
+  border: 1px solid rgba(21, 101, 192, 0.45);
+  padding: 0.62rem;
+  background: linear-gradient(180deg, #f8fbff, #eaf5ff);
+  color: #0f172a;
+}
+
+.chemicalElectrolyteButton--selected {
+  border-color: rgba(220, 38, 38, 0.82);
+  background: linear-gradient(180deg, #fee2e2, #fecaca);
+}
+
+.chemicalElectrolyteSwatch {
+  position: relative;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border: 2px solid rgba(15, 23, 42, 0.2);
+  border-radius: 8px 8px 16px 16px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.7), transparent 35%),
+    rgba(var(--swatch-color), 0.75);
+  box-shadow: inset 0 -8px 12px rgba(15, 23, 42, 0.12);
+}
+
+.chemicalElectrolyteSwatch::before {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: -10px;
+  width: 12px;
+  height: 14px;
+  border: 2px solid rgba(15, 23, 42, 0.2);
+  border-bottom: 0;
+  border-radius: 5px 5px 0 0;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.chemicalElectrolyteButton > span:last-child {
+  display: grid;
+  min-width: 0;
+  gap: 0.12rem;
+  text-align: left;
+}
+
+.chemicalElectrolyteButton strong {
+  color: #111827;
+  font-size: clamp(0.94rem, 1.3vw, 1.04rem);
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.chemicalElectrolyteButton small {
+  color: #475569;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.chemicalSeriesStrip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.24rem;
+  border: 1px dashed rgba(220, 38, 38, 0.36);
+  border-radius: 8px;
+  padding: 0.68rem;
+  background: #fff7ed;
+}
+
+.chemicalSeriesStrip span {
+  color: #111827;
+  font-size: 0.92rem;
+  font-weight: 950;
+}
+
+.chemicalSeriesStrip span:not(:last-child)::after {
+  content: "-";
+  margin-left: 0.24rem;
+  color: #64748b;
+}
+
+@keyframes chemicalBulbPulse {
+  0%,
+  100% {
+    filter: blur(0.4px) drop-shadow(0 0 16px rgba(250, 204, 21, 0.82));
+  }
+
+  50% {
+    filter: blur(0.2px) drop-shadow(0 0 28px rgba(250, 204, 21, 0.95));
+  }
+}
+
+@media (max-width: 1220px) {
+  .chemicalCellLayout {
+    grid-template-columns: minmax(230px, 290px) minmax(0, 1fr);
+  }
+
+  .chemicalElectrolytePanel {
+    grid-column: 1 / -1;
+  }
+
+  .chemicalElectrolyteList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .chemicalCellLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .chemicalElectrolytePanel {
+    grid-column: auto;
+  }
+
+  .chemicalElectrolyteList {
+    grid-template-columns: 1fr;
+  }
+
+  .chemicalReadoutGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .chemicalCellPage {
+    padding: 0.8rem 0.72rem 2.5rem;
+  }
+
+  .chemicalCellHero h1 {
+    font-size: clamp(1.65rem, 9vw, 2.35rem);
+  }
+
+  .chemicalCellPage .mobileControlDrawer {
+    border: 2px solid rgba(21, 101, 192, 0.72);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.92);
+  }
+
+  .chemicalCellPage .mobileControlDrawer__toggle {
+    background: linear-gradient(180deg, #0b63b6, #07559d);
+    color: #ffffff;
+  }
+
+  .chemicalCellPage .mobileControlDrawer__toggle small {
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .chemicalCellPage .mobileControlDrawer__body {
+    padding: 0.65rem;
+  }
+
+  .chemicalCellPage .mobileControlDrawer .chemicalCellPanel {
+    border: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .chemicalApparatusTop {
+    display: grid;
+  }
+
+  .chemicalCircuitBadge {
+    width: fit-content;
+  }
+
+  .chemicalAmmeter {
+    left: 56%;
+    top: 10.4%;
+    min-width: 86px;
+    border-width: 3px;
+  }
+
+  .chemicalElectrodeTag {
+    min-width: 72px;
+    padding: 0.3rem;
+  }
+
+  .chemicalElectrodeTag--one {
+    left: 4%;
+    bottom: 10%;
+  }
+
+  .chemicalElectrodeTag--two {
+    right: 4%;
+    bottom: 10%;
+  }
+}
+
+@media (max-width: 520px) {
+  .chemicalReadoutGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .chemicalActionBar button {
+    flex: 1 1 120px;
+  }
+
+  .chemicalApparatusFrame {
+    margin-inline: -0.2rem;
+  }
+
+  .chemicalAmmeter strong {
+    font-size: clamp(0.86rem, 4.6vw, 1.24rem);
+  }
+
+  .chemicalAmmeter span {
+    display: none;
+  }
+
+  .chemicalElectrodeTag span {
+    display: none;
+  }
+}

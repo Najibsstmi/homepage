@@ -45,6 +45,15 @@ export const simulators = [
     href: "/simulator/elektrokimia-elektrolisis",
   },
   {
+    id: "sel-kimia",
+    title: "Sel Kimia",
+    level: "Tingkatan 5",
+    topic: "Bab 6 Elektrokimia",
+    description:
+      "Membandingkan jarak kedudukan dua logam dalam siri elektrokimia dengan arus elektrik yang terhasil.",
+    href: "/simulator/sel-kimia",
+  },
+  {
     id: "atom-molekul-sebatian",
     title: "Atom, Molekul dan Sebatian",
     level: "Tingkatan 5",

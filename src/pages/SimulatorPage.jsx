@@ -4,6 +4,7 @@ import SimulatorReviewPanel from "../components/reviews/SimulatorReviewPanel";
 import useRatingSummaries from "../components/reviews/useRatingSummaries";
 import AlloyHardnessSimulatorPage from "./AlloyHardnessSimulatorPage";
 import AtomMoleculeCompoundSimulatorPage from "./AtomMoleculeCompoundSimulatorPage";
+import ChemicalCellSimulatorPage from "./ChemicalCellSimulatorPage";
 import ElectrolysisSimulatorPage from "./ElectrolysisSimulatorPage";
 import InertiaMassSimulatorPage from "./InertiaMassSimulatorPage";
 import NuclearEnergySimulatorPage from "./NuclearEnergySimulatorPage";
@@ -41,6 +42,10 @@ export default function SimulatorPage() {
         reviewPanel={getReviewPanel("elektrokimia-elektrolisis")}
       />
     );
+  }
+
+  if (path === "/simulator/sel-kimia") {
+    return <ChemicalCellSimulatorPage reviewPanel={getReviewPanel("sel-kimia")} />;
   }
 
   if (path === "/simulator/atom-molekul-sebatian") {

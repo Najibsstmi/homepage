@@ -17181,3 +17181,870 @@ section {
     width: min(210px, 68vw);
   }
 }
+
+/* Electrolysis simulator UI refinement */
+.electrolysisPage {
+  max-width: 1480px;
+  padding: 2.1rem 1.2rem 3.5rem;
+}
+
+.electrolysisPage .electroHero,
+.electrolysisPage .electroPanel {
+  border-radius: 18px;
+  border-color: rgba(125, 211, 252, 0.26);
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(8, 47, 73, 0.78)),
+    rgba(15, 23, 42, 0.9);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+}
+
+.electrolysisPage .electroHero {
+  margin-bottom: 0.75rem;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  background:
+    linear-gradient(90deg, rgba(2, 6, 23, 0.9), rgba(8, 47, 73, 0.72)),
+    url("/assets/new background elektrolisis leburan.png") center / cover no-repeat;
+}
+
+.electrolysisPage .electroHero h1 {
+  max-width: 900px;
+  font-size: clamp(2.05rem, 4.2vw, 3.25rem);
+  font-weight: 850;
+  line-height: 1.08;
+}
+
+.electrolysisPage .electroHero p {
+  max-width: 860px;
+  margin-top: 0.7rem;
+  color: #e2e8f0;
+  font-size: 1.12rem;
+  font-weight: 500;
+  line-height: 1.65;
+}
+
+.electrolysisPage .simulatorHero__kicker {
+  color: #fde68a;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.electrolysisPage .electroModeBar {
+  gap: 0.55rem;
+  margin-bottom: 0.75rem;
+}
+
+.electrolysisPage button {
+  font-weight: 850;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.electrolysisPage .electroModeBar button,
+.electrolysisPage .electroApparatus__top button,
+.electrolysisPage .schemePanel button,
+.electrolysisPage .aqueousActions button,
+.electrolysisPage .inferenceBox button,
+.electrolysisPage .quizCard__feedback button,
+.electrolysisPage .quizCard__complete button {
+  min-height: 46px;
+  border: 1px solid rgba(125, 211, 252, 0.34);
+  border-radius: 12px;
+  padding: 0.78rem 1.08rem;
+  background: rgba(8, 47, 73, 0.66);
+  color: #f8fafc;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 18px rgba(2, 6, 23, 0.2);
+}
+
+.electrolysisPage .electroModeBar button.active,
+.electrolysisPage .electroApparatus__top button:not(:disabled),
+.electrolysisPage .schemePanel button,
+.electrolysisPage .aqueousActions button:not(:disabled),
+.electrolysisPage .inferenceBox button:not(:disabled),
+.electrolysisPage .quizCard__feedback button,
+.electrolysisPage .quizCard__complete button {
+  border-color: rgba(103, 232, 249, 0.75);
+  background: linear-gradient(135deg, #06b6d4, #38bdf8);
+  color: #06283c;
+}
+
+.electrolysisPage .electroModeBar button:last-child {
+  background: linear-gradient(135deg, #f59e0b, #facc15);
+  color: #3b2600;
+  border-color: rgba(254, 240, 138, 0.72);
+}
+
+.electrolysisPage .electroModeBar button:hover:not(:disabled),
+.electrolysisPage .electroApparatus__top button:hover:not(:disabled),
+.electrolysisPage .schemePanel button:hover,
+.electrolysisPage .aqueousActions button:hover:not(:disabled),
+.electrolysisPage .inferenceBox button:hover:not(:disabled),
+.electrolysisPage .quizCard__feedback button:hover,
+.electrolysisPage .quizCard__complete button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(8, 145, 178, 0.28);
+}
+
+.electrolysisPage .electroModeBar button:active:not(:disabled),
+.electrolysisPage .electroApparatus__top button:active:not(:disabled),
+.electrolysisPage .schemePanel button:active,
+.electrolysisPage .aqueousActions button:active:not(:disabled),
+.electrolysisPage .inferenceBox button:active:not(:disabled),
+.electrolysisPage .quizCard__feedback button:active,
+.electrolysisPage .quizCard__complete button:active,
+.electrolysisPage .electroMaterial:active:not(:disabled),
+.electrolysisPage .quizOption:active:not(:disabled) {
+  transform: translateY(1px) scale(0.99);
+}
+
+.electrolysisPage .burnerSwitch {
+  min-width: 158px;
+  border-radius: 999px;
+  padding: 0.6rem 0.7rem 0.6rem 1rem !important;
+}
+
+.electrolysisPage .burnerSwitch span {
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+}
+
+.electrolysisPage .burnerSwitch i {
+  width: 28px;
+  height: 28px;
+}
+
+.electrolysisPage .electroLayout {
+  grid-template-columns: minmax(250px, 290px) minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.electrolysisPage .electroPanel {
+  padding: 0.95rem;
+}
+
+.electrolysisPage .electroPanel h2 {
+  margin-bottom: 0.65rem;
+  font-size: 1.32rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.electrolysisPage .materialTray,
+.electrolysisPage .electroMain,
+.electrolysisPage .scoreGrid,
+.electrolysisPage .quizCard__body {
+  gap: 0.62rem;
+}
+
+.electrolysisPage .electroMaterial {
+  gap: 0.22rem;
+  border-color: rgba(125, 211, 252, 0.32);
+  border-radius: 14px;
+  padding: 0.74rem;
+  background: rgba(8, 47, 73, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.electrolysisPage .electroMaterial--visual {
+  grid-template-columns: 50px 1fr;
+}
+
+.electrolysisPage .electroMaterial:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(103, 232, 249, 0.74);
+  background: rgba(14, 116, 144, 0.52);
+}
+
+.electrolysisPage .electroMaterial span {
+  font-size: 1.02rem;
+  font-weight: 850;
+  line-height: 1.25;
+}
+
+.electrolysisPage .electroMaterial small,
+.electrolysisPage .electroNote p,
+.electrolysisPage .learningPanel p,
+.electrolysisPage .challengePanel p,
+.electrolysisPage .schemeList,
+.electrolysisPage .quizCard__meta,
+.electrolysisPage .quizCard__feedback p,
+.electrolysisPage .quizCard__complete p,
+.electrolysisPage .scoreItem__top span,
+.electrolysisPage .scoreboardPanel p {
+  color: #e2e8f0;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.electrolysisPage .electroMaterial--placed {
+  border-color: rgba(34, 197, 94, 0.6);
+  background: rgba(20, 83, 45, 0.36);
+}
+
+.electrolysisPage .electroNote {
+  margin-top: 0.05rem;
+  padding: 0.74rem;
+  border-radius: 14px;
+  background: rgba(120, 53, 15, 0.3);
+  border-color: rgba(250, 204, 21, 0.34);
+}
+
+.electrolysisPage .electroNote strong,
+.electrolysisPage .quizCard__meta strong,
+.electrolysisPage .quizCard__feedback strong,
+.electrolysisPage .quizCard__complete span {
+  color: #fde68a;
+  font-weight: 850;
+}
+
+.electrolysisPage .electroApparatus__top {
+  gap: 0.75rem;
+  margin-bottom: 0.55rem;
+}
+
+.electrolysisPage .electroApparatus__top p {
+  color: #e2e8f0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.electrolysisPage .electroApparatus__top button:disabled,
+.electrolysisPage .aqueousActions button:disabled,
+.electrolysisPage .inferenceBox button:disabled {
+  background: rgba(71, 85, 105, 0.55);
+  border-color: rgba(148, 163, 184, 0.34);
+  color: #cbd5e1;
+}
+
+.electrolysisPage .electroApparatus .electroSvgDrop {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(15, 23, 42, 0.06)),
+    url("/assets/new background elektrolisis leburan.png") center / cover no-repeat,
+    #f8fafc;
+}
+
+.electrolysisPage .electroSvgDrop {
+  position: relative;
+  border: 1px solid rgba(125, 211, 252, 0.24);
+  border-radius: 16px;
+}
+
+.electrolysisPage .electroStaticScene {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  min-height: clamp(420px, 52vw, 760px);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.electrolysisPage .electroStaticScene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(2, 6, 23, 0.08);
+}
+
+.electrolysisPage .electroStageBadge {
+  position: absolute;
+  left: 50%;
+  top: 58.3%;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(15, 23, 42, 0.2);
+  border-radius: 999px;
+  padding: 0.32rem 0.72rem;
+  background: rgba(255, 255, 255, 0.86);
+  color: #0f172a;
+  font-size: 0.98rem;
+  font-weight: 850;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+}
+
+.electrolysisPage .electroStageBadge--molten {
+  background: rgba(255, 247, 237, 0.9);
+  color: #7c2d12;
+  border-color: rgba(249, 115, 22, 0.35);
+}
+
+.electrolysisPage .electroPbMaterial {
+  position: absolute;
+  left: 48.8%;
+  top: 53.2%;
+  z-index: 2;
+  width: 16%;
+  height: 5%;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    width 0.25s ease,
+    height 0.25s ease,
+    top 0.25s ease;
+}
+
+.electrolysisPage .electroPbMaterial::before,
+.electrolysisPage .electroPbMaterial::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.electrolysisPage .electroStaticScene--powder .electroPbMaterial {
+  opacity: 1;
+}
+
+.electrolysisPage .electroStaticScene--powder:not(.electroStaticScene--molten) .electroPbMaterial {
+  top: 56.2%;
+  width: 14.8%;
+  height: 5%;
+  border-radius: 54% 46% 48% 52% / 62% 58% 42% 38%;
+  background:
+    radial-gradient(circle at 18% 68%, rgba(255, 247, 202, 0.9) 0 6%, transparent 7%),
+    radial-gradient(circle at 36% 45%, rgba(245, 226, 151, 0.94) 0 7%, transparent 8%),
+    radial-gradient(circle at 55% 66%, rgba(217, 190, 111, 0.88) 0 6%, transparent 7%),
+    radial-gradient(circle at 74% 48%, rgba(255, 241, 180, 0.88) 0 7%, transparent 8%),
+    linear-gradient(180deg, rgba(247, 232, 170, 0.76), rgba(183, 158, 84, 0.72));
+  box-shadow:
+    inset 0 -5px 8px rgba(112, 87, 35, 0.16),
+    0 5px 10px rgba(15, 23, 42, 0.08);
+}
+
+.electrolysisPage .electroStaticScene--powder:not(.electroStaticScene--molten) .electroPbMaterial::before {
+  inset: 18% 12% auto;
+  height: 22%;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.electrolysisPage .electroStaticScene--molten .electroPbMaterial {
+  top: 56%;
+  width: 18.8%;
+  height: 6.9%;
+  border-radius: 50% 50% 47% 53% / 38% 38% 62% 62%;
+  background:
+    linear-gradient(180deg, rgba(255, 214, 158, 0.76) 0%, rgba(251, 146, 60, 0.74) 52%, rgba(194, 65, 12, 0.62) 100%);
+  box-shadow:
+    inset 0 7px 11px rgba(255, 255, 255, 0.18),
+    inset 0 -9px 14px rgba(124, 45, 18, 0.18),
+    0 0 12px rgba(249, 115, 22, 0.18);
+}
+
+.electrolysisPage .electroStaticScene--molten .electroPbMaterial::before {
+  left: 5%;
+  right: 5%;
+  top: 6%;
+  height: 34%;
+  border-radius: 50%;
+  background: linear-gradient(90deg, rgba(255, 237, 213, 0.34), rgba(255, 247, 237, 0.18), rgba(253, 186, 116, 0.24));
+}
+
+.electrolysisPage .electroStaticScene--molten .electroPbMaterial::after {
+  left: 13%;
+  top: 24%;
+  width: 19%;
+  height: 34%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  filter: blur(0.5px);
+}
+
+.electrolysisPage .electroHeatGlow,
+.electrolysisPage .electroBulbGlow,
+.electrolysisPage .electroFlame,
+.electrolysisPage .electroSwitchOpenMask,
+.electrolysisPage .electroSwitchBlade {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.electrolysisPage .electroHeatGlow {
+  left: 48.8%;
+  top: 63.5%;
+  width: 8.2%;
+  height: 5.6%;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: radial-gradient(ellipse, rgba(255, 214, 10, 0.68), rgba(249, 115, 22, 0.52) 42%, rgba(250, 204, 21, 0.24) 62%, transparent 78%);
+  filter: blur(0.5px);
+}
+
+.electrolysisPage .electroBulbGlow {
+  left: 66.2%;
+  top: 8.6%;
+  width: 6.2%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(254, 249, 195, 0.98) 0 18%, rgba(253, 230, 138, 0.86) 36%, rgba(250, 204, 21, 0.52) 56%, rgba(250, 204, 21, 0.08) 76%);
+  filter: blur(0.55px) drop-shadow(0 0 14px rgba(250, 204, 21, 0.86));
+}
+
+.electrolysisPage .electroFlame {
+  left: 48.8%;
+  top: 60.5%;
+  width: 3.25%;
+  height: 9.2%;
+  transform: translateX(-50%);
+  transform-origin: 50% 100%;
+  background:
+    radial-gradient(ellipse at 50% 88%, rgba(37, 99, 235, 0.98), rgba(59, 130, 246, 0.62) 38%, rgba(37, 99, 235, 0.12) 66%),
+    radial-gradient(ellipse at 50% 45%, rgba(255, 247, 153, 1), rgba(251, 146, 60, 0.98) 42%, rgba(239, 68, 68, 0.72) 66%, rgba(239, 68, 68, 0.08) 75%);
+  clip-path: polygon(50% 0%, 66% 28%, 78% 55%, 62% 100%, 38% 100%, 22% 55%, 34% 28%);
+  filter: drop-shadow(0 0 18px rgba(249, 115, 22, 0.94)) drop-shadow(0 0 8px rgba(253, 224, 71, 0.82));
+}
+
+.electrolysisPage .electroSwitchOpenMask {
+  left: 42.5%;
+  top: 6.9%;
+  width: 7%;
+  height: 1.45%;
+  z-index: 2;
+  border-radius: 999px;
+  background: #fbfbfb;
+  transform: rotate(-24deg);
+  transform-origin: left center;
+}
+
+.electrolysisPage .electroSwitchBlade {
+  left: 42.05%;
+  top: 10.1%;
+  width: 7.4%;
+  height: 0.9%;
+  z-index: 3;
+  border-radius: 999px;
+  background: #020202;
+  box-shadow: 0 0 0 1px rgba(2, 2, 2, 0.08);
+}
+
+.electrolysisPage .electroStaticScene--heated .electroHeatGlow,
+.electrolysisPage .electroStaticScene--heated .electroFlame,
+.electrolysisPage .electroStaticScene--bulbOn .electroBulbGlow,
+.electrolysisPage .electroStaticScene--circuitOn .electroSwitchOpenMask,
+.electrolysisPage .electroStaticScene--circuitOn .electroSwitchBlade {
+  opacity: 1;
+}
+
+.electrolysisPage .electroBulbNote {
+  position: absolute;
+  right: 1rem;
+  top: 15%;
+  z-index: 4;
+  max-width: min(310px, 34%);
+  margin: 0;
+  border: 1px solid rgba(250, 204, 21, 0.42);
+  border-radius: 14px;
+  padding: 0.7rem 0.82rem;
+  background: rgba(15, 23, 42, 0.88);
+  color: #f8fafc;
+  font-size: 0.96rem;
+  font-weight: 650;
+  line-height: 1.42;
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.24);
+}
+
+.electrolysisPage .electroApparatus .apparatusBg {
+  fill: rgba(2, 6, 23, 0.34);
+}
+
+.electrolysisPage .electroApparatus .battery,
+.electrolysisPage .electroApparatus .wire,
+.electrolysisPage .electroApparatus .circuitSwitch,
+.electrolysisPage .electroApparatus .bulb,
+.electrolysisPage .electroApparatus .electrodes text,
+.electrolysisPage .electroApparatus .electrodeGhost,
+.electrolysisPage .electroApparatus .crucible,
+.electrolysisPage .electroApparatus .crucibleLip,
+.electrolysisPage .electroApparatus .crucibleDrop > text,
+.electrolysisPage .electroApparatus .tripod,
+.electrolysisPage .electroApparatus .apparatusLabel {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.electrolysisPage .bulb text,
+.electrolysisPage .electrodes text,
+.electrolysisPage .electrodeGhost text,
+.electrolysisPage .tripod text,
+.electrolysisPage .materialLabel,
+.electrolysisPage .apparatusLabel,
+.electrolysisPage .crucibleDrop text,
+.electrolysisPage .burner text,
+.electrolysisPage .beaker text {
+  fill: #f8fafc;
+  font-size: 19px;
+  font-weight: 850;
+}
+
+.electrolysisPage .electrodeGhost text,
+.electrolysisPage .apparatusLabel,
+.electrolysisPage .ionLabel {
+  fill: rgba(248, 250, 252, 0.9);
+}
+
+.electrolysisPage .electroApparatus .burner {
+  filter: drop-shadow(0 12px 18px rgba(2, 6, 23, 0.42));
+}
+
+.electrolysisPage .electroApparatus .carbonRods rect {
+  fill: #111827;
+  stroke: #e2e8f0;
+  stroke-width: 3;
+  filter: drop-shadow(0 8px 10px rgba(2, 6, 23, 0.45));
+}
+
+.electrolysisPage .electroApparatus .burner rect {
+  fill: rgba(51, 65, 85, 0.94);
+  stroke: #cbd5e1;
+}
+
+.electrolysisPage .electroApparatus .burner text {
+  opacity: 0;
+}
+
+.electrolysisPage .burnerControlDock {
+  position: absolute;
+  right: 0.85rem;
+  bottom: 0.85rem;
+  justify-content: flex-end;
+  margin: 0;
+  z-index: 3;
+}
+
+.electrolysisPage .burnerControlDock .burnerSwitch {
+  box-shadow: 0 12px 24px rgba(2, 6, 23, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.electrolysisPage .learningPanel {
+  margin-top: 0.75rem;
+  padding: 0.85rem 0.95rem;
+}
+
+.electrolysisPage .electroObservation,
+.electrolysisPage .schemePanel,
+.electrolysisPage .comparisonPanel,
+.electrolysisPage .reflectionPanel,
+.electrolysisPage .challengePanel,
+.electrolysisPage .quizCard {
+  margin-top: 0.65rem;
+}
+
+.electrolysisPage .electroProgressFloat {
+  position: fixed;
+  top: 96px;
+  right: clamp(0.8rem, 2vw, 1.6rem);
+  z-index: 30;
+  width: min(320px, calc(100vw - 1.6rem));
+}
+
+.electrolysisPage .electroProgressFloat summary {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  list-style: none;
+  border: 1px solid rgba(103, 232, 249, 0.38);
+  border-radius: 16px;
+  padding: 0.72rem 0.9rem;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(8, 47, 73, 0.86));
+  color: #f8fafc;
+  box-shadow: 0 18px 38px rgba(2, 6, 23, 0.34);
+  cursor: pointer;
+}
+
+.electrolysisPage .electroProgressFloat summary::-webkit-details-marker {
+  display: none;
+}
+
+.electrolysisPage .electroProgressFloat summary span {
+  color: #fde68a;
+  font-size: 0.98rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.electrolysisPage .electroProgressFloat summary strong {
+  border-radius: 999px;
+  padding: 0.36rem 0.72rem;
+  background: linear-gradient(135deg, #22d3ee, #38bdf8);
+  color: #082f49;
+  font-size: 0.88rem;
+  font-weight: 950;
+}
+
+.electrolysisPage .electroProgressFloat[open] summary {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.electrolysisPage .electroProgressFloat[open] summary strong {
+  color: #3b2600;
+  background: linear-gradient(135deg, #facc15, #fde68a);
+}
+
+.electrolysisPage .electroProgressFloat[open] summary strong::before {
+  content: "Tutup";
+}
+
+.electrolysisPage .electroProgressFloat[open] summary strong {
+  font-size: 0;
+}
+
+.electrolysisPage .electroProgressFloat[open] summary strong::before {
+  font-size: 0.88rem;
+}
+
+.electrolysisPage .electroProgressFloat .scoreboardPanel {
+  position: relative;
+  top: auto;
+  width: 100%;
+  max-height: min(68vh, 520px);
+  margin-top: 0.55rem;
+  overflow-y: auto;
+}
+
+.electrolysisPage .accordionHeader {
+  min-height: 48px;
+  padding: 0.82rem 0.95rem;
+  background: rgba(8, 145, 178, 0.28);
+}
+
+.electrolysisPage .accordionHeader span {
+  font-size: 1.12rem;
+  font-weight: 850;
+}
+
+.electrolysisPage .accordionHeader strong {
+  padding: 0.44rem 0.78rem;
+  color: #06283c;
+  font-size: 0.92rem;
+}
+
+.electrolysisPage .accordionBody {
+  padding: 0.82rem;
+}
+
+.electrolysisPage .schemeList {
+  gap: 0.55rem;
+  margin-bottom: 0.75rem;
+}
+
+.electrolysisPage .schemeList p {
+  margin: 0;
+}
+
+.electrolysisPage .electroTableWrap table {
+  color: #e2e8f0;
+  font-size: 1rem;
+}
+
+.electrolysisPage .electroTableWrap th {
+  background: rgba(8, 145, 178, 0.38);
+  color: #a5f3fc;
+  font-weight: 850;
+}
+
+.electrolysisPage .electroTableWrap th,
+.electrolysisPage .electroTableWrap td {
+  min-width: 180px;
+  padding: 0.72rem 0.78rem;
+  border-color: rgba(125, 211, 252, 0.28);
+  line-height: 1.45;
+}
+
+.electrolysisPage .electroTableWrap select,
+.electrolysisPage .inferenceBox textarea,
+.electrolysisPage .reflectionList input {
+  border-color: rgba(125, 211, 252, 0.35);
+  border-radius: 10px;
+  padding: 0.72rem;
+  background: rgba(2, 6, 23, 0.72);
+  color: #f8fafc;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.electrolysisPage .inferenceBox {
+  gap: 0.45rem;
+}
+
+.electrolysisPage .inferenceBox button {
+  padding: 0.7rem 0.95rem;
+}
+
+.electrolysisPage .checkText {
+  font-size: 1rem;
+  font-weight: 850;
+}
+
+.electrolysisPage .scoreboardPanel {
+  top: 92px;
+  padding: 0.85rem;
+  border-radius: 18px;
+  border-color: rgba(125, 211, 252, 0.34);
+}
+
+.electrolysisPage .scoreboardPanel__header span {
+  color: #fde68a;
+  font-size: 1rem;
+  font-weight: 850;
+}
+
+.electrolysisPage .scoreboardPanel__header strong {
+  color: #a5f3fc;
+  font-size: 1.45rem;
+}
+
+.electrolysisPage .scoreboardBadge {
+  min-height: 36px;
+  margin-top: 0.62rem;
+  font-weight: 900;
+}
+
+.electrolysisPage .scoreItem {
+  min-height: 66px;
+  border-radius: 14px;
+  padding: 0.68rem;
+  background: rgba(2, 6, 23, 0.48);
+}
+
+.electrolysisPage .scoreItem__top strong,
+.electrolysisPage .totalScore {
+  font-size: 1.08rem;
+  font-weight: 900;
+}
+
+.electrolysisPage .quizCard h2 {
+  font-size: clamp(1.35rem, 2.7vw, 1.85rem);
+  font-weight: 850;
+}
+
+.electrolysisPage .quizCard__options {
+  gap: 0.62rem;
+}
+
+.electrolysisPage .quizOption {
+  min-height: 64px;
+  border-width: 1px;
+  border-color: rgba(125, 211, 252, 0.32);
+  border-radius: 14px;
+  padding: 0.74rem;
+  background: rgba(2, 6, 23, 0.48);
+  color: #f8fafc;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.electrolysisPage .quizOption:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(103, 232, 249, 0.7);
+  background: rgba(14, 116, 144, 0.38);
+}
+
+.electrolysisPage .quizOption span {
+  border-radius: 12px;
+  color: #a5f3fc;
+  font-weight: 900;
+}
+
+.electrolysisPage .quizOption strong {
+  font-weight: 750;
+}
+
+.electrolysisPage .quizCard__feedback,
+.electrolysisPage .quizCard__complete {
+  gap: 0.48rem;
+  border-radius: 14px;
+  padding: 0.85rem;
+}
+
+@media (max-width: 1100px) {
+  .electrolysisPage .electroLayout {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .electrolysisPage .electroProgressFloat {
+    top: auto;
+    right: 0.85rem;
+    bottom: 0.85rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .electrolysisPage {
+    padding: 1.25rem 0.75rem 3rem;
+  }
+
+  .electrolysisPage .electroHero {
+    padding: 1rem;
+  }
+
+  .electrolysisPage .electroHero h1 {
+    font-size: clamp(1.9rem, 10vw, 2.55rem);
+  }
+
+  .electrolysisPage .electroHero p {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .electrolysisPage .electroModeBar {
+    grid-template-columns: 1fr;
+  }
+
+  .electrolysisPage .electroPanel,
+  .electrolysisPage .accordionBody {
+    padding: 0.78rem;
+  }
+
+  .electrolysisPage .electroMaterial--visual {
+    grid-template-columns: 46px 1fr;
+  }
+
+  .electrolysisPage .electroApparatus__top,
+  .electrolysisPage .aqueousActions {
+    gap: 0.55rem;
+  }
+
+  .electrolysisPage .burnerControlDock {
+    right: 0.55rem;
+    bottom: 0.55rem;
+  }
+
+  .electrolysisPage .electroStaticScene {
+    min-height: 360px;
+  }
+
+  .electrolysisPage .electroProgressFloat {
+    right: 0.65rem;
+    bottom: 0.65rem;
+    width: min(300px, calc(100vw - 1.3rem));
+  }
+
+  .electrolysisPage .electroTableWrap table {
+    min-width: 640px;
+  }
+
+  .electrolysisPage .quizOption {
+    grid-template-columns: 38px minmax(0, 1fr);
+  }
+
+  .electrolysisPage .quizOption span {
+    width: 38px;
+    height: 38px;
+  }
+}

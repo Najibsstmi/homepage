@@ -1,19 +1,19 @@
 export const observationRows = [
   {
     id: "solid",
-    material: "Pepejal plumbum(II) bromida, PbBr₂",
+    material: "Pepejal Plumbum (II) bromida, PbBr₂",
     expectedBulb: "Tidak menyala",
     expectedConcept: "solid",
     scheme:
-      "Pepejal plumbum(II) bromida tidak dapat mengkonduksikan elektrik kerana ion-ionnya tidak bebas bergerak.",
+      "Pepejal Plumbum (II) bromida tidak dapat mengkonduksikan elektrik kerana ion-ionnya tidak bebas bergerak.",
   },
   {
     id: "molten",
-    material: "Leburan plumbum(II) bromida, PbBr₂",
+    material: "Leburan Plumbum (II) bromida, PbBr₂",
     expectedBulb: "Menyala",
     expectedConcept: "molten",
     scheme:
-      "Leburan plumbum(II) bromida dapat mengkonduksikan elektrik kerana ion-ionnya bebas bergerak.",
+      "Leburan Plumbum (II) bromida dapat mengkonduksikan elektrik kerana ion-ionnya bebas bergerak.",
   },
   {
     id: "aqueous",

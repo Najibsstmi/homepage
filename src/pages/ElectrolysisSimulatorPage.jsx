@@ -17,8 +17,6 @@ const initialAqueousItems = { water: false, powder: false, electrodes: false };
 export default function ElectrolysisSimulatorPage({ reviewPanel }) {
   const [mode, setMode] = useState("solid-molten");
   const [hasPowder, setHasPowder] = useState(false);
-  const [hasBurner, setHasBurner] = useState(false);
-  const [hasElectrodes, setHasElectrodes] = useState(false);
   const [burnerOn, setBurnerOn] = useState(false);
   const [solidCircuitOn, setSolidCircuitOn] = useState(false);
   const [bulbDelayedOn, setBulbDelayedOn] = useState(false);
@@ -47,26 +45,26 @@ export default function ElectrolysisSimulatorPage({ reviewPanel }) {
       return "Seret serbuk PbBr₂ ke dalam mangkuk pijar.";
     }
 
-    if (!hasElectrodes) {
-      return "Seret elektrod karbon ke dalam radas supaya litar lengkap.";
+    if (!burnerOn) {
+      return "Hidupkan penunu Bunsen untuk meleburkan PbBr₂.";
     }
 
-    if (!burnerOn || !solidCircuitOn) {
-      return "Mentol tidak menyala kerana penunu dan suis litar belum lengkap dihidupkan.";
+    if (!solidCircuitOn) {
+      return "Leburan PbBr₂ sudah terbentuk. Hidupkan suis litar untuk menyalakan mentol.";
     }
 
-    return "PbBr₂ melebur. Ion menjadi bebas bergerak dan mentol menyala.";
-  }, [mode, hasPowder, hasElectrodes, burnerOn, solidCircuitOn, aqueousCircuitOn, aqueousItems]);
+    return "Mentol menyala kerana PbBr₂ telah melebur. Ion Pb²⁺ dan Br⁻ bebas bergerak lalu membawa cas elektrik melalui litar.";
+  }, [mode, hasPowder, burnerOn, solidCircuitOn, aqueousCircuitOn, aqueousItems]);
 
   useEffect(() => {
-    if (!(hasPowder && hasElectrodes && burnerOn && solidCircuitOn)) {
+    if (!(hasPowder && burnerOn && solidCircuitOn)) {
       setBulbDelayedOn(false);
       return undefined;
     }
 
     const timer = window.setTimeout(() => setBulbDelayedOn(true), 1500);
     return () => window.clearTimeout(timer);
-  }, [hasPowder, hasElectrodes, burnerOn, solidCircuitOn]);
+  }, [hasPowder, burnerOn, solidCircuitOn]);
 
   const handleDragStart = (event, id) => {
     event.dataTransfer.setData("text/plain", id);
@@ -76,12 +74,6 @@ export default function ElectrolysisSimulatorPage({ reviewPanel }) {
     if (target === "crucible" || target === "apparatus") {
       if (id === "powder") {
         setHasPowder(true);
-      }
-      if (id === "burner") {
-        setHasBurner(true);
-      }
-      if (id === "electrodes") {
-        setHasElectrodes(true);
       }
     }
   };
@@ -100,8 +92,6 @@ export default function ElectrolysisSimulatorPage({ reviewPanel }) {
   const resetExperiment = () => {
     setMode("solid-molten");
     setHasPowder(false);
-    setHasBurner(false);
-    setHasElectrodes(false);
     setBurnerOn(false);
     setSolidCircuitOn(false);
     setBulbDelayedOn(false);
@@ -147,9 +137,7 @@ export default function ElectrolysisSimulatorPage({ reviewPanel }) {
           <h2>Bahan</h2>
           {mode === "solid-molten" ? (
             <>
-              <DraggableMaterial id="powder" title="Serbuk plumbum(II) bromida, PbBr₂" subtitle="Seret ke mangkuk pijar" placed={hasPowder} onDragStart={handleDragStart} />
-              <DraggableMaterial id="electrodes" title="Elektrod karbon" subtitle="Seret ke dalam radas" placed={hasElectrodes} onDragStart={handleDragStart} />
-              <DraggableMaterial id="burner" title="Penunu Bunsen" subtitle="Seret ke bawah mangkuk pijar" placed={hasBurner} onDragStart={handleDragStart} />
+              <DraggableMaterial id="powder" title="Serbuk Plumbum (II) bromida, PbBr₂" subtitle="Seret ke mangkuk pijar" placed={hasPowder} onDragStart={handleDragStart} />
             </>
           ) : (
             <>
@@ -170,14 +158,12 @@ export default function ElectrolysisSimulatorPage({ reviewPanel }) {
           {mode === "solid-molten" ? (
             <ElectrolysisApparatus
               hasPowder={hasPowder}
-              hasBurner={hasBurner}
-              hasElectrodes={hasElectrodes}
               burnerOn={burnerOn}
               circuitOn={solidCircuitOn}
               bulbOn={bulbDelayedOn}
               onDropMaterial={handleDropMaterial}
-              onToggleBurner={() => hasPowder && hasElectrodes && setBurnerOn((value) => !value)}
-              onToggleCircuit={() => hasPowder && hasElectrodes && setSolidCircuitOn((value) => !value)}
+              onToggleBurner={() => hasPowder && setBurnerOn((value) => !value)}
+              onToggleCircuit={() => hasPowder && setSolidCircuitOn((value) => !value)}
             />
           ) : (
             <AqueousMode
@@ -191,20 +177,23 @@ export default function ElectrolysisSimulatorPage({ reviewPanel }) {
           )}
         </div>
 
-        <MobileControlDrawer title="Progress" summary="Cabaran dan status pembelajaran">
-          <aside className="electroProgressRail" aria-label="Progress pembelajaran">
-            <ChallengeMode
-              solidReady={hasPowder && hasElectrodes}
-              moltenReady={hasPowder && hasElectrodes && burnerOn && solidCircuitOn}
-              aqueousReady={aqueousReady}
-              bulbAnswers={bulbAnswers}
-              inferences={inferences}
-              quizScore={quizResult.score}
-              quizTotal={quizResult.total}
-            />
-          </aside>
-        </MobileControlDrawer>
       </section>
+
+      <details className="electroProgressFloat">
+        <summary>
+          <span>Science Progress</span>
+          <strong>Lihat</strong>
+        </summary>
+        <ChallengeMode
+          solidReady={hasPowder}
+          moltenReady={hasPowder && burnerOn && solidCircuitOn}
+          aqueousReady={aqueousReady}
+          bulbAnswers={bulbAnswers}
+          inferences={inferences}
+          quizScore={quizResult.score}
+          quizTotal={quizResult.total}
+        />
+      </details>
 
       <section className="electroPanel learningPanel">
         <h2>Apa yang berlaku?</h2>

@@ -113,7 +113,7 @@ export const alloyQuiz = [
 
 export const electrolysisQuiz = [
   {
-    question: "Mengapakah PbBr2 dalam keadaan leburan boleh mengkonduksikan elektrik?",
+    question: "Mengapakah PbBr₂ dalam keadaan leburan boleh mengkonduksikan elektrik?",
     options: {
       A: "Ion-ionnya bebas bergerak",
       B: "Molekulnya menjadi neutral",
@@ -124,7 +124,7 @@ export const electrolysisQuiz = [
     explanation: "Dalam keadaan leburan, ion-ion bebas bergerak dan membawa cas.",
   },
   {
-    question: "Mengapakah pepejal PbBr2 tidak menyalakan mentol?",
+    question: "Mengapakah pepejal PbBr₂ tidak menyalakan mentol?",
     options: {
       A: "Ion-ionnya tidak bebas bergerak",
       B: "Pepejal tidak mempunyai atom",

@@ -41,7 +41,7 @@ export const simulators = [
     level: "Tingkatan 5",
     topic: "Bab 6 Elektrokimia",
     description:
-      "Mengkaji kekonduksian elektrik plumbum(II) bromida dalam keadaan pepejal, leburan dan akueus.",
+      "Mengkaji kekonduksian elektrik Plumbum (II) bromida dalam keadaan pepejal, leburan dan akueus.",
     href: "/simulator/elektrokimia-elektrolisis",
   },
   {

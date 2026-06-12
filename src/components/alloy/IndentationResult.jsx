@@ -18,6 +18,10 @@ export default function IndentationResult({ results, latestResult, readings, mea
   const guideTop = surfaceTop + dentHeight;
   const activeAttempts = active ? attempts[active] || 0 : 0;
   const showCorrectAnswer = checked && !isCorrect && activeAttempts >= 2;
+  const resultRows = [
+    ["pure", "Logam tulen"],
+    ["alloy", "Aloi"],
+  ];
 
   useEffect(() => {
     setChecked(false);
@@ -34,26 +38,44 @@ export default function IndentationResult({ results, latestResult, readings, mea
     }
   };
 
+  const getResultValue = (id) => {
+    if (!results[id]) {
+      return "Belum diuji";
+    }
+
+    if (measurementCorrect[id]) {
+      return `${results[id].depth.toFixed(1)} mm`;
+    }
+
+    return "Perlu diukur";
+  };
+
+  const getResultNote = (id) => {
+    if (!results[id]) {
+      return "Jalankan eksperimen";
+    }
+
+    if (measurementCorrect[id]) {
+      return id === "pure" ? "Lekukan lebih dalam" : "Lekukan lebih cetek";
+    }
+
+    return "Masukkan bacaan murid";
+  };
+
   return (
     <section className="electroPanel alloyResultPanel">
-      <h2>Keputusan Lekukan</h2>
-      <div className="alloyResultGrid">
-        {[
-          ["pure", "Logam tulen"],
-          ["alloy", "Aloi"],
-        ].map(([id, label]) => (
-          <div className="alloyResultCard" key={id}>
-            <span>{label}</span>
-            <strong>{results[id] ? `${results[id].depth.toFixed(1)} mm` : "Belum diuji"}</strong>
-            <small>{results[id] ? (id === "pure" ? "Lekukan lebih dalam" : "Lekukan lebih cetek") : "Jalankan eksperimen"}</small>
-          </div>
-        ))}
-      </div>
+      <h2>Ukur dan Rekod Lekukan</h2>
 
       {latestResult && (
-        <div className="indentMeasureCard">
-          <h3>Ukur Kedalaman Lekukan</h3>
-          <p className="indentMeasureCard__hint">Baca dari permukaan asal (0 mm) hingga ke dasar lekukan.</p>
+        <div className="indentMeasureCard" id="alloy-measurement">
+          <div className="indentMeasureCard__header">
+            <span>Langkah wajib selepas jatuhan</span>
+            <h3>Masukkan bacaan kedalaman lekukan</h3>
+            <p className="indentMeasureCard__hint">
+              Baca dari permukaan asal (0 mm) hingga ke dasar lekukan. Jawapan sebenar hanya dipaparkan selepas bacaan disemak.
+            </p>
+          </div>
+
           <div className="indentMeasureCard__visual">
             <div className={`indentMeasureBlock indentMeasureBlock--${active}`}>
               <span className="indentSurfaceLine" style={{ top: `${surfaceTop}px` }} />
@@ -72,6 +94,7 @@ export default function IndentationResult({ results, latestResult, readings, mea
               </div>
             </div>
           </div>
+
           <label>
             Bacaan kedalaman lekukan
             <div className="indentMeasureCard__input">
@@ -88,10 +111,11 @@ export default function IndentationResult({ results, latestResult, readings, mea
               Semak bacaan
             </button>
           </label>
+
           {checked && hasReading && (
             <p className={isCorrect ? "checkText checkText--ok" : "checkText checkText--warn"}>
               {isCorrect || measurementCorrect[active]
-                ? "✓ Bacaan tepat"
+                ? "Bacaan tepat"
                 : showCorrectAnswer
                   ? `Cuba semak semula. Bacaan sebenar ialah ${expected.toFixed(1)} mm.`
                   : "Cuba baca skala pembaris semula"}
@@ -99,6 +123,16 @@ export default function IndentationResult({ results, latestResult, readings, mea
           )}
         </div>
       )}
+
+      <div className="alloyResultGrid">
+        {resultRows.map(([id, label]) => (
+          <div className="alloyResultCard" key={id}>
+            <span>{label}</span>
+            <strong>{getResultValue(id)}</strong>
+            <small>{getResultNote(id)}</small>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }

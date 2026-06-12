@@ -30,7 +30,7 @@ export default function MaterialTray({
 
       <div className="alloyMaterialCard alloyBallCard alloyBallCard--static">
         <span className="steelBallIcon" />
-        <strong>Bebola keluli 1 kg</strong>
+        <strong>Pemberat 1 kg</strong>
         <small>Jisim tetap, sudah tergantung pada radas</small>
       </div>
 

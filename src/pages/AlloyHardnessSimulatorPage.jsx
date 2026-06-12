@@ -37,7 +37,7 @@ export default function AlloyHardnessSimulatorPage({ reviewPanel }) {
       return "Pilih jenis bongkah untuk memulakan eksperimen.";
     }
     if (dropping) {
-      return "Bebola keluli dijatuhkan ke atas bongkah.";
+      return "Pemberat 1 kg dijatuhkan ke atas bongkah.";
     }
     if (latestResult?.materialId === "pure") {
       return "Lekukan pada logam tulen lebih dalam kerana lapisan atom mudah menggelongsor.";
@@ -45,10 +45,17 @@ export default function AlloyHardnessSimulatorPage({ reviewPanel }) {
     if (latestResult?.materialId === "alloy") {
       return "Aloi lebih keras kerana susunan atom berlainan saiz menghalang penggelongsoran lapisan atom.";
     }
-    return `${alloyMaterials[selectedMaterial].label} sudah dipilih. Tekan Lepaskan bebola untuk merekod pemerhatian.`;
+    return `${alloyMaterials[selectedMaterial].label} sudah dipilih. Tekan Jatuhkan pemberat untuk merekod pemerhatian.`;
   }, [selectedMaterial, dropping, latestResult]);
 
   const handleDropItem = (id) => {
+    if (id === "pure" || id === "alloy") {
+      setSelectedMaterial(id);
+      setLatestResult(null);
+    }
+  };
+
+  const selectMaterial = (id) => {
     if (id === "pure" || id === "alloy") {
       setSelectedMaterial(id);
       setLatestResult(null);
@@ -110,7 +117,7 @@ export default function AlloyHardnessSimulatorPage({ reviewPanel }) {
         <MobileControlDrawer title="Bahan & radas" summary="Pilih logam tulen atau aloi">
           <MaterialTray
             selectedMaterial={selectedMaterial}
-            onSelectMaterial={setSelectedMaterial}
+            onSelectMaterial={selectMaterial}
           />
         </MobileControlDrawer>
 
@@ -146,12 +153,12 @@ export default function AlloyHardnessSimulatorPage({ reviewPanel }) {
           measurementCorrect={measurementCorrect}
           onReadingChange={(id, value) => setReadings((current) => ({ ...current, [id]: value }))}
         />
-        <AtomicView selectedMaterial={selectedMaterial || "pure"} show={showAtoms} onToggle={() => setShowAtoms((value) => !value)} />
-      </section>
-
-      <section className="electroPanel learningPanel">
-        <h2>Apa yang berlaku?</h2>
-        <p>{learningMessage}</p>
+        <AtomicView
+          selectedMaterial={selectedMaterial || "pure"}
+          show={showAtoms}
+          onToggle={() => setShowAtoms((value) => !value)}
+          learningMessage={learningMessage}
+        />
       </section>
 
       <AlloyObservationTable answers={tableAnswers} onChange={updateTableAnswer} results={results} />

@@ -17447,6 +17447,40 @@ section {
   box-shadow: inset 0 0 0 1px rgba(2, 6, 23, 0.08);
 }
 
+.electrolysisPage .electroSceneInstruction {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 5;
+  display: grid;
+  gap: 0.28rem;
+  width: min(460px, calc(100% - 2rem));
+  border: 2px solid rgba(250, 204, 21, 0.7);
+  border-radius: 16px;
+  padding: 0.88rem 1rem;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(8, 47, 73, 0.92));
+  color: #f8fafc;
+  box-shadow:
+    0 18px 34px rgba(2, 6, 23, 0.36),
+    0 0 0 4px rgba(250, 204, 21, 0.12);
+}
+
+.electrolysisPage .electroSceneInstruction strong {
+  color: #fde68a;
+  font-size: clamp(1.05rem, 2vw, 1.22rem);
+  font-weight: 950;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.electrolysisPage .electroSceneInstruction p {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(1rem, 1.8vw, 1.12rem);
+  font-weight: 750;
+  line-height: 1.35;
+}
+
 .electrolysisPage .electroStageBadge {
   position: absolute;
   left: 50%;
@@ -17739,49 +17773,78 @@ section {
   margin-top: 0.65rem;
 }
 
+.electrolysisPage .electroMain > .electroObservation {
+  margin-top: 0;
+}
+
 .electrolysisPage .electroProgressFloat {
   position: fixed;
   top: 96px;
   right: clamp(0.8rem, 2vw, 1.6rem);
   z-index: 30;
-  width: min(320px, calc(100vw - 1.6rem));
+  width: min(380px, calc(100vw - 1.6rem));
 }
 
 .electrolysisPage .electroProgressFloat summary {
   display: flex;
-  min-height: 48px;
+  min-height: 66px;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 0.95rem;
   list-style: none;
   border: 1px solid rgba(103, 232, 249, 0.38);
   border-radius: 16px;
-  padding: 0.72rem 0.9rem;
+  padding: 0.84rem 0.95rem;
   background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(8, 47, 73, 0.86));
   color: #f8fafc;
   box-shadow: 0 18px 38px rgba(2, 6, 23, 0.34);
   cursor: pointer;
 }
 
+.electrolysisPage .electroProgressFloat summary:hover {
+  border-color: rgba(103, 232, 249, 0.74);
+  box-shadow: 0 18px 42px rgba(8, 145, 178, 0.34);
+  transform: translateY(-1px);
+}
+
+.electrolysisPage .electroProgressFloat summary:active {
+  transform: translateY(1px);
+}
+
 .electrolysisPage .electroProgressFloat summary::-webkit-details-marker {
   display: none;
 }
 
-.electrolysisPage .electroProgressFloat summary span {
+.electrolysisPage .electroProgressFloat__label {
+  display: grid;
+  gap: 0.12rem;
+  min-width: 0;
+}
+
+.electrolysisPage .electroProgressFloat__label b {
   color: #fde68a;
-  font-size: 0.98rem;
+  font-size: 1.08rem;
   font-weight: 900;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
+.electrolysisPage .electroProgressFloat__label small {
+  color: #e0f2fe;
+  font-size: 0.92rem;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
 .electrolysisPage .electroProgressFloat summary strong {
+  flex: 0 0 auto;
   border-radius: 999px;
-  padding: 0.36rem 0.72rem;
+  padding: 0.5rem 0.84rem;
   background: linear-gradient(135deg, #22d3ee, #38bdf8);
   color: #082f49;
-  font-size: 0.88rem;
+  font-size: 0.98rem;
   font-weight: 950;
+  white-space: nowrap;
 }
 
 .electrolysisPage .electroProgressFloat[open] summary {
@@ -17795,7 +17858,7 @@ section {
 }
 
 .electrolysisPage .electroProgressFloat[open] summary strong::before {
-  content: "Tutup";
+  content: "Tutup Kad";
 }
 
 .electrolysisPage .electroProgressFloat[open] summary strong {
@@ -17803,7 +17866,7 @@ section {
 }
 
 .electrolysisPage .electroProgressFloat[open] summary strong::before {
-  font-size: 0.88rem;
+  font-size: 0.98rem;
 }
 
 .electrolysisPage .electroProgressFloat .scoreboardPanel {
@@ -17816,20 +17879,258 @@ section {
 }
 
 .electrolysisPage .accordionHeader {
-  min-height: 48px;
-  padding: 0.82rem 0.95rem;
-  background: rgba(8, 145, 178, 0.28);
+  position: relative;
+  display: grid;
+  grid-template-columns: 50px minmax(0, 1fr) 34px;
+  min-height: 98px;
+  align-items: center;
+  gap: 0.82rem;
+  overflow: visible;
+  border: 1px solid rgba(250, 204, 21, 0.38);
+  border-radius: 8px;
+  padding: 0.78rem 0.82rem 0.78rem 0.92rem;
+  background:
+    radial-gradient(circle at 16% 18%, rgba(250, 204, 21, 0.18), transparent 28%),
+    linear-gradient(135deg, rgba(30, 41, 59, 0.96), rgba(66, 32, 6, 0.9));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 24px rgba(2, 6, 23, 0.24);
 }
 
-.electrolysisPage .accordionHeader span {
-  font-size: 1.12rem;
-  font-weight: 850;
+.electrolysisPage .accordionHeader:hover {
+  border-color: rgba(253, 230, 138, 0.82);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 16px 30px rgba(2, 6, 23, 0.32);
+  transform: translateY(-1px);
 }
 
-.electrolysisPage .accordionHeader strong {
-  padding: 0.44rem 0.78rem;
-  color: #06283c;
-  font-size: 0.92rem;
+.electrolysisPage .accordionHeader:active {
+  transform: translateY(1px);
+}
+
+.electrolysisPage .accordionHeader__label {
+  display: grid;
+  gap: 0.22rem;
+  min-width: 0;
+  text-align: left;
+}
+
+.electrolysisPage .accordionHeader__label b {
+  color: #facc15;
+  font-size: clamp(1rem, 1.9vw, 1.18rem);
+  font-weight: 950;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.electrolysisPage .accordionHeader__label small {
+  max-width: 38ch;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.electrolysisPage .accordionHeader__label em {
+  width: fit-content;
+  border: 1px solid rgba(250, 204, 21, 0.42);
+  border-radius: 999px;
+  padding: 0.22rem 0.52rem;
+  background: rgba(2, 6, 23, 0.32);
+  color: #fde68a;
+  font-size: 0.78rem;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.electrolysisPage .accordionHeader__step {
+  position: absolute;
+  top: -0.32rem;
+  left: -0.32rem;
+  z-index: 2;
+  display: grid;
+  width: 1.6rem;
+  height: 1.6rem;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b, #facc15);
+  color: #fff7ed;
+  font-size: 0.9rem;
+  font-weight: 950;
+  box-shadow: 0 4px 10px rgba(2, 6, 23, 0.35);
+}
+
+.electrolysisPage .accordionHeader__icon {
+  position: relative;
+  display: grid;
+  width: 48px;
+  height: 56px;
+  place-items: center;
+}
+
+.electrolysisPage .accordionHeader__icon::before,
+.electrolysisPage .accordionHeader__icon::after,
+.electrolysisPage .accordionHeader__icon i,
+.electrolysisPage .accordionHeader__icon i::before,
+.electrolysisPage .accordionHeader__icon i::after {
+  content: "";
+  position: absolute;
+  display: block;
+}
+
+.electrolysisPage .accordionHeader__icon--clipboard {
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fff7ed, #fed7aa);
+  box-shadow: inset 0 0 0 3px rgba(251, 146, 60, 0.64), 0 8px 16px rgba(2, 6, 23, 0.18);
+}
+
+.electrolysisPage .accordionHeader__icon--clipboard::before {
+  top: -5px;
+  left: 15px;
+  width: 18px;
+  height: 10px;
+  border-radius: 5px 5px 3px 3px;
+  background: #facc15;
+  box-shadow: 0 0 0 3px #fff7ed;
+}
+
+.electrolysisPage .accordionHeader__icon--clipboard i {
+  inset: 15px 13px auto;
+  height: 3px;
+  border-radius: 999px;
+  background: #fb923c;
+  box-shadow: 0 10px 0 #fb923c, 0 20px 0 #fb923c;
+}
+
+.electrolysisPage .accordionHeader__icon--bulb::before {
+  left: 10px;
+  top: 3px;
+  width: 28px;
+  height: 34px;
+  border-radius: 50% 50% 46% 46%;
+  background: radial-gradient(circle at 36% 28%, #fef9c3, #fde047 48%, #22c55e 72%);
+  box-shadow: 0 0 18px rgba(34, 197, 94, 0.7);
+}
+
+.electrolysisPage .accordionHeader__icon--bulb::after {
+  left: 18px;
+  top: 37px;
+  width: 13px;
+  height: 12px;
+  border-radius: 3px;
+  background: #94a3b8;
+  box-shadow: inset 0 -3px 0 rgba(15, 23, 42, 0.3);
+}
+
+.electrolysisPage .accordionHeader__icon--bulb i {
+  left: 6px;
+  top: 17px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow:
+    -8px 0 0 rgba(34, 197, 94, 0.8),
+    36px 0 0 rgba(34, 197, 94, 0.8),
+    0 -12px 0 rgba(34, 197, 94, 0.55),
+    0 12px 0 rgba(34, 197, 94, 0.55);
+}
+
+.electrolysisPage .accordionHeader__icon--trophy::before {
+  left: 12px;
+  top: 6px;
+  width: 25px;
+  height: 28px;
+  border-radius: 5px 5px 12px 12px;
+  background: linear-gradient(180deg, #c084fc, #7c3aed);
+  box-shadow: inset 0 0 0 2px rgba(221, 214, 254, 0.28), 0 0 18px rgba(168, 85, 247, 0.55);
+}
+
+.electrolysisPage .accordionHeader__icon--trophy::after {
+  left: 20px;
+  top: 34px;
+  width: 9px;
+  height: 15px;
+  background: #a855f7;
+  box-shadow: -8px 15px 0 4px rgba(124, 58, 237, 0.9), 8px 15px 0 4px rgba(124, 58, 237, 0.9);
+}
+
+.electrolysisPage .accordionHeader__icon--trophy i {
+  left: 20px;
+  top: 13px;
+  width: 9px;
+  height: 9px;
+  background: #f5f3ff;
+  clip-path: polygon(50% 0, 62% 35%, 100% 35%, 69% 56%, 80% 100%, 50% 73%, 20% 100%, 31% 56%, 0 35%, 38% 35%);
+}
+
+.electrolysisPage .accordionHeader__arrow {
+  position: relative;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b, #facc15);
+  box-shadow: 0 8px 16px rgba(2, 6, 23, 0.24);
+}
+
+.electrolysisPage .accordionHeader__arrow::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-top: 3px solid #fff7ed;
+  border-right: 3px solid #fff7ed;
+  transform: rotate(45deg);
+}
+
+.electrolysisPage .accordionHeader[aria-expanded="true"] .accordionHeader__arrow::before {
+  transform: translateY(2px) rotate(-45deg);
+}
+
+.electrolysisPage .accordionHeader--scheme {
+  border-color: rgba(34, 197, 94, 0.44);
+  background:
+    radial-gradient(circle at 16% 18%, rgba(34, 197, 94, 0.18), transparent 28%),
+    linear-gradient(135deg, rgba(5, 78, 56, 0.94), rgba(6, 95, 70, 0.84));
+}
+
+.electrolysisPage .accordionHeader--scheme:hover {
+  border-color: rgba(74, 222, 128, 0.82);
+}
+
+.electrolysisPage .accordionHeader--scheme .accordionHeader__step,
+.electrolysisPage .accordionHeader--scheme .accordionHeader__arrow {
+  background: linear-gradient(135deg, #22c55e, #34d399);
+}
+
+.electrolysisPage .accordionHeader--scheme .accordionHeader__label b,
+.electrolysisPage .accordionHeader--scheme .accordionHeader__label em {
+  color: #86efac;
+}
+
+.electrolysisPage .accordionHeader--quiz {
+  border-color: rgba(168, 85, 247, 0.5);
+  background:
+    radial-gradient(circle at 16% 18%, rgba(168, 85, 247, 0.22), transparent 28%),
+    linear-gradient(135deg, rgba(59, 7, 100, 0.94), rgba(88, 28, 135, 0.82));
+}
+
+.electrolysisPage .accordionHeader--quiz:hover {
+  border-color: rgba(216, 180, 254, 0.86);
+}
+
+.electrolysisPage .accordionHeader--quiz .accordionHeader__step,
+.electrolysisPage .accordionHeader--quiz .accordionHeader__arrow {
+  background: linear-gradient(135deg, #8b5cf6, #c084fc);
+}
+
+.electrolysisPage .accordionHeader--quiz .accordionHeader__label b,
+.electrolysisPage .accordionHeader--quiz .accordionHeader__label em {
+  color: #d8b4fe;
 }
 
 .electrolysisPage .accordionBody {
@@ -17847,45 +18148,71 @@ section {
 
 .electrolysisPage .electroTableWrap table {
   color: #e2e8f0;
-  font-size: 1rem;
+  font-size: clamp(1.12rem, 1.4vw, 1.28rem);
 }
 
 .electrolysisPage .electroTableWrap th {
   background: rgba(8, 145, 178, 0.38);
   color: #a5f3fc;
-  font-weight: 850;
+  font-size: clamp(1.08rem, 1.35vw, 1.24rem);
+  font-weight: 950;
 }
 
 .electrolysisPage .electroTableWrap th,
 .electrolysisPage .electroTableWrap td {
   min-width: 180px;
-  padding: 0.72rem 0.78rem;
+  padding: 1.02rem 1rem;
   border-color: rgba(125, 211, 252, 0.28);
-  line-height: 1.45;
+  line-height: 1.5;
+  vertical-align: top;
+}
+
+.electrolysisPage .electroTableWrap td:first-child {
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+.electrolysisPage .electroTableWrap td:nth-child(2) {
+  width: 25%;
+}
+
+.electrolysisPage .electroTableWrap td:nth-child(3) {
+  width: 36%;
 }
 
 .electrolysisPage .electroTableWrap select,
 .electrolysisPage .inferenceBox textarea,
 .electrolysisPage .reflectionList input {
   border-color: rgba(125, 211, 252, 0.35);
-  border-radius: 10px;
-  padding: 0.72rem;
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
   background: rgba(2, 6, 23, 0.72);
   color: #f8fafc;
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: clamp(1.08rem, 1.35vw, 1.22rem);
+  font-weight: 700;
+}
+
+.electrolysisPage .electroTableWrap select {
+  min-height: 52px;
+}
+
+.electrolysisPage .inferenceBox textarea {
+  min-height: 118px;
+  resize: vertical;
 }
 
 .electrolysisPage .inferenceBox {
-  gap: 0.45rem;
+  gap: 0.62rem;
 }
 
 .electrolysisPage .inferenceBox button {
-  padding: 0.7rem 0.95rem;
+  min-height: 48px;
+  padding: 0.78rem 1.05rem;
+  font-size: 1.02rem;
 }
 
 .electrolysisPage .checkText {
-  font-size: 1rem;
+  font-size: 1.08rem;
   font-weight: 850;
 }
 
@@ -18025,6 +18352,14 @@ section {
     bottom: 0.55rem;
   }
 
+  .electrolysisPage .electroSceneInstruction {
+    left: 0.65rem;
+    right: 0.65rem;
+    bottom: 4.6rem;
+    width: auto;
+    padding: 0.72rem 0.78rem;
+  }
+
   .electrolysisPage .electroStaticScene {
     min-height: 360px;
   }
@@ -18037,6 +18372,26 @@ section {
 
   .electrolysisPage .electroTableWrap table {
     min-width: 640px;
+  }
+
+  .electrolysisPage .accordionHeader {
+    grid-template-columns: 44px minmax(0, 1fr) 30px;
+    gap: 0.65rem;
+    min-height: 92px;
+    padding: 0.75rem;
+  }
+
+  .electrolysisPage .accordionHeader__icon {
+    width: 42px;
+    height: 50px;
+  }
+
+  .electrolysisPage .accordionHeader__label small {
+    font-size: 0.86rem;
+  }
+
+  .electrolysisPage .accordionHeader__label em {
+    font-size: 0.72rem;
   }
 
   .electrolysisPage .quizOption {

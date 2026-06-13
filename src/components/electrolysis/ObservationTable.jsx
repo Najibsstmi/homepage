@@ -11,9 +11,17 @@ export default function ObservationTable({
 }) {
   return (
     <section className="electroPanel electroObservation electroAccordion">
-      <button className="accordionHeader" type="button" onClick={onToggle}>
-        <span>Jadual Pemerhatian</span>
-        <strong>{open ? "Sembunyikan" : "Pamerkan"}</strong>
+      <button className="accordionHeader accordionHeader--observation" type="button" onClick={onToggle} aria-expanded={open}>
+        <span className="accordionHeader__step" aria-hidden="true">1</span>
+        <span className="accordionHeader__icon accordionHeader__icon--clipboard" aria-hidden="true">
+          <i />
+        </span>
+        <span className="accordionHeader__label">
+          <b>Jadual Pemerhatian</b>
+          <small>Rekod apa yang anda lihat sepanjang eksperimen.</small>
+          <em>{open ? "Sedang dibuka" : "Belum lengkap"}</em>
+        </span>
+        <span className="accordionHeader__arrow" aria-hidden="true" />
       </button>
       {open && (
         <div className="accordionBody electroTableWrap">

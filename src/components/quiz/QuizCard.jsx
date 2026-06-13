@@ -72,9 +72,17 @@ export default function QuizCard({ title = "Science Check", questions, onComplet
 
   return (
     <section className="quizCard electroPanel electroAccordion">
-      <button className="accordionHeader quizCard__toggle" type="button" onClick={() => setOpen((value) => !value)}>
-        <span>{title}</span>
-        <strong>{open ? "Tutup Kuiz" : "Buka Kuiz"}</strong>
+      <button className="accordionHeader accordionHeader--quiz quizCard__toggle" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
+        <span className="accordionHeader__step" aria-hidden="true">3</span>
+        <span className="accordionHeader__icon accordionHeader__icon--trophy" aria-hidden="true">
+          <i />
+        </span>
+        <span className="accordionHeader__label">
+          <b>{title}</b>
+          <small>Uji kefahaman anda dengan menjawab kuiz.</small>
+          <em>{open ? "Sedang dibuka" : "Terkunci"}</em>
+        </span>
+        <span className="accordionHeader__arrow" aria-hidden="true" />
       </button>
 
       {open && (

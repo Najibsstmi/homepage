@@ -3,6 +3,7 @@ export default function ElectrolysisApparatus({
   burnerOn,
   circuitOn,
   bulbOn,
+  learningMessage,
   onDropMaterial,
   onToggleBurner,
   onToggleCircuit,
@@ -51,6 +52,11 @@ export default function ElectrolysisApparatus({
         role="img"
         aria-label="Radas elektrolisis Plumbum (II) bromida dengan bateri, suis, mentol, elektrod karbon, mangkuk pijar dan penunu Bunsen"
       >
+        <div className="electroSceneInstruction">
+          <strong>Langkah sekarang</strong>
+          <p>{learningMessage}</p>
+        </div>
+
         <span className="electroBulbGlow" aria-hidden="true" />
         <span className="electroHeatGlow" aria-hidden="true" />
         <span className="electroFlame" aria-hidden="true" />

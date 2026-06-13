@@ -4,6 +4,7 @@ export default function AqueousMode({
   aqueousItems,
   circuitOn,
   showIons,
+  learningMessage,
   onDropMaterial,
   onToggleCircuit,
   onToggleIons,
@@ -49,6 +50,11 @@ export default function AqueousMode({
       </div>
 
       <div className="electroSvgDrop" onDragOver={(event) => event.preventDefault()} onDrop={handleDrop}>
+        <div className="electroSceneInstruction">
+          <strong>Langkah sekarang</strong>
+          <p>{learningMessage}</p>
+        </div>
+
         <svg className="electroSvg" viewBox="0 0 900 560" role="img" aria-label="Radas elektrolisis akueus natrium klorida">
           <defs>
             <radialGradient id="aqueousBulbGlow" cx="50%" cy="50%" r="55%">

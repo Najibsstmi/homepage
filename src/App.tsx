@@ -1132,6 +1132,27 @@ export default function App() {
             <article className="moduleCard">
               <div className="moduleMeta">
                 <span className="moduleTag">Sains</span>
+                <span className="moduleTag">Teknik Menjawab</span>
+                <span className="moduleTag">Jun-Julai 2026</span>
+              </div>
+              <h3>Bahan Bengkel Teknik Menjawab Jun-Julai 2026</h3>
+              <p>
+                Bahan ini digunakan dalam sesi bengkel teknik menjawab di beberapa sekolah,
+                dengan fokus kepada cara memahami kehendak soalan, membina jawapan berstruktur
+                dan memperkemas penulisan murid untuk soalan Sains.
+              </p>
+              <a
+                href="/bank-soalan/BAHAN%20BENGKEL%20TEKNIK%20MENJAWAB/BAHAN%20BENGKEL%20JUN%202026.pdf"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Buka Bahan Bengkel →
+              </a>
+            </article>
+
+            <article className="moduleCard">
+              <div className="moduleMeta">
+                <span className="moduleTag">Sains</span>
                 <span className="moduleTag">Bahagian B</span>
               </div>
               <h3>Bank Soalan Sains Bahagian B</h3>

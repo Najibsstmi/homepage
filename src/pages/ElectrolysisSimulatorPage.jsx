@@ -161,6 +161,7 @@ export default function ElectrolysisSimulatorPage({ reviewPanel }) {
               burnerOn={burnerOn}
               circuitOn={solidCircuitOn}
               bulbOn={bulbDelayedOn}
+              learningMessage={learningMessage}
               onDropMaterial={handleDropMaterial}
               onToggleBurner={() => hasPowder && setBurnerOn((value) => !value)}
               onToggleCircuit={() => hasPowder && setSolidCircuitOn((value) => !value)}
@@ -170,19 +171,32 @@ export default function ElectrolysisSimulatorPage({ reviewPanel }) {
               aqueousItems={aqueousItems}
               circuitOn={aqueousCircuitOn}
               showIons={showIons}
+              learningMessage={learningMessage}
               onDropMaterial={handleAqueousDrop}
               onToggleCircuit={() => setAqueousCircuitOn((value) => !value)}
               onToggleIons={setShowIons}
             />
           )}
+
+          <ObservationTable
+            open={showObservation}
+            onToggle={() => setShowObservation((value) => !value)}
+            bulbAnswers={bulbAnswers}
+            inferences={inferences}
+            onBulbChange={(id, value) => setBulbAnswers((current) => ({ ...current, [id]: value }))}
+            onInferenceChange={(id, value) => setInferences((current) => ({ ...current, [id]: value }))}
+          />
         </div>
 
       </section>
 
       <details className="electroProgressFloat">
         <summary>
-          <span>Science Progress</span>
-          <strong>Lihat</strong>
+          <span className="electroProgressFloat__label">
+            <b>Science Progress</b>
+            <small>Kad misi & markah</small>
+          </span>
+          <strong>Buka Kad</strong>
         </summary>
         <ChallengeMode
           solidReady={hasPowder}
@@ -195,24 +209,18 @@ export default function ElectrolysisSimulatorPage({ reviewPanel }) {
         />
       </details>
 
-      <section className="electroPanel learningPanel">
-        <h2>Apa yang berlaku?</h2>
-        <p>{learningMessage}</p>
-      </section>
-
-      <ObservationTable
-        open={showObservation}
-        onToggle={() => setShowObservation((value) => !value)}
-        bulbAnswers={bulbAnswers}
-        inferences={inferences}
-        onBulbChange={(id, value) => setBulbAnswers((current) => ({ ...current, [id]: value }))}
-        onInferenceChange={(id, value) => setInferences((current) => ({ ...current, [id]: value }))}
-      />
-
       <section className="electroPanel schemePanel electroAccordion">
-        <button className="accordionHeader" type="button" onClick={() => setShowScheme((value) => !value)}>
-          <span>Skema Jawapan</span>
-          <strong>{showScheme ? "Sembunyikan" : "Pamerkan"}</strong>
+        <button className="accordionHeader accordionHeader--scheme" type="button" onClick={() => setShowScheme((value) => !value)} aria-expanded={showScheme}>
+          <span className="accordionHeader__step" aria-hidden="true">2</span>
+          <span className="accordionHeader__icon accordionHeader__icon--bulb" aria-hidden="true">
+            <i />
+          </span>
+          <span className="accordionHeader__label">
+            <b>Skema Jawapan</b>
+            <small>Bandingkan pemerhatian anda dengan skema jawapan.</small>
+            <em>{showScheme ? "Sedang dibuka" : "Terkunci"}</em>
+          </span>
+          <span className="accordionHeader__arrow" aria-hidden="true" />
         </button>
         {showScheme && (
           <div className="accordionBody">

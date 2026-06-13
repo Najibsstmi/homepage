@@ -71,4 +71,13 @@ export const simulators = [
       "Simulator interaktif untuk memahami pembelahan nukleus, pelakuran nukleus dan cara stesen janakuasa nuklear menghasilkan elektrik.",
     href: "/simulator/tenaga-nuklear",
   },
+  {
+    id: "sistem-endokrin",
+    title: "Sistem Endokrin",
+    level: "Tingkatan 4",
+    topic: "Bab 3 Koordinasi Badan",
+    description:
+      "Terokai kelenjar endokrin, hormon, salur darah dan kesan hormon pada organ sasaran melalui animasi overlay badan manusia.",
+    href: "/simulator/sistem-endokrin",
+  },
 ];

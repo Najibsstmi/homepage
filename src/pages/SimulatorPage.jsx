@@ -6,6 +6,7 @@ import AlloyHardnessSimulatorPage from "./AlloyHardnessSimulatorPage";
 import AtomMoleculeCompoundSimulatorPage from "./AtomMoleculeCompoundSimulatorPage";
 import ChemicalCellSimulatorPage from "./ChemicalCellSimulatorPage";
 import ElectrolysisSimulatorPage from "./ElectrolysisSimulatorPage";
+import EndocrineSystemSimulatorPage from "./EndocrineSystemSimulatorPage";
 import InertiaMassSimulatorPage from "./InertiaMassSimulatorPage";
 import NuclearEnergySimulatorPage from "./NuclearEnergySimulatorPage";
 import ReactionRateSimulatorPage from "./ReactionRateSimulatorPage";
@@ -75,6 +76,14 @@ export default function SimulatorPage() {
   if (path === "/simulator/tenaga-nuklear") {
     return (
       <NuclearEnergySimulatorPage reviewPanel={getReviewPanel("tenaga-nuklear")} />
+    );
+  }
+
+  if (path === "/simulator/sistem-endokrin") {
+    return (
+      <EndocrineSystemSimulatorPage
+        reviewPanel={getReviewPanel("sistem-endokrin")}
+      />
     );
   }
 

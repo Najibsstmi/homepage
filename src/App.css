@@ -19915,31 +19915,23 @@ section {
   z-index: 2;
   opacity: 0;
   transition: opacity 0.35s ease;
-  mix-blend-mode: screen;
+  mix-blend-mode: normal;
 }
 
 .endocrineBodyStage--vessels .endocrineVesselLayer {
-  opacity: 0.92;
+  opacity: 1;
 }
 
 .endocrineVessel {
   fill: none;
+  color: #ff1744;
+  stroke: #ff1744;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 0.88;
-  stroke-dasharray: 190;
-  stroke-dashoffset: 190;
-  filter: drop-shadow(0 0 3px currentColor);
-}
-
-.endocrineVessel--artery {
-  color: #ef4444;
-  stroke: #ef4444;
-}
-
-.endocrineVessel--vein {
-  color: #3b82f6;
-  stroke: #3b82f6;
+  stroke-width: 0.92;
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+  filter: drop-shadow(0 0 2px rgba(255, 23, 68, 0.95)) drop-shadow(0 0 7px rgba(255, 23, 68, 0.72));
 }
 
 .endocrineBodyStage--vessels .endocrineVessel {
@@ -20162,8 +20154,7 @@ section {
   background: linear-gradient(90deg, transparent, #facc15, transparent);
 }
 
-.legendArtery::before,
-.legendVein::before {
+.legendBlood::before {
   content: "";
   position: absolute;
   left: 2px;
@@ -20171,16 +20162,8 @@ section {
   top: 8px;
   height: 4px;
   border-radius: 999px;
-}
-
-.legendArtery::before {
-  background: #ef4444;
-  box-shadow: 0 0 9px rgba(239, 68, 68, 0.65);
-}
-
-.legendVein::before {
-  background: #3b82f6;
-  box-shadow: 0 0 9px rgba(59, 130, 246, 0.65);
+  background: #ff1744;
+  box-shadow: 0 0 12px rgba(255, 23, 68, 0.82);
 }
 
 .legendTarget {
@@ -20726,6 +20709,324 @@ section {
   50% {
     transform: scaleX(1.14);
   }
+}
+
+/* Bright theme for endocrine simulator, matched to the chemical cell UI */
+.endocrinePage {
+  background: linear-gradient(180deg, #f8fbff 0%, #eef8ff 44%, #fdfcf7 100%);
+  color: #0f172a;
+}
+
+.endocrineTopbar,
+.endocrineGuide,
+.endocrinePanel,
+.endocrineStagePanel,
+.endocrineInfoBar {
+  border: 2px solid rgba(21, 101, 192, 0.82);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(244, 250, 255, 0.94));
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+  backdrop-filter: none;
+}
+
+.endocrineTopbar,
+.endocrinePanel,
+.endocrineStagePanel,
+.endocrineInfoBar {
+  border-radius: 8px;
+}
+
+.endocrineGuide {
+  border-radius: 8px;
+}
+
+.endocrineBrand__icon {
+  border-color: #0b63b6;
+  color: #0b63b6;
+  filter: drop-shadow(0 8px 14px rgba(37, 99, 235, 0.16));
+}
+
+.endocrineBrand__icon::after {
+  background: rgba(56, 189, 248, 0.32);
+  box-shadow: 0 0 18px rgba(14, 165, 233, 0.32);
+}
+
+.endocrineBrand__icon i {
+  background: linear-gradient(180deg, rgba(125, 211, 252, 0.38), rgba(14, 165, 233, 0.78));
+}
+
+.endocrineBrand span:not(.endocrineBrand__icon) {
+  color: #0f766e;
+}
+
+.endocrineBrand h1 {
+  display: inline-block;
+  border: 1px solid rgba(30, 64, 175, 0.28);
+  border-radius: 8px;
+  padding: 0.48rem 0.82rem;
+  background: linear-gradient(180deg, #0b4f97, #062f67);
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.15);
+  text-transform: uppercase;
+}
+
+.endocrineInstruction {
+  color: #334155;
+}
+
+.endocrineGhostButton,
+.endocrineResetButton {
+  border-color: rgba(37, 99, 235, 0.36);
+  background: #eff6ff;
+  color: #073763;
+}
+
+.endocrineGhostButton:hover,
+.endocrineResetButton:hover {
+  border-color: rgba(21, 101, 192, 0.72);
+  background: #dbeafe;
+}
+
+.endocrineInfoIcon {
+  border-color: rgba(21, 101, 192, 0.78);
+  color: #0b4f97;
+}
+
+.endocrineScore {
+  border-color: rgba(234, 179, 8, 0.42);
+  background: #fffbeb;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+.endocrineScore strong {
+  color: #0f172a;
+}
+
+.endocrineScore small {
+  color: #475569;
+}
+
+.endocrineGuide strong,
+.endocrinePanelTitle span,
+.endocrineJourneyFlow span,
+.endocrineEffectCard span,
+.endocrineInfoBar strong,
+.endocrineModalKicker {
+  color: #1d4ed8;
+}
+
+.endocrineGuide li,
+.endocrineJourneyFlow article {
+  border-color: rgba(37, 99, 235, 0.18);
+  background: #eff6ff;
+  color: #1f2937;
+}
+
+.endocrineGuide li::before {
+  background: #0b63b6;
+  color: #ffffff;
+}
+
+.endocrinePage .simulatorDetailReviewSlot {
+  border-color: rgba(37, 99, 235, 0.18);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.endocrinePanelTitle strong,
+.endocrineGlandButton small,
+.endocrineLegendList span,
+.endocrineStageHint span,
+.endocrineEffectCard p,
+.endocrineInfoBar p {
+  color: #334155;
+}
+
+.endocrineGlandList {
+  scrollbar-color: rgba(21, 101, 192, 0.48) rgba(219, 234, 254, 0.92);
+}
+
+.endocrineGlandList::-webkit-scrollbar-track {
+  background: rgba(219, 234, 254, 0.92);
+}
+
+.endocrineGlandList::-webkit-scrollbar-thumb {
+  background: rgba(21, 101, 192, 0.55);
+}
+
+.endocrineGlandButton {
+  border: 1px solid rgba(21, 101, 192, 0.42);
+  background: linear-gradient(180deg, #edf8ff, #dff0ff);
+  color: #0f172a;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.endocrineGlandButton:hover {
+  border-color: rgba(21, 101, 192, 0.72);
+  background: linear-gradient(180deg, #f8fbff, #dbeafe);
+}
+
+.endocrineGlandButton--selected {
+  border-color: #eab308;
+  background: linear-gradient(180deg, #fff7ed, #fef3c7);
+  box-shadow: 0 0 0 1px rgba(234, 179, 8, 0.28), 0 10px 20px rgba(15, 23, 42, 0.1);
+}
+
+.endocrineGlandButton strong,
+.endocrineJourneyFlow strong,
+.endocrineEffectCard strong {
+  color: #0f172a;
+}
+
+.endocrineQuickPanel {
+  border-color: rgba(234, 179, 8, 0.42);
+  background: #fffbeb;
+}
+
+.endocrineMiniTitle {
+  color: #b45309;
+}
+
+.endocrineQuickButton {
+  border-color: rgba(37, 99, 235, 0.22);
+  background: #ffffff;
+  color: #1f2937;
+}
+
+.endocrineQuickButton--active,
+.endocrineQuickButton:hover {
+  border-color: #eab308;
+  background: #fef3c7;
+  color: #713f12;
+}
+
+.endocrineActionButton,
+.endocrineResetButton {
+  border-radius: 8px;
+}
+
+.endocrineActionButton--vessel {
+  border-color: rgba(37, 99, 235, 0.58);
+  background: linear-gradient(180deg, #2563eb, #0b63b6);
+}
+
+.endocrineActionButton--release {
+  border-color: rgba(34, 197, 94, 0.58);
+  background: linear-gradient(180deg, #22c55e, #15803d);
+}
+
+.endocrineActionButton--done {
+  border-color: rgba(234, 179, 8, 0.72);
+  box-shadow: 0 0 0 2px rgba(234, 179, 8, 0.16), 0 10px 22px rgba(15, 23, 42, 0.12);
+}
+
+.endocrineActionButton small {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+.endocrineResetButton span {
+  border-color: #0b4f97;
+  border-right-color: transparent;
+}
+
+.endocrineResetButton span::before {
+  border-top-color: #0b4f97;
+  border-right-color: #0b4f97;
+}
+
+.endocrineBodyStage {
+  border: 2px solid rgba(21, 101, 192, 0.55);
+  border-radius: 8px;
+  background: #eaf4ff;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+}
+
+.endocrineBodyStage img {
+  filter: brightness(1.06) saturate(0.92);
+}
+
+.endocrineStageHint {
+  border-color: rgba(37, 99, 235, 0.2);
+  background: rgba(255, 255, 255, 0.92);
+  color: #0f172a;
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.14);
+}
+
+.endocrineStageHint strong {
+  color: #0b63b6;
+}
+
+.endocrineTargetPin {
+  border-color: rgba(21, 101, 192, 0.58);
+  filter: drop-shadow(0 0 8px rgba(37, 99, 235, 0.2));
+}
+
+.endocrineTargetPin::before,
+.endocrineTargetPin::after {
+  border-color: rgba(21, 101, 192, 0.58);
+}
+
+.endocrineTargetPin::after,
+.endocrineTargetPin span,
+.endocrineTargetPin span::before {
+  background-color: rgba(21, 101, 192, 0.58);
+}
+
+.endocrineLegend {
+  background: linear-gradient(180deg, #ffffff, #eff6ff);
+}
+
+.endocrineCompleteNote {
+  border-color: rgba(22, 163, 74, 0.32);
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.endocrineInfoBar strong::before {
+  border-color: #1d4ed8;
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
+}
+
+.endocrineModalBackdrop {
+  background: rgba(15, 23, 42, 0.36);
+}
+
+.endocrineEffectModal {
+  border: 2px solid rgba(21, 101, 192, 0.72);
+  background: linear-gradient(180deg, #ffffff, #f0f8ff);
+  box-shadow: 0 34px 86px rgba(15, 23, 42, 0.28);
+}
+
+.endocrineEffectModal h2 {
+  color: #073763;
+}
+
+.endocrineModalClose {
+  background: #eff6ff;
+}
+
+.endocrineModalClose::before,
+.endocrineModalClose::after {
+  background: #0b4f97;
+}
+
+.endocrineEffectCard {
+  border-color: rgba(37, 99, 235, 0.18);
+  background: #ffffff;
+}
+
+.endocrineEffectCard__visual {
+  background: linear-gradient(180deg, #eff6ff, #dbeafe);
+}
+
+.endocrineEffectList li {
+  border-color: rgba(234, 179, 8, 0.32);
+  background: #fffbeb;
+  color: #713f12;
+}
+
+.endocrineModalButton {
+  border-radius: 8px;
+  background: linear-gradient(180deg, #0b63b6, #07559d);
 }
 
 @media (max-width: 1280px) {

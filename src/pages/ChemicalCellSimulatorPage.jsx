@@ -7,9 +7,8 @@ const metals = [
   { name: "Zink", symbol: "Zn", index: 2, electrodeColor: "#94a3b8" },
   { name: "Besi", symbol: "Fe", index: 3, electrodeColor: "#64748b" },
   { name: "Plumbum", symbol: "Pb", index: 4, electrodeColor: "#475569" },
-  { name: "Hidrogen", symbol: "H", index: 5, electrodeColor: "#38bdf8" },
-  { name: "Kuprum", symbol: "Cu", index: 6, electrodeColor: "#c76732" },
-  { name: "Perak", symbol: "Ag", index: 7, electrodeColor: "#e2e8f0" },
+  { name: "Kuprum", symbol: "Cu", index: 5, electrodeColor: "#c76732" },
+  { name: "Perak", symbol: "Ag", index: 6, electrodeColor: "#e2e8f0" },
 ];
 
 const electrolytes = [
@@ -51,9 +50,8 @@ const currentByDistance = {
   2: 0.4,
   3: 0.6,
   4: 0.8,
-  5: 1,
-  6: 1.2,
-  7: 1.4,
+  5: 1.1,
+  6: 1.4,
 };
 
 function getMetalLabel(metal) {
@@ -75,7 +73,7 @@ function getBulbStrength(current) {
 
 function getInference(distance, hasPair) {
   if (!hasPair) {
-    return "Pilih dua logam daripada siri elektrokimia untuk membandingkan arus elektrik yang terhasil.";
+    return "Pilih dua logam daripada siri keelektropositifan untuk membandingkan arus elektrik yang terhasil.";
   }
 
   if (distance === 0) {
@@ -83,14 +81,14 @@ function getInference(distance, hasPair) {
   }
 
   if (distance <= 2) {
-    return "Pasangan logam hampir dalam siri elektrokimia. Arus elektrik yang terhasil rendah.";
+    return "Pasangan logam hampir dalam siri keelektropositifan. Arus elektrik yang terhasil rendah.";
   }
 
   if (distance <= 4) {
-    return "Pasangan logam agak berjauhan dalam siri elektrokimia. Arus elektrik yang terhasil sederhana.";
+    return "Pasangan logam agak berjauhan dalam siri keelektropositifan. Arus elektrik yang terhasil sederhana.";
   }
 
-  return "Pasangan logam berjauhan dalam siri elektrokimia. Arus elektrik yang terhasil tinggi.";
+  return "Pasangan logam berjauhan dalam siri keelektropositifan. Arus elektrik yang terhasil tinggi.";
 }
 
 export default function ChemicalCellSimulatorPage({ reviewPanel }) {
@@ -178,7 +176,7 @@ export default function ChemicalCellSimulatorPage({ reviewPanel }) {
         <span className="simulatorHero__kicker">Tingkatan 5 - Bab 6 Elektrokimia</span>
         <h1>Simulator Sel Kimia</h1>
         <p>
-          Terokai hubungan antara jarak kedudukan dua logam dalam siri elektrokimia
+          Terokai hubungan antara jarak kedudukan dua logam dalam siri keelektropositifan
           dengan arus elektrik yang terhasil.
         </p>
       </section>
@@ -186,11 +184,11 @@ export default function ChemicalCellSimulatorPage({ reviewPanel }) {
       {reviewPanel}
 
       <section className="chemicalCellLayout" aria-label="Simulator sel kimia">
-        <MobileControlDrawer title="Siri elektrokimia" summary="Pilih dua logam">
+        <MobileControlDrawer title="Siri keelektropositifan" summary="Pilih dua logam">
           <aside className="chemicalCellPanel chemicalSeriesPanel">
             <div className="chemicalPanelHeader">
-              <span>Siri Elektrokimia</span>
-              <strong>Paling reaktif ke paling kurang reaktif</strong>
+              <span>Siri Keelektropositifan</span>
+              <strong>Paling elektropositif ke paling kurang elektropositif</strong>
             </div>
 
             <div className="chemicalMetalList">
@@ -361,7 +359,7 @@ export default function ChemicalCellSimulatorPage({ reviewPanel }) {
             <div className="chemicalConceptNote">
               <strong>Nota</strong>
               <p>
-                Semakin jauh kedudukan dua logam dalam siri elektrokimia, semakin
+                Semakin jauh kedudukan dua logam dalam siri keelektropositifan, semakin
                 besar arus elektrik yang terhasil dalam sel kimia.
               </p>
             </div>
@@ -372,7 +370,6 @@ export default function ChemicalCellSimulatorPage({ reviewPanel }) {
               <span>Zn</span>
               <span>Fe</span>
               <span>Pb</span>
-              <span>H</span>
               <span>Cu</span>
               <span>Ag</span>
             </div>

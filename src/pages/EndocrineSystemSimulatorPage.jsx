@@ -8,14 +8,14 @@ const endocrineGlands = [
     location: "Bahagian otak",
     hormone: "Hormon pertumbuhan",
     color: "#f9a8d4",
-    source: { x: 50, y: 16 },
-    markers: [{ x: 50, y: 16, scale: 0.86 }],
+    source: { x: 50, y: 14 },
+    markers: [{ x: 50, y: 14, scale: 0.72 }],
     targets: [
       {
         name: "Tulang",
         type: "bone",
-        x: 48,
-        y: 93,
+        x: 47,
+        y: 86,
         response: "Pertumbuhan tulang dirangsang.",
         detail: "Tulang membesar dan memanjang dengan lebih teratur.",
       },
@@ -23,7 +23,7 @@ const endocrineGlands = [
         name: "Otot",
         type: "muscle",
         x: 33,
-        y: 55,
+        y: 39,
         response: "Jisim otot dikekalkan.",
         detail: "Otot menerima isyarat untuk menyokong pertumbuhan badan.",
       },
@@ -40,14 +40,14 @@ const endocrineGlands = [
     location: "Leher",
     hormone: "Tiroksina",
     color: "#fb7185",
-    source: { x: 50, y: 25 },
-    markers: [{ x: 50, y: 25, scale: 0.9 }],
+    source: { x: 50, y: 20 },
+    markers: [{ x: 50, y: 20, scale: 0.6 }],
     targets: [
       {
         name: "Sel badan",
         type: "cell",
         x: 62,
-        y: 55,
+        y: 47,
         response: "Metabolisme sel dikawal.",
         detail: "Sel menggunakan tenaga pada kadar yang sesuai.",
       },
@@ -55,7 +55,7 @@ const endocrineGlands = [
         name: "Pertumbuhan badan",
         type: "growth",
         x: 38,
-        y: 64,
+        y: 60,
         response: "Perkembangan fizikal dan mental disokong.",
         detail: "Badan menerima isyarat untuk berkembang secara seimbang.",
       },
@@ -72,25 +72,25 @@ const endocrineGlands = [
     location: "Atas ginjal",
     hormone: "Adrenalin",
     color: "#f59e0b",
-    source: { x: 50, y: 54 },
+    source: { x: 50, y: 45 },
     markers: [
-      { x: 42, y: 53, scale: 0.8 },
-      { x: 58, y: 53, scale: 0.8 },
+      { x: 44, y: 45, scale: 0.68 },
+      { x: 56, y: 45, scale: 0.68 },
     ],
     targets: [
       {
         name: "Jantung",
         type: "heart",
-        x: 50,
-        y: 39,
+        x: 48,
+        y: 34,
         response: "Denyutan jantung meningkat.",
         detail: "Lebih banyak darah dipam ke seluruh badan.",
       },
       {
         name: "Otot rangka",
         type: "muscle",
-        x: 31,
-        y: 49,
+        x: 32,
+        y: 42,
         response: "Otot bertindak dengan lebih cepat.",
         detail: "Badan bersedia untuk tindak balas kecemasan.",
       },
@@ -108,14 +108,14 @@ const endocrineGlands = [
     location: "Rongga abdomen",
     hormone: "Insulin",
     color: "#fbbf24",
-    source: { x: 51, y: 58 },
-    markers: [{ x: 51, y: 58, scale: 1 }],
+    source: { x: 51, y: 40.5 },
+    markers: [{ x: 51, y: 40.5, scale: 0.74 }],
     targets: [
       {
         name: "Hati",
         type: "liver",
         x: 44,
-        y: 51,
+        y: 39,
         response: "Glukosa berlebihan disimpan.",
         detail: "Glukosa ditukarkan kepada glikogen di dalam hati.",
       },
@@ -123,7 +123,7 @@ const endocrineGlands = [
         name: "Sel badan",
         type: "cell",
         x: 65,
-        y: 64,
+        y: 48,
         response: "Sel menyerap glukosa.",
         detail: "Aras glukosa darah kembali lebih seimbang.",
       },
@@ -137,20 +137,20 @@ const endocrineGlands = [
     id: "ovary",
     label: "Ovari",
     shortLabel: "Ov",
-    location: "Pelvis perempuan",
+    location: "Pelvis, sisi kelengkang",
     hormone: "Estrogen",
     color: "#f472b6",
-    source: { x: 50, y: 75 },
+    source: { x: 50, y: 51.4 },
     markers: [
-      { x: 45, y: 75, scale: 0.76 },
-      { x: 55, y: 75, scale: 0.76 },
+      { x: 47.8, y: 51.4, scale: 0.52 },
+      { x: 52.2, y: 51.4, scale: 0.52 },
     ],
     targets: [
       {
         name: "Organ pembiakan perempuan",
         type: "reproductive",
         x: 50,
-        y: 75,
+        y: 51.4,
         response: "Ciri seks sekunder perempuan dikawal.",
         detail: "Uterus disediakan untuk penempelan embrio.",
       },
@@ -165,17 +165,20 @@ const endocrineGlands = [
     id: "testis",
     label: "Testis",
     shortLabel: "Te",
-    location: "Pelvis lelaki",
+    location: "Kelengkang lelaki",
     hormone: "Testosteron",
     color: "#60a5fa",
-    source: { x: 50, y: 82 },
-    markers: [{ x: 50, y: 82, scale: 0.86 }],
+    source: { x: 50, y: 53.1 },
+    markers: [
+      { x: 49.1, y: 53.1, scale: 0.5 },
+      { x: 50.9, y: 53.1, scale: 0.5 },
+    ],
     targets: [
       {
         name: "Organ pembiakan lelaki",
         type: "reproductive",
         x: 50,
-        y: 82,
+        y: 53.1,
         response: "Ciri seks sekunder lelaki dikawal.",
         detail: "Penghasilan sperma dirangsang.",
       },
@@ -195,14 +198,21 @@ const quickSituations = [
 ];
 
 const vesselPaths = [
-  { type: "artery", d: "M50 21 C50 32 49 42 49 54 C49 68 47 85 46 104 C45 122 44 135 43 144" },
-  { type: "vein", d: "M53 22 C53 33 54 43 54 55 C54 69 56 86 57 104 C58 122 59 135 60 144" },
-  { type: "artery", d: "M49 35 C38 39 32 45 25 57 C20 68 16 80 13 91" },
-  { type: "vein", d: "M53 35 C64 39 70 45 77 57 C82 68 86 80 89 91" },
-  { type: "artery", d: "M48 73 C39 84 34 99 33 116 C32 128 30 137 27 146" },
-  { type: "vein", d: "M54 73 C62 84 67 99 68 116 C69 128 71 137 74 146" },
-  { type: "artery", d: "M48 42 C44 41 42 39 39 36" },
-  { type: "vein", d: "M54 42 C59 41 62 39 65 36" },
+  "M50 13 C50 19 50 26 50 34 C50 45 50 55 50 62",
+  "M47 35 C45 43 44 53 45 62",
+  "M53 35 C55 43 56 53 55 62",
+  "M50 15 C48 17 48 19 49 22",
+  "M50 15 C52 17 52 19 51 22",
+  "M49 29 C46 30 43 31 40 34",
+  "M51 29 C54 30 57 31 60 34",
+  "M40 34 C37 40 34 48 30 56",
+  "M60 34 C63 40 66 48 70 56",
+  "M47 44 C45 49 44 54 44 59",
+  "M53 44 C55 49 56 54 56 59",
+  "M50 62 C47 66 45 74 44 84 C43 91 42 96 42 99",
+  "M50 62 C53 66 55 74 56 84 C57 91 58 96 58 99",
+  "M48 64 C47 72 47 82 46 94",
+  "M52 64 C53 72 53 82 54 94",
 ];
 
 function buildHormonePath(source, target, index) {
@@ -365,6 +375,7 @@ export default function EndocrineSystemSimulatorPage({ reviewPanel }) {
                 <button
                   key={gland.id}
                   type="button"
+                  data-gland-id={gland.id}
                   className={`endocrineGlandButton${selected ? " endocrineGlandButton--selected" : ""}`}
                   onClick={() => selectGland(gland.id)}
                 >
@@ -448,12 +459,12 @@ export default function EndocrineSystemSimulatorPage({ reviewPanel }) {
               draggable="false"
             />
 
-            <svg className="endocrineVesselLayer" viewBox="0 0 100 150" aria-hidden="true">
+            <svg className="endocrineVesselLayer" viewBox="0 0 100 100" aria-hidden="true">
               {vesselPaths.map((path, index) => (
                 <path
-                  key={`${path.type}-${index}`}
-                  className={`endocrineVessel endocrineVessel--${path.type}`}
-                  d={path.d}
+                  key={`blood-vessel-${index}`}
+                  className="endocrineVessel"
+                  d={path}
                 />
               ))}
             </svg>
@@ -501,7 +512,7 @@ export default function EndocrineSystemSimulatorPage({ reviewPanel }) {
               <svg
                 key={`${selectedGland.id}-${releaseTick}`}
                 className="endocrineHormoneLayer"
-                viewBox="0 0 100 150"
+                viewBox="0 0 100 100"
                 aria-hidden="true"
               >
                 {selectedGland.targets.map((target, index) => {
@@ -547,8 +558,7 @@ export default function EndocrineSystemSimulatorPage({ reviewPanel }) {
             </div>
             <div className="endocrineLegendList">
               <span><i className="legendHormone" /> Hormon</span>
-              <span><i className="legendArtery" /> Salur arteri</span>
-              <span><i className="legendVein" /> Salur vena</span>
+              <span><i className="legendBlood" /> Salur darah</span>
               <span><i className="legendTarget" /> Organ sasaran</span>
             </div>
           </section>

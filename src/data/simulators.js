@@ -50,7 +50,7 @@ export const simulators = [
     level: "Tingkatan 5",
     topic: "Bab 6 Elektrokimia",
     description:
-      "Membandingkan jarak kedudukan dua logam dalam siri elektrokimia dengan arus elektrik yang terhasil.",
+      "Membandingkan jarak kedudukan dua logam dalam siri keelektropositifan dengan arus elektrik yang terhasil.",
     href: "/simulator/sel-kimia",
   },
   {

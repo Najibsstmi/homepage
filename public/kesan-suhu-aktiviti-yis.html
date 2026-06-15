@@ -125,12 +125,15 @@
       }
 
       .scene-card {
+        display: grid;
+        gap: 0.55rem;
         padding: clamp(0.6rem, 1.25vw, 0.9rem);
       }
 
       .experiment-viewport {
         position: relative;
         overflow: hidden;
+        --dough-level: 12%;
         border-radius: 18px;
         background: #dbeafe;
         aspect-ratio: 16 / 9;
@@ -159,10 +162,97 @@
         filter: saturate(1.08);
       }
 
+      .dough-layer {
+        position: absolute;
+        left: 36.8%;
+        bottom: 15.8%;
+        z-index: 2;
+        width: 27.8%;
+        height: 49%;
+        overflow: hidden;
+        border-radius: 3% 3% 22% 22% / 3% 3% 15% 15%;
+        clip-path: polygon(7% 0, 93% 0, 95% 84%, 86% 100%, 14% 100%, 5% 84%);
+        pointer-events: none;
+      }
+
+      .dough-fill {
+        position: absolute;
+        left: 4%;
+        right: 4%;
+        bottom: 0;
+        display: block;
+        height: var(--dough-level);
+        min-height: 8%;
+        border-radius: 48% 48% 14% 14% / 16% 16% 8% 8%;
+        background:
+          radial-gradient(circle at 18% 34%, rgba(255, 255, 255, 0.62) 0 2.2%, transparent 2.6%),
+          radial-gradient(circle at 44% 64%, rgba(255, 255, 255, 0.44) 0 1.8%, transparent 2.2%),
+          radial-gradient(circle at 72% 42%, rgba(255, 255, 255, 0.48) 0 2%, transparent 2.4%),
+          linear-gradient(180deg, rgba(255, 244, 214, 0.94), rgba(229, 177, 104, 0.78) 48%, rgba(175, 112, 52, 0.7));
+        box-shadow:
+          inset 0 10px 22px rgba(255, 255, 255, 0.48),
+          inset 0 -16px 22px rgba(120, 53, 15, 0.18),
+          0 -2px 14px rgba(255, 255, 255, 0.28);
+        opacity: 0.84;
+        transition: height 0.8s ease;
+      }
+
+      .dough-fill::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -4.5%;
+        height: 15%;
+        min-height: 12px;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 30% 42%, rgba(255, 255, 255, 0.75) 0 8%, transparent 9%),
+          radial-gradient(circle at 60% 36%, rgba(255, 255, 255, 0.5) 0 6%, transparent 7%),
+          linear-gradient(180deg, rgba(255, 250, 232, 0.94), rgba(231, 185, 111, 0.72));
+        box-shadow: 0 4px 13px rgba(120, 53, 15, 0.13);
+      }
+
+      .dough-fill::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 20% 75%, rgba(120, 53, 15, 0.16) 0 1.3px, transparent 1.8px),
+          radial-gradient(circle at 48% 35%, rgba(120, 53, 15, 0.12) 0 1.4px, transparent 1.9px),
+          radial-gradient(circle at 78% 68%, rgba(255, 255, 255, 0.34) 0 1.8px, transparent 2.5px);
+        background-size: 42px 38px, 34px 32px, 46px 44px;
+        opacity: 0.72;
+      }
+
+      .experiment-viewport.is-fermenting .dough-fill::after {
+        animation: dough-texture 2.4s ease-in-out infinite;
+      }
+
+      .dough-label {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        justify-self: center;
+        min-width: 118px;
+        max-width: min(280px, 80%);
+        border: 1px solid rgba(120, 53, 15, 0.18);
+        border-radius: 999px;
+        padding: 0.42rem 0.82rem;
+        background: rgba(255, 255, 255, 0.86);
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
+        color: #7c2d12;
+        font-size: clamp(0.72rem, 1.2vw, 0.94rem);
+        font-weight: 900;
+        line-height: 1.1;
+        text-align: center;
+        white-space: nowrap;
+      }
+
       .bubble-layer {
         position: absolute;
         inset: 0;
-        z-index: 2;
+        z-index: 3;
         pointer-events: none;
       }
 
@@ -356,6 +446,7 @@
       .observation-text {
         display: grid;
         gap: 0.42rem;
+        min-height: 5rem;
         margin: 0.75rem 0 0;
         color: #1f2937;
         font-size: clamp(0.98rem, 1.6vw, 1.06rem);
@@ -388,6 +479,17 @@
           margin-left: var(--drift);
           opacity: 0;
           transform: scale(1.12);
+        }
+      }
+
+      @keyframes dough-texture {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(-3px);
         }
       }
 
@@ -487,8 +589,12 @@
               alt="Radas eksperimen yis pada suhu dipilih"
               draggable="false"
             />
+            <div class="dough-layer" id="doughLayer" aria-hidden="true">
+              <span class="dough-fill"></span>
+            </div>
             <div class="bubble-layer" id="bubbleLayer" aria-hidden="true"></div>
           </div>
+          <div class="dough-label">Doh roti</div>
         </section>
 
         <aside class="control-stack" aria-label="Kawalan dan pemerhatian eksperimen">
@@ -543,25 +649,37 @@
         5: {
           image: "/public-assets/faktor-suhu-yis-sejuk.png",
           interval: 2000,
+          doughBase: 11,
+          doughTarget: 23,
+          doughStep: 0.12,
           observation: [
             "Sedikit gelembung gas terbentuk.",
             "Aktiviti yis perlahan.",
+            "Ketinggian doh meningkat sedikit.",
           ],
         },
         27: {
           image: "/public-assets/faktor-suhu-yis.png",
           interval: 250,
+          doughBase: 11,
+          doughTarget: 67,
+          doughStep: 0.92,
           observation: [
             "Banyak gelembung gas terbentuk.",
             "Aktiviti yis paling aktif.",
+            "Ketinggian doh meningkat dengan jelas.",
           ],
         },
         50: {
           image: "/public-assets/faktor-suhu-yis-panas.png",
           interval: 4000,
+          doughBase: 11,
+          doughTarget: 13,
+          doughStep: 0.03,
           observation: [
             "Hampir tiada gelembung gas terbentuk.",
             "Yis mati pada suhu tinggi.",
+            "Ketinggian doh hampir tidak meningkat.",
           ],
         },
       };
@@ -576,13 +694,21 @@
 
       let selectedTemperature = 27;
       let bubbleTimer = null;
+      let doughTimer = null;
+      let doughLevel = temperatureData[selectedTemperature].doughBase;
       let isRunning = false;
+      let hasObservation = false;
 
       function randomBetween(min, max) {
         return Math.random() * (max - min) + min;
       }
 
       function renderObservation() {
+        if (!hasObservation) {
+          observationText.replaceChildren();
+          return;
+        }
+
         const lines = temperatureData[selectedTemperature].observation;
         observationText.innerHTML = lines.map((line) => `<p>${line}</p>`).join("");
       }
@@ -597,6 +723,31 @@
 
       function clearBubbles() {
         bubbleLayer.replaceChildren();
+      }
+
+      function setDoughLevel(nextLevel) {
+        const data = temperatureData[selectedTemperature];
+        doughLevel = Math.max(data.doughBase, Math.min(nextLevel, data.doughTarget));
+        viewport.style.setProperty("--dough-level", `${doughLevel.toFixed(2)}%`);
+      }
+
+      function resetDough() {
+        viewport.classList.remove("is-fermenting");
+        setDoughLevel(temperatureData[selectedTemperature].doughBase);
+      }
+
+      function startDoughRise() {
+        window.clearInterval(doughTimer);
+        viewport.classList.add("is-fermenting");
+        doughTimer = window.setInterval(() => {
+          const data = temperatureData[selectedTemperature];
+          if (doughLevel >= data.doughTarget) {
+            setDoughLevel(data.doughTarget);
+            return;
+          }
+
+          setDoughLevel(doughLevel + data.doughStep);
+        }, 140);
       }
 
       function spawnBubble() {
@@ -623,15 +774,21 @@
 
       function stopSimulation() {
         window.clearInterval(bubbleTimer);
+        window.clearInterval(doughTimer);
         bubbleTimer = null;
+        doughTimer = null;
         isRunning = false;
+        viewport.classList.remove("is-fermenting");
       }
 
       function startSimulation() {
         stopSimulation();
         isRunning = true;
+        hasObservation = true;
+        renderObservation();
         spawnBubble();
         bubbleTimer = window.setInterval(spawnBubble, temperatureData[selectedTemperature].interval);
+        startDoughRise();
       }
 
       function selectTemperature(nextTemperature) {
@@ -645,6 +802,7 @@
         setActiveButton();
         renderObservation();
         clearBubbles();
+        resetDough();
 
         if (isRunning) {
           startSimulation();
@@ -661,12 +819,14 @@
 
       resetButton.addEventListener("click", () => {
         stopSimulation();
+        hasObservation = false;
         clearBubbles();
         selectTemperature(27);
       });
 
       renderObservation();
       setActiveButton();
+      resetDough();
     </script>
   </body>
 </html>

@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="ms">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kesan Suhu Terhadap Aktiviti Yis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --page-bg: #f5f8fc;
+        --ink: #0f172a;
+        --muted: #64748b;
+        --blue: #3b82f6;
+        --cyan: #06b6d4;
+        --green: #22c55e;
+        --green-dark: #16a34a;
+        --red: #ef4444;
+        --red-dark: #b91c1c;
+        --card: rgba(255, 255, 255, 0.86);
+        --card-strong: #ffffff;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        --radius: 20px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        min-height: 100%;
+        background: var(--page-bg);
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        overflow-x: hidden;
+        background:
+          linear-gradient(180deg, rgba(219, 234, 254, 0.72), rgba(245, 248, 252, 0.98) 42%, #f5f8fc),
+          #f5f8fc;
+        color: var(--ink);
+        font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        background:
+          linear-gradient(90deg, rgba(59, 130, 246, 0.07) 1px, transparent 1px),
+          linear-gradient(180deg, rgba(6, 182, 212, 0.06) 1px, transparent 1px),
+          linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(226, 246, 255, 0.62));
+        background-size: 72px 72px, 72px 72px, auto;
+        pointer-events: none;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        height: 28vh;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(203, 213, 225, 0.24)),
+          linear-gradient(90deg, rgba(148, 163, 184, 0.08), rgba(14, 165, 233, 0.08));
+        pointer-events: none;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .simulator {
+        width: min(1480px, 100%);
+        min-height: 100vh;
+        margin: 0 auto;
+        padding: clamp(1rem, 2.2vw, 2rem);
+      }
+
+      .hero {
+        display: grid;
+        gap: 0.45rem;
+        margin: 0 auto clamp(1rem, 2vw, 1.4rem);
+        text-align: center;
+      }
+
+      .hero h1 {
+        margin: 0;
+        color: #082f49;
+        font-size: clamp(2rem, 4.8vw, 4.4rem);
+        font-weight: 900;
+        line-height: 1.04;
+        letter-spacing: 0;
+      }
+
+      .hero p {
+        margin: 0;
+        color: #0f766e;
+        font-size: clamp(1rem, 2vw, 1.32rem);
+        font-weight: 700;
+        line-height: 1.45;
+      }
+
+      .lab-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+        gap: clamp(1rem, 2vw, 1.35rem);
+        align-items: start;
+      }
+
+      .glass-card {
+        border: 1px solid rgba(255, 255, 255, 0.78);
+        border-radius: var(--radius);
+        background: var(--card);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .scene-card {
+        padding: clamp(0.6rem, 1.25vw, 0.9rem);
+      }
+
+      .experiment-viewport {
+        position: relative;
+        overflow: hidden;
+        border-radius: 18px;
+        background: #dbeafe;
+        aspect-ratio: 16 / 9;
+        box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.1);
+        isolation: isolate;
+      }
+
+      .experiment-viewport img {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        user-select: none;
+        transition:
+          filter 0.38s ease,
+          transform 0.38s ease,
+          opacity 0.22s ease;
+      }
+
+      .experiment-viewport.is-changing img {
+        opacity: 0.72;
+        transform: scale(1.012);
+        filter: saturate(1.08);
+      }
+
+      .bubble-layer {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      .bubble {
+        position: absolute;
+        left: var(--start-left);
+        bottom: var(--start-bottom);
+        width: var(--size);
+        height: var(--size);
+        border-radius: 999px;
+        border: 1.5px solid rgba(255, 255, 255, 0.86);
+        background:
+          radial-gradient(circle at 35% 32%, rgba(255, 255, 255, 0.98) 0 12%, rgba(255, 255, 255, 0.58) 13% 30%, rgba(125, 211, 252, 0.2) 58%, rgba(14, 165, 233, 0.06));
+        box-shadow:
+          inset 0 0 9px rgba(255, 255, 255, 0.52),
+          0 0 12px rgba(14, 165, 233, 0.22);
+        opacity: 0;
+        animation: bubble-rise var(--duration) ease-out forwards;
+      }
+
+      .control-stack {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .control-panel,
+      .observation-card {
+        padding: clamp(1rem, 2vw, 1.25rem);
+      }
+
+      .control-panel h2,
+      .observation-card h2 {
+        margin: 0;
+        color: #082f49;
+        font-size: clamp(1.28rem, 2vw, 1.65rem);
+        font-weight: 900;
+        line-height: 1.15;
+      }
+
+      .control-section {
+        display: grid;
+        gap: 0.7rem;
+        margin-top: 1.1rem;
+      }
+
+      .control-section > span {
+        color: #334155;
+        font-size: 0.88rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .temperature-options {
+        display: grid;
+        gap: 0.65rem;
+      }
+
+      .temperature-button {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 0.8rem;
+        width: 100%;
+        min-height: 68px;
+        align-items: center;
+        border: 1px solid rgba(59, 130, 246, 0.18);
+        border-radius: 18px;
+        padding: 0.78rem 0.85rem;
+        background: rgba(255, 255, 255, 0.76);
+        color: #0f172a;
+        cursor: pointer;
+        text-align: left;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+        transition:
+          transform 0.22s ease,
+          box-shadow 0.22s ease,
+          border-color 0.22s ease,
+          background 0.22s ease,
+          color 0.22s ease;
+      }
+
+      .temperature-button:hover,
+      .primary-action:hover,
+      .reset-action:hover {
+        transform: translateY(-2px);
+      }
+
+      .temperature-button:focus-visible,
+      .primary-action:focus-visible,
+      .reset-action:focus-visible {
+        outline: 3px solid rgba(6, 182, 212, 0.34);
+        outline-offset: 3px;
+      }
+
+      .temperature-button .icon {
+        display: grid;
+        width: 44px;
+        aspect-ratio: 1;
+        place-items: center;
+        border-radius: 14px;
+        background: #eff6ff;
+        font-size: 1.42rem;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+      }
+
+      .temperature-button strong {
+        display: block;
+        font-size: 1.05rem;
+        font-weight: 900;
+        line-height: 1.18;
+      }
+
+      .temperature-button small {
+        display: block;
+        margin-top: 0.16rem;
+        color: #64748b;
+        font-size: 0.82rem;
+        font-weight: 700;
+        line-height: 1.25;
+        transition: color 0.22s ease;
+      }
+
+      .temperature-button.is-active {
+        border-color: rgba(6, 182, 212, 0.9);
+        background: linear-gradient(135deg, #3b82f6, #06b6d4);
+        color: #ffffff;
+        box-shadow:
+          0 16px 34px rgba(37, 99, 235, 0.22),
+          0 0 0 4px rgba(14, 165, 233, 0.12);
+      }
+
+      .temperature-button.is-active small {
+        color: rgba(255, 255, 255, 0.86);
+      }
+
+      .temperature-button.is-active .icon {
+        background: rgba(255, 255, 255, 0.22);
+      }
+
+      .action-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 0.7rem;
+        margin-top: 1rem;
+      }
+
+      .primary-action,
+      .reset-action {
+        min-height: 56px;
+        border: 0;
+        border-radius: 18px;
+        color: #ffffff;
+        cursor: pointer;
+        font-size: clamp(0.9rem, 1.6vw, 1rem);
+        font-weight: 900;
+        letter-spacing: 0.03em;
+        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.15);
+        transition:
+          transform 0.22s ease,
+          box-shadow 0.22s ease,
+          filter 0.22s ease;
+      }
+
+      .primary-action {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        padding: 0.8rem 1rem;
+      }
+
+      .reset-action {
+        min-width: 112px;
+        background: linear-gradient(135deg, #ef4444, #b91c1c);
+        padding: 0.8rem 0.95rem;
+      }
+
+      .primary-action:hover,
+      .reset-action:hover {
+        box-shadow: 0 18px 34px rgba(15, 23, 42, 0.2);
+        filter: brightness(1.02);
+      }
+
+      .primary-action:active,
+      .reset-action:active,
+      .temperature-button:active {
+        transform: translateY(0) scale(0.99);
+      }
+
+      .observation-card {
+        background: rgba(255, 255, 255, 0.92);
+      }
+
+      .observation-text {
+        display: grid;
+        gap: 0.42rem;
+        margin: 0.75rem 0 0;
+        color: #1f2937;
+        font-size: clamp(0.98rem, 1.6vw, 1.06rem);
+        font-weight: 650;
+        line-height: 1.58;
+      }
+
+      .observation-text p {
+        margin: 0;
+      }
+
+      @keyframes bubble-rise {
+        0% {
+          bottom: var(--start-bottom);
+          margin-left: 0;
+          opacity: 0;
+          transform: scale(0.52);
+        }
+
+        12% {
+          opacity: 0.92;
+        }
+
+        70% {
+          opacity: 0.82;
+        }
+
+        100% {
+          bottom: calc(var(--start-bottom) + var(--rise));
+          margin-left: var(--drift);
+          opacity: 0;
+          transform: scale(1.12);
+        }
+      }
+
+      @media (max-width: 1100px) {
+        .lab-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .control-stack {
+          grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr);
+          align-items: start;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .simulator {
+          padding: 0.85rem;
+        }
+
+        .hero {
+          text-align: left;
+        }
+
+        .hero h1 {
+          font-size: clamp(1.85rem, 9vw, 2.75rem);
+        }
+
+        .hero p {
+          font-size: 1rem;
+        }
+
+        .scene-card {
+          padding: 0.55rem;
+        }
+
+        .experiment-viewport {
+          border-radius: 16px;
+        }
+
+        .control-stack {
+          grid-template-columns: 1fr;
+        }
+
+        .action-row {
+          grid-template-columns: 1fr;
+        }
+
+        .reset-action {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 430px) {
+        .temperature-button {
+          min-height: 64px;
+          border-radius: 16px;
+          padding: 0.72rem;
+        }
+
+        .temperature-button .icon {
+          width: 40px;
+          border-radius: 13px;
+          font-size: 1.26rem;
+        }
+
+        .control-panel,
+        .observation-card {
+          padding: 0.9rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="simulator">
+      <header class="hero">
+        <h1>Kesan Suhu Terhadap Aktiviti Yis</h1>
+        <p>Faktor yang Mempengaruhi Kadar Penapaian</p>
+      </header>
+
+      <section class="lab-layout" aria-label="Simulator kesan suhu terhadap aktiviti yis">
+        <section class="scene-card glass-card" aria-label="Paparan eksperimen">
+          <div class="experiment-viewport" id="viewport">
+            <img
+              id="sceneImage"
+              src="/public-assets/faktor-suhu-yis.png"
+              alt="Radas eksperimen yis pada suhu dipilih"
+              draggable="false"
+            />
+            <div class="bubble-layer" id="bubbleLayer" aria-hidden="true"></div>
+          </div>
+        </section>
+
+        <aside class="control-stack" aria-label="Kawalan dan pemerhatian eksperimen">
+          <section class="control-panel glass-card">
+            <h2>Kawalan Eksperimen</h2>
+
+            <div class="control-section">
+              <span>Pilihan Suhu</span>
+              <div class="temperature-options" id="temperatureOptions">
+                <button class="temperature-button" type="button" data-temp="5">
+                  <span class="icon" aria-hidden="true">🧊</span>
+                  <span>
+                    <strong>5°C</strong>
+                    <small>Peti Ais</small>
+                  </span>
+                </button>
+
+                <button class="temperature-button is-active" type="button" data-temp="27">
+                  <span class="icon" aria-hidden="true">🏠</span>
+                  <span>
+                    <strong>27°C</strong>
+                    <small>Suhu Bilik</small>
+                  </span>
+                </button>
+
+                <button class="temperature-button" type="button" data-temp="50">
+                  <span class="icon" aria-hidden="true">🔥</span>
+                  <span>
+                    <strong>50°C</strong>
+                    <small>Suhu Tinggi</small>
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <div class="action-row">
+              <button class="primary-action" id="startButton" type="button">MULA EKSPERIMEN</button>
+              <button class="reset-action" id="resetButton" type="button">RESET</button>
+            </div>
+          </section>
+
+          <section class="observation-card glass-card" aria-live="polite">
+            <h2>Pemerhatian</h2>
+            <div class="observation-text" id="observationText"></div>
+          </section>
+        </aside>
+      </section>
+    </main>
+
+    <script>
+      const temperatureData = {
+        5: {
+          image: "/public-assets/faktor-suhu-yis-sejuk.png",
+          interval: 2000,
+          observation: [
+            "Sedikit gelembung gas terbentuk.",
+            "Aktiviti yis perlahan.",
+          ],
+        },
+        27: {
+          image: "/public-assets/faktor-suhu-yis.png",
+          interval: 250,
+          observation: [
+            "Banyak gelembung gas terbentuk.",
+            "Aktiviti yis paling aktif.",
+          ],
+        },
+        50: {
+          image: "/public-assets/faktor-suhu-yis-panas.png",
+          interval: 4000,
+          observation: [
+            "Hampir tiada gelembung gas terbentuk.",
+            "Yis mati pada suhu tinggi.",
+          ],
+        },
+      };
+
+      const viewport = document.getElementById("viewport");
+      const sceneImage = document.getElementById("sceneImage");
+      const bubbleLayer = document.getElementById("bubbleLayer");
+      const temperatureButtons = [...document.querySelectorAll(".temperature-button")];
+      const startButton = document.getElementById("startButton");
+      const resetButton = document.getElementById("resetButton");
+      const observationText = document.getElementById("observationText");
+
+      let selectedTemperature = 27;
+      let bubbleTimer = null;
+      let isRunning = false;
+
+      function randomBetween(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function renderObservation() {
+        const lines = temperatureData[selectedTemperature].observation;
+        observationText.innerHTML = lines.map((line) => `<p>${line}</p>`).join("");
+      }
+
+      function setActiveButton() {
+        temperatureButtons.forEach((button) => {
+          const isActive = Number(button.dataset.temp) === selectedTemperature;
+          button.classList.toggle("is-active", isActive);
+          button.setAttribute("aria-pressed", String(isActive));
+        });
+      }
+
+      function clearBubbles() {
+        bubbleLayer.replaceChildren();
+      }
+
+      function spawnBubble() {
+        const bubble = document.createElement("span");
+        const size = randomBetween(10, selectedTemperature === 27 ? 25 : 19);
+        const drift = randomBetween(-7, 7);
+        const duration = randomBetween(2.8, selectedTemperature === 27 ? 4 : 4.8);
+
+        bubble.className = "bubble";
+        bubble.style.setProperty("--size", `${size}px`);
+        bubble.style.setProperty("--start-left", `${randomBetween(43, 60)}%`);
+        bubble.style.setProperty("--start-bottom", `${randomBetween(15, 19)}%`);
+        bubble.style.setProperty("--rise", `${randomBetween(40, 48)}%`);
+        bubble.style.setProperty("--drift", `${drift}%`);
+        bubble.style.setProperty("--duration", `${duration}s`);
+
+        bubble.addEventListener("animationend", () => bubble.remove(), { once: true });
+        bubbleLayer.appendChild(bubble);
+
+        if (bubbleLayer.children.length > 70) {
+          bubbleLayer.firstElementChild.remove();
+        }
+      }
+
+      function stopSimulation() {
+        window.clearInterval(bubbleTimer);
+        bubbleTimer = null;
+        isRunning = false;
+      }
+
+      function startSimulation() {
+        stopSimulation();
+        isRunning = true;
+        spawnBubble();
+        bubbleTimer = window.setInterval(spawnBubble, temperatureData[selectedTemperature].interval);
+      }
+
+      function selectTemperature(nextTemperature) {
+        selectedTemperature = nextTemperature;
+        const nextData = temperatureData[selectedTemperature];
+
+        viewport.classList.add("is-changing");
+        sceneImage.src = nextData.image;
+        window.setTimeout(() => viewport.classList.remove("is-changing"), 220);
+
+        setActiveButton();
+        renderObservation();
+        clearBubbles();
+
+        if (isRunning) {
+          startSimulation();
+        }
+      }
+
+      temperatureButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          selectTemperature(Number(button.dataset.temp));
+        });
+      });
+
+      startButton.addEventListener("click", startSimulation);
+
+      resetButton.addEventListener("click", () => {
+        stopSimulation();
+        clearBubbles();
+        selectTemperature(27);
+      });
+
+      renderObservation();
+      setActiveButton();
+    </script>
+  </body>
+</html>

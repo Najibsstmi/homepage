@@ -19928,10 +19928,10 @@ section {
   stroke: #ff1744;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 0.92;
+  stroke-width: 0.62;
   stroke-dasharray: 120;
   stroke-dashoffset: 120;
-  filter: drop-shadow(0 0 2px rgba(255, 23, 68, 0.95)) drop-shadow(0 0 7px rgba(255, 23, 68, 0.72));
+  filter: drop-shadow(0 0 1px rgba(255, 23, 68, 0.95)) drop-shadow(0 0 3px rgba(255, 23, 68, 0.58));
 }
 
 .endocrineBodyStage--vessels .endocrineVessel {

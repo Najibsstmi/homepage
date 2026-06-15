@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import SimulatorCard from "../components/SimulatorCard";
 import LinearMotionSimulator from "../components/LinearMotionSimulator";
 import SimulatorReviewPanel from "../components/reviews/SimulatorReviewPanel";
@@ -11,6 +12,55 @@ import InertiaMassSimulatorPage from "./InertiaMassSimulatorPage";
 import NuclearEnergySimulatorPage from "./NuclearEnergySimulatorPage";
 import ReactionRateSimulatorPage from "./ReactionRateSimulatorPage";
 import { simulators } from "../data/simulators";
+
+function StaticHtmlSimulatorFrame({ src, title }) {
+  const frameRef = useRef(null);
+
+  useEffect(() => {
+    const frame = frameRef.current;
+    if (!frame) {
+      return undefined;
+    }
+
+    const resizeFrame = () => {
+      try {
+        const doc = frame.contentDocument;
+        const body = doc?.body;
+        const html = doc?.documentElement;
+
+        if (!body || !html) {
+          return;
+        }
+
+        const contentHeight = Math.max(body.scrollHeight, html.scrollHeight);
+        const viewportHeight = Math.max(window.innerHeight - 86, 720);
+        frame.style.height = `${Math.max(contentHeight, viewportHeight)}px`;
+      } catch {
+        frame.style.height = "1100px";
+      }
+    };
+
+    frame.addEventListener("load", resizeFrame);
+    const resizeTimer = window.setInterval(resizeFrame, 700);
+    resizeFrame();
+
+    return () => {
+      frame.removeEventListener("load", resizeFrame);
+      window.clearInterval(resizeTimer);
+    };
+  }, [src]);
+
+  return (
+    <main className="staticHtmlSimulatorPage">
+      <iframe
+        ref={frameRef}
+        className="staticHtmlSimulatorFrame"
+        src={src}
+        title={title}
+      />
+    </main>
+  );
+}
 
 export default function SimulatorPage() {
   const path = typeof window === "undefined" ? "/simulator" : window.location.pathname;
@@ -65,6 +115,15 @@ export default function SimulatorPage() {
     return (
       <ReactionRateSimulatorPage
         reviewPanel={getReviewPanel("kadar-tindak-balas")}
+      />
+    );
+  }
+
+  if (path === "/simulator/kesan-suhu-aktiviti-yis") {
+    return (
+      <StaticHtmlSimulatorFrame
+        src="/kesan-suhu-aktiviti-yis.html"
+        title="Kesan Suhu Terhadap Aktiviti Yis"
       />
     );
   }

@@ -2908,6 +2908,19 @@ section {
   box-shadow: 0 12px 26px rgba(34, 211, 238, 0.18);
 }
 
+.staticHtmlSimulatorPage {
+  min-height: calc(100vh - 82px);
+  background: #f5f8fc;
+}
+
+.staticHtmlSimulatorFrame {
+  display: block;
+  width: 100%;
+  min-height: calc(100vh - 82px);
+  border: 0;
+  background: #f5f8fc;
+}
+
 .mobileControlDrawer,
 .mobileControlDrawer__body {
   display: contents;

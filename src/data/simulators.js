@@ -36,6 +36,15 @@ export const simulators = [
     href: "/simulator/kadar-tindak-balas",
   },
   {
+    id: "kesan-suhu-aktiviti-yis",
+    title: "Kesan Suhu Terhadap Aktiviti Yis",
+    level: "Tingkatan 5",
+    topic: "Penapaian dan Aktiviti Yis",
+    description:
+      "Memerhati kesan suhu terhadap kadar penghasilan gas karbon dioksida dan peningkatan ketinggian doh roti.",
+    href: "/simulator/kesan-suhu-aktiviti-yis",
+  },
+  {
     id: "elektrokimia-elektrolisis",
     title: "Elektrolisis Sebatian Ion",
     level: "Tingkatan 5",

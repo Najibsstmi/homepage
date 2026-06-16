@@ -21201,3 +21201,1405 @@ section {
     border-radius: 16px;
   }
 }
+
+/* Optics lens simulator */
+.opticsPage {
+  min-height: calc(100vh - 82px);
+  padding: 1rem 1rem 2.4rem;
+  background: linear-gradient(180deg, #f8fbff 0%, #eef7ff 52%, #fbfdff 100%);
+  color: #0b1f3a;
+}
+
+.opticsTopbar,
+.opticsNotice,
+.opticsHelpPanel,
+.opticsDiagramCard,
+.opticsControlBar,
+.opticsInfoCard,
+.opticsSideCard {
+  border: 1px solid rgba(28, 105, 190, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 24px rgba(17, 63, 115, 0.08);
+}
+
+.opticsTopbar {
+  display: grid;
+  grid-template-columns: minmax(350px, 1.1fr) minmax(360px, 0.8fr) auto;
+  gap: 0.85rem;
+  align-items: center;
+  width: min(1540px, 100%);
+  margin: 0 auto 0.85rem;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.opticsBrand {
+  display: flex;
+  min-width: 0;
+  min-height: 68px;
+  align-items: center;
+  gap: 0.9rem;
+  border-radius: 8px;
+  padding: 0.72rem 1rem;
+  background: linear-gradient(135deg, #083d79, #075aa9 56%, #0b6dc6);
+  box-shadow: 0 12px 26px rgba(7, 89, 169, 0.18);
+  color: #ffffff;
+}
+
+.opticsBrandIcon {
+  position: relative;
+  flex: 0 0 auto;
+  display: block;
+  width: 76px;
+  height: 46px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, transparent 0 13%, #facc15 14% 23%, transparent 24% 100%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(125, 211, 252, 0.16));
+}
+
+.opticsBrandIcon::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 15px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #facc15;
+  box-shadow: 0 0 0 5px rgba(250, 204, 21, 0.16), 0 0 16px rgba(250, 204, 21, 0.72);
+}
+
+.opticsBrandIcon::after {
+  content: "";
+  position: absolute;
+  left: 38px;
+  top: 5px;
+  width: 18px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), rgba(96, 165, 250, 0.56));
+  border: 1px solid rgba(191, 219, 254, 0.9);
+  box-shadow: 0 0 18px rgba(96, 165, 250, 0.42);
+}
+
+.opticsBrandIcon span {
+  position: absolute;
+  left: 58px;
+  top: 22px;
+  width: 16px;
+  height: 2px;
+  border-radius: 999px;
+  background: #facc15;
+}
+
+.opticsBrandIcon span::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: -4px;
+  width: 9px;
+  height: 9px;
+  border-top: 2px solid #facc15;
+  border-right: 2px solid #facc15;
+  transform: rotate(45deg);
+}
+
+.opticsBrand div {
+  min-width: 0;
+}
+
+.opticsBrand div > span {
+  display: block;
+  margin-bottom: 0.12rem;
+  color: rgba(219, 234, 254, 0.9);
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.opticsBrand h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.55rem;
+  font-weight: 950;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.opticsLensTabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-height: 64px;
+  border: 1px solid rgba(28, 105, 190, 0.18);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.opticsLensTab {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  border: 0;
+  border-right: 1px solid rgba(28, 105, 190, 0.16);
+  background: linear-gradient(180deg, #ffffff, #f2f8ff);
+  color: #778397;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.opticsLensTab:last-child {
+  border-right: 0;
+}
+
+.opticsLensTab--active {
+  background: #ffffff;
+  color: #075ee0;
+  box-shadow: inset 0 -3px 0 #1d7bf0;
+}
+
+.opticsLensTab__icon {
+  position: relative;
+  display: block;
+  width: 28px;
+  height: 42px;
+}
+
+.opticsLensTab__icon::before {
+  content: "";
+  position: absolute;
+  inset: 2px 7px;
+  border: 2px solid currentColor;
+  opacity: 0.72;
+}
+
+.opticsLensTab__icon--convex::before {
+  border-radius: 50%;
+  background: rgba(96, 165, 250, 0.2);
+}
+
+.opticsLensTab__icon--concave::before {
+  border-radius: 48% 48% 14% 14%;
+  clip-path: polygon(0 0, 100% 0, 62% 50%, 100% 100%, 0 100%, 38% 50%);
+  background: rgba(148, 163, 184, 0.14);
+}
+
+.opticsTopActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.55rem;
+}
+
+.opticsGhostButton {
+  display: inline-flex;
+  min-height: 54px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.58rem;
+  border: 1px solid rgba(28, 105, 190, 0.18);
+  border-radius: 8px;
+  padding: 0 0.85rem;
+  background: rgba(255, 255, 255, 0.94);
+  color: #172b4d;
+  font: inherit;
+  font-size: 0.98rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.opticsGhostButton:hover {
+  border-color: rgba(29, 123, 240, 0.42);
+  background: #f1f7ff;
+  transform: translateY(-1px);
+}
+
+.opticsQuestionIcon,
+.opticsResetIcon,
+.opticsMenuIcon {
+  position: relative;
+  flex: 0 0 auto;
+  display: inline-block;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #e8f2ff;
+}
+
+.opticsQuestionIcon::before {
+  content: "?";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #0b63b6;
+  font-size: 1.18rem;
+  font-weight: 950;
+}
+
+.opticsResetIcon::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  width: 15px;
+  height: 15px;
+  border: 3px solid #59718f;
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+
+.opticsResetIcon::after {
+  content: "";
+  position: absolute;
+  right: 7px;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-top: 3px solid #59718f;
+  border-right: 3px solid #59718f;
+  transform: rotate(18deg);
+}
+
+.opticsMenuIcon {
+  border-radius: 8px;
+  background: transparent;
+}
+
+.opticsMenuIcon::before,
+.opticsMenuIcon::after,
+.opticsMenuIcon {
+  background-image: linear-gradient(#334155, #334155);
+  background-repeat: no-repeat;
+  background-size: 24px 2px;
+  background-position: center;
+}
+
+.opticsMenuIcon::before,
+.opticsMenuIcon::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  height: 2px;
+  border-radius: 999px;
+}
+
+.opticsMenuIcon::before {
+  top: 9px;
+}
+
+.opticsMenuIcon::after {
+  bottom: 9px;
+}
+
+.opticsHelpPanel,
+.opticsNotice {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: start;
+  width: min(1540px, 100%);
+  margin: 0 auto 0.8rem;
+  padding: 0.82rem 1rem;
+}
+
+.opticsHelpPanel {
+  border-color: rgba(250, 204, 21, 0.42);
+  background: linear-gradient(180deg, #fffdf1, #ffffff);
+}
+
+.opticsHelpPanel strong {
+  color: #0f766e;
+  font-weight: 950;
+}
+
+.opticsHelpPanel p,
+.opticsNotice p {
+  margin: 0;
+  color: #123154;
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.55;
+}
+
+.opticsNotice {
+  border-color: rgba(29, 123, 240, 0.34);
+  background: linear-gradient(180deg, #eef7ff, #fbfdff);
+}
+
+.opticsNotice span {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 50%;
+  background: #0b63b6;
+  color: #ffffff;
+  font-weight: 950;
+}
+
+.opticsPage .simulatorDetailReviewSlot {
+  width: min(1540px, 100%);
+  margin: 0 auto 0.8rem;
+  border-color: rgba(29, 123, 240, 0.18);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.opticsWorkspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(290px, 320px);
+  gap: 1rem;
+  align-items: start;
+  width: min(1540px, 100%);
+  margin: 0 auto;
+}
+
+.opticsMainColumn,
+.opticsSideStack {
+  display: grid;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.opticsDiagramCard {
+  position: relative;
+  overflow: hidden;
+  padding: 0.85rem;
+  border-color: rgba(29, 123, 240, 0.22);
+}
+
+.opticsStageToolbar {
+  position: absolute;
+  left: 1.35rem;
+  top: 1.25rem;
+  z-index: 4;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.opticsLightStatus {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 8px;
+  padding: 0.45rem 0.68rem;
+  background: linear-gradient(135deg, #4b596b, #25364c);
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
+}
+
+.opticsLightStatus strong,
+.opticsLightStatus span {
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.opticsLightStatus::after {
+  content: "";
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #eef4fb;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.1);
+}
+
+.opticsLightStatus--on {
+  background: linear-gradient(135deg, #0f766e, #14b8a6);
+}
+
+.opticsLightStatus--on::after {
+  background: #facc15;
+  box-shadow: 0 0 16px rgba(250, 204, 21, 0.9), inset 0 0 0 1px rgba(255, 255, 255, 0.62);
+}
+
+.opticsBulbHint {
+  display: inline-grid;
+  grid-template-columns: auto minmax(130px, 1fr);
+  gap: 0.55rem;
+  align-items: center;
+  min-height: 48px;
+  border: 1px solid rgba(28, 105, 190, 0.18);
+  border-radius: 8px;
+  padding: 0.42rem 0.7rem;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.opticsBulbHint p {
+  margin: 0;
+  color: #111827;
+  font-size: 0.9rem;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.opticsBulbHint__icon,
+.opticsInfoBulb {
+  position: relative;
+  display: block;
+  width: 30px;
+  height: 34px;
+}
+
+.opticsBulbHint__icon::before,
+.opticsInfoBulb::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 0;
+  width: 18px;
+  height: 22px;
+  border-radius: 50% 50% 44% 44%;
+  background: #cbd5e1;
+}
+
+.opticsBulbHint__icon::after,
+.opticsInfoBulb::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  bottom: 3px;
+  width: 10px;
+  height: 9px;
+  border-radius: 2px;
+  background: #64748b;
+}
+
+.opticsBulbHint__icon--on::before,
+.opticsInfoBulb::before {
+  background: #facc15;
+  box-shadow: 0 0 15px rgba(250, 204, 21, 0.72);
+}
+
+.opticsDiagram {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1200 / 520;
+  border: 1px solid rgba(28, 105, 190, 0.16);
+  border-radius: 8px;
+  background-color: #ffffff;
+  background-image:
+    radial-gradient(circle, rgba(37, 99, 235, 0.16) 1px, transparent 1px),
+    linear-gradient(rgba(37, 99, 235, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, 0.07) 1px, transparent 1px);
+  background-size: 18px 18px, 88px 88px, 88px 88px;
+}
+
+.opticsStageGrid {
+  fill: transparent;
+}
+
+.opticsAxis {
+  stroke: #111827;
+  stroke-width: 2;
+}
+
+.opticsAxisLabel {
+  fill: #64748b;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.opticsFocusMarks circle {
+  fill: #050505;
+}
+
+.opticsFocusMarks text {
+  fill: #050505;
+  font-size: 20px;
+  font-weight: 850;
+  text-anchor: middle;
+}
+
+.opticsLensShape path:first-child {
+  stroke-width: 2;
+}
+
+.opticsLensShape--convex path:first-child {
+  fill: rgba(96, 165, 250, 0.22);
+  stroke: rgba(30, 100, 171, 0.62);
+}
+
+.opticsLensShape--concave path:first-child {
+  fill: rgba(148, 163, 184, 0.2);
+  stroke: rgba(71, 85, 105, 0.62);
+}
+
+.opticsLensHighlight {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.74);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.opticsLensShape line {
+  stroke: rgba(71, 85, 105, 0.72);
+  stroke-width: 2;
+  stroke-dasharray: 8 8;
+}
+
+.opticsRay {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: d 0.35s ease;
+}
+
+.opticsRay--red {
+  stroke: #ef1d1d;
+  stroke-width: 3.2;
+}
+
+.opticsRay--orange {
+  stroke: #f59e0b;
+  stroke-width: 3;
+}
+
+.opticsRay--virtual {
+  stroke: #7c2dff;
+  stroke-width: 2.6;
+  stroke-dasharray: 10 10;
+}
+
+.opticsRay--red.opticsRay--animated,
+.opticsRay--orange.opticsRay--animated {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: opticsRayDraw var(--ray-duration) ease forwards;
+}
+
+.opticsRay--virtual.opticsRay--animated {
+  stroke-dashoffset: 180;
+  animation: opticsDashedRayDraw var(--ray-duration) ease forwards;
+}
+
+.opticsArrow {
+  pointer-events: none;
+}
+
+.opticsArrow line {
+  stroke-linecap: round;
+  stroke-width: 7;
+}
+
+.opticsArrow circle {
+  fill: #050505;
+}
+
+.opticsArrow text {
+  font-size: 18px;
+  font-weight: 950;
+  text-anchor: middle;
+}
+
+.opticsArrow--object {
+  color: #0b4cff;
+}
+
+.opticsArrow--object line {
+  stroke: #0b4cff;
+  marker-end: url("#opticsArrowBlue");
+}
+
+.opticsArrow--object text {
+  fill: #0b4cff;
+}
+
+.opticsArrow--image {
+  color: #7c2dff;
+}
+
+.opticsArrow--image line {
+  stroke: #7c2dff;
+  stroke-dasharray: 8 8;
+  marker-end: url("#opticsArrowPurple");
+}
+
+.opticsArrow--image text {
+  fill: #7c2dff;
+}
+
+.opticsArrow--draggable {
+  cursor: grab;
+  pointer-events: all;
+  touch-action: none;
+}
+
+.opticsArrow--draggable:active {
+  cursor: grabbing;
+}
+
+.opticsObjectHitArea {
+  fill: transparent;
+  pointer-events: all;
+}
+
+.opticsNoImageNote rect {
+  fill: #fff7ed;
+  stroke: rgba(245, 158, 11, 0.42);
+  stroke-width: 1.5;
+}
+
+.opticsNoImageNote text {
+  fill: #9a3412;
+  font-size: 17px;
+  font-weight: 850;
+}
+
+.opticsValueLabels text {
+  fill: #334155;
+  font-size: 15px;
+  font-weight: 850;
+  paint-order: stroke;
+  stroke: rgba(255, 255, 255, 0.86);
+  stroke-width: 5px;
+}
+
+.opticsObjectControl {
+  display: grid;
+  gap: 0.72rem;
+  margin-top: 0.75rem;
+  border: 1px solid rgba(28, 105, 190, 0.16);
+  border-radius: 8px;
+  padding: 0.82rem 1rem 0.7rem;
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.opticsControlTitle {
+  color: #075ee0;
+  font-size: 0.92rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.opticsSliderWrap {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.opticsSliderWrap input[type="range"],
+.opticsSpeedControl input[type="range"] {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  appearance: none;
+  background: linear-gradient(90deg, #56a6ff var(--slider-progress, 50%), #d8e0ea 0);
+  outline: none;
+}
+
+.opticsSpeedControl input[type="range"] {
+  background: linear-gradient(90deg, #60a5fa, #d8e0ea);
+}
+
+.opticsSliderWrap input[type="range"]::-webkit-slider-thumb,
+.opticsSpeedControl input[type="range"]::-webkit-slider-thumb {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  appearance: none;
+  background: #1d7bf0;
+  box-shadow: 0 2px 9px rgba(37, 99, 235, 0.36);
+  cursor: pointer;
+}
+
+.opticsSliderWrap input[type="range"]::-moz-range-thumb,
+.opticsSpeedControl input[type="range"]::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  background: #1d7bf0;
+  box-shadow: 0 2px 9px rgba(37, 99, 235, 0.36);
+  cursor: pointer;
+}
+
+.opticsSliderTicks {
+  position: relative;
+  min-height: 54px;
+  margin-top: 0.1rem;
+  overflow: visible;
+}
+
+.opticsSliderTicks span {
+  position: absolute;
+  left: var(--tick-position);
+  top: 0;
+  width: clamp(76px, 15%, 150px);
+  transform: translateX(-50%);
+  color: #0b1f3a;
+  font-size: 0.88rem;
+  font-weight: 750;
+  line-height: 1.25;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.opticsSliderTicks span::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #050505;
+}
+
+.opticsSliderTicks span:first-child {
+  transform: none;
+  text-align: left;
+}
+
+.opticsSliderTicks span:first-child::before {
+  left: 0;
+  transform: none;
+}
+
+.opticsSliderTicks span:last-child {
+  transform: translateX(-100%);
+  text-align: right;
+}
+
+.opticsSliderTicks span:last-child::before {
+  left: 100%;
+  transform: translateX(-100%);
+}
+
+.opticsSliderTicks span {
+  padding-top: 18px;
+}
+
+.opticsDragHint {
+  justify-self: center;
+  display: inline-flex;
+  max-width: 680px;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid rgba(234, 179, 8, 0.46);
+  border-radius: 8px;
+  padding: 0.52rem 0.8rem;
+  background: #fffbeb;
+  color: #1f2937;
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.opticsDragHint span {
+  position: relative;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #111827;
+  border-top: 0;
+  border-radius: 0 0 9px 9px;
+}
+
+.opticsDragHint span::before {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: -8px;
+  width: 7px;
+  height: 18px;
+  border: 2px solid #111827;
+  border-radius: 999px;
+  background: #fffbeb;
+}
+
+.opticsBottomDeck {
+  display: grid;
+  grid-template-columns: minmax(420px, 0.92fr) minmax(360px, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.opticsControlBar {
+  display: grid;
+  grid-template-columns: minmax(190px, 1fr) auto;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.75rem;
+}
+
+.opticsLightButton {
+  display: inline-flex;
+  min-height: 72px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #08978e, #0f766e);
+  color: #ffffff;
+  font: inherit;
+  font-size: 1.08rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(15, 118, 110, 0.22);
+}
+
+.opticsLightButton span {
+  position: relative;
+  width: 42px;
+  height: 42px;
+}
+
+.opticsLightButton span::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 6px;
+  width: 18px;
+  height: 23px;
+  border: 4px solid #facc15;
+  border-radius: 50%;
+  box-shadow: 0 0 16px rgba(250, 204, 21, 0.78);
+}
+
+.opticsLightButton span::after {
+  content: "";
+  position: absolute;
+  left: 17px;
+  bottom: 5px;
+  width: 9px;
+  height: 8px;
+  border-radius: 2px;
+  background: #facc15;
+}
+
+.opticsPlaybackButtons {
+  display: grid;
+  grid-template-columns: repeat(3, 62px);
+  gap: 0.58rem;
+  justify-content: center;
+}
+
+.opticsRoundButton {
+  display: grid;
+  min-height: 64px;
+  place-items: center;
+  gap: 0.18rem;
+  border: 1px solid rgba(28, 105, 190, 0.14);
+  border-radius: 8px;
+  background: #f4f9ff;
+  color: #0b1f3a;
+  font: inherit;
+  cursor: pointer;
+}
+
+.opticsRoundButton--active {
+  background: #e8f2ff;
+  box-shadow: inset 0 0 0 2px rgba(29, 123, 240, 0.28);
+}
+
+.opticsRoundButton small {
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.opticsPlayIcon,
+.opticsPauseIcon,
+.opticsReplayIcon {
+  position: relative;
+  display: block;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e6f1ff;
+}
+
+.opticsPlayIcon::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 9px;
+  width: 0;
+  height: 0;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-left: 13px solid #0b63b6;
+}
+
+.opticsPauseIcon::before,
+.opticsPauseIcon::after {
+  content: "";
+  position: absolute;
+  top: 9px;
+  width: 6px;
+  height: 18px;
+  border-radius: 2px;
+  background: #334155;
+}
+
+.opticsPauseIcon::before {
+  left: 11px;
+}
+
+.opticsPauseIcon::after {
+  right: 11px;
+}
+
+.opticsReplayIcon::before {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: 9px;
+  width: 16px;
+  height: 16px;
+  border: 3px solid #334155;
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+
+.opticsReplayIcon::after {
+  content: "";
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-top: 3px solid #334155;
+  border-right: 3px solid #334155;
+  transform: rotate(18deg);
+}
+
+.opticsSpeedControl {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 0.45rem;
+  min-width: 0;
+  color: #0b1f3a;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.opticsSpeedControl small {
+  display: flex;
+  justify-content: space-between;
+  color: #172b4d;
+  font-size: 0.76rem;
+  font-weight: 750;
+}
+
+.opticsInfoCard {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: center;
+  border-color: rgba(34, 197, 94, 0.34);
+  padding: 0.82rem 1rem;
+  background: linear-gradient(180deg, #f0fff7, #ffffff);
+}
+
+.opticsInfoCard h2 {
+  margin: 0 0 0.28rem;
+  color: #047857;
+  font-size: 1rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.opticsInfoCard p {
+  margin: 0.18rem 0;
+  color: #0b1f3a;
+  font-size: 0.93rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.opticsInfoCard strong {
+  font-weight: 950;
+}
+
+.opticsSideCard {
+  overflow: hidden;
+}
+
+.opticsSideCard h2 {
+  margin: 0;
+  padding: 0.86rem 1rem;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.opticsImageInfoPanel h2 {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+}
+
+.opticsDisplayPanel h2 {
+  background: linear-gradient(135deg, #0b63b6, #2691ef);
+}
+
+.opticsObjectStatus {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem 1rem 0.75rem;
+}
+
+.opticsObjectStatus span {
+  color: #123154;
+  font-size: 0.92rem;
+  font-weight: 750;
+}
+
+.opticsObjectStatus strong {
+  justify-self: center;
+  border-radius: 8px;
+  padding: 0.6rem 0.82rem;
+  background: #eee7ff;
+  color: #5b32b6;
+  font-size: 0.95rem;
+  font-weight: 950;
+  text-align: center;
+}
+
+.opticsInfoRows {
+  display: grid;
+  gap: 0.52rem;
+  padding: 0 1rem 1rem;
+}
+
+.opticsInfoRow {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 0.66rem;
+  align-items: center;
+  min-height: 52px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 8px;
+  padding: 0.52rem 0.62rem;
+  background: #ffffff;
+}
+
+.opticsInfoRow > span {
+  position: relative;
+  display: block;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #40aa2b;
+}
+
+.opticsInfoRow > span::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 7px;
+  width: 11px;
+  height: 7px;
+  border-left: 4px solid #ffffff;
+  border-bottom: 4px solid #ffffff;
+  transform: rotate(-45deg);
+}
+
+.opticsInfoRow--warning > span {
+  background: #f59e0b;
+}
+
+.opticsInfoRow--warning > span::before {
+  content: "!";
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: auto;
+  height: auto;
+  border: 0;
+  color: #ffffff;
+  font-weight: 950;
+  transform: none;
+}
+
+.opticsInfoRow small {
+  display: block;
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.opticsInfoRow strong {
+  display: block;
+  color: #0b1f3a;
+  font-size: 0.96rem;
+  font-weight: 850;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.opticsImageNote {
+  margin: 0 1rem 1rem;
+  border: 1px solid rgba(245, 158, 11, 0.34);
+  border-radius: 8px;
+  padding: 0.72rem 0.8rem;
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 0.9rem;
+  font-weight: 760;
+  line-height: 1.45;
+}
+
+.opticsToolPanel {
+  display: grid;
+  gap: 0.58rem;
+  margin: 0 1rem 1rem;
+  border: 1px solid rgba(14, 165, 233, 0.24);
+  border-radius: 8px;
+  padding: 0.75rem;
+  background: linear-gradient(180deg, #eef8ff, #ffffff);
+}
+
+.opticsToolPanel > span {
+  color: #075ee0;
+  font-size: 0.82rem;
+  font-weight: 950;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.opticsToolList {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.opticsToolItem {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 0.58rem;
+  align-items: center;
+  border: 1px solid rgba(37, 99, 235, 0.14);
+  border-radius: 8px;
+  padding: 0.52rem 0.58rem;
+  background: #ffffff;
+}
+
+.opticsToolItem > strong {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 8px;
+  background: #fff7ed;
+  font-size: 1.25rem;
+}
+
+.opticsToolItem b {
+  display: block;
+  color: #0b1f3a;
+  font-size: 0.95rem;
+  font-weight: 950;
+  line-height: 1.2;
+}
+
+.opticsToolItem small {
+  display: block;
+  margin-top: 0.12rem;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.opticsCheckboxList {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.92rem 1rem 1rem;
+}
+
+.opticsCheckboxList label {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 0.58rem;
+  align-items: start;
+  color: #0b1f3a;
+  font-size: 0.94rem;
+  font-weight: 760;
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.opticsCheckboxList input {
+  width: 18px;
+  height: 18px;
+  margin-top: 0.08rem;
+  accent-color: #0b63b6;
+}
+
+@keyframes opticsRayDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes opticsDashedRayDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (max-width: 1140px) {
+  .opticsTopbar {
+    grid-template-columns: minmax(320px, 1fr) minmax(320px, 1fr);
+  }
+
+  .opticsTopActions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+
+  .opticsBottomDeck {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1080px) {
+  .opticsWorkspace {
+    grid-template-columns: 1fr;
+  }
+
+  .opticsSideStack {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .opticsControlBar {
+    grid-template-columns: minmax(220px, 1fr) auto;
+  }
+}
+
+@media (max-width: 820px) {
+  .opticsPage {
+    padding: 0.75rem 0.7rem 2rem;
+  }
+
+  .opticsTopbar,
+  .opticsSideStack,
+  .opticsControlBar {
+    grid-template-columns: 1fr;
+  }
+
+  .opticsBrand {
+    min-height: auto;
+  }
+
+  .opticsBrand h1 {
+    font-size: 1.28rem;
+  }
+
+  .opticsTopActions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .opticsGhostButton {
+    min-height: 48px;
+    padding: 0 0.55rem;
+    font-size: 0.9rem;
+  }
+
+  .opticsStageToolbar {
+    position: static;
+    margin-bottom: 0.65rem;
+  }
+
+  .opticsDiagram {
+    min-height: 340px;
+  }
+
+  .opticsPlaybackButtons {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .opticsRoundButton {
+    min-height: 58px;
+  }
+}
+
+@media (max-width: 560px) {
+  .opticsBrand {
+    align-items: flex-start;
+  }
+
+  .opticsBrandIcon {
+    width: 58px;
+    height: 40px;
+  }
+
+  .opticsBrandIcon::after {
+    left: 31px;
+  }
+
+  .opticsBrandIcon span {
+    left: 48px;
+    width: 11px;
+  }
+
+  .opticsLensTabs {
+    grid-template-columns: 1fr;
+  }
+
+  .opticsLensTab {
+    min-height: 54px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(28, 105, 190, 0.16);
+  }
+
+  .opticsLensTab:last-child {
+    border-bottom: 0;
+  }
+
+  .opticsTopActions {
+    grid-template-columns: 1fr;
+  }
+
+  .opticsNotice,
+  .opticsHelpPanel,
+  .opticsInfoCard {
+    grid-template-columns: 1fr;
+  }
+
+  .opticsDiagramCard {
+    padding: 0.65rem;
+  }
+
+  .opticsDiagram {
+    min-height: 300px;
+  }
+
+  .opticsSliderTicks span {
+    font-size: 0.72rem;
+  }
+
+  .opticsDragHint {
+    align-items: flex-start;
+    font-size: 0.82rem;
+  }
+
+  .opticsLightButton {
+    min-height: 64px;
+    font-size: 0.96rem;
+  }
+
+  .opticsInfoRows,
+  .opticsCheckboxList,
+  .opticsObjectStatus {
+    padding-inline: 0.75rem;
+  }
+}

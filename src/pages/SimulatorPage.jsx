@@ -10,6 +10,7 @@ import ElectrolysisSimulatorPage from "./ElectrolysisSimulatorPage";
 import EndocrineSystemSimulatorPage from "./EndocrineSystemSimulatorPage";
 import InertiaMassSimulatorPage from "./InertiaMassSimulatorPage";
 import NuclearEnergySimulatorPage from "./NuclearEnergySimulatorPage";
+import OpticsLensSimulatorPage from "./OpticsLensSimulatorPage";
 import ReactionRateSimulatorPage from "./ReactionRateSimulatorPage";
 import { simulators } from "../data/simulators";
 
@@ -142,6 +143,14 @@ export default function SimulatorPage() {
     return (
       <EndocrineSystemSimulatorPage
         reviewPanel={getReviewPanel("sistem-endokrin")}
+      />
+    );
+  }
+
+  if (path === "/simulator/cahaya-optik-kanta") {
+    return (
+      <OpticsLensSimulatorPage
+        reviewPanel={getReviewPanel("cahaya-optik-kanta")}
       />
     );
   }

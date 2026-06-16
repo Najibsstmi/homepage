@@ -45,6 +45,15 @@ export const simulators = [
     href: "/simulator/kesan-suhu-aktiviti-yis",
   },
   {
+    id: "cahaya-optik-kanta",
+    title: "Pembentukan Imej oleh Kanta",
+    level: "Tingkatan 5",
+    topic: "Bab 7 Cahaya dan Optik",
+    description:
+      "Terokai pembentukan imej oleh kanta cembung dan kanta cekung melalui rajah sinar interaktif, animasi cahaya dan panel ciri imej.",
+    href: "/simulator/cahaya-optik-kanta",
+  },
+  {
     id: "elektrokimia-elektrolisis",
     title: "Elektrolisis Sebatian Ion",
     level: "Tingkatan 5",

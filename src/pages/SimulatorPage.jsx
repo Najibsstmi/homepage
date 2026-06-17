@@ -9,6 +9,7 @@ import ChemicalCellSimulatorPage from "./ChemicalCellSimulatorPage";
 import ElectrolysisSimulatorPage from "./ElectrolysisSimulatorPage";
 import EndocrineSystemSimulatorPage from "./EndocrineSystemSimulatorPage";
 import InertiaMassSimulatorPage from "./InertiaMassSimulatorPage";
+import MudPressureRescueSimulatorPage from "./MudPressureRescueSimulatorPage";
 import NuclearEnergySimulatorPage from "./NuclearEnergySimulatorPage";
 import OpticsLensSimulatorPage from "./OpticsLensSimulatorPage";
 import ReactionRateSimulatorPage from "./ReactionRateSimulatorPage";
@@ -125,6 +126,14 @@ export default function SimulatorPage() {
       <StaticHtmlSimulatorFrame
         src="/kesan-suhu-aktiviti-yis.html"
         title="Kesan Suhu Terhadap Aktiviti Yis"
+      />
+    );
+  }
+
+  if (path === "/simulator/misi-ambulans-lumpur") {
+    return (
+      <MudPressureRescueSimulatorPage
+        reviewPanel={getReviewPanel("misi-ambulans-lumpur")}
       />
     );
   }

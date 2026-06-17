@@ -54,6 +54,15 @@ export const simulators = [
     href: "/simulator/cahaya-optik-kanta",
   },
   {
+    id: "misi-ambulans-lumpur",
+    title: "Misi Ambulans Lumpur",
+    level: "Tingkatan 5",
+    topic: "Bab 8 Daya dan Tekanan",
+    description:
+      "Mengkaji hubungan antara luas sentuhan tayar, daya dan tekanan untuk membantu ambulans bergerak di kawasan berlumpur.",
+    href: "/simulator/misi-ambulans-lumpur",
+  },
+  {
     id: "elektrokimia-elektrolisis",
     title: "Elektrolisis Sebatian Ion",
     level: "Tingkatan 5",

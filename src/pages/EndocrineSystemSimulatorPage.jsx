@@ -14,16 +14,16 @@ const endocrineGlands = [
       {
         name: "Tulang",
         type: "bone",
-        x: 47,
-        y: 86,
+        x: 45.2,
+        y: 79,
         response: "Pertumbuhan tulang dirangsang.",
         detail: "Tulang membesar dan memanjang dengan lebih teratur.",
       },
       {
         name: "Otot",
         type: "muscle",
-        x: 33,
-        y: 39,
+        x: 36.2,
+        y: 42,
         response: "Jisim otot dikekalkan.",
         detail: "Otot menerima isyarat untuk menyokong pertumbuhan badan.",
       },
@@ -46,16 +46,16 @@ const endocrineGlands = [
       {
         name: "Sel badan",
         type: "cell",
-        x: 62,
-        y: 47,
+        x: 55.4,
+        y: 44.5,
         response: "Metabolisme sel dikawal.",
         detail: "Sel menggunakan tenaga pada kadar yang sesuai.",
       },
       {
         name: "Pertumbuhan badan",
         type: "growth",
-        x: 38,
-        y: 60,
+        x: 46,
+        y: 66,
         response: "Perkembangan fizikal dan mental disokong.",
         detail: "Badan menerima isyarat untuk berkembang secara seimbang.",
       },
@@ -81,7 +81,7 @@ const endocrineGlands = [
       {
         name: "Jantung",
         type: "heart",
-        x: 48,
+        x: 49,
         y: 34,
         response: "Denyutan jantung meningkat.",
         detail: "Lebih banyak darah dipam ke seluruh badan.",
@@ -89,8 +89,8 @@ const endocrineGlands = [
       {
         name: "Otot rangka",
         type: "muscle",
-        x: 32,
-        y: 42,
+        x: 36,
+        y: 43,
         response: "Otot bertindak dengan lebih cepat.",
         detail: "Badan bersedia untuk tindak balas kecemasan.",
       },
@@ -114,16 +114,16 @@ const endocrineGlands = [
       {
         name: "Hati",
         type: "liver",
-        x: 44,
-        y: 39,
+        x: 45.5,
+        y: 38.5,
         response: "Glukosa berlebihan disimpan.",
         detail: "Glukosa ditukarkan kepada glikogen di dalam hati.",
       },
       {
         name: "Sel badan",
         type: "cell",
-        x: 65,
-        y: 48,
+        x: 55.5,
+        y: 45.5,
         response: "Sel menyerap glukosa.",
         detail: "Aras glukosa darah kembali lebih seimbang.",
       },
@@ -198,25 +198,31 @@ const quickSituations = [
 ];
 
 const vesselPaths = [
-  "M50 14 C50 20 50 27 50 34 C50 42 50 50 50 56",
-  "M48.7 30 C48.2 37 48.2 45 48.8 52",
-  "M51.3 30 C51.8 37 51.8 45 51.2 52",
-  "M50 15 C48.7 16.6 48.1 18.4 48.4 20.6",
-  "M50 15 C51.3 16.6 51.9 18.4 51.6 20.6",
-  "M50 30 C48.5 31.2 47.7 33.5 47.8 36.2",
-  "M50 30 C51.5 31.2 52.3 33.5 52.2 36.2",
+  "M50 13.5 C50 19 50 25.5 50 33 C50 41 50 49 50 55",
+  "M48.7 29 C48.3 36 48.2 44 48.8 52",
+  "M51.3 29 C51.7 36 51.8 44 51.2 52",
+  "M50 15 C48.5 16.5 47.9 18.3 48.2 20.6",
+  "M50 15 C51.5 16.5 52.1 18.3 51.8 20.6",
+  "M49.2 30 C47.1 31.3 45.9 33.6 45.4 36.2",
+  "M50.8 30 C52.9 31.3 54.1 33.6 54.6 36.2",
+  "M45.4 36.2 C44.3 37 43.6 38.2 43.4 39.7",
+  "M54.6 36.2 C55.7 37 56.4 38.2 56.6 39.7",
   "M49 42 C47.8 44.2 47.3 47 47.4 50.4",
   "M51 42 C52.2 44.2 52.7 47 52.6 50.4",
-  "M48.9 50 C47.9 51.1 47.3 52.2 47.2 53.3",
-  "M51.1 50 C52.1 51.1 52.7 52.2 52.8 53.3",
+  "M48.9 50 C47.9 51.1 47.3 52.2 47 53.5",
+  "M51.1 50 C52.1 51.1 52.7 52.2 53 53.5",
+  "M46.4 55.5 C45.6 62.5 45.1 70.5 44.8 78 C44.6 83 44.5 87 44.7 90",
+  "M53.6 55.5 C54.4 62.5 54.9 70.5 55.2 78 C55.4 83 55.5 87 55.3 90",
 ];
 
 function buildHormonePath(source, target, index) {
-  const drift = target.x >= source.x ? 9 : -9;
-  const bend = index % 2 === 0 ? -5 : 5;
-  const midY = (source.y + target.y) / 2 + bend;
+  const deltaX = target.x - source.x;
+  const deltaY = target.y - source.y;
+  const controlOffset = Math.max(-4.5, Math.min(4.5, deltaX * 0.45));
+  const c1Y = source.y + deltaY * 0.35;
+  const c2Y = source.y + deltaY * 0.72;
 
-  return `M ${source.x} ${source.y} C ${source.x + drift} ${midY} ${target.x - drift} ${midY} ${target.x} ${target.y}`;
+  return `M ${source.x} ${source.y} C ${source.x + controlOffset} ${c1Y} ${target.x - controlOffset} ${c2Y} ${target.x} ${target.y}`;
 }
 
 function getProgress(selectedGland, showVessels, hormoneReleased, effectSeen) {
@@ -521,7 +527,7 @@ export default function EndocrineSystemSimulatorPage({ reviewPanel }) {
                         <circle
                           key={`${target.name}-${dot}`}
                           className="endocrineHormoneDot"
-                          r="1.22"
+                          r="1"
                         >
                           <animateMotion
                             dur={`${2.15 + index * 0.3}s`}

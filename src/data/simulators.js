@@ -55,7 +55,7 @@ export const simulators = [
   },
   {
     id: "misi-ambulans-lumpur",
-    title: "Misi Ambulans Lumpur",
+    title: 'Konsep Tekanan : "Misi Ambulan Lumpur"',
     level: "Tingkatan 5",
     topic: "Bab 8 Daya dan Tekanan",
     description:

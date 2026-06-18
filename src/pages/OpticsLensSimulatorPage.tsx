@@ -811,10 +811,12 @@ function ObjectSlider({
 }
 
 function ImageInfoPanel({
+  lightOn,
   lensType,
   objectStop,
   opticsData,
 }: {
+  lightOn: boolean;
   lensType: LensType;
   objectStop: ObjectStop;
   opticsData: OpticsData;
@@ -830,6 +832,14 @@ function ImageInfoPanel({
   return (
     <aside className="opticsSideCard opticsImageInfoPanel">
       <h2>Ciri-ciri Imej</h2>
+      {!lightOn ? (
+        <div className="opticsImageInfoEmpty">
+          <span aria-hidden="true" />
+          <strong>Maklumat imej belum tersedia</strong>
+          <p>Hidupkan cahaya untuk melihat ciri-ciri imej dan aplikasi alat optik.</p>
+        </div>
+      ) : (
+        <>
       <div className="opticsObjectStatus">
         <span>Kedudukan objek:</span>
         <strong>{objectStop.label}</strong>
@@ -865,6 +875,8 @@ function ImageInfoPanel({
           ))}
         </div>
       </div>
+        </>
+      )}
     </aside>
   );
 }
@@ -1184,6 +1196,7 @@ export default function OpticsLensSimulatorPage({
 
         <div className="opticsSideStack">
           <ImageInfoPanel
+            lightOn={lightOn}
             lensType={lensType}
             objectStop={objectStop}
             opticsData={opticsData}

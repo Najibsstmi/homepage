@@ -63,6 +63,15 @@ export const simulators = [
     href: "/simulator/misi-ambulans-lumpur",
   },
   {
+    id: "sistem-hidraulik-pascal",
+    title: "PASCAL : Sistem Hidraulik di Bengkel",
+    level: "Tingkatan 5",
+    topic: "Bab 8 Daya dan Tekanan",
+    description:
+      "Terokai bagaimana luas omboh output mempengaruhi daya angkat ambulans melalui Prinsip Pascal.",
+    href: "/simulator/sistem-hidraulik-pascal",
+  },
+  {
     id: "elektrokimia-elektrolisis",
     title: "Elektrolisis Sebatian Ion",
     level: "Tingkatan 5",

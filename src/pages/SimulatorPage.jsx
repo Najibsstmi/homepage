@@ -13,6 +13,7 @@ import MudPressureRescueSimulatorPage from "./MudPressureRescueSimulatorPage";
 import NuclearEnergySimulatorPage from "./NuclearEnergySimulatorPage";
 import OpticsLensSimulatorPage from "./OpticsLensSimulatorPage";
 import ReactionRateSimulatorPage from "./ReactionRateSimulatorPage";
+import PascalHydraulicSimulator from "../components/PascalHydraulicSimulator";
 import { simulators } from "../data/simulators";
 
 function StaticHtmlSimulatorFrame({ src, title }) {
@@ -134,6 +135,14 @@ export default function SimulatorPage() {
     return (
       <MudPressureRescueSimulatorPage
         reviewPanel={getReviewPanel("misi-ambulans-lumpur")}
+      />
+    );
+  }
+
+  if (path === "/simulator/sistem-hidraulik-pascal") {
+    return (
+      <PascalHydraulicSimulator
+        reviewPanel={getReviewPanel("sistem-hidraulik-pascal")}
       />
     );
   }

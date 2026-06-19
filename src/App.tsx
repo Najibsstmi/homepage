@@ -210,6 +210,18 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const openSimulator = (path: string) => {
+    setCurrentPage("simulator");
+    setMobileMenuOpen(false);
+    setModulMenuOpen(false);
+
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", path);
+      setSimulatorRouteVersion((version) => version + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   const goToHomeSection = (sectionId: string) => {
     setCurrentPage("home");
     setMobileMenuOpen(false);
@@ -473,7 +485,10 @@ export default function App() {
       </nav>
 
       {currentPage === "simulator" ? (
-        <SimulatorPage key={simulatorRouteVersion} />
+        <SimulatorPage
+          key={simulatorRouteVersion}
+          onOpenSimulator={openSimulator}
+        />
       ) : currentPage === "inovasi" ? (
         /* ─────────────── PAGE INOVASI ─────────────── */
         <div className="inovasi-page">

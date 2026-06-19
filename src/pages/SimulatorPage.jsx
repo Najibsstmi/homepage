@@ -14,7 +14,8 @@ import NuclearEnergySimulatorPage from "./NuclearEnergySimulatorPage";
 import OpticsLensSimulatorPage from "./OpticsLensSimulatorPage";
 import ReactionRateSimulatorPage from "./ReactionRateSimulatorPage";
 import PascalHydraulicSimulator from "../components/PascalHydraulicSimulator";
-import { simulators } from "../data/simulators";
+import { SimulatorSearch } from "../components/SimulatorSearch";
+import { SIMULATORS } from "../data/simulators";
 
 function StaticHtmlSimulatorFrame({ src, title }) {
   const frameRef = useRef(null);
@@ -65,10 +66,10 @@ function StaticHtmlSimulatorFrame({ src, title }) {
   );
 }
 
-export default function SimulatorPage() {
+export default function SimulatorPage({ onOpenSimulator }) {
   const path = typeof window === "undefined" ? "/simulator" : window.location.pathname;
   const { refresh, status: ratingStatus, summaries } = useRatingSummaries();
-  const getSimulator = (id) => simulators.find((simulator) => simulator.id === id);
+  const getSimulator = (id) => SIMULATORS.find((simulator) => simulator.id === id);
   const getReviewPanel = (simulatorId) => {
     const simulator = getSimulator(simulatorId);
 
@@ -183,10 +184,13 @@ export default function SimulatorPage() {
           membantu murid meneroka konsep abstrak secara visual, interaktif dan
           lebih dekat dengan konteks pembelajaran KSSM.
         </p>
+        <div className="simulatorHero__actions">
+          <SimulatorSearch onOpenSimulator={onOpenSimulator} />
+        </div>
       </section>
 
       <section className="simulatorGrid" aria-label="Senarai simulator eksperimen">
-        {simulators.map((simulator) => (
+        {SIMULATORS.map((simulator) => (
           <SimulatorCard
             key={simulator.id}
             simulator={simulator}

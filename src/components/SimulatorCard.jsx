@@ -9,8 +9,9 @@ export default function SimulatorCard({
   return (
     <article className="simulatorCard">
       <div className="simulatorCard__meta">
-        <span>{simulator.level}</span>
-        <span>{simulator.topic}</span>
+        <span>Tingkatan {simulator.tingkatan}</span>
+        {simulator.bab && <span>{simulator.bab}</span>}
+        {simulator.topik && <span>{simulator.topik}</span>}
       </div>
 
       <h3>{simulator.title}</h3>
@@ -25,7 +26,7 @@ export default function SimulatorCard({
         onReviewSubmitted={onReviewSubmitted}
       />
 
-      <a className="simulatorCard__button" href={simulator.href}>
+      <a className="simulatorCard__button" href={simulator.path}>
         Buka Simulator
       </a>
     </article>

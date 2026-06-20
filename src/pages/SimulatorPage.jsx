@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import SimulatorCard from "../components/SimulatorCard";
 import LinearMotionSimulator from "../components/LinearMotionSimulator";
 import SimulatorReviewPanel from "../components/reviews/SimulatorReviewPanel";
@@ -13,10 +13,13 @@ import InertiaMassSimulatorPage from "./InertiaMassSimulatorPage";
 import MudPressureRescueSimulatorPage from "./MudPressureRescueSimulatorPage";
 import NuclearEnergySimulatorPage from "./NuclearEnergySimulatorPage";
 import OpticsLensSimulatorPage from "./OpticsLensSimulatorPage";
+import PollutionDetectiveSimulatorPage from "./PollutionDetectiveSimulatorPage";
 import ReactionRateSimulatorPage from "./ReactionRateSimulatorPage";
 import PascalHydraulicSimulator from "../components/PascalHydraulicSimulator";
 import { SimulatorSearch } from "../components/SimulatorSearch";
 import { SIMULATORS } from "../data/simulators";
+
+const SIMULATORS_PER_PAGE = 6;
 
 function StaticHtmlSimulatorFrame({ src, title }) {
   const frameRef = useRef(null);
@@ -70,6 +73,33 @@ function StaticHtmlSimulatorFrame({ src, title }) {
 export default function SimulatorPage({ onOpenSimulator }) {
   const path = typeof window === "undefined" ? "/simulator" : window.location.pathname;
   const { refresh, status: ratingStatus, summaries } = useRatingSummaries();
+  const [currentPage, setCurrentPage] = useState(1);
+  const gridRef = useRef(null);
+  const hasChangedPage = useRef(false);
+  const totalPages = Math.ceil(SIMULATORS.length / SIMULATORS_PER_PAGE);
+  const pageStart = (currentPage - 1) * SIMULATORS_PER_PAGE;
+  const visibleSimulators = SIMULATORS.slice(
+    pageStart,
+    pageStart + SIMULATORS_PER_PAGE,
+  );
+
+  useEffect(() => {
+    if (!hasChangedPage.current) {
+      return;
+    }
+
+    gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [currentPage]);
+
+  const changePage = (nextPage) => {
+    if (nextPage < 1 || nextPage > totalPages || nextPage === currentPage) {
+      return;
+    }
+
+    hasChangedPage.current = true;
+    setCurrentPage(nextPage);
+  };
+
   const getSimulator = (id) => SIMULATORS.find((simulator) => simulator.id === id);
   const getReviewPanel = (simulatorId) => {
     const simulator = getSimulator(simulatorId);
@@ -126,6 +156,14 @@ export default function SimulatorPage({ onOpenSimulator }) {
     return (
       <ReactionRateSimulatorPage
         reviewPanel={getReviewPanel("kadar-tindak-balas")}
+      />
+    );
+  }
+
+  if (path === "/simulator/detektif-pencemaran-alam") {
+    return (
+      <PollutionDetectiveSimulatorPage
+        reviewPanel={getReviewPanel("detektif-pencemaran-alam")}
       />
     );
   }
@@ -196,8 +234,12 @@ export default function SimulatorPage({ onOpenSimulator }) {
         </div>
       </section>
 
-      <section className="simulatorGrid" aria-label="Senarai simulator eksperimen">
-        {SIMULATORS.map((simulator) => (
+      <section
+        ref={gridRef}
+        className="simulatorGrid"
+        aria-label={`Senarai simulator eksperimen, halaman ${currentPage} daripada ${totalPages}`}
+      >
+        {visibleSimulators.map((simulator) => (
           <SimulatorCard
             key={simulator.id}
             simulator={simulator}
@@ -207,6 +249,28 @@ export default function SimulatorPage({ onOpenSimulator }) {
           />
         ))}
       </section>
+
+      <nav className="simulatorPagination" aria-label="Navigasi halaman simulator">
+        <button
+          type="button"
+          className="simulatorPagination__button"
+          onClick={() => changePage(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Sebelum
+        </button>
+        <p className="simulatorPagination__status" aria-live="polite">
+          Halaman {currentPage} daripada {totalPages}
+        </p>
+        <button
+          type="button"
+          className="simulatorPagination__button"
+          onClick={() => changePage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Seterusnya
+        </button>
+      </nav>
     </main>
   );
 }

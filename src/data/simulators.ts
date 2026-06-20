@@ -95,6 +95,29 @@ export const SIMULATORS: readonly SimulatorMetadata[] = [
     image: "/assets/background%20aloi.png",
   },
   {
+    id: "detektif-pencemaran-alam",
+    title: "Detektif Pencemaran Alam",
+    description:
+      "Siasat lima lokasi di Bandar Harmoni, bina inferens daripada bukti dan pilih langkah terbaik untuk menangani pencemaran.",
+    tingkatan: 5,
+    bab: "Bab 3: Kelestarian Alam Sekitar",
+    topik: "Pencemaran Alam Sekitar",
+    keywords: [
+      "kelestarian alam",
+      "pencemaran",
+      "pencemaran udara",
+      "pencemaran air",
+      "pencemaran tanah",
+      "eutrofikasi",
+      "BOD",
+      "pembalakan",
+      "pemanasan global",
+      "IBSE",
+    ],
+    path: "/simulator/detektif-pencemaran-alam",
+    image: "/assets/pencemaran%20background.webp",
+  },
+  {
     id: "kadar-tindak-balas",
     title: "Kadar Tindak Balas",
     description:

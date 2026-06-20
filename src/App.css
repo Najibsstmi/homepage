@@ -26045,3 +26045,585 @@ section {
     flex-direction: column;
   }
 }
+
+/* RPM 2026–2035 — halaman perkongsian */
+.rpmPage {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  padding: clamp(2rem, 5vw, 4.5rem) 1.5rem 6rem;
+  background:
+    radial-gradient(circle at 88% 6%, rgba(37, 99, 235, 0.16), transparent 28rem),
+    radial-gradient(circle at 8% 34%, rgba(34, 211, 238, 0.08), transparent 24rem);
+}
+
+.rpmArticle {
+  position: relative;
+  z-index: 1;
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.rpmHero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(2rem, 6vw, 4.5rem);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  border-radius: 32px;
+  background:
+    linear-gradient(135deg, rgba(30, 64, 175, 0.2), rgba(15, 23, 42, 0.82) 55%),
+    rgba(15, 23, 42, 0.76);
+  box-shadow: 0 28px 80px rgba(2, 6, 23, 0.35);
+}
+
+.rpmHero::after {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  right: -90px;
+  bottom: -150px;
+  border: 44px solid rgba(34, 211, 238, 0.08);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.rpmEyebrow {
+  display: inline-block;
+  color: #67e8f9;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.rpmHero h1 {
+  position: relative;
+  z-index: 1;
+  max-width: 920px;
+  margin: 1rem 0 0;
+  color: #f8fafc;
+  font-size: clamp(2.35rem, 6vw, 4.7rem);
+  line-height: 1.03;
+  letter-spacing: -0.045em;
+}
+
+.rpmHero__subtitle {
+  margin: 1.1rem 0 0;
+  color: #bfdbfe;
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 700;
+}
+
+.rpmByline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 1.4rem;
+  margin-top: 1.8rem;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+}
+
+.rpmByline span:first-child {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.rpmHero .share-row {
+  position: relative;
+  z-index: 1;
+  margin-top: 1.8rem;
+}
+
+.rpmSection {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 2rem);
+  margin-top: clamp(3rem, 7vw, 5.5rem);
+  scroll-margin-top: 110px;
+}
+
+.rpmSection__number {
+  color: rgba(103, 232, 249, 0.42);
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  padding-top: 0.55rem;
+}
+
+.rpmSection h2,
+.rpmReflection h2 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+}
+
+.rpmSection p,
+.rpmReflection p {
+  margin: 1.15rem 0 0;
+  color: #cbd5e1;
+  font-size: 1.06rem;
+  line-height: 1.9;
+}
+
+.rpmSection strong,
+.rpmReflection strong {
+  color: #f8fafc;
+}
+
+.rpmSection blockquote,
+.rpmReflection blockquote {
+  margin: 1.6rem 0 0;
+  padding: 1.25rem 1.4rem;
+  border-left: 4px solid #22d3ee;
+  border-radius: 0 18px 18px 0;
+  background: rgba(34, 211, 238, 0.08);
+  color: #e0f2fe;
+  font-size: clamp(1.08rem, 2.5vw, 1.35rem);
+  font-weight: 700;
+  line-height: 1.65;
+}
+
+.rpmPoster {
+  margin: 2.2rem 0 0;
+  padding: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 26px;
+  background: #ffffff;
+  box-shadow: 0 26px 70px rgba(2, 6, 23, 0.32);
+}
+
+.rpmPoster--featured {
+  margin-top: 2.8rem;
+}
+
+.rpmPoster img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+}
+
+.rpmPoster figcaption {
+  padding: 0.75rem 0.7rem 0.35rem;
+  color: #475569;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.rpmSection__lead {
+  max-width: 780px;
+}
+
+.rpmCoreGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.rpmCoreCard {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.35rem, 3vw, 2rem);
+  border: 1px solid rgba(96, 165, 250, 0.16);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 100% 0, rgba(37, 99, 235, 0.12), transparent 40%),
+    rgba(15, 23, 42, 0.7);
+}
+
+.rpmCoreCard:last-child {
+  grid-column: 1 / -1;
+}
+
+.rpmCoreCard__heading > span {
+  display: inline-flex;
+  padding: 0.4rem 0.72rem;
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  border-radius: 999px;
+  background: rgba(34, 211, 238, 0.08);
+  color: #67e8f9;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.rpmCoreCard h3 {
+  margin: 1rem 0 0;
+  color: #f8fafc;
+  font-size: clamp(1.18rem, 2.3vw, 1.48rem);
+  line-height: 1.35;
+}
+
+.rpmCoreCard ul {
+  margin: 1.2rem 0 0;
+  padding-left: 1.25rem;
+  color: #cbd5e1;
+  line-height: 1.72;
+}
+
+.rpmCoreCard li + li {
+  margin-top: 0.42rem;
+}
+
+.rpmCoreCard li::marker {
+  color: #38bdf8;
+}
+
+.rpmTeacherNote {
+  margin-top: auto;
+  padding-top: 1.35rem;
+}
+
+.rpmTeacherNote strong {
+  display: block;
+  color: #93c5fd;
+  font-size: 0.86rem;
+  letter-spacing: 0.04em;
+}
+
+.rpmTeacherNote p {
+  margin: 0.55rem 0 0;
+  color: #dbeafe;
+  font-size: 0.98rem;
+  line-height: 1.72;
+}
+
+.rpmTargets {
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid rgba(34, 197, 94, 0.18);
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(15, 23, 42, 0.68));
+}
+
+.rpmChecklist {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem 1rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rpmChecklist li {
+  position: relative;
+  padding: 0.9rem 1rem 0.9rem 2.8rem;
+  border: 1px solid rgba(134, 239, 172, 0.12);
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.45);
+  color: #dcfce7;
+  line-height: 1.65;
+}
+
+.rpmChecklist li::before {
+  position: absolute;
+  top: 0.9rem;
+  left: 1rem;
+  color: #4ade80;
+  content: "✓";
+  font-weight: 900;
+}
+
+.rpmReflection {
+  margin-top: clamp(3rem, 7vw, 5.5rem);
+  padding: clamp(1.7rem, 5vw, 3.5rem);
+  border: 1px solid rgba(250, 204, 21, 0.18);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 92% 10%, rgba(250, 204, 21, 0.1), transparent 30%),
+    rgba(15, 23, 42, 0.7);
+}
+
+.rpmReflection h2 {
+  margin-top: 0.85rem;
+}
+
+.rpmReflection__values {
+  color: #fde68a !important;
+  font-size: clamp(1.2rem, 3vw, 1.65rem) !important;
+  font-weight: 900;
+  line-height: 1.55 !important;
+}
+
+.rpmReflection blockquote {
+  border-left-color: #facc15;
+  background: rgba(250, 204, 21, 0.08);
+  color: #fef3c7;
+}
+
+.rpmSource {
+  margin: 1.5rem 0 0;
+  color: #94a3b8;
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+
+.rpmSource strong {
+  color: #cbd5e1;
+}
+
+.rpmShareFooter {
+  margin-top: 2rem;
+}
+
+@media (max-width: 760px) {
+  .rpmPage {
+    padding: 1rem 1rem 4rem;
+  }
+
+  .rpmHero {
+    border-radius: 24px;
+  }
+
+  .rpmSection {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .rpmSection__number {
+    padding-top: 0;
+  }
+
+  .rpmPoster {
+    padding: 6px;
+    border-radius: 18px;
+  }
+
+  .rpmPoster img {
+    border-radius: 13px;
+  }
+
+  .rpmCoreGrid,
+  .rpmChecklist {
+    grid-template-columns: 1fr;
+  }
+
+  .rpmCoreCard:last-child {
+    grid-column: auto;
+  }
+
+  .rpmTargets {
+    padding: 1.35rem;
+  }
+}
+
+/* Tema cerah untuk perkongsian RPM */
+.rpmPage {
+  background: #ffffff;
+}
+
+.rpmPage section {
+  margin-bottom: 0;
+}
+
+.rpmHero {
+  border-color: #dbeafe;
+  background:
+    radial-gradient(circle at 92% 12%, rgba(37, 99, 235, 0.1), transparent 32%),
+    linear-gradient(135deg, #eff6ff 0%, #ffffff 58%);
+  box-shadow: 0 24px 70px rgba(30, 64, 175, 0.1);
+}
+
+.rpmHero::after {
+  border-color: rgba(37, 99, 235, 0.07);
+}
+
+.rpmEyebrow {
+  color: #1d4ed8;
+}
+
+.rpmHero h1 {
+  color: #0f172a;
+}
+
+.rpmHero__subtitle {
+  color: #1d4ed8;
+}
+
+.rpmByline {
+  color: #475569;
+}
+
+.rpmByline span:first-child {
+  color: #0f172a;
+}
+
+.rpmPage .share-row__label {
+  color: #64748b;
+}
+
+.rpmPage .share-row__btn {
+  background: #ffffff;
+  color: #334155;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+.rpmPage .share-row__btn--facebook {
+  border-color: #93c5fd;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.rpmPage .share-row__btn--whatsapp {
+  border-color: #86efac;
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.rpmPage .share-row__btn--telegram {
+  border-color: #7dd3fc;
+  background: #f0f9ff;
+  color: #0369a1;
+}
+
+.rpmPage .share-row__btn--x {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.rpmPage .share-row__btn--copy {
+  border-color: #fde68a;
+  background: #fffbeb;
+  color: #854d0e;
+}
+
+.rpmSection__number {
+  color: #2563eb;
+}
+
+.rpmSection h2,
+.rpmReflection h2 {
+  color: #0f172a;
+}
+
+.rpmSection p,
+.rpmReflection p {
+  color: #334155;
+}
+
+.rpmSection strong,
+.rpmReflection strong {
+  color: #0f172a;
+}
+
+.rpmSection blockquote,
+.rpmReflection blockquote {
+  border-left-color: #2563eb;
+  background: #eff6ff;
+  color: #1e3a8a;
+}
+
+.rpmPoster {
+  border-color: #e2e8f0;
+  box-shadow: 0 22px 55px rgba(15, 23, 42, 0.12);
+}
+
+.rpmCoreCard {
+  border-color: #dbeafe;
+  background:
+    radial-gradient(circle at 100% 0, rgba(37, 99, 235, 0.07), transparent 42%),
+    #ffffff;
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.07);
+}
+
+.rpmCoreCard__heading > span {
+  border-color: #bfdbfe;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.rpmCoreCard h3 {
+  color: #0f172a;
+}
+
+.rpmCoreCard ul {
+  color: #475569;
+}
+
+.rpmCoreCard li::marker {
+  color: #2563eb;
+}
+
+.rpmTeacherNote strong {
+  color: #1d4ed8;
+}
+
+.rpmTeacherNote p {
+  color: #1e3a8a;
+}
+
+.rpmTeacherNote {
+  margin-top: auto;
+  padding: 1.1rem;
+  border-radius: 16px;
+  background: #eff6ff;
+}
+
+.rpmTargets {
+  border-color: #bbf7d0;
+  background: linear-gradient(135deg, #f0fdf4, #ffffff);
+  box-shadow: 0 14px 35px rgba(22, 101, 52, 0.06);
+}
+
+.rpmChecklist li {
+  border-color: #dcfce7;
+  background: #ffffff;
+  color: #166534;
+  box-shadow: 0 6px 18px rgba(22, 101, 52, 0.05);
+}
+
+.rpmReflection {
+  border-color: #fde68a;
+  background:
+    radial-gradient(circle at 92% 10%, rgba(250, 204, 21, 0.12), transparent 30%),
+    #fffbeb;
+  box-shadow: 0 16px 40px rgba(133, 77, 14, 0.07);
+}
+
+.rpmReflection__values {
+  color: #92400e !important;
+}
+
+.rpmReflection blockquote {
+  border-left-color: #d97706;
+  background: #fef3c7;
+  color: #78350f;
+}
+
+.rpmSource {
+  color: #64748b;
+}
+
+.rpmSource strong {
+  color: #334155;
+}
+
+.rpmShareFooter {
+  border-top-color: #e2e8f0;
+}
+
+.rpmHero {
+  padding-bottom: clamp(2rem, 3vw, 3rem);
+}
+
+.rpmIntro {
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.rpmCores {
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.rpmTargets {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.rpmReflection {
+  margin-top: clamp(2rem, 4vw, 3rem);
+}

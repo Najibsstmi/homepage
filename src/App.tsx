@@ -4,7 +4,7 @@ import emailjs from "@emailjs/browser";
 import SimulatorPage from "./pages/SimulatorPage";
 
 export default function App() {
-  type Page = "home" | "about" | "inovasi" | "modul" | "banksoalan" | "simulator";
+  type Page = "home" | "about" | "inovasi" | "modul" | "banksoalan" | "rpm" | "simulator";
   type SharePlatform = "facebook" | "whatsapp" | "telegram" | "x";
   const smartLabSectionIds = new Set([
     "smartlab-hero",
@@ -25,6 +25,7 @@ export default function App() {
   ]);
   const eduTrackSectionIds = new Set(["edutrack-post"]);
   const eduSlotSectionIds = new Set(["eduslot-post"]);
+  const rpmSectionIds = new Set(["rpm-2026-2035"]);
   const smartLabHiddenSectionIds = new Set([
     "smartlab-cara",
     "smartlab-status",
@@ -117,6 +118,7 @@ export default function App() {
     const shouldOpenAbout = params.get("page") === "about" || hashTarget === "about";
     const shouldOpenModul = params.get("page") === "modul";
     const shouldOpenBankSoalan = params.get("page") === "banksoalan";
+    const shouldOpenRpm = params.get("page") === "rpm" || rpmSectionIds.has(hashTarget);
     const shouldOpenSimulator =
       params.get("page") === "simulator" || pathName.startsWith("/simulator");
 
@@ -126,6 +128,8 @@ export default function App() {
       setCurrentPage("simulator");
     } else if (shouldOpenAbout) {
       setCurrentPage("about");
+    } else if (shouldOpenRpm) {
+      setCurrentPage("rpm");
     } else if (shouldOpenBankSoalan) {
       setCurrentPage("banksoalan");
     } else if (shouldOpenModul) {
@@ -293,6 +297,7 @@ export default function App() {
       eduSlotSectionIds.has(targetId);
 
     const isJourneyTarget = journeySectionIds.has(targetId);
+    const isRpmTarget = rpmSectionIds.has(targetId);
 
     const appUrl = new URL(publicSiteUrl);
     appUrl.hash = "";
@@ -300,6 +305,10 @@ export default function App() {
 
     if (isInovasiTarget) {
       appUrl.searchParams.set("page", "inovasi");
+    }
+
+    if (isRpmTarget) {
+      appUrl.searchParams.set("page", "rpm");
     }
 
     if (targetId) {
@@ -320,6 +329,8 @@ export default function App() {
       ? "share-catatan-seorang-menantu.html"
       : targetId === "journey-guru-cemerlang-ksl"
       ? "share-guru-cemerlang.html"
+      : isRpmTarget
+      ? "share-rpm-2026-2035.html"
       : isJourneyTarget
       ? "share-journey.html"
       : "";
@@ -398,6 +409,102 @@ export default function App() {
     ambulanceArrival: `${menantuImageBase}/WhatsApp Image 2026-05-30 at 09.42.24.jpeg`,
   };
 
+  const rpmStrategicCores = [
+    {
+      number: 1,
+      title: "Memastikan Sistem Pendidikan Malaysia yang Terangkum, Dinamik dan Relevan",
+      points: [
+        "Memperkasa Pendidikan Sains dan Matematik.",
+        "Memperkukuh penguasaan Bahasa Melayu dan Bahasa Inggeris.",
+        "Menambah baik sistem pentaksiran.",
+        "Memastikan struktur persekolahan sentiasa relevan.",
+        "Menjadikan sistem pendidikan lebih responsif terhadap perubahan dunia.",
+      ],
+      teacher: "Guru perlu bersedia dengan perubahan kurikulum, pentaksiran dan pendekatan PdP yang lebih berfokus kepada kompetensi murid, bukan sekadar peperiksaan.",
+    },
+    {
+      number: 2,
+      title: "Mengoptimumkan Potensi Setiap Murid Melalui Pengalaman Pembelajaran yang Bermakna",
+      points: [
+        "Reformasi kurikulum.",
+        "Literasi dan numerasi yang kukuh.",
+        "Kemahiran abad ke-21.",
+        "STEM, TVET, sukan dan seni.",
+        "Kesejahteraan fizikal, mental dan sosial murid.",
+        "Pembangunan karakter dan jati diri.",
+      ],
+      teacher: "PdP perlu memberi pengalaman pembelajaran yang autentik, menyeronokkan dan bermakna. Murid bukan sahaja perlu tahu fakta, tetapi mampu berfikir, menyelesaikan masalah dan berkomunikasi dengan baik.",
+    },
+    {
+      number: 3,
+      title: "Mentransformasikan Pendidik agar Berkeupayaan Tinggi dan Berorientasikan Masa Hadapan",
+      points: [
+        "Mengurangkan beban tugas bukan pengajaran.",
+        "Meningkatkan kesejahteraan guru.",
+        "Memperkasa latihan dan pembangunan profesionalisme berterusan.",
+        "Melahirkan pemimpin pendidikan masa hadapan.",
+        "Membudayakan penyelidikan dan inovasi pendidikan.",
+      ],
+      teacher: "Guru perlu sentiasa meningkatkan kompetensi, menguasai teknologi baharu termasuk AI, serta membudayakan amalan refleksi, penyelidikan dan inovasi dalam bilik darjah.",
+    },
+    {
+      number: 4,
+      title: "Memantapkan Prasarana Fizikal dan Digital di Semua Institusi Pendidikan KPM",
+      points: [
+        "Kemudahan sekolah yang selamat dan lestari.",
+        "Internet berkelajuan tinggi.",
+        "Penggunaan teknologi digital dalam pembelajaran.",
+        "Pengurusan data pendidikan yang lebih pintar.",
+        "Pembelajaran diperibadikan menggunakan teknologi AI.",
+      ],
+      teacher: "Guru perlu bersedia memanfaatkan kemudahan digital secara optimum dan mengintegrasikan teknologi dalam PdP untuk meningkatkan keberkesanan pembelajaran.",
+    },
+    {
+      number: 5,
+      title: "Mempergiat Sinergi antara Institusi Pendidikan dengan Pihak Berkepentingan",
+      points: [
+        "Sekolah, ibu bapa dan komuniti.",
+        "Alumni dan industri.",
+        "NGO serta agensi kerajaan dan swasta.",
+      ],
+      teacher: "Guru perlu membina jaringan kolaboratif yang dapat membantu memperkayakan pengalaman pembelajaran murid melalui program, mentor industri, STEM outreach dan pembelajaran berasaskan komuniti.",
+    },
+    {
+      number: 6,
+      title: "Membudayakan Kemampanan dalam Ekosistem Pendidikan",
+      points: [
+        "Pendidikan untuk Pembangunan Mampan (ESD).",
+        "Teknologi hijau.",
+        "Kelestarian alam sekitar.",
+        "Pengurusan sumber secara bertanggungjawab.",
+        "Murid sebagai agen perubahan masyarakat.",
+      ],
+      teacher: "Nilai kemampanan perlu diterapkan merentas kurikulum dan kokurikulum. Murid bukan sekadar belajar tentang alam sekitar, tetapi digalakkan mengambil tindakan untuk menyelesaikan isu sebenar di komuniti mereka.",
+    },
+    {
+      number: 7,
+      title: "Meningkatkan Kecekapan Tadbir Urus dan Sistem Penyampaian",
+      points: [
+        "Tadbir urus yang lebih cekap.",
+        "Pelaksanaan autonomi sekolah.",
+        "Pengoptimuman sumber dan fasiliti.",
+        "Pengurusan risiko dan perubahan yang sistematik.",
+        "Komunikasi yang lebih telus dan berkesan.",
+      ],
+      teacher: "Budaya kerja yang lebih cekap, penggunaan data untuk membuat keputusan serta pengurusan sekolah yang lebih fleksibel dijangka menjadi amalan utama dalam tempoh RPM ini.",
+    },
+  ];
+
+  const rpmTargets = [
+    "Semua murid menguasai literasi dan numerasi.",
+    "Murid mencapai sekurang-kurangnya gred C bagi BM, BI, Matematik dan Sejarah.",
+    "Murid menguasai kemahiran digital.",
+    "Murid cergas dari segi fizikal dan sejahtera dari segi emosi.",
+    "Murid menguasai dwibahasa.",
+    "Murid mampu berfikir secara kritis dan kreatif.",
+    "Institusi pendidikan menjadi lebih lestari dan berteknologi tinggi.",
+  ];
+
   const achievements = [
     "Johan pertandingan Inovasi cetakan 3D Malaysia Techlympics Zon Selatan Peringkat Kebangsaan 2022",
     "Johan Pertandingan Inovasi Sungai Kim Kim Peringkat Kebangsaan 2022",
@@ -457,7 +564,7 @@ export default function App() {
             onMouseLeave={() => setModulMenuOpen(false)}
           >
             <button
-              className={`navDropdownTrigger${currentPage === "modul" || currentPage === "banksoalan" ? " navDropdownTrigger--active" : ""}`}
+              className={`navDropdownTrigger${currentPage === "modul" || currentPage === "banksoalan" || currentPage === "rpm" ? " navDropdownTrigger--active" : ""}`}
               type="button"
               aria-expanded={modulMenuOpen}
               onClick={() => setModulMenuOpen((prev) => !prev)}
@@ -469,6 +576,7 @@ export default function App() {
               <div className="navDropdownMenu">
                 <button onClick={() => navigateTo("modul")}>Modul</button>
                 <button onClick={() => navigateTo("banksoalan")}>Bank Soalan</button>
+                <button onClick={() => navigateTo("rpm")}>RPM2026-2035</button>
               </div>
             )}
           </div>
@@ -1013,6 +1121,106 @@ export default function App() {
             <p>&copy; 2026 Najib Jaafar &bull; cikgustem.com</p>
             <p>STEM Educator &bull; Innovation &bull; Education Technology</p>
           </footer>
+        </main>
+      ) : currentPage === "rpm" ? (
+        <main id="rpm-2026-2035" className="rpmPage">
+          <article className="rpmArticle" aria-labelledby="rpm-title">
+            <header className="rpmHero">
+              <span className="rpmEyebrow">Perkongsian Pendidikan • 2026–2035</span>
+              <h1 id="rpm-title">Rancangan Pendidikan Malaysia (RPM) 2026–2035</h1>
+              <p className="rpmHero__subtitle">Apa yang Guru Perlu Tahu?</p>
+              <div className="rpmByline">
+                <span>Oleh: Mohd Najib Jaafar</span>
+                <span>Guru Cemerlang Sains DG12</span>
+              </div>
+              <ShareBar title="Rancangan Pendidikan Malaysia (RPM) 2026–2035: Apa yang Guru Perlu Tahu?" anchor="#rpm-2026-2035" />
+            </header>
+
+            <section className="rpmSection rpmIntro" aria-labelledby="rpm-pengenalan">
+              <span className="rpmSection__number">01</span>
+              <div>
+                <h2 id="rpm-pengenalan">Pengenalan</h2>
+                <p>
+                  Kementerian Pendidikan Malaysia (KPM) telah melancarkan <strong>Rancangan Pendidikan Malaysia (RPM) 2026–2035</strong> sebagai hala tuju baharu pendidikan negara untuk tempoh 10 tahun akan datang. RPM ini membawa visi <strong>“Pendidikan Bermutu, Insan Terdidik, Negara Sejahtera”</strong> dengan matlamat melahirkan murid yang <strong>beradab, berilmu, berkemahiran, berdaya tahan dan berkeyakinan</strong> berteraskan Falsafah Pendidikan Kebangsaan.
+                </p>
+                <blockquote>“Merapatkan Jurang, Meningkatkan Mutu, Meraih Kejayaan Bersama.”</blockquote>
+                <p>
+                  Sebagai guru, kita tidak perlu menghafal keseluruhan dokumen RPM. Memahami <strong>7 Teras Strategik RPM</strong> sudah memadai untuk melihat ke mana arah pendidikan Malaysia sedang bergerak.
+                </p>
+              </div>
+            </section>
+
+            <figure className="rpmPoster rpmPoster--featured">
+              <img src="/PERKONGSIAN/RPM/LETAK%201.jpg" alt="Kerangka RPM 2026–2035 merangkumi visi, misi, matlamat dan tumpuan utama" />
+              <figcaption>Kerangka, visi, misi dan matlamat RPM 2026–2035.</figcaption>
+            </figure>
+
+            <section className="rpmSection rpmCores" aria-labelledby="rpm-teras">
+              <span className="rpmSection__number">02</span>
+              <div>
+                <h2 id="rpm-teras">7 Teras Strategik RPM 2026–2035</h2>
+                <p className="rpmSection__lead">Tujuh teras ini merangkumi sistem, murid, pendidik, prasarana, kerjasama, kemampanan dan tadbir urus pendidikan.</p>
+              </div>
+            </section>
+
+            <figure className="rpmPoster">
+              <img src="/PERKONGSIAN/RPM/LETAK%202.jpg" alt="Infografik tujuh teras strategik RPM 2026–2035" />
+              <figcaption>Ringkasan tujuh teras strategik RPM 2026–2035.</figcaption>
+            </figure>
+
+            <div className="rpmCoreGrid">
+              {rpmStrategicCores.map((core) => (
+                <section className="rpmCoreCard" key={core.number}>
+                  <div className="rpmCoreCard__heading">
+                    <span>Teras {core.number}</span>
+                    <h3>{core.title}</h3>
+                  </div>
+                  <ul>
+                    {core.points.map((point) => <li key={point}>{point}</li>)}
+                  </ul>
+                  <div className="rpmTeacherNote">
+                    <strong>Apa maksudnya kepada guru?</strong>
+                    <p>{core.teacher}</p>
+                  </div>
+                </section>
+              ))}
+            </div>
+
+            <section className="rpmSection rpmTargets" aria-labelledby="rpm-sasaran">
+              <span className="rpmSection__number">03</span>
+              <div>
+                <h2 id="rpm-sasaran">Sasaran Besar RPM Menjelang 2035</h2>
+                <p className="rpmSection__lead">Apabila RPM mencapai matlamatnya, KPM mensasarkan agar:</p>
+                <ul className="rpmChecklist">
+                  {rpmTargets.map((target) => <li key={target}>{target}</li>)}
+                </ul>
+              </div>
+            </section>
+
+            <section className="rpmReflection" aria-labelledby="rpm-refleksi">
+              <span className="rpmEyebrow">Refleksi Seorang Guru</span>
+              <h2 id="rpm-refleksi">Menterjemahkan aspirasi kepada pengalaman harian</h2>
+              <p>
+                Sebagai seorang guru, saya melihat RPM 2026–2035 bukan sekadar dokumen dasar, tetapi satu gambaran tentang <strong>murid yang ingin kita lahirkan pada masa hadapan</strong>.
+              </p>
+              <p>
+                Jika sebelum ini kejayaan sering diukur melalui keputusan peperiksaan semata-mata, RPM membawa pendekatan yang lebih menyeluruh. Murid yang kita bentuk perlu menjadi insan yang:
+              </p>
+              <p className="rpmReflection__values">Beradab. Berilmu. Berkemahiran. Berdaya tahan. Berkeyakinan.</p>
+              <p>
+                Akhirnya, kejayaan RPM bukan bergantung kepada dokumen atau dasar semata-mata, tetapi kepada sejauh mana guru mampu menterjemahkan aspirasi ini ke dalam pengalaman pembelajaran harian di bilik darjah.
+              </p>
+              <blockquote>
+                “Setiap kali kita merancang PdP yang bermakna, menggalakkan murid berfikir, meneroka dan menyelesaikan masalah, sebenarnya kita sedang menyumbang kepada kejayaan RPM 2026–2035.”
+              </blockquote>
+            </section>
+
+            <p className="rpmSource"><strong>Sumber:</strong> Rancangan Pendidikan Malaysia (RPM) 2026–2035, Kementerian Pendidikan Malaysia.</p>
+
+            <div className="journey-post__shareFooter rpmShareFooter">
+              <ShareBar title="Rancangan Pendidikan Malaysia (RPM) 2026–2035: Apa yang Guru Perlu Tahu?" anchor="#rpm-2026-2035" />
+            </div>
+          </article>
         </main>
       ) : currentPage === "modul" ? (
         <main className="modulesPage">

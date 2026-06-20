@@ -55,6 +55,27 @@ export const SIMULATORS: readonly SimulatorMetadata[] = [
     image: "/assets/plasticine.png",
   },
   {
+    id: "kenali-aloi",
+    title: "ALOI: Kenali Aloi di Sekeliling Kita",
+    description:
+      "Terokai suasana bandar dan kenal pasti objek yang diperbuat daripada duralumin, gangsa, loyang, piuter dan keluli.",
+    tingkatan: 4,
+    bab: "Bab 9: Kimia Industri",
+    topik: "Aloi dalam Kehidupan Harian",
+    keywords: [
+      "aloi",
+      "duralumin",
+      "gangsa",
+      "loyang",
+      "piuter",
+      "keluli",
+      "kimia industri",
+      "kegunaan aloi",
+    ],
+    path: "/simulator/aloi",
+    image: "/assets/aloi.png",
+  },
+  {
     id: "aloi",
     title: "Kekerasan Logam Tulen dan Aloi",
     description:
@@ -70,7 +91,7 @@ export const SIMULATORS: readonly SimulatorMetadata[] = [
       "kimia industri",
       "struktur atom",
     ],
-    path: "/simulator/aloi",
+    path: "/simulator/alloy-hardness",
     image: "/assets/background%20aloi.png",
   },
   {

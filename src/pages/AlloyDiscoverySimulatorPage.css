@@ -1,0 +1,387 @@
+.alloyDiscoveryPage {
+  --alloy-navy: #15334b;
+  --alloy-blue: #1677ff;
+  --alloy-green: #19a974;
+  --alloy-cyan: #25c3d9;
+  --alloy-ink: #163047;
+  min-height: 100vh;
+  padding: 116px clamp(18px, 4vw, 64px) 72px;
+  color: var(--alloy-ink);
+  background:
+    radial-gradient(circle at 9% 10%, rgba(37, 195, 217, 0.2), transparent 25%),
+    radial-gradient(circle at 92% 16%, rgba(255, 196, 77, 0.22), transparent 23%),
+    linear-gradient(145deg, #eafaff 0%, #f8fbff 47%, #fff9e9 100%);
+}
+
+.alloyDiscoveryHero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  width: min(1540px, 100%);
+  margin: 0 auto 22px;
+  padding: clamp(24px, 3vw, 42px);
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  border-radius: 30px;
+  color: #fff;
+  background:
+    linear-gradient(115deg, rgba(10, 48, 82, 0.98), rgba(16, 113, 181, 0.94) 60%, rgba(24, 174, 174, 0.9)),
+    #0d6098;
+  box-shadow: 0 22px 58px rgba(18, 88, 132, 0.22);
+  overflow: hidden;
+  position: relative;
+}
+
+.alloyDiscoveryHero::after {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  right: 7%;
+  top: -155px;
+  border: 44px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.alloyDiscoveryHero__copy { position: relative; z-index: 1; }
+
+.alloyDiscoveryHero__kicker,
+.alloySceneCard__eyebrow,
+.alloyMissionCard__step {
+  display: inline-flex;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.alloyDiscoveryHero__kicker {
+  margin-bottom: 12px;
+  color: #a8f1ff;
+}
+
+.alloyDiscoveryHero h1 {
+  max-width: 850px;
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.85rem);
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+}
+
+.alloyDiscoveryHero p {
+  max-width: 720px;
+  margin: 16px 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(1rem, 1.6vw, 1.17rem);
+  line-height: 1.65;
+}
+
+.alloyDiscoveryHero__badge {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  flex: 0 0 132px;
+  min-height: 114px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.13);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+}
+
+.alloyDiscoveryHero__badge span { font-size: 2.8rem; font-weight: 900; line-height: 1; }
+.alloyDiscoveryHero__badge small { color: #d4f9ff; font-weight: 750; }
+
+.alloyDiscoveryPage > .simulatorDetailReviewSlot {
+  width: min(1540px, 100%);
+  margin: 0 auto 22px;
+}
+
+.alloyDiscoveryLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(290px, 360px);
+  align-items: start;
+  gap: 22px;
+  width: min(1540px, 100%);
+  margin: 0 auto;
+}
+
+.alloySceneCard,
+.alloyMissionCard {
+  border: 1px solid rgba(187, 217, 231, 0.82);
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 48px rgba(25, 72, 99, 0.13);
+}
+
+.alloySceneCard { padding: clamp(14px, 2vw, 22px); }
+
+.alloySceneCard__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 2px 2px 18px;
+}
+
+.alloySceneCard__eyebrow,
+.alloyMissionCard__step { color: #1289a2; }
+
+.alloySceneCard h2,
+.alloyMissionCard h2 {
+  margin: 5px 0 0;
+  color: var(--alloy-navy);
+  font-size: clamp(1.1rem, 2vw, 1.55rem);
+  line-height: 1.25;
+}
+
+.alloyHintButton,
+.alloyResetButton,
+.alloyModalDoneButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 13px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.alloyHintButton { padding: 11px 15px; color: #075a72; background: #e4f9fd; }
+.alloyHintButton:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(18, 137, 162, 0.2); }
+.alloyHintButton.is-active { color: #fff; background: #1299b5; }
+.alloyHintButton svg, .alloyResetButton svg, .alloyModalDoneButton svg { width: 19px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.alloyScene {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 19px;
+  background: #c8edfa;
+  box-shadow: inset 0 0 0 1px rgba(18, 79, 107, 0.12);
+  isolation: isolate;
+}
+
+.alloyScene > img { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; }
+
+.alloyScene__error {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 30px;
+  color: #8d2b31;
+  font-weight: 700;
+  text-align: center;
+  background: #fff1f1;
+}
+
+.alloyHotspot {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 18px;
+  outline: 0;
+  color: #fff;
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+
+.alloyHotspot:hover,
+.alloyHotspot:focus-visible {
+  border-color: rgba(255, 255, 255, 0.95);
+  background: rgba(20, 176, 211, 0.13);
+  box-shadow: 0 0 0 4px rgba(25, 195, 217, 0.5), 0 0 25px rgba(14, 119, 255, 0.62);
+  animation: alloyOutlinePulse 1.35s ease-in-out infinite;
+}
+
+.alloyHotspot.is-found:hover,
+.alloyHotspot.is-found:focus-visible { background: rgba(25, 169, 116, 0.18); box-shadow: 0 0 0 4px rgba(25, 169, 116, 0.5), 0 0 25px rgba(25, 169, 116, 0.65); }
+
+.alloyHotspot__hint {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(12px, 1.65vw, 23px);
+  height: clamp(12px, 1.65vw, 23px);
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: #16a9c5;
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.88), 0 4px 14px rgba(10, 57, 79, 0.4);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.55);
+  pointer-events: none;
+}
+
+.show-hints .alloyHotspot--alloy .alloyHotspot__hint {
+  opacity: 1;
+  animation: alloyHintPulse 1.55s ease-out infinite;
+}
+
+.show-hints .alloyHotspot--alloy.is-found .alloyHotspot__hint { background: var(--alloy-green); }
+
+.alloyHotspot__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.alloySceneCard__caption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 4px 0;
+  color: #597083;
+  font-size: 0.91rem;
+  line-height: 1.45;
+}
+
+.alloySceneCard__caption svg { flex: 0 0 21px; width: 21px; fill: none; stroke: #1299b5; stroke-width: 2; stroke-linecap: round; }
+
+.alloyMissionCard {
+  position: sticky;
+  top: 94px;
+  padding: 25px;
+}
+
+.alloyMissionCard__header p { margin: 10px 0 0; color: #678095; font-size: 0.92rem; line-height: 1.5; }
+
+.alloyProgress { margin: 24px 0 22px; }
+.alloyProgress__labels { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 9px; color: #526d80; font-size: 0.88rem; font-weight: 700; }
+.alloyProgress__labels strong { color: #0f8b70; }
+.alloyProgress__track { height: 10px; overflow: hidden; border-radius: 99px; background: #e5eff4; }
+.alloyProgress__track span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #20c995, #15a6b9); transition: width 420ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+.alloyChecklist { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.alloyChecklist li { display: flex; align-items: center; gap: 11px; min-height: 48px; padding: 10px 12px; border: 1px solid #dfebf0; border-radius: 13px; color: #506b7e; background: #f8fbfc; font-weight: 750; transition: 220ms ease; }
+.alloyChecklist li.is-found { border-color: #b8ead8; color: #107a5c; background: #ebfbf5; }
+.alloyChecklist__box { display: grid; place-items: center; flex: 0 0 25px; width: 25px; height: 25px; border: 2px solid #b7cbd5; border-radius: 8px; background: #fff; }
+.alloyChecklist li.is-found .alloyChecklist__box { border-color: #1caf7f; color: #fff; background: #1caf7f; }
+.alloyChecklist__box svg { width: 17px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.alloyChecklist small { margin-left: auto; color: #1a9c76; font-size: 0.7rem; font-weight: 800; }
+
+.alloyMissionComplete { display: flex; align-items: center; gap: 10px; margin-top: 18px; padding: 12px; border: 1px solid #ffe08a; border-radius: 13px; color: #7b5500; background: #fff8dc; }
+.alloyMissionComplete span { font-size: 1.45rem; }
+.alloyMissionComplete p { margin: 0; font-size: 0.85rem; line-height: 1.4; }
+
+.alloyResetButton { width: 100%; margin-top: 20px; padding: 12px 16px; color: #fff; background: linear-gradient(135deg, #1677ff, #115bc0); box-shadow: 0 9px 22px rgba(22, 119, 255, 0.24); }
+.alloyResetButton:hover, .alloyModalDoneButton:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(22, 119, 255, 0.32); }
+
+.alloyModalBackdrop {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(7, 28, 44, 0.62);
+  backdrop-filter: blur(7px);
+  animation: alloyFadeIn 180ms ease both;
+}
+
+.alloyInfoModal {
+  position: relative;
+  width: min(570px, 100%);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  padding: clamp(23px, 4vw, 34px);
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  border-radius: 26px;
+  background: #fff;
+  box-shadow: 0 28px 80px rgba(1, 24, 39, 0.34);
+  animation: alloyModalIn 270ms cubic-bezier(0.2, 0.85, 0.25, 1.15) both;
+}
+
+.alloyInfoModal::before { content: ""; position: absolute; inset: 0 0 auto; height: 7px; background: linear-gradient(90deg, #1bb887, #20bcd4, #1677ff); }
+.alloyInfoModal--non-alloy::before { background: linear-gradient(90deg, #f5a524, #ffcb52); }
+
+.alloyInfoModal__close { position: absolute; z-index: 2; top: 16px; right: 16px; display: grid; place-items: center; width: 39px; height: 39px; padding: 0; border: 0; border-radius: 50%; color: #637b8c; background: #edf4f7; cursor: pointer; }
+.alloyInfoModal__close:hover { color: #15334b; background: #dfecef; }
+.alloyInfoModal__close svg { width: 19px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
+
+.alloyCelebration { display: flex; align-items: center; gap: 11px; margin: 0 48px 19px 0; padding: 12px 14px; border: 1px solid #ffe292; border-radius: 13px; color: #735109; background: #fff9de; }
+.alloyCelebration span { font-size: 1.6rem; }
+.alloyCelebration p { margin: 0; font-size: 0.87rem; font-weight: 800; line-height: 1.4; }
+
+.alloyInfoModal__heading { display: flex; align-items: center; gap: 15px; padding-right: 40px; }
+.alloyInfoModal__symbol { display: grid; place-items: center; flex: 0 0 58px; width: 58px; height: 58px; border-radius: 17px; font-size: 1.85rem; background: #e6faf5; }
+.alloyInfoModal--non-alloy .alloyInfoModal__symbol { background: #fff5d8; }
+.alloyInfoModal__status { display: inline-flex; margin-bottom: 4px; padding: 5px 9px; border-radius: 99px; color: #087a5c; background: #dcf8ef; font-size: 0.72rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
+.alloyInfoModal--non-alloy .alloyInfoModal__status { color: #9a6400; background: #fff0bd; }
+.alloyInfoModal h2 { margin: 0; color: var(--alloy-navy); font-size: clamp(1.45rem, 3vw, 2rem); line-height: 1.15; }
+
+.alloyInfoModal__content { margin-top: 24px; }
+.alloyNamePlate { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 15px 17px; border-radius: 15px; color: #0d6e61; background: linear-gradient(135deg, #e5fbf4, #e8f8ff); }
+.alloyNamePlate span { font-size: 0.81rem; font-weight: 750; }
+.alloyNamePlate strong { font-size: 1.2rem; }
+
+.alloyFacts { display: grid; gap: 0; margin: 14px 0 0; }
+.alloyFacts > div { padding: 14px 2px; border-bottom: 1px solid #e7eef2; }
+.alloyFacts > div:last-child { border-bottom: 0; }
+.alloyFacts dt { margin-bottom: 5px; color: #11829c; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.05em; text-transform: uppercase; }
+.alloyFacts dd { margin: 0; color: #435f72; font-size: 0.95rem; line-height: 1.55; }
+.alloyCorrection { margin: 24px 0 4px; padding: 18px; border-radius: 15px; color: #725015; background: #fff8df; font-size: 1rem; font-weight: 650; line-height: 1.65; }
+
+.alloyModalDoneButton { width: 100%; margin-top: 20px; padding: 12px 18px; color: #fff; background: linear-gradient(135deg, #19a974, #13855c); box-shadow: 0 9px 22px rgba(25, 169, 116, 0.22); }
+.alloyInfoModal--non-alloy .alloyModalDoneButton { background: linear-gradient(135deg, #1677ff, #115bc0); }
+
+@keyframes alloyHintPulse {
+  0% { transform: translate(-50%, -50%) scale(0.72); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.95), 0 4px 14px rgba(10, 57, 79, 0.4); }
+  70%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 15px rgba(255, 255, 255, 0), 0 4px 14px rgba(10, 57, 79, 0.4); }
+}
+
+@keyframes alloyOutlinePulse { 50% { box-shadow: 0 0 0 7px rgba(25, 195, 217, 0.25), 0 0 32px rgba(14, 119, 255, 0.72); } }
+@keyframes alloyFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes alloyModalIn { from { opacity: 0; transform: translateY(16px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+@media (max-width: 1080px) {
+  .alloyDiscoveryLayout { grid-template-columns: 1fr; }
+  .alloyMissionCard { position: static; }
+  .alloyChecklist { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .alloyChecklist li { flex-direction: column; justify-content: center; gap: 6px; min-height: 92px; text-align: center; }
+  .alloyChecklist small { margin: 0; }
+  .alloyResetButton { width: min(310px, 100%); }
+}
+
+@media (max-width: 720px) {
+  .alloyDiscoveryPage { padding: 92px 12px 44px; }
+  .alloyDiscoveryHero { align-items: flex-start; padding: 24px 20px; border-radius: 23px; }
+  .alloyDiscoveryHero__badge { flex-basis: 92px; min-height: 84px; padding: 12px; border-radius: 18px; }
+  .alloyDiscoveryHero__badge span { font-size: 2rem; }
+  .alloyDiscoveryHero__badge small { font-size: 0.68rem; }
+  .alloySceneCard, .alloyMissionCard { border-radius: 20px; }
+  .alloySceneCard__topline { align-items: flex-start; }
+  .alloyHintButton { min-width: 46px; padding: 11px; font-size: 0; }
+  .alloyHintButton svg { width: 21px; }
+  .alloyScene { border-radius: 14px; }
+  .alloyChecklist { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .alloyChecklist li { min-height: 76px; }
+}
+
+@media (max-width: 470px) {
+  .alloyDiscoveryHero { display: block; }
+  .alloyDiscoveryHero__badge { display: inline-flex; gap: 5px; min-height: auto; margin-top: 18px; }
+  .alloySceneCard__caption { font-size: 0.8rem; }
+  .alloyInfoModal { padding: 24px 20px; border-radius: 21px; }
+  .alloyInfoModal__heading { padding-right: 32px; }
+  .alloyInfoModal__symbol { flex-basis: 48px; width: 48px; height: 48px; border-radius: 14px; font-size: 1.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alloyDiscoveryPage *, .alloyDiscoveryPage *::before, .alloyDiscoveryPage *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}

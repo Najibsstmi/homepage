@@ -4,6 +4,7 @@ import LinearMotionSimulator from "../components/LinearMotionSimulator";
 import SimulatorReviewPanel from "../components/reviews/SimulatorReviewPanel";
 import useRatingSummaries from "../components/reviews/useRatingSummaries";
 import AlloyHardnessSimulatorPage from "./AlloyHardnessSimulatorPage";
+import AlloyDiscoverySimulatorPage from "./AlloyDiscoverySimulatorPage";
 import AtomMoleculeCompoundSimulatorPage from "./AtomMoleculeCompoundSimulatorPage";
 import ChemicalCellSimulatorPage from "./ChemicalCellSimulatorPage";
 import ElectrolysisSimulatorPage from "./ElectrolysisSimulatorPage";
@@ -111,7 +112,13 @@ export default function SimulatorPage({ onOpenSimulator }) {
     );
   }
 
-  if (path === "/simulator/aloi" || path === "/simulator/alloy-hardness") {
+  if (path === "/simulator/aloi" || path === "/simulator/kenali-aloi") {
+    return (
+      <AlloyDiscoverySimulatorPage reviewPanel={getReviewPanel("kenali-aloi")} />
+    );
+  }
+
+  if (path === "/simulator/alloy-hardness") {
     return <AlloyHardnessSimulatorPage reviewPanel={getReviewPanel("aloi")} />;
   }
 

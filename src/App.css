@@ -442,38 +442,54 @@
   pointer-events: none;
 }
 
-.pascalHydraulicPipe path {
-  fill: none;
+.pascalHydraulicChamber,
+.pascalHydraulicLiquid,
+.pascalHydraulicPressure {
   stroke-linecap: round;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
 }
 
-.pascalHydraulicPipe__base {
-  stroke: rgba(17, 35, 48, 0.88);
-  stroke-width: 13;
-}
-
-.pascalHydraulicPipe__fluid {
-  stroke: #17cff3;
-  stroke-dasharray: 12 20;
+.pascalHydraulicChamber {
+  fill: rgba(222, 248, 252, 0.84);
+  stroke: #12394f;
   stroke-width: 7;
-  filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.95));
-  opacity: 0.22;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.3));
+  transition: d 350ms ease;
 }
 
-.pascalScene.is-pumping .pascalHydraulicPipe__fluid {
-  opacity: 1;
+.pascalHydraulicLiquid {
+  fill: url(#pascal-fluid-gradient);
+  stroke: rgba(128, 239, 255, 0.82);
+  stroke-width: 2;
+  filter: drop-shadow(0 0 9px rgba(18, 188, 229, 0.55));
+  transition: d 350ms ease;
+}
+
+.pascalHydraulicPressure {
+  fill: none;
+  stroke: #f12d43;
+  stroke-dasharray: 18 12;
+  stroke-width: 7;
+  filter: drop-shadow(0 0 4px rgba(241, 45, 67, 0.72));
+  opacity: 0.7;
+}
+
+.pascalScene.is-pumping .pascalHydraulicLiquid {
+  animation: pascalLiquidGlow 1.35s ease-in-out both;
+}
+
+.pascalScene.is-pumping .pascalHydraulicPressure {
   animation: pascalFluidFlow 1.25s linear both;
 }
 
 .pascalInputAssembly {
   position: absolute;
   z-index: 3;
-  left: 17%;
-  bottom: 9%;
-  width: 82px;
-  height: 112px;
+  left: 12.75%;
+  bottom: 22%;
+  width: 90px;
+  height: 142px;
 }
 
 .pascalInputCylinder,
@@ -481,24 +497,25 @@
   position: absolute;
   right: 50%;
   bottom: 0;
-  border: 3px solid #203645;
+  border: 4px solid #173b50;
   border-radius: 8px 8px 4px 4px;
-  background: linear-gradient(90deg, #4c6878, #d6e2e8 45%, #6b8492);
+  background:
+    linear-gradient(90deg, rgba(23, 94, 118, 0.76), rgba(189, 246, 253, 0.88) 46%, rgba(23, 112, 139, 0.78));
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.34);
   transform: translateX(50%);
 }
 
 .pascalInputCylinder {
-  width: 38px;
-  height: 48px;
+  width: 62px;
+  height: 78px;
 }
 
 .pascalInputPiston {
   position: absolute;
   right: 50%;
-  bottom: 42px;
-  width: 8px;
-  height: 52px;
+  bottom: 70px;
+  width: 10px;
+  height: 51px;
   border: 2px solid #152733;
   border-radius: 5px;
   background: linear-gradient(90deg, #78909e, #f1f5f7, #607d8b);
@@ -508,9 +525,9 @@
 .pascalInputHandle {
   position: absolute;
   right: 50%;
-  bottom: 88px;
-  width: 66px;
-  height: 11px;
+  bottom: 115px;
+  width: 78px;
+  height: 13px;
   border: 3px solid #1d2d38;
   border-radius: 8px;
   background: var(--pascal-red);
@@ -525,7 +542,7 @@
 
 .pascalOutputAssembly {
   position: absolute;
-  z-index: 3;
+  z-index: 1;
   left: 70%;
   bottom: 7%;
   width: var(--piston-size);
@@ -535,16 +552,17 @@
 }
 
 .pascalOutputCylinder {
-  width: 72%;
-  height: 62px;
+  bottom: -16px;
+  width: 100%;
+  height: 60px;
 }
 
 .pascalOutputRod {
   position: absolute;
   right: 50%;
-  bottom: 52px;
+  bottom: -6px;
   width: 18px;
-  height: calc(66px + var(--lift-height));
+  height: calc(8px + var(--lift-height));
   border: 3px solid #1f3542;
   border-radius: 7px 7px 0 0;
   background: linear-gradient(90deg, #718894, #f3f7f8 45%, #6a808b);
@@ -555,8 +573,8 @@
 .pascalOutputPlatform {
   position: absolute;
   right: 50%;
-  bottom: calc(111px + var(--lift-height));
-  width: 100%;
+  bottom: calc(-6px + var(--lift-height));
+  width: 82%;
   height: 13px;
   border: 3px solid #172b37;
   border-radius: 7px;
@@ -578,7 +596,7 @@
 .pascalSceneLabel {
   position: absolute;
   left: 50%;
-  bottom: 126px;
+  bottom: 151px;
   width: max-content;
   padding: 5px 8px;
   border: 1px solid rgba(255, 255, 255, 0.34);
@@ -626,8 +644,8 @@
 .pascalForceArrow {
   position: absolute;
   z-index: 6;
-  left: 50%;
-  bottom: calc(126px + var(--lift-height));
+  left: 70%;
+  bottom: calc(7% + 126px + var(--lift-height));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1406,6 +1424,12 @@
   100% { stroke-dashoffset: 0; opacity: 1; }
 }
 
+@keyframes pascalLiquidGlow {
+  0% { opacity: 0.58; filter: drop-shadow(0 0 4px rgba(18, 188, 229, 0.3)); }
+  55% { opacity: 1; filter: drop-shadow(0 0 18px rgba(34, 211, 238, 0.95)); }
+  100% { opacity: 0.88; filter: drop-shadow(0 0 10px rgba(18, 188, 229, 0.62)); }
+}
+
 @keyframes pascalInputDown {
   0%, 100% { transform: translateX(50%) translateY(0); }
   55% { transform: translateX(50%) translateY(17px); }
@@ -1489,7 +1513,7 @@
   }
 
   .pascalInputAssembly {
-    left: 14%;
+    left: 10.5%;
     transform: scale(0.84);
   }
 
@@ -1546,8 +1570,8 @@
   }
 
   .pascalInputAssembly {
-    left: 10%;
-    bottom: 7%;
+    left: 8%;
+    bottom: 20%;
     transform: scale(0.68);
   }
 
@@ -1570,7 +1594,7 @@
   }
 
   .pascalForceArrow {
-    bottom: calc(118px + var(--lift-height));
+    bottom: calc(7% + 112px + var(--lift-height));
   }
 
   .pascalStageHeader,

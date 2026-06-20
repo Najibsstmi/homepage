@@ -112,6 +112,9 @@ export default function PascalHydraulicSimulator({ reviewPanel }) {
     ((Math.sqrt(outputArea) - Math.sqrt(20)) /
       (Math.sqrt(200) - Math.sqrt(20))) *
       78;
+  const outputChamberWidth = 118 + (areaProgress / 100) * 100;
+  const outputChamberLeft = 700 - outputChamberWidth / 2;
+  const outputChamberRight = 700 + outputChamberWidth / 2;
   const problemComplete = Boolean(kpsAnswers.problemCause && kpsAnswers.problemEffect);
   const problemCorrect =
     kpsAnswers.problemCause === "output-area" &&
@@ -252,8 +255,30 @@ export default function PascalHydraulicSimulator({ reviewPanel }) {
             <div className="pascalScene__shade" />
 
             <svg className="pascalHydraulicPipe" viewBox="0 0 1000 520" preserveAspectRatio="none" aria-hidden="true">
-              <path className="pascalHydraulicPipe__base" d="M205 443 C285 443 300 474 392 474 L555 474 C640 474 648 436 718 436" />
-              <path key={`flow-${pumpCycle}`} className="pascalHydraulicPipe__fluid" d="M205 443 C285 443 300 474 392 474 L555 474 C640 474 648 436 718 436" />
+              <defs>
+                <linearGradient id="pascal-fluid-gradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#bff7ff" stopOpacity="0.8" />
+                  <stop offset="48%" stopColor="#35d6ef" stopOpacity="0.72" />
+                  <stop offset="100%" stopColor="#0799c6" stopOpacity="0.88" />
+                </linearGradient>
+                <marker id="pascal-pressure-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#f12d43" />
+                </marker>
+              </defs>
+              <path
+                className="pascalHydraulicChamber"
+                d={`M130 312 H220 V443 H${outputChamberLeft} V270 H${outputChamberRight} V500 H130 Z`}
+              />
+              <path
+                className="pascalHydraulicLiquid"
+                d={`M144 329 H206 V458 H${outputChamberLeft + 14} V289 H${outputChamberRight - 14} V484 H144 Z`}
+              />
+              <path
+                key={`flow-${pumpCycle}`}
+                className="pascalHydraulicPressure"
+                d="M175 348 V466 H700 V322"
+                markerEnd="url(#pascal-pressure-arrow)"
+              />
             </svg>
 
             <div key={`input-${pumpCycle}`} className="pascalInputAssembly" aria-hidden="true">
@@ -269,10 +294,6 @@ export default function PascalHydraulicSimulator({ reviewPanel }) {
             </div>
 
             <div className="pascalOutputAssembly" aria-hidden="true">
-              <span className="pascalForceArrow">
-                <i />
-                <b>Daya output</b>
-              </span>
               <span className="pascalSceneLabel">Omboh output</span>
               <i className="pascalOutputPlatform" />
               <i className="pascalOutputRod" />
@@ -286,6 +307,11 @@ export default function PascalHydraulicSimulator({ reviewPanel }) {
                 alt="Ambulans di atas omboh output"
               />
             </div>
+
+            <span className="pascalForceArrow" aria-hidden="true">
+              <i />
+              <b>Daya output</b>
+            </span>
 
             <div className="pascalForcePill">
               <span>F₂</span>

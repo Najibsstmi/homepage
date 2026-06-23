@@ -24019,8 +24019,11 @@ section {
 
 .opticsArrow--image line {
   stroke: #7c2dff;
-  stroke-dasharray: 8 8;
   marker-end: url("#opticsArrowPurple");
+}
+
+.opticsArrow--image.opticsArrow--dashed line {
+  stroke-dasharray: 8 8;
 }
 
 .opticsArrow--image text {

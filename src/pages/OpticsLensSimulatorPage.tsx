@@ -440,6 +440,7 @@ function ArrowFigure({
   label,
   tone,
   draggable = false,
+  dashed = false,
 }: {
   x: number;
   axisY: number;
@@ -447,6 +448,7 @@ function ArrowFigure({
   label: string;
   tone: "object" | "image";
   draggable?: boolean;
+  dashed?: boolean;
 }) {
   const tipY = axisY - height;
   const labelY = height >= 0 ? tipY - 16 : tipY + 34;
@@ -455,7 +457,7 @@ function ArrowFigure({
     <g
       className={`opticsArrow opticsArrow--${tone}${
         draggable ? " opticsArrow--draggable" : ""
-      }`}
+      }${dashed ? " opticsArrow--dashed" : ""}`}
     >
       <line x1={x} y1={axisY} x2={x} y2={tipY} />
       <text x={x} y={labelY}>
@@ -717,6 +719,7 @@ function RayDiagram({
           height={opticsData.imageHeight}
           label="Imej"
           tone="image"
+          dashed={opticsData.imageX < diagram.lensX}
         />
       )}
 

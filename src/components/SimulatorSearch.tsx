@@ -5,8 +5,10 @@ import {
   type SimulatorLevel,
   type SimulatorMetadata,
 } from "../data/simulators";
+import { shareSimulator } from "../utils/shareSimulator";
 
 type SimulatorFilter = "all" | SimulatorLevel;
+type ShareStatus = "idle" | "copied" | "shared" | "unsupported";
 
 interface SimulatorSearchProps {
   onOpenSimulator: (path: string) => void;
@@ -56,6 +58,7 @@ export function SimulatorSearch({ onOpenSimulator }: SimulatorSearchProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<SimulatorFilter>("all");
+  const [shareStatusById, setShareStatusById] = useState<Record<string, ShareStatus>>({});
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -126,6 +129,37 @@ export function SimulatorSearch({ onOpenSimulator }: SimulatorSearchProps) {
     setIsOpen(false);
     setQuery("");
     onOpenSimulator(simulator.path);
+  };
+
+  const handleShare = async (simulator: SimulatorMetadata) => {
+    const result = await shareSimulator(simulator);
+
+    if (result === "cancelled") {
+      return;
+    }
+
+    setShareStatusById((current) => ({ ...current, [simulator.id]: result }));
+    window.setTimeout(() => {
+      setShareStatusById((current) => ({ ...current, [simulator.id]: "idle" }));
+    }, 1800);
+  };
+
+  const getShareLabel = (simulatorId: string) => {
+    const status = shareStatusById[simulatorId];
+
+    if (status === "copied") {
+      return "Disalin";
+    }
+
+    if (status === "shared") {
+      return "Dikongsi";
+    }
+
+    if (status === "unsupported") {
+      return "Tidak dapat salin";
+    }
+
+    return "Share";
   };
 
   const dialog = isOpen ? (
@@ -209,14 +243,9 @@ export function SimulatorSearch({ onOpenSimulator }: SimulatorSearchProps) {
         <div className="simulatorSearchResults">
           {results.length > 0 ? (
             results.map((simulator) => (
-              <a
+              <article
                 className="simulatorSearchResult"
-                href={simulator.path}
                 key={simulator.id}
-                onClick={(event) => {
-                  event.preventDefault();
-                  openResult(simulator);
-                }}
               >
                 <div className="simulatorSearchResult__image" aria-hidden="true">
                   {simulator.image ? (
@@ -237,10 +266,30 @@ export function SimulatorSearch({ onOpenSimulator }: SimulatorSearchProps) {
                   <h3>{simulator.title}</h3>
                   <p>{simulator.description}</p>
                 </div>
-                <span className="simulatorSearchResult__action">
-                  Buka Simulator <span aria-hidden="true">→</span>
-                </span>
-              </a>
+                <div className="simulatorSearchResult__actions">
+                  <button
+                    className="simulatorSearchResult__action"
+                    type="button"
+                    onClick={() => openResult(simulator)}
+                  >
+                    Buka Simulator <span aria-hidden="true">&rarr;</span>
+                  </button>
+                  <button
+                    className="simulatorSearchResult__share"
+                    type="button"
+                    aria-label={`Kongsi ${simulator.title}`}
+                    onClick={() => handleShare(simulator)}
+                  >
+                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <circle cx="18" cy="5" r="3" />
+                      <circle cx="6" cy="12" r="3" />
+                      <circle cx="18" cy="19" r="3" />
+                      <path d="M8.6 10.8 15.4 6.2M8.6 13.2l6.8 4.6" />
+                    </svg>
+                    <span>{getShareLabel(simulator.id)}</span>
+                  </button>
+                </div>
+              </article>
             ))
           ) : (
             <div className="simulatorSearchResults__empty">

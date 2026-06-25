@@ -458,6 +458,131 @@
         margin: 0;
       }
 
+      .ibse-section {
+        display: grid;
+        gap: 1rem;
+        margin-top: clamp(1rem, 2vw, 1.35rem);
+      }
+
+      .ibse-card {
+        padding: clamp(1rem, 2vw, 1.25rem);
+        background: rgba(255, 255, 255, 0.92);
+      }
+
+      .ibse-card h2 {
+        margin: 0;
+        color: #082f49;
+        font-size: clamp(1.28rem, 2vw, 1.72rem);
+        font-weight: 900;
+        line-height: 1.15;
+      }
+
+      .ibse-card > p {
+        margin: 0.5rem 0 0;
+        color: #475569;
+        font-size: 0.98rem;
+        font-weight: 650;
+        line-height: 1.58;
+      }
+
+      .ibse-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+      }
+
+      .ibse-task {
+        display: grid;
+        gap: 0.75rem;
+        min-width: 0;
+        border: 1px solid rgba(59, 130, 246, 0.16);
+        border-radius: 18px;
+        padding: 1rem;
+        background: rgba(248, 251, 255, 0.88);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      }
+
+      .ibse-task h3 {
+        margin: 0;
+        color: #0f766e;
+        font-size: 1.08rem;
+        font-weight: 900;
+      }
+
+      .ibse-builder {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.55rem;
+        color: #0f172a;
+        font-size: clamp(0.95rem, 1.4vw, 1.04rem);
+        font-weight: 750;
+        line-height: 1.55;
+      }
+
+      .ibse-builder select {
+        min-height: 42px;
+        max-width: 100%;
+        border: 1px solid rgba(59, 130, 246, 0.28);
+        border-radius: 13px;
+        padding: 0.48rem 2rem 0.48rem 0.7rem;
+        background: #ffffff;
+        color: #0f172a;
+        font: inherit;
+        font-size: 0.94rem;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+      }
+
+      .ibse-builder select:focus-visible {
+        outline: 3px solid rgba(6, 182, 212, 0.28);
+        outline-offset: 2px;
+      }
+
+      .ibse-feedback {
+        min-height: 2.2rem;
+        margin: 0;
+        border-radius: 14px;
+        padding: 0.62rem 0.75rem;
+        background: #eef6ff;
+        color: #334155;
+        font-size: 0.92rem;
+        font-weight: 800;
+        line-height: 1.45;
+      }
+
+      .ibse-feedback.is-correct {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .ibse-feedback.is-incorrect {
+        background: #fef2f2;
+        color: #991b1b;
+      }
+
+      .ibse-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+        margin-top: 0.25rem;
+      }
+
+      .ibse-legend span {
+        border-radius: 999px;
+        padding: 0.42rem 0.62rem;
+        background: #eff6ff;
+        color: #1e3a8a;
+        font-size: 0.82rem;
+        font-weight: 800;
+        line-height: 1.35;
+      }
+
+      .ibse-legend strong {
+        color: #0f766e;
+      }
+
       @keyframes bubble-rise {
         0% {
           bottom: var(--start-bottom);
@@ -530,6 +655,10 @@
         }
 
         .control-stack {
+          grid-template-columns: 1fr;
+        }
+
+        .ibse-grid {
           grid-template-columns: 1fr;
         }
 
@@ -642,6 +771,84 @@
           </section>
         </aside>
       </section>
+
+      <section class="ibse-section" aria-labelledby="ibseTitle">
+        <article class="ibse-card glass-card">
+          <h2 id="ibseTitle">Bina KPS (IBSE)</h2>
+          <p>
+            Lengkapkan pernyataan masalah dan hipotesis berdasarkan pemboleh ubah
+            dalam eksperimen kesan suhu terhadap aktiviti yis.
+          </p>
+
+          <div class="ibse-grid">
+            <section class="ibse-task" aria-labelledby="problemTitle">
+              <h3 id="problemTitle">Pernyataan masalah</h3>
+              <div class="ibse-builder">
+                <span>Apakah kesan</span>
+                <select id="problemCause" aria-label="Pilih pemboleh ubah dimanipulasikan">
+                  <option value="">Pilih pemboleh ubah</option>
+                  <option value="suhu">suhu</option>
+                  <option value="gas">gelembung gas</option>
+                  <option value="doh">ketinggian doh roti</option>
+                </select>
+                <span>terhadap</span>
+                <select id="problemEffect" aria-label="Pilih pemboleh ubah bergerak balas">
+                  <option value="">Pilih pemboleh ubah</option>
+                  <option value="suhu">suhu</option>
+                  <option value="gas">gelembung gas</option>
+                  <option value="doh">ketinggian doh roti</option>
+                </select>
+                <span>?</span>
+              </div>
+              <p class="ibse-feedback" id="problemFeedback">
+                Lengkapkan kedua-dua ruang pernyataan masalah.
+              </p>
+            </section>
+
+            <section class="ibse-task" aria-labelledby="hypothesisTitle">
+              <h3 id="hypothesisTitle">Hipotesis</h3>
+              <div class="ibse-builder">
+                <span>Jika</span>
+                <select id="hypothesisCause" aria-label="Pilih pemboleh ubah dalam hipotesis">
+                  <option value="">Pilih pemboleh ubah</option>
+                  <option value="suhu">suhu</option>
+                  <option value="masa">masa penapaian</option>
+                  <option value="gula">kuantiti gula</option>
+                </select>
+                <select id="hypothesisTemp" aria-label="Pilih nilai suhu dalam hipotesis">
+                  <option value="">Pilih suhu</option>
+                  <option value="5">5°C</option>
+                  <option value="27">27°C</option>
+                  <option value="50">50°C</option>
+                </select>
+                <span>maka</span>
+                <select id="hypothesisEffect" aria-label="Pilih pemboleh ubah bergerak balas dalam hipotesis">
+                  <option value="">Pilih pemboleh ubah</option>
+                  <option value="gas">gelembung gas</option>
+                  <option value="doh">ketinggian doh roti</option>
+                  <option value="suhu">suhu</option>
+                </select>
+                <select id="hypothesisResult" aria-label="Pilih keputusan hipotesis">
+                  <option value="">Pilih keputusan</option>
+                  <option value="rendah">paling rendah</option>
+                  <option value="tinggi">paling tinggi</option>
+                  <option value="sama">sama sahaja</option>
+                </select>
+                <span>.</span>
+              </div>
+              <p class="ibse-feedback" id="hypothesisFeedback">
+                Lengkapkan semua ruang hipotesis.
+              </p>
+            </section>
+          </div>
+
+          <div class="ibse-legend" aria-label="Petunjuk pemboleh ubah">
+            <span><strong>PM</strong> Suhu</span>
+            <span><strong>PB</strong> Ketinggian doh roti</span>
+            <span><strong>DM</strong> Kuantiti tepung, air, yis, gula, jenis bekas dan tempoh masa</span>
+          </div>
+        </article>
+      </section>
     </main>
 
     <script>
@@ -691,6 +898,14 @@
       const startButton = document.getElementById("startButton");
       const resetButton = document.getElementById("resetButton");
       const observationText = document.getElementById("observationText");
+      const problemCause = document.getElementById("problemCause");
+      const problemEffect = document.getElementById("problemEffect");
+      const problemFeedback = document.getElementById("problemFeedback");
+      const hypothesisCause = document.getElementById("hypothesisCause");
+      const hypothesisTemp = document.getElementById("hypothesisTemp");
+      const hypothesisEffect = document.getElementById("hypothesisEffect");
+      const hypothesisResult = document.getElementById("hypothesisResult");
+      const hypothesisFeedback = document.getElementById("hypothesisFeedback");
 
       let selectedTemperature = 27;
       let bubbleTimer = null;
@@ -711,6 +926,70 @@
 
         const lines = temperatureData[selectedTemperature].observation;
         observationText.innerHTML = lines.map((line) => `<p>${line}</p>`).join("");
+      }
+
+      function setFeedback(element, message, state) {
+        element.textContent = message;
+        element.classList.toggle("is-correct", state === "correct");
+        element.classList.toggle("is-incorrect", state === "incorrect");
+      }
+
+      function checkProblemStatement() {
+        const complete = problemCause.value && problemEffect.value;
+        const correct = problemCause.value === "suhu" && problemEffect.value === "doh";
+
+        if (!complete) {
+          setFeedback(problemFeedback, "Lengkapkan kedua-dua ruang pernyataan masalah.", "idle");
+          return;
+        }
+
+        if (correct) {
+          setFeedback(
+            problemFeedback,
+            "Betul. Pernyataan masalah: Apakah kesan suhu terhadap ketinggian doh roti?",
+            "correct"
+          );
+          return;
+        }
+
+        setFeedback(
+          problemFeedback,
+          "Belum tepat. Letakkan pemboleh ubah dimanipulasikan dahulu, kemudian pemboleh ubah bergerak balas.",
+          "incorrect"
+        );
+      }
+
+      function checkHypothesis() {
+        const complete =
+          hypothesisCause.value &&
+          hypothesisTemp.value &&
+          hypothesisEffect.value &&
+          hypothesisResult.value;
+        const correct =
+          hypothesisCause.value === "suhu" &&
+          hypothesisTemp.value === "27" &&
+          hypothesisEffect.value === "doh" &&
+          hypothesisResult.value === "tinggi";
+
+        if (!complete) {
+          setFeedback(hypothesisFeedback, "Lengkapkan semua ruang hipotesis.", "idle");
+          return;
+        }
+
+        if (correct) {
+          setFeedback(
+            hypothesisFeedback,
+            "Betul. Hipotesis: Jika suhu 27°C, maka ketinggian doh roti paling tinggi.",
+            "correct"
+          );
+          return;
+        }
+
+        setFeedback(
+          hypothesisFeedback,
+          "Belum tepat. Dalam eksperimen ini, suhu 27°C menghasilkan aktiviti yis paling aktif dan doh paling tinggi.",
+          "incorrect"
+        );
       }
 
       function setActiveButton() {
@@ -815,6 +1094,14 @@
         });
       });
 
+      [problemCause, problemEffect].forEach((field) => {
+        field.addEventListener("change", checkProblemStatement);
+      });
+
+      [hypothesisCause, hypothesisTemp, hypothesisEffect, hypothesisResult].forEach((field) => {
+        field.addEventListener("change", checkHypothesis);
+      });
+
       startButton.addEventListener("click", startSimulation);
 
       resetButton.addEventListener("click", () => {
@@ -827,6 +1114,8 @@
       renderObservation();
       setActiveButton();
       resetDough();
+      checkProblemStatement();
+      checkHypothesis();
     </script>
   </body>
 </html>

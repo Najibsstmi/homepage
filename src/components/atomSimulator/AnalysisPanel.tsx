@@ -77,6 +77,7 @@ export default function AnalysisPanel({ analysis, structureVersion }: AnalysisPa
   const displayAnalysis = selectedSolution
     ? getAqueousAnalysis(analysis, selectedSolution)
     : getPromptedMixtureAnalysis(analysis, aqueousOptions);
+  const identity = getMatterIdentity(displayAnalysis);
   const elementRows = Object.entries(analysis.elementCounts)
     .filter((entry): entry is [ElementSymbol, number] => Boolean(entry[1]))
     .map(([symbol, count]) => ({
@@ -92,6 +93,12 @@ export default function AnalysisPanel({ analysis, structureVersion }: AnalysisPa
         <strong className={`atomCategoryBadge atomCategoryBadge--${displayAnalysis.tone}`}>
           {displayAnalysis.category}
         </strong>
+      </div>
+
+      <div className={`atomIdentityCard atomIdentityCard--${displayAnalysis.tone}`}>
+        <span>Keputusan bahan</span>
+        <strong>{identity.label}</strong>
+        <p>{identity.detail}</p>
       </div>
 
       <div className="atomResultCard">
@@ -193,6 +200,31 @@ export default function AnalysisPanel({ analysis, structureVersion }: AnalysisPa
       )}
     </aside>
   );
+}
+
+function getMatterIdentity(analysis: MatterAnalysis) {
+  switch (analysis.category) {
+    case "ATOM":
+      return { label: "Atom", detail: analysis.typeLabel };
+    case "MOLEKUL UNSUR":
+      return { label: "Molekul", detail: "Molekul unsur" };
+    case "SEBATIAN MOLEKUL":
+    case "SEBATIAN IONIK":
+    case "SEBATIAN MOLEKUL TIDAK DIKENALI":
+      return { label: "Sebatian", detail: analysis.typeLabel };
+    case "ION":
+      return { label: "Ion", detail: analysis.typeLabel };
+    case "CAMPURAN":
+      return { label: "Campuran", detail: analysis.typeLabel };
+    case "UNSUR":
+      return { label: "Unsur", detail: analysis.typeLabel };
+    case "LARUTAN AKUEUS":
+      return { label: "Larutan akueus", detail: analysis.typeLabel };
+    case "STRUKTUR TIDAK STABIL":
+      return { label: "Tidak stabil", detail: analysis.typeLabel };
+    default:
+      return { label: "Belum dibina", detail: analysis.typeLabel };
+  }
 }
 
 function getAqueousOptions(analysis: MatterAnalysis) {

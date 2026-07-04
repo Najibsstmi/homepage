@@ -8159,11 +8159,11 @@ section {
 }
 
 .alloyBlockIcon--pure {
-  background: linear-gradient(135deg, #cbd5e1, #64748b);
+  background: linear-gradient(135deg, #111827 0%, #020617 54%, #334155 100%);
 }
 
 .alloyBlockIcon--alloy {
-  background: linear-gradient(135deg, #38bdf8, #facc15);
+  background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 48%, #64748b 100%);
 }
 
 .steelBallIcon {
@@ -8363,13 +8363,13 @@ section {
 }
 
 .alloySpecimen--pure {
-  background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 52%, #475569 100%);
+  background: linear-gradient(135deg, #111827 0%, #020617 52%, #334155 100%);
 }
 
 .alloySpecimen--alloy {
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.36), transparent 38%),
-    linear-gradient(120deg, #22d3ee 0%, #38bdf8 36%, #facc15 64%, #64748b 100%);
+    linear-gradient(135deg, rgba(255, 255, 255, 0.52), transparent 38%),
+    linear-gradient(120deg, #f8fafc 0%, #cbd5e1 42%, #94a3b8 70%, #475569 100%);
 }
 
 .alloySpecimen__label {
@@ -26787,4 +26787,510 @@ section {
 
 .rpmReflection {
   margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+/* Alloy hardness simulator: light, tidy page treatment */
+.electrolysisPage.alloyPage {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: clamp(1rem, 2.4vw, 1.6rem) clamp(0.8rem, 2.8vw, 2rem) 3rem;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.electrolysisPage.alloyPage > .electroHero,
+.electrolysisPage.alloyPage > .simulatorDetailReviewSlot,
+.electrolysisPage.alloyPage > .alloyLayout,
+.electrolysisPage.alloyPage > .alloyDataGrid,
+.electrolysisPage.alloyPage > .alloyObservation,
+.electrolysisPage.alloyPage > .quizCard {
+  width: min(100%, 1540px);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.electrolysisPage.alloyPage .alloyHero {
+  margin-bottom: 0.8rem;
+  border: 1px solid #cbd5e1;
+  background:
+    linear-gradient(135deg, rgba(34, 211, 238, 0.08), rgba(250, 204, 21, 0.1)),
+    #ffffff;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+}
+
+.electrolysisPage.alloyPage .alloyHero h1 {
+  max-width: 1080px;
+  color: #0f172a;
+}
+
+.electrolysisPage.alloyPage .alloyHero p {
+  max-width: 980px;
+  color: #334155;
+}
+
+.electrolysisPage.alloyPage .simulatorHero__kicker {
+  color: #0e7490;
+}
+
+.electrolysisPage.alloyPage .simulatorDetailReviewSlot {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  border-color: #dbeafe;
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.07);
+}
+
+.electrolysisPage.alloyPage .simulatorDetailReviewSlot .ratingSummary,
+.electrolysisPage.alloyPage .simulatorDetailReviewSlot .ratingForm,
+.electrolysisPage.alloyPage .simulatorDetailReviewSlot .ratingForm__label,
+.electrolysisPage.alloyPage .simulatorDetailReviewSlot .ratingForm__status {
+  color: #334155;
+}
+
+.electrolysisPage.alloyPage .simulatorDetailReviewSlot .ratingSummary strong {
+  color: #0f172a;
+}
+
+.electrolysisPage.alloyPage .alloyLayout {
+  grid-template-columns: minmax(230px, 280px) minmax(560px, 1fr) minmax(230px, 280px);
+  gap: 1rem;
+  margin-top: 0;
+  align-items: start;
+}
+
+.electrolysisPage.alloyPage .alloyMain,
+.electrolysisPage.alloyPage .electroProgressRail,
+.electrolysisPage.alloyPage .alloyTray {
+  min-width: 0;
+}
+
+.electrolysisPage.alloyPage .electroPanel,
+.electrolysisPage.alloyPage .quizCard {
+  border-color: #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.electrolysisPage.alloyPage .electroPanel h2,
+.electrolysisPage.alloyPage .quizCard h2,
+.electrolysisPage.alloyPage .alloyPanelHeader h2 {
+  color: #0f172a;
+}
+
+.electrolysisPage.alloyPage .alloyApparatus__top p,
+.electrolysisPage.alloyPage .alloyMaterialCard small,
+.electrolysisPage.alloyPage .alloyResultCard span,
+.electrolysisPage.alloyPage .alloyResultCard small,
+.electrolysisPage.alloyPage .alloyMuted,
+.electrolysisPage.alloyPage .alloyAtomicContent p,
+.electrolysisPage.alloyPage .indentMeasureCard__hint,
+.electrolysisPage.alloyPage .quizCard__meta,
+.electrolysisPage.alloyPage .quizCard__feedback p,
+.electrolysisPage.alloyPage .quizCard__complete p {
+  color: #475569;
+}
+
+.electrolysisPage.alloyPage .alloyMaterialCard {
+  border-color: #dbeafe;
+  background: #f8fafc;
+  color: #0f172a;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+}
+
+.electrolysisPage.alloyPage .alloyMaterialCard--active {
+  border-color: #22c55e;
+  background: #ecfdf5;
+}
+
+.electrolysisPage.alloyPage .electroNote {
+  border-color: #fde68a;
+  background: #fffbeb;
+}
+
+.electrolysisPage.alloyPage .electroNote strong {
+  color: #92400e;
+}
+
+.electrolysisPage.alloyPage .electroNote p {
+  color: #475569;
+}
+
+.electrolysisPage.alloyPage .alloyReleaseButton {
+  border-color: rgba(14, 116, 144, 0.22) !important;
+  background: linear-gradient(135deg, #facc15, #67e8f9) !important;
+  color: #0f172a !important;
+}
+
+.electrolysisPage.alloyPage .alloyApparatus__actions button:not(.alloyReleaseButton) {
+  background: linear-gradient(135deg, #22d3ee, #38bdf8);
+  color: #082f49;
+}
+
+.electrolysisPage.alloyPage .alloyRig {
+  border: 1px solid #dbeafe;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.03);
+}
+
+.electrolysisPage.alloyPage .alloyScene__image {
+  background: #ffffff;
+}
+
+.electrolysisPage.alloyPage .alloySpecimen {
+  overflow: hidden;
+  border: 2px solid rgba(15, 23, 42, 0.2);
+  border-radius: 4px 4px 10px 10px;
+  clip-path: none;
+  box-shadow:
+    0 14px 18px rgba(15, 23, 42, 0.18),
+    inset 0 -10px 14px rgba(15, 23, 42, 0.14);
+  transform: none;
+}
+
+.electrolysisPage.alloyPage .alloySpecimen::before {
+  inset: 0 0 auto;
+  height: 32%;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0.08));
+  clip-path: none;
+}
+
+.electrolysisPage.alloyPage .alloySpecimen__dent {
+  top: -8px;
+  left: var(--dent-left, 68%);
+  width: var(--side-dent-width, 30%);
+  height: calc(var(--side-dent-depth, 30%) + 8px);
+  border: 2px solid rgba(15, 23, 42, 0.32);
+  border-top: 0;
+  border-radius: 0 0 999px 999px;
+  background:
+    radial-gradient(ellipse at 50% 92%, rgba(148, 163, 184, 0.24), transparent 58%),
+    linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+  box-shadow:
+    inset 0 -6px 8px rgba(15, 23, 42, 0.16),
+    0 2px 0 rgba(255, 255, 255, 0.42);
+  transform: translateX(-50%);
+  animation: alloySideDentIn 0.35s ease-out;
+}
+
+.electrolysisPage.alloyPage .alloySpecimen__dent::after {
+  content: "";
+  position: absolute;
+  right: 14%;
+  bottom: 18%;
+  left: 14%;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.22);
+}
+
+.electrolysisPage.alloyPage .alloyFallingWeight--resting {
+  top: 62.4%;
+  left: 48.9%;
+  transform: translateX(-50%) rotate(7deg) scale(0.96);
+}
+
+.electrolysisPage.alloyPage .alloyFallingWeight--restingPure {
+  top: 63.2%;
+  transform: translateX(-50%) rotate(9deg) scale(0.98);
+}
+
+.electrolysisPage.alloyPage .alloyFallingWeight--resting::after {
+  right: 18%;
+  bottom: -34%;
+  left: 18%;
+  height: 46%;
+  border: 1px solid rgba(15, 23, 42, 0.32);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 24%, #ffffff 0 12%, #cbd5e1 30%, #64748b 62%, #111827 100%);
+  box-shadow:
+    inset -5px -7px 10px rgba(2, 6, 23, 0.35),
+    0 8px 12px rgba(15, 23, 42, 0.26);
+}
+
+.electrolysisPage.alloyPage .alloyBadge {
+  border-color: #bbf7d0;
+  background: #ecfdf5;
+  color: #166534;
+}
+
+.electrolysisPage.alloyPage .alloyDataGrid {
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 0;
+  align-items: stretch;
+}
+
+.electrolysisPage.alloyPage .alloyLayout,
+.electrolysisPage.alloyPage .alloyTray,
+.electrolysisPage.alloyPage .alloyApparatus,
+.electrolysisPage.alloyPage .alloyProgress,
+.electrolysisPage.alloyPage .alloyResultPanel,
+.electrolysisPage.alloyPage .alloyAtomicPanel,
+.electrolysisPage.alloyPage .alloyObservation {
+  margin-bottom: 0;
+}
+
+.electrolysisPage.alloyPage .alloyDataGrid > .electroPanel {
+  height: 100%;
+}
+
+.electrolysisPage.alloyPage .alloyResultCard,
+.electrolysisPage.alloyPage .alloyAtomicExplanation,
+.electrolysisPage.alloyPage .alloyAtomicPrompt {
+  border-color: #dbeafe;
+  background: #f8fafc;
+}
+
+.electrolysisPage.alloyPage .alloyResultCard strong,
+.electrolysisPage.alloyPage .alloyAtomicExplanation h3 {
+  color: #0e7490;
+}
+
+.electrolysisPage.alloyPage .alloyAtomToggle {
+  border-color: rgba(14, 116, 144, 0.2) !important;
+  background: linear-gradient(135deg, #22d3ee, #facc15) !important;
+  color: #0f172a !important;
+}
+
+.electrolysisPage.alloyPage .indentMeasureCard {
+  border-color: #facc15;
+  background:
+    linear-gradient(135deg, rgba(250, 204, 21, 0.16), rgba(34, 211, 238, 0.08)),
+    #ffffff;
+  box-shadow: 0 16px 32px rgba(133, 77, 14, 0.08);
+}
+
+.electrolysisPage.alloyPage .indentMeasureCard h3,
+.electrolysisPage.alloyPage .indentMeasureCard label {
+  color: #0f172a;
+}
+
+.electrolysisPage.alloyPage .indentMeasureCard__header span {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.electrolysisPage.alloyPage .indentMeasureCard__input input {
+  border-color: #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.electrolysisPage.alloyPage .alloyMeasureNext {
+  border-color: #facc15;
+  background: #fffbeb;
+}
+
+.electrolysisPage.alloyPage .alloyMeasureNext strong,
+.electrolysisPage.alloyPage .checkText--warn {
+  color: #92400e;
+}
+
+.electrolysisPage.alloyPage .alloyMeasureNext span {
+  color: #475569;
+}
+
+.electrolysisPage.alloyPage .scoreboardPanel {
+  top: 92px;
+  max-height: none;
+  border-color: #bae6fd;
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  backdrop-filter: none;
+}
+
+.electrolysisPage.alloyPage .scoreboardPanel::before,
+.electrolysisPage.alloyPage .scoreboardPanel::after {
+  display: none;
+}
+
+.electrolysisPage.alloyPage .scoreboardPanel__header span {
+  color: #0e7490;
+}
+
+.electrolysisPage.alloyPage .scoreboardPanel__header strong,
+.electrolysisPage.alloyPage .scoreItem__top strong,
+.electrolysisPage.alloyPage .totalScore {
+  color: #0891b2;
+  text-shadow: none;
+}
+
+.electrolysisPage.alloyPage .scoreboardPanel p,
+.electrolysisPage.alloyPage .scoreItem__top span {
+  color: #334155;
+}
+
+.electrolysisPage.alloyPage .scoreboardBadge {
+  border-color: #fde68a;
+  background: #fffbeb;
+  color: #92400e !important;
+}
+
+.electrolysisPage.alloyPage .scoreItem {
+  border-color: #dbeafe;
+  background: #f8fafc;
+}
+
+.electrolysisPage.alloyPage .scoreItem__bar {
+  border-color: #cbd5e1;
+  background: #e2e8f0;
+}
+
+.electrolysisPage.alloyPage .alloyObservation {
+  margin-top: 0.75rem;
+}
+
+.electrolysisPage.alloyPage .alloyObservation .accordionHeader {
+  display: flex;
+  min-height: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  border-color: #bae6fd;
+  border-radius: 14px;
+  background: #e0f2fe;
+  box-shadow: none;
+}
+
+.electrolysisPage.alloyPage .alloyObservation .accordionHeader span,
+.electrolysisPage.alloyPage .alloyObservation .accordionHeader strong {
+  color: #0f172a;
+}
+
+.electrolysisPage.alloyPage .accordionBody {
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.electrolysisPage.alloyPage .electroTableWrap {
+  max-height: min(520px, 64vh);
+  overflow: auto;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.electrolysisPage.alloyPage .electroTableWrap table {
+  min-width: 720px;
+  background: #ffffff;
+}
+
+.electrolysisPage.alloyPage .electroTableWrap th {
+  background: #e0f2fe;
+  color: #0f172a;
+}
+
+.electrolysisPage.alloyPage .electroTableWrap th,
+.electrolysisPage.alloyPage .electroTableWrap td {
+  border-color: #dbeafe;
+  color: #0f172a;
+}
+
+.electrolysisPage.alloyPage .electroTableWrap select {
+  border-color: #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.electrolysisPage.alloyPage .quizOption {
+  border-color: #dbeafe;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.electrolysisPage.alloyPage .quizOption:hover:not(:disabled) {
+  border-color: #67e8f9;
+  background: #ecfeff;
+}
+
+.electrolysisPage.alloyPage .quizOption span {
+  color: #0e7490;
+}
+
+.electrolysisPage.alloyPage .quizCard__feedback,
+.electrolysisPage.alloyPage .quizCard__complete {
+  border-color: #dbeafe;
+  background: #f8fafc;
+}
+
+.electrolysisPage.alloyPage .mobileControlDrawer__toggle {
+  border-color: #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.electrolysisPage.alloyPage .mobileControlDrawer__toggle strong {
+  color: #0e7490;
+}
+
+.electrolysisPage.alloyPage .mobileControlDrawer__toggle small {
+  color: #475569;
+}
+
+@keyframes alloySideDentIn {
+  from {
+    transform: translateX(-50%) translateY(-46%) scaleX(0.66);
+    opacity: 0.45;
+  }
+  to {
+    transform: translateX(-50%) translateY(0) scaleX(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1180px) {
+  .electrolysisPage.alloyPage .alloyLayout {
+    grid-template-columns: minmax(220px, 290px) minmax(0, 1fr);
+  }
+
+  .electrolysisPage.alloyPage .alloyMain {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .electrolysisPage.alloyPage .electroProgressRail {
+    grid-column: 1;
+  }
+
+  .electrolysisPage.alloyPage .alloyDataGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 880px) {
+  .electrolysisPage.alloyPage .alloyLayout,
+  .electrolysisPage.alloyPage .alloyDataGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .electrolysisPage.alloyPage .alloyMain,
+  .electrolysisPage.alloyPage .electroProgressRail {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .electrolysisPage.alloyPage {
+    padding: 0.85rem 0.65rem 2.5rem;
+  }
+
+  .electrolysisPage.alloyPage .alloyHero h1 {
+    font-size: clamp(1.65rem, 9vw, 2.3rem);
+  }
+
+  .electrolysisPage.alloyPage .alloyRig {
+    border-radius: 16px;
+  }
+
+  .electrolysisPage.alloyPage .electroTableWrap table {
+    min-width: 620px;
+  }
 }

@@ -36,6 +36,8 @@ export default function AlloyApparatus({
     "--dent-width": `${34 + dentScale * 24}%`,
     "--dent-height": `${18 + dentScale * 30}%`,
     "--dent-left": "68%",
+    "--side-dent-width": `${20 + dentScale * 16}%`,
+    "--side-dent-depth": `${12 + dentScale * 24}%`,
   };
   const weightClass = [
     "alloyFallingWeight",
@@ -96,7 +98,7 @@ export default function AlloyApparatus({
           </div>
 
           {selectedMaterial && (
-            <div className={`alloySpecimen alloySpecimen--${selectedMaterial}`} style={specimenStyle}>
+            <div className={`alloySpecimen alloySpecimen--${selectedMaterial}${showDent ? " alloySpecimen--dented" : ""}`} style={specimenStyle}>
               {showDent && <span className="alloySpecimen__dent" aria-hidden="true" />}
               <span className="alloySpecimen__label">{material.shortLabel}</span>
             </div>

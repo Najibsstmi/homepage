@@ -27294,3 +27294,99 @@ section {
     min-width: 620px;
   }
 }
+
+/* Reaction rate page clean white shell */
+.electrolysisPage.reactionRatePage {
+  max-width: 1400px;
+  padding: 0.9rem;
+  border-radius: 24px;
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.16);
+}
+
+.electrolysisPage.reactionRatePage .electroHero.reactionHero {
+  margin-bottom: 0;
+  border-color: #dbeafe;
+  background:
+    radial-gradient(circle at 88% 18%, rgba(56, 189, 248, 0.16), transparent 26%),
+    radial-gradient(circle at 18% 12%, rgba(14, 165, 233, 0.12), transparent 24%),
+    linear-gradient(135deg, #ffffff 0%, #f8fafc 52%, #eef6ff 100%);
+  color: #0f172a;
+  box-shadow: none;
+}
+
+.electrolysisPage.reactionRatePage .electroHero.reactionHero h1 {
+  color: #0f172a;
+}
+
+.electrolysisPage.reactionRatePage .electroHero.reactionHero p {
+  color: #334155;
+}
+
+.electrolysisPage.reactionRatePage .electroHero.reactionHero .simulatorHero__kicker {
+  color: #0369a1;
+}
+
+.electrolysisPage.reactionRatePage > .simulatorDetailReviewSlot {
+  margin: 0;
+  border-color: #e2e8f0;
+  border-top: 0;
+  border-radius: 0 0 18px 18px;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+.electrolysisPage.reactionRatePage .simulatorDetailReviewSlot .ratingSummary {
+  background: #fffbeb;
+  color: #92400e;
+}
+
+.electrolysisPage.reactionRatePage .simulatorDetailReviewSlot .starRatingInput__hint,
+.electrolysisPage.reactionRatePage .simulatorDetailReviewSlot .ratingForm__message {
+  color: #475569;
+}
+
+.electrolysisPage.reactionRatePage section,
+.electrolysisPage.reactionRatePage .electroPanel {
+  margin-bottom: 0;
+}
+
+.electrolysisPage.reactionRatePage .reactionControlDeck,
+.electrolysisPage.reactionRatePage .reactionWorkspace,
+.electrolysisPage.reactionRatePage .reactionDataGrid,
+.electrolysisPage.reactionRatePage .reactionPlotChallenge,
+.electrolysisPage.reactionRatePage > .quizCard {
+  margin-top: 0.65rem;
+}
+
+.electrolysisPage.reactionRatePage .reactionFactorPanel {
+  margin-top: 0;
+}
+
+.electrolysisPage.reactionRatePage .reactionWorkspace,
+.electrolysisPage.reactionRatePage .reactionMain,
+.electrolysisPage.reactionRatePage .reactionDataGrid {
+  gap: 0.65rem;
+}
+
+.electrolysisPage.reactionRatePage .reactionTemperatureStage {
+  margin-top: 0.65rem;
+}
+
+@media (max-width: 640px) {
+  .electrolysisPage.reactionRatePage {
+    padding: 0.65rem;
+    border-radius: 18px;
+  }
+
+  .electrolysisPage.reactionRatePage .reactionControlDeck,
+  .electrolysisPage.reactionRatePage .reactionWorkspace,
+  .electrolysisPage.reactionRatePage .reactionDataGrid,
+  .electrolysisPage.reactionRatePage .reactionPlotChallenge,
+  .electrolysisPage.reactionRatePage > .quizCard,
+  .electrolysisPage.reactionRatePage .reactionHero {
+    width: 100%;
+    max-width: 100%;
+  }
+}

@@ -382,6 +382,24 @@ export default function ReactionRateSimulatorPage({ reviewPanel }) {
             onStop={activeFactor === "temperature" ? stopTemperatureExperiment : stopConcentrationExperiment}
             onReset={resetExperiment}
           />
+          <section className="reactionDataGrid">
+            {isTemperature ? (
+              <>
+                <ReactionTemperatureObservationTable temperatureRuns={temperatureRuns} />
+                <ReactionTemperatureGraphs temperatureRuns={temperatureRuns} />
+              </>
+            ) : isConcentration ? (
+              <>
+                <ReactionConcentrationObservationTable concentrationRuns={concentrationRuns} />
+                <ReactionConcentrationGraphs concentrationRuns={concentrationRuns} />
+              </>
+            ) : (
+              <>
+                <ReactionObservationTable completedRuns={completedRuns} />
+                <ReactionGraph completedRuns={completedRuns} activeRun={activeRun} />
+              </>
+            )}
+          </section>
         </div>
 
         <MobileControlDrawer title="Progress" summary="Bacaan, graf dan kuiz">
@@ -397,25 +415,6 @@ export default function ReactionRateSimulatorPage({ reviewPanel }) {
             />
           </aside>
         </MobileControlDrawer>
-      </section>
-
-      <section className="reactionDataGrid">
-        {isTemperature ? (
-          <>
-            <ReactionTemperatureObservationTable temperatureRuns={temperatureRuns} />
-            <ReactionTemperatureGraphs temperatureRuns={temperatureRuns} />
-          </>
-        ) : isConcentration ? (
-          <>
-            <ReactionConcentrationObservationTable concentrationRuns={concentrationRuns} />
-            <ReactionConcentrationGraphs concentrationRuns={concentrationRuns} />
-          </>
-        ) : (
-          <>
-            <ReactionObservationTable completedRuns={completedRuns} />
-            <ReactionGraph completedRuns={completedRuns} activeRun={activeRun} />
-          </>
-        )}
       </section>
 
       {isConcentration ? (

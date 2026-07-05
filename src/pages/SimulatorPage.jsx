@@ -11,6 +11,7 @@ import ElectrolysisSimulatorPage from "./ElectrolysisSimulatorPage";
 import EndocrineSystemSimulatorPage from "./EndocrineSystemSimulatorPage";
 import InertiaMassSimulatorPage from "./InertiaMassSimulatorPage";
 import MudPressureRescueSimulatorPage from "./MudPressureRescueSimulatorPage";
+import NitrogenCycleSimulatorPage from "./NitrogenCycleSimulatorPage";
 import NuclearEnergySimulatorPage from "./NuclearEnergySimulatorPage";
 import OpticsLensSimulatorPage from "./OpticsLensSimulatorPage";
 import PollutionDetectiveSimulatorPage from "./PollutionDetectiveSimulatorPage";
@@ -164,6 +165,14 @@ export default function SimulatorPage({ onOpenSimulator }) {
     return (
       <PollutionDetectiveSimulatorPage
         reviewPanel={getReviewPanel("detektif-pencemaran-alam")}
+      />
+    );
+  }
+
+  if (path === "/simulator/kitar-nitrogen") {
+    return (
+      <NitrogenCycleSimulatorPage
+        reviewPanel={getReviewPanel("kitar-nitrogen")}
       />
     );
   }

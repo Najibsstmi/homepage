@@ -1,0 +1,1993 @@
+.nitrogenSimulator {
+  min-height: 100vh;
+  padding: 28px;
+  color: #12332d;
+  background:
+    linear-gradient(180deg, rgba(225, 246, 239, 0.96), rgba(247, 252, 255, 0.98) 48%, #ffffff);
+}
+
+.nitrogenSimulator * {
+  box-sizing: border-box;
+}
+
+.nitrogenLazyAssetRack {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nitrogenLazyAssetRack img {
+  width: 1px;
+  height: 1px;
+}
+
+.nitrogenHeader,
+.nitrogenGuidePanel,
+.nitrogenPanel,
+.nitrogenBottomProgress,
+.nitrogenChallengeFooter,
+.nitrogenUnlockNotice {
+  border: 1px solid rgba(13, 79, 70, 0.16);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 18px 46px rgba(19, 52, 48, 0.13);
+  backdrop-filter: blur(18px);
+}
+
+.nitrogenHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 18px;
+  max-width: 1480px;
+  margin: 0 auto 18px;
+  padding: 18px;
+  border-radius: 8px;
+}
+
+.nitrogenHeader__title span,
+.nitrogenPanelHeader span,
+.nitrogenLearningCard > span,
+.nitrogenFarmReport span,
+.nitrogenChallengeScore span {
+  display: block;
+  color: #0f766e;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.nitrogenHeader__title h1 {
+  margin: 4px 0;
+  color: #0b352f;
+  font-size: 2.15rem;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.nitrogenHeader__title p {
+  margin: 0;
+  color: #4a5f5a;
+  font-size: 0.98rem;
+}
+
+.nitrogenModeSwitch,
+.nitrogenHeader__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nitrogenModeSwitch {
+  padding: 5px;
+  border: 1px solid rgba(13, 79, 70, 0.16);
+  border-radius: 8px;
+  background: rgba(234, 250, 244, 0.85);
+}
+
+.nitrogenModeSwitch button,
+.nitrogenHeader__actions button,
+.nitrogenUnlockNotice button,
+.nitrogenChallengeActions button,
+.nitrogenChallengeComplete button,
+.nitrogenPrimaryButton {
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.nitrogenModeSwitch button {
+  min-height: 38px;
+  padding: 0 14px;
+  color: #315f56;
+  background: transparent;
+}
+
+.nitrogenModeSwitch button.is-active {
+  color: #ffffff;
+  background: #0f766e;
+  box-shadow: 0 10px 24px rgba(15, 118, 110, 0.28);
+}
+
+.nitrogenModeSwitch button:disabled {
+  color: #7a8f89;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.48);
+}
+
+.nitrogenHeader__actions button {
+  min-height: 42px;
+  padding: 0 14px;
+  color: #0f4f46;
+  border: 1px solid rgba(13, 79, 70, 0.14);
+  background: #ffffff;
+}
+
+.nitrogenHeader__actions button.is-active,
+.nitrogenHeader__actions button:hover,
+.nitrogenModeSwitch button:hover:not(:disabled),
+.nitrogenUnlockNotice button:hover,
+.nitrogenChallengeActions button:hover:not(:disabled),
+.nitrogenChallengeComplete button:hover {
+  transform: translateY(-1px);
+}
+
+.nitrogenGuidePanel {
+  max-width: 1480px;
+  margin: 0 auto 18px;
+  padding: 14px 16px;
+  border-radius: 8px;
+}
+
+.nitrogenGuidePanel strong {
+  color: #0b352f;
+}
+
+.nitrogenGuidePanel p {
+  max-width: 760px;
+  margin: 5px 0 0;
+  color: #516761;
+}
+
+.nitrogenMobileProcessToggle {
+  display: none;
+}
+
+.nitrogenExploreLayout,
+.nitrogenChallengeLayout {
+  display: grid;
+  grid-template-columns: minmax(720px, 1fr) 300px;
+  gap: 18px;
+  align-items: start;
+  max-width: 1480px;
+  margin: 0 auto;
+}
+
+.nitrogenChallengeLayout {
+  grid-template-columns: 300px minmax(640px, 1fr) 340px;
+}
+
+.nitrogenPanel {
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.nitrogenPanelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.nitrogenPanelHeader strong {
+  display: inline-grid;
+  min-width: 40px;
+  min-height: 32px;
+  place-items: center;
+  color: #0f766e;
+  border-radius: 8px;
+  background: rgba(15, 118, 110, 0.1);
+}
+
+.nitrogenProcessPanel__close {
+  display: none;
+}
+
+.nitrogenProcessList {
+  display: grid;
+  gap: 9px;
+}
+
+.nitrogenProcessItem {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 58px;
+  padding: 9px;
+  color: #263f39;
+  text-align: left;
+  border: 1px solid rgba(13, 79, 70, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.nitrogenProcessItem:disabled {
+  cursor: default;
+}
+
+.nitrogenProcessItem.is-active {
+  border-color: rgba(14, 165, 233, 0.48);
+  background: rgba(224, 246, 255, 0.84);
+}
+
+.nitrogenProcessItem.is-completed {
+  border-color: rgba(22, 163, 74, 0.34);
+  background: rgba(236, 253, 245, 0.9);
+}
+
+.nitrogenProcessItem.is-locked {
+  opacity: 0.62;
+}
+
+.nitrogenProcessItem__number {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: #ffffff;
+  font-weight: 900;
+  border-radius: 50%;
+  background: #64748b;
+}
+
+.nitrogenProcessItem.is-active .nitrogenProcessItem__number {
+  background: #0284c7;
+}
+
+.nitrogenProcessItem.is-completed .nitrogenProcessItem__number {
+  background: #16a34a;
+}
+
+.nitrogenProcessItem.is-locked .nitrogenProcessItem__number {
+  background: #94a3b8;
+}
+
+.nitrogenProcessItem b,
+.nitrogenProcessItem small {
+  display: block;
+  min-width: 0;
+}
+
+.nitrogenProcessItem b {
+  color: #0b352f;
+  font-size: 0.94rem;
+  line-height: 1.18;
+}
+
+.nitrogenProcessItem small {
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 0.78rem;
+}
+
+.nitrogenSceneColumn {
+  min-width: 0;
+}
+
+.nitrogenSceneFrame {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgba(13, 79, 70, 0.18);
+  border-radius: 8px;
+  background: #d7f3f0;
+  box-shadow: 0 22px 58px rgba(22, 73, 64, 0.18);
+}
+
+.nitrogenScene {
+  position: relative;
+  width: 100%;
+  min-width: 690px;
+  aspect-ratio: 7 / 4;
+  overflow: hidden;
+  border-radius: 8px;
+  isolation: isolate;
+}
+
+.nitrogenScene img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+.nitrogenHotspot {
+  position: absolute;
+  z-index: 24;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.nitrogenHotspot:disabled {
+  cursor: not-allowed;
+}
+
+.nitrogenHotspot::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: rgba(14, 165, 233, 0);
+  opacity: 0;
+  transition:
+    opacity 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.nitrogenHotspot:hover::before,
+.nitrogenHotspot:focus-visible::before,
+.nitrogenHotspot.is-active::before {
+  border-color: rgba(14, 165, 233, 0.74);
+  background: rgba(14, 165, 233, 0.16);
+  opacity: 1;
+}
+
+.nitrogenHotspot.is-completed::before {
+  border-color: rgba(22, 163, 74, 0.48);
+}
+
+.nitrogenHotspot.is-locked::before {
+  border-color: rgba(100, 116, 139, 0.2);
+}
+
+.nitrogenHotspot__pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: #0f766e;
+  font-size: 1.12rem;
+  font-weight: 950;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 28px rgba(8, 47, 73, 0.28);
+  transform: translate(-50%, -50%);
+  animation: nitrogenHotspotPulse 1.85s ease-in-out infinite;
+}
+
+.nitrogenHotspot.is-active .nitrogenHotspot__pin {
+  color: #ffffff;
+  background: #0284c7;
+}
+
+.nitrogenHotspot.is-completed .nitrogenHotspot__pin {
+  color: #ffffff;
+  background: #16a34a;
+  animation: none;
+}
+
+.nitrogenHotspot.is-locked .nitrogenHotspot__pin {
+  color: #ffffff;
+  background: #94a3b8;
+  opacity: 0.76;
+  animation: none;
+}
+
+.nitrogenHotspot--challenge .nitrogenHotspot__pin {
+  color: #b45309;
+}
+
+.nitrogenHotspot--challenge.is-completed .nitrogenHotspot__pin {
+  color: #ffffff;
+  background: #15803d;
+}
+
+.nitrogenScene.has-active-process .nitrogenHotspot__pin {
+  display: none;
+}
+
+.nitrogenHotspot__caption {
+  position: absolute;
+  top: calc(50% + 22px);
+  left: 50%;
+  max-width: 128px;
+  padding: 5px 8px;
+  color: #0b352f;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.15;
+  border: 1px solid rgba(22, 101, 52, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
+  transform: translateX(-50%);
+}
+
+.nitrogenProcessOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 26;
+  pointer-events: none;
+}
+
+.nitrogenOverlayLabel {
+  position: absolute;
+  z-index: 16;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 92px;
+  max-width: 172px;
+  min-height: 34px;
+  padding: 6px 10px;
+  color: #0f172a;
+  font-size: 0.74rem;
+  font-weight: 950;
+  line-height: 1.16;
+  text-align: center;
+  overflow-wrap: anywhere;
+  border: 1px solid rgba(15, 118, 110, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.17);
+  animation: nitrogenFadeScale 520ms ease both;
+}
+
+.nitrogenArrow,
+.nitrogenIonPath {
+  --arrow-start: #0ea5e9;
+  --arrow-end: #16a34a;
+  position: absolute;
+  z-index: 15;
+  height: 5px;
+  overflow: visible;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.08) 0 7px,
+      rgba(255, 255, 255, 0.82) 7px 15px,
+      rgba(255, 255, 255, 0.08) 15px 28px
+    ),
+    linear-gradient(90deg, var(--arrow-start), var(--arrow-end));
+  background-size:
+    28px 100%,
+    100% 100%;
+  box-shadow: 0 0 12px rgba(14, 165, 233, 0.44);
+  transform-origin: left center;
+  animation:
+    nitrogenArrowDraw 760ms ease both,
+    nitrogenArrowFlow 1.05s linear infinite;
+}
+
+.nitrogenArrow::after,
+.nitrogenIonPath::after {
+  position: absolute;
+  top: 50%;
+  right: -9px;
+  width: 0;
+  height: 0;
+  content: "";
+  z-index: 2;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 18px solid var(--arrow-end);
+  transform: translateY(-50%);
+  filter: drop-shadow(0 0 7px rgba(22, 163, 74, 0.45));
+}
+
+.nitrogenArrow,
+.nitrogenIonPath {
+  display: none;
+}
+
+.nitrogenFlowArrow {
+  --arrow-end: #16a34a;
+  --arrow-delay: 0ms;
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.nitrogenFlowArrow__path {
+  fill: none;
+  stroke: var(--arrow-end);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 14 10;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 7px rgba(14, 165, 233, 0.38));
+  animation:
+    nitrogenSvgArrowAppear 520ms ease var(--arrow-delay) both,
+    nitrogenSvgArrowFlow 1.05s linear var(--arrow-delay) infinite;
+}
+
+.nitrogenFlowArrow__head {
+  fill: var(--arrow-end);
+  filter: drop-shadow(0 0 5px rgba(22, 163, 74, 0.42));
+}
+
+.nitrogenFlowArrow--lightningToSoil {
+  --arrow-end: #16a34a;
+  --arrow-delay: 520ms;
+}
+
+.nitrogenFlowArrow--fixationAtmosphere {
+  --arrow-end: #0ea5e9;
+  --arrow-delay: 520ms;
+}
+
+.nitrogenFlowArrow--fixationToNitrate {
+  --arrow-end: #16a34a;
+  --arrow-delay: 1600ms;
+}
+
+.nitrogenFlowArrow--decompositionSoil {
+  --arrow-end: #059669;
+  --arrow-delay: 980ms;
+}
+
+.nitrogenFlowArrow--nitrificationStepOne,
+.nitrogenFlowArrow--nitrificationStepTwo {
+  --arrow-end: #0284c7;
+}
+
+.nitrogenFlowArrow--nitrificationStepOne {
+  --arrow-delay: 1080ms;
+}
+
+.nitrogenFlowArrow--nitrificationStepTwo {
+  --arrow-delay: 2500ms;
+}
+
+.nitrogenFlowArrow--ionPathLeft,
+.nitrogenFlowArrow--ionPathRight {
+  --arrow-end: #16a34a;
+}
+
+.nitrogenFlowArrow--ionPathLeft {
+  --arrow-delay: 620ms;
+}
+
+.nitrogenFlowArrow--ionPathRight {
+  --arrow-delay: 880ms;
+}
+
+.nitrogenFlowArrow--feedingTransfer {
+  --arrow-end: #f59e0b;
+}
+
+.nitrogenFlowArrow--denitrificationUp {
+  --arrow-end: #0ea5e9;
+  --arrow-delay: 1180ms;
+}
+
+.nitrogenScene .nitrogenLightningImage {
+  position: absolute;
+  z-index: 15;
+  width: 120px;
+  height: 82px;
+  object-fit: cover;
+  border: 2px solid rgba(186, 230, 253, 0.76);
+  border-radius: 8px;
+  opacity: 0;
+  box-shadow: 0 14px 30px rgba(8, 47, 73, 0.26);
+  animation: nitrogenLightningFlash 1.7s ease-in-out infinite;
+}
+
+.nitrogenScene .nitrogenLightningImage--one {
+  top: 8%;
+  left: 22%;
+}
+
+.nitrogenScene .nitrogenLightningImage--two {
+  top: 5%;
+  left: 55%;
+  width: 112px;
+  height: 76px;
+  animation-delay: 220ms;
+}
+
+.nitrogenScene .nitrogenLightningImage--three {
+  top: 13%;
+  left: 72%;
+  width: 100px;
+  height: 68px;
+  animation-delay: 440ms;
+}
+
+.nitrogenOverlayLabel--lightningN2 {
+  top: 27%;
+  left: 41%;
+  animation-delay: 120ms;
+}
+
+.nitrogenArrow--lightningToSoil {
+  top: 26.5%;
+  left: 43.5%;
+  width: 24.5%;
+  transform: rotate(94deg);
+  --arrow-start: #38bdf8;
+  --arrow-end: #16a34a;
+  animation-delay: 520ms, 520ms;
+}
+
+.nitrogenOverlayLabel--lightningNitrate {
+  top: 68%;
+  left: 37%;
+  max-width: 126px;
+  color: #14532d;
+  animation-delay: 1320ms;
+}
+
+.nitrogenArrow--fixationAtmosphere {
+  top: 22%;
+  left: 27%;
+  width: 22%;
+  transform: rotate(106deg);
+}
+
+.nitrogenOverlayLabel--n2SkyA {
+  top: 43%;
+  left: 3%;
+  animation-delay: 120ms;
+}
+
+.nitrogenBacteriaCluster {
+  position: absolute;
+  z-index: 16;
+  display: grid;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid rgba(234, 88, 12, 0.58);
+  border-radius: 50%;
+  background: #fff7ed;
+  box-shadow: 0 10px 24px rgba(154, 52, 18, 0.26);
+  animation: nitrogenFadeScale 680ms ease both;
+}
+
+.nitrogenBacteriaCluster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.nitrogenBacteriaCluster--rhizobium {
+  top: 59%;
+  left: 12%;
+  animation-delay: 1250ms;
+}
+
+.nitrogenOverlayLabel--rhizobium {
+  top: 58%;
+  left: 21%;
+  animation-delay: 1450ms;
+}
+
+.nitrogenOverlayLabel--rhizobium,
+.nitrogenOverlayLabel--nitrosomonas,
+.nitrogenOverlayLabel--nitrobacter,
+.nitrogenOverlayLabel--denitrifier {
+  color: #7c2d12;
+  border-color: rgba(234, 88, 12, 0.34);
+  background: rgba(254, 243, 199, 0.96);
+  box-shadow: 0 10px 24px rgba(154, 52, 18, 0.2);
+}
+
+.nitrogenOverlayLabel--ammoniumRoot {
+  top: 70%;
+  left: 27%;
+  max-width: 126px;
+  color: #14532d;
+  animation-delay: 1900ms;
+}
+
+.nitrogenArrow--fixationToNitrate {
+  top: 70%;
+  left: 20%;
+  width: 7%;
+  transform: rotate(18deg);
+  --arrow-start: #f97316;
+  --arrow-end: #16a34a;
+  animation-delay: 1600ms, 1600ms;
+}
+
+.nitrogenLeaf {
+  position: absolute;
+  z-index: 15;
+  width: 34px;
+  height: 18px;
+  border-radius: 100% 0 100% 0;
+  background: #b7791f;
+  box-shadow: 0 6px 14px rgba(92, 54, 12, 0.22);
+  animation: nitrogenLeafDecompose 2.8s ease both;
+}
+
+.nitrogenLeaf--one {
+  top: 48%;
+  left: 69%;
+  transform: rotate(-18deg);
+}
+
+.nitrogenLeaf--two {
+  top: 52%;
+  left: 72%;
+  transform: rotate(22deg);
+  animation-delay: 220ms;
+}
+
+.nitrogenBacteriaCluster--decomposer {
+  top: 54%;
+  left: 66%;
+  width: 54px;
+  height: 54px;
+  animation-delay: 520ms;
+}
+
+.nitrogenArrow--decompositionSoil {
+  top: 68%;
+  left: 68%;
+  width: 4%;
+  transform: rotate(92deg);
+  animation-delay: 980ms;
+}
+
+.nitrogenOverlayLabel--decompositionAmmonium {
+  top: 80%;
+  left: 60.5%;
+  max-width: 140px;
+  animation-delay: 1650ms;
+}
+
+.nitrogenOverlayLabel--nitrificationAmmonium {
+  top: 76%;
+  left: 25%;
+  width: 12%;
+  min-width: 102px;
+  max-width: 126px;
+}
+
+.nitrogenBacteriaCluster--nitrosomonas {
+  top: 54%;
+  left: 38%;
+  animation-delay: 450ms;
+}
+
+.nitrogenOverlayLabel--nitrosomonas {
+  top: 43%;
+  left: 31%;
+  animation-delay: 720ms;
+}
+
+.nitrogenArrow--nitrificationStepOne {
+  top: 79%;
+  left: 35%;
+  width: 7%;
+  transform: rotate(0deg);
+  animation-delay: 1080ms;
+}
+
+.nitrogenOverlayLabel--nitrite {
+  top: 76%;
+  left: 45%;
+  width: 12%;
+  min-width: 102px;
+  max-width: 124px;
+  color: #075985;
+  animation-delay: 1550ms;
+}
+
+.nitrogenBacteriaCluster--nitrobacter {
+  top: 54%;
+  left: 55%;
+  animation-delay: 1900ms;
+}
+
+.nitrogenOverlayLabel--nitrobacter {
+  top: 43%;
+  left: 59%;
+  animation-delay: 2120ms;
+}
+
+.nitrogenArrow--nitrificationStepTwo {
+  top: 79%;
+  left: 64%;
+  width: 7%;
+  transform: rotate(0deg);
+  animation-delay: 2500ms;
+}
+
+.nitrogenOverlayLabel--nitrate {
+  top: 76%;
+  left: 65.5%;
+  width: 12%;
+  min-width: 104px;
+  max-width: 128px;
+  color: #075985;
+  animation-delay: 3020ms;
+}
+
+.nitrogenPlantGlow {
+  position: absolute;
+  z-index: 13;
+  border-radius: 50%;
+  background: rgba(74, 222, 128, 0.34);
+  filter: blur(2px);
+  opacity: 0;
+  animation: nitrogenPlantPulse 3.2s ease 820ms both;
+}
+
+.nitrogenPlantGlow--legume {
+  top: 23%;
+  left: 4%;
+  width: 24%;
+  height: 28%;
+}
+
+.nitrogenPlantGlow--crop {
+  top: 18%;
+  left: 23%;
+  width: 19%;
+  height: 34%;
+  animation-delay: 1280ms;
+}
+
+.nitrogenOverlayLabel--rootNitrateA {
+  top: 73%;
+  left: 5%;
+  max-width: 122px;
+  color: #075985;
+  animation: nitrogenFadeScale 520ms ease 560ms both;
+}
+
+.nitrogenOverlayLabel--rootNitrateB {
+  top: 74%;
+  left: 43%;
+  max-width: 122px;
+  color: #075985;
+  animation: nitrogenFadeScale 520ms ease 760ms both;
+}
+
+.nitrogenIonPath--left {
+  top: 71%;
+  left: 17%;
+  width: 13%;
+  transform: rotate(-70deg);
+  animation-delay: 620ms;
+}
+
+.nitrogenIonPath--right {
+  top: 71%;
+  left: 43%;
+  width: 14%;
+  transform: rotate(-145deg);
+  animation-delay: 880ms;
+}
+
+.nitrogenMouthCue {
+  position: absolute;
+  top: 42%;
+  left: 49%;
+  z-index: 16;
+  width: 58px;
+  height: 34px;
+  border: 3px solid rgba(255, 255, 255, 0.78);
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.42);
+  box-shadow: 0 10px 22px rgba(22, 101, 52, 0.2);
+  animation: nitrogenChewCue 1s ease-in-out infinite;
+}
+
+.nitrogenArrow--feedingTransfer {
+  top: 43%;
+  left: 34%;
+  width: 19%;
+  transform: rotate(-9deg);
+  --arrow-start: #65a30d;
+  --arrow-end: #f59e0b;
+}
+
+.nitrogenTransferParticle {
+  position: absolute;
+  z-index: 17;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.58);
+  animation: nitrogenFeedParticle 2.2s ease both;
+}
+
+.nitrogenTransferParticle--one {
+  top: 42%;
+  left: 37%;
+}
+
+.nitrogenTransferParticle--two {
+  top: 44%;
+  left: 38%;
+  animation-delay: 380ms;
+}
+
+.nitrogenTransferParticle--three {
+  top: 41%;
+  left: 39%;
+  animation-delay: 760ms;
+}
+
+.nitrogenOverlayLabel--denitrificationNitrate {
+  top: 77%;
+  left: 76%;
+  width: 12%;
+  min-width: 104px;
+  max-width: 124px;
+}
+
+.nitrogenBacteriaCluster--denitrification {
+  top: 60%;
+  left: 68%;
+  animation-delay: 460ms;
+}
+
+.nitrogenBacteriaCluster--denitrification {
+  border-color: rgba(220, 38, 38, 0.52);
+  background: #fff1f2;
+}
+
+.nitrogenOverlayLabel--denitrifier {
+  top: 48%;
+  left: 57%;
+  width: 14%;
+  min-width: 124px;
+  max-width: 142px;
+  animation-delay: 720ms;
+}
+
+.nitrogenArrow--denitrificationUp {
+  top: 70%;
+  left: 84%;
+  width: 16.5%;
+  transform: rotate(-86deg);
+  animation-delay: 1180ms;
+}
+
+.nitrogenOverlayLabel--denitrificationN2A {
+  top: 23%;
+  left: 74%;
+  width: 13%;
+  min-width: 116px;
+  animation-delay: 1950ms;
+}
+
+.nitrogenOverlayLabel--lightningN2,
+.nitrogenOverlayLabel--n2SkyA,
+.nitrogenOverlayLabel--denitrificationN2A {
+  color: #0c4a6e;
+  border-color: rgba(2, 132, 199, 0.34);
+  background: rgba(186, 230, 253, 0.96);
+  box-shadow: 0 10px 24px rgba(14, 116, 144, 0.18);
+}
+
+.nitrogenOverlayLabel--lightningNitrate,
+.nitrogenOverlayLabel--ammoniumRoot,
+.nitrogenOverlayLabel--nitrate,
+.nitrogenOverlayLabel--rootNitrateA,
+.nitrogenOverlayLabel--rootNitrateB,
+.nitrogenOverlayLabel--denitrificationNitrate {
+  color: #422006;
+  border-color: rgba(161, 98, 7, 0.58);
+  background: rgba(250, 204, 21, 0.96);
+  box-shadow: 0 10px 24px rgba(146, 64, 14, 0.22);
+}
+
+.nitrogenOverlayLabel--nitrite {
+  color: #0f3b65;
+  border-color: rgba(37, 99, 235, 0.32);
+  background: rgba(191, 219, 254, 0.96);
+  box-shadow: 0 10px 24px rgba(30, 64, 175, 0.16);
+}
+
+.nitrogenOverlayLabel--decompositionAmmonium,
+.nitrogenOverlayLabel--nitrificationAmmonium {
+  color: #064e3b;
+  border-color: rgba(5, 150, 105, 0.36);
+  background: rgba(167, 243, 208, 0.96);
+  box-shadow: 0 10px 24px rgba(6, 95, 70, 0.16);
+}
+
+.nitrogenExplanationPanel h2,
+.nitrogenReportPanel h2 {
+  margin: 0 0 8px;
+  color: #0b352f;
+  font-size: 1.28rem;
+  line-height: 1.15;
+}
+
+.nitrogenExplanationPanel p,
+.nitrogenReportPanel p,
+.nitrogenChallengePanel p {
+  color: #4c625d;
+  line-height: 1.5;
+}
+
+.nitrogenLearningCard {
+  margin-top: 16px;
+  padding: 13px;
+  border: 1px solid rgba(13, 79, 70, 0.12);
+  border-radius: 8px;
+  background: rgba(241, 250, 247, 0.72);
+}
+
+.nitrogenLearningCard h3 {
+  margin: 5px 0 12px;
+  color: #0b352f;
+}
+
+.nitrogenLearningCard dl {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+}
+
+.nitrogenLearningCard dl div {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.nitrogenLearningCard dt {
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.nitrogenLearningCard dd {
+  min-width: 0;
+  margin: 0;
+  color: #12332d;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.nitrogenEmptyState {
+  display: grid;
+  min-height: 260px;
+  align-content: center;
+  gap: 6px;
+  color: #64748b;
+  text-align: center;
+}
+
+.nitrogenEmptyState strong {
+  color: #0b352f;
+}
+
+.nitrogenBottomProgress {
+  margin-top: 14px;
+  padding: 13px;
+  border-radius: 8px;
+}
+
+.nitrogenBottomProgress__bar {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(100, 116, 139, 0.16);
+}
+
+.nitrogenBottomProgress__bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #0ea5e9, #16a34a, #f59e0b);
+  transition: width 320ms ease;
+}
+
+.nitrogenBottomProgress__steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.nitrogenBottomProgress__steps button {
+  display: grid;
+  min-width: 0;
+  min-height: 54px;
+  gap: 4px;
+  place-items: center;
+  padding: 7px;
+  color: #516761;
+  border: 1px solid rgba(13, 79, 70, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  cursor: pointer;
+}
+
+.nitrogenBottomProgress__steps button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.nitrogenBottomProgress__steps button.is-active {
+  color: #075985;
+  border-color: rgba(14, 165, 233, 0.42);
+  background: rgba(224, 246, 255, 0.88);
+}
+
+.nitrogenBottomProgress__steps button.is-completed {
+  color: #14532d;
+  border-color: rgba(22, 163, 74, 0.34);
+  background: rgba(236, 253, 245, 0.9);
+}
+
+.nitrogenBottomProgress__steps span {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  color: #ffffff;
+  font-weight: 900;
+  border-radius: 50%;
+  background: #64748b;
+}
+
+.nitrogenBottomProgress__steps .is-active span {
+  background: #0284c7;
+}
+
+.nitrogenBottomProgress__steps .is-completed span {
+  background: #16a34a;
+}
+
+.nitrogenBottomProgress__steps .is-locked span {
+  background: #94a3b8;
+}
+
+.nitrogenBottomProgress__steps small {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.nitrogenUnlockNotice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 13px;
+  border-radius: 8px;
+}
+
+.nitrogenUnlockNotice strong {
+  color: #0b352f;
+}
+
+.nitrogenUnlockNotice button,
+.nitrogenPrimaryButton,
+.nitrogenChallengeComplete button {
+  padding: 11px 14px;
+  color: #ffffff;
+  background: #0f766e;
+  box-shadow: 0 12px 26px rgba(15, 118, 110, 0.24);
+}
+
+.nitrogenReportPanel {
+  position: sticky;
+  top: 16px;
+}
+
+.nitrogenFarmReport {
+  padding: 14px;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  border-radius: 8px;
+  background: rgba(255, 251, 235, 0.8);
+}
+
+.nitrogenFarmReport p {
+  margin: 6px 0 0;
+  color: #573b12;
+  font-weight: 750;
+}
+
+.nitrogenChallengeHint {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(224, 246, 255, 0.72);
+  font-weight: 800;
+}
+
+.nitrogenClueList {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+}
+
+.nitrogenClueList li {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 9px;
+  min-height: 48px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid rgba(13, 79, 70, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.nitrogenClueList li span {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  color: #ffffff;
+  font-weight: 900;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+
+.nitrogenClueList li.is-found {
+  border-color: rgba(22, 163, 74, 0.32);
+  background: rgba(236, 253, 245, 0.88);
+}
+
+.nitrogenClueList li.is-found span {
+  background: #16a34a;
+}
+
+.nitrogenClueList p {
+  margin: 0;
+  color: #334155;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.nitrogenChallengeOptions {
+  display: grid;
+  gap: 12px;
+}
+
+.nitrogenChallengeOptions fieldset {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid rgba(13, 79, 70, 0.13);
+  border-radius: 8px;
+  background: rgba(248, 250, 252, 0.72);
+}
+
+.nitrogenChallengeOptions fieldset:disabled {
+  opacity: 0.62;
+}
+
+.nitrogenChallengeOptions legend {
+  padding: 0 5px;
+  color: #0f766e;
+  font-weight: 900;
+}
+
+.nitrogenChallengeOptions label {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 9px;
+  align-items: start;
+  padding: 9px;
+  border: 1px solid rgba(13, 79, 70, 0.1);
+  border-radius: 8px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.nitrogenChallengeOptions label.is-selected {
+  border-color: rgba(14, 165, 233, 0.42);
+  background: rgba(224, 246, 255, 0.86);
+}
+
+.nitrogenChallengeOptions input {
+  margin-top: 3px;
+  accent-color: #0f766e;
+}
+
+.nitrogenChallengeOptions span {
+  min-width: 0;
+  color: #263f39;
+  font-weight: 750;
+  line-height: 1.32;
+}
+
+.nitrogenFeedback {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 850;
+  line-height: 1.4;
+}
+
+.nitrogenFeedback--success {
+  color: #14532d;
+  border: 1px solid rgba(22, 163, 74, 0.28);
+  background: rgba(220, 252, 231, 0.88);
+}
+
+.nitrogenFeedback--error {
+  color: #7f1d1d;
+  border: 1px solid rgba(220, 38, 38, 0.24);
+  background: rgba(254, 226, 226, 0.88);
+}
+
+.nitrogenFeedback--warning {
+  color: #78350f;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  background: rgba(254, 243, 199, 0.9);
+}
+
+.nitrogenChallengeActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.nitrogenChallengeActions button {
+  min-height: 44px;
+  padding: 10px;
+  color: #0f4f46;
+  border: 1px solid rgba(13, 79, 70, 0.14);
+  background: #ffffff;
+}
+
+.nitrogenChallengeActions .nitrogenPrimaryButton {
+  color: #ffffff;
+  border: 0;
+}
+
+.nitrogenChallengeActions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+}
+
+.nitrogenChallengeFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 13px;
+  border-radius: 8px;
+}
+
+.nitrogenChallengeScore {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nitrogenChallengeScore strong {
+  display: grid;
+  width: 48px;
+  height: 38px;
+  place-items: center;
+  color: #ffffff;
+  border-radius: 8px;
+  background: #0f766e;
+}
+
+.nitrogenChallengeDots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.nitrogenChallengeDots button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: #64748b;
+  font-weight: 900;
+  border: 1px solid rgba(13, 79, 70, 0.14);
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.nitrogenChallengeDots button.is-active {
+  color: #ffffff;
+  border-color: #0284c7;
+  background: #0284c7;
+}
+
+.nitrogenChallengeDots button.is-completed {
+  color: #ffffff;
+  border-color: #16a34a;
+  background: #16a34a;
+}
+
+.nitrogenChallengeDots button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.nitrogenChallengeComplete {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(22, 163, 74, 0.28);
+  border-radius: 8px;
+  background: rgba(220, 252, 231, 0.88);
+}
+
+.nitrogenChallengeComplete strong {
+  color: #14532d;
+}
+
+.nitrogenChallengeComplete p {
+  margin: 0;
+  color: #14532d;
+  font-weight: 850;
+}
+
+.nitrogenChallengeComplete button {
+  justify-self: start;
+}
+
+.nitrogenChallengeRecovery {
+  position: absolute;
+  inset: 0;
+  z-index: 13;
+  pointer-events: none;
+}
+
+.nitrogenChallengeRecovery span {
+  position: absolute;
+  border-radius: 999px;
+  opacity: 0;
+  animation: nitrogenRecoveryPulse 2.2s ease both;
+}
+
+.nitrogenChallengeRecovery--legume span {
+  background: rgba(74, 222, 128, 0.38);
+}
+
+.nitrogenChallengeRecovery--legume span:nth-child(1) {
+  top: 25%;
+  left: 6%;
+  width: 18%;
+  height: 24%;
+}
+
+.nitrogenChallengeRecovery--legume span:nth-child(2) {
+  top: 53%;
+  left: 14%;
+  width: 11%;
+  height: 17%;
+  animation-delay: 260ms;
+}
+
+.nitrogenChallengeRecovery--legume span:nth-child(3) {
+  top: 58%;
+  left: 20%;
+  width: 6%;
+  height: 9%;
+  animation-delay: 520ms;
+}
+
+.nitrogenChallengeRecovery--river span {
+  background: rgba(56, 189, 248, 0.34);
+}
+
+.nitrogenChallengeRecovery--river span:nth-child(1) {
+  top: 45%;
+  left: 75%;
+  width: 20%;
+  height: 30%;
+}
+
+.nitrogenChallengeRecovery--river span:nth-child(2) {
+  top: 58%;
+  left: 82%;
+  width: 15%;
+  height: 18%;
+  animation-delay: 260ms;
+}
+
+.nitrogenChallengeRecovery--river span:nth-child(3) {
+  top: 38%;
+  left: 78%;
+  width: 13%;
+  height: 12%;
+  animation-delay: 520ms;
+}
+
+.nitrogenChallengeRecovery--soil span {
+  background: rgba(14, 165, 233, 0.25);
+}
+
+.nitrogenChallengeRecovery--soil span:nth-child(1) {
+  top: 58%;
+  left: 31%;
+  width: 34%;
+  height: 18%;
+}
+
+.nitrogenChallengeRecovery--soil span:nth-child(2) {
+  top: 65%;
+  left: 43%;
+  width: 22%;
+  height: 14%;
+  animation-delay: 260ms;
+}
+
+.nitrogenChallengeRecovery--soil span:nth-child(3) {
+  top: 51%;
+  left: 25%;
+  width: 18%;
+  height: 17%;
+  animation-delay: 520ms;
+}
+
+.nitrogenChallengeRecovery--decomposition span {
+  background: rgba(245, 158, 11, 0.32);
+}
+
+.nitrogenChallengeRecovery--decomposition span:nth-child(1) {
+  top: 43%;
+  left: 65%;
+  width: 22%;
+  height: 14%;
+}
+
+.nitrogenChallengeRecovery--decomposition span:nth-child(2) {
+  top: 54%;
+  left: 62%;
+  width: 20%;
+  height: 12%;
+  animation-delay: 260ms;
+}
+
+.nitrogenChallengeRecovery--decomposition span:nth-child(3) {
+  top: 60%;
+  left: 70%;
+  width: 12%;
+  height: 10%;
+  animation-delay: 520ms;
+}
+
+.nitrogenChallengeRecovery--denitrification span {
+  background: rgba(129, 140, 248, 0.32);
+}
+
+.nitrogenChallengeRecovery--denitrification span:nth-child(1) {
+  top: 55%;
+  left: 75%;
+  width: 18%;
+  height: 18%;
+}
+
+.nitrogenChallengeRecovery--denitrification span:nth-child(2) {
+  top: 35%;
+  left: 79%;
+  width: 12%;
+  height: 18%;
+  animation-delay: 260ms;
+}
+
+.nitrogenChallengeRecovery--denitrification span:nth-child(3) {
+  top: 16%;
+  left: 77%;
+  width: 14%;
+  height: 14%;
+  animation-delay: 520ms;
+}
+
+@keyframes nitrogenHotspotPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 10px 28px rgba(8, 47, 73, 0.28),
+      0 0 0 0 rgba(14, 165, 233, 0.36);
+  }
+
+  50% {
+    box-shadow:
+      0 12px 30px rgba(8, 47, 73, 0.3),
+      0 0 0 12px rgba(14, 165, 233, 0);
+  }
+}
+
+@keyframes nitrogenFadeScale {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes nitrogenArrowDraw {
+  from {
+    clip-path: inset(-14px 100% -14px 0);
+    opacity: 0;
+  }
+
+  to {
+    clip-path: inset(-14px -28px -14px 0);
+    opacity: 1;
+  }
+}
+
+@keyframes nitrogenArrowFlow {
+  from {
+    background-position:
+      0 0,
+      0 0;
+  }
+
+  to {
+    background-position:
+      28px 0,
+      0 0;
+  }
+}
+
+@keyframes nitrogenSvgArrowAppear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nitrogenSvgArrowFlow {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+
+@keyframes nitrogenLightningFlash {
+  0%,
+  100% {
+    opacity: 0.68;
+    filter: saturate(1) brightness(1);
+    transform: translateY(0) scale(1);
+  }
+
+  45% {
+    opacity: 1;
+    filter: saturate(1.28) brightness(1.18);
+    transform: translateY(-2px) scale(1.03);
+  }
+}
+
+@keyframes nitrogenLeafDecompose {
+  0% {
+    opacity: 0;
+    filter: saturate(1);
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.55;
+    filter: saturate(0.45) brightness(0.82);
+    transform: translateY(32px) rotate(36deg) scale(0.78);
+  }
+}
+
+@keyframes nitrogenPlantPulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+
+  45% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+}
+
+@keyframes nitrogenNitrateToRootLeft {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.9);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-120%, -72%) scale(1);
+  }
+}
+
+@keyframes nitrogenNitrateToRootRight {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.9);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-80%, -48%) scale(1);
+  }
+}
+
+@keyframes nitrogenChewCue {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes nitrogenFeedParticle {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.8);
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(170px, -16px) scale(1);
+  }
+}
+
+@keyframes nitrogenRecoveryPulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+
+  45% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+
+  100% {
+    opacity: 0.42;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 1240px) {
+  .nitrogenExploreLayout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .nitrogenChallengeLayout {
+    grid-template-columns: 260px minmax(0, 1fr);
+  }
+
+  .nitrogenExplanationPanel,
+  .nitrogenChallengePanel {
+    grid-column: 1 / -1;
+  }
+
+  .nitrogenReportPanel {
+    position: static;
+  }
+}
+
+@media (max-width: 900px) {
+  .nitrogenSimulator {
+    padding: 16px;
+  }
+
+  .nitrogenHeader {
+    grid-template-columns: 1fr;
+  }
+
+  .nitrogenModeSwitch,
+  .nitrogenHeader__actions {
+    width: 100%;
+  }
+
+  .nitrogenModeSwitch button,
+  .nitrogenHeader__actions button {
+    flex: 1;
+  }
+
+  .nitrogenExploreLayout,
+  .nitrogenChallengeLayout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .nitrogenMobileProcessToggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    max-width: 1480px;
+    min-height: 48px;
+    margin: 0 auto 12px;
+    padding: 10px 12px;
+    color: #0b352f;
+    font-weight: 900;
+    border: 1px solid rgba(13, 79, 70, 0.18);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 12px 28px rgba(19, 52, 48, 0.1);
+  }
+
+  .nitrogenMobileProcessToggle__icon {
+    display: grid;
+    gap: 4px;
+    width: 22px;
+  }
+
+  .nitrogenMobileProcessToggle__icon i {
+    display: block;
+    height: 3px;
+    border-radius: 999px;
+    background: #0f766e;
+  }
+
+  .nitrogenMobileProcessToggle strong {
+    display: inline-grid;
+    min-width: 42px;
+    min-height: 30px;
+    place-items: center;
+    color: #0f766e;
+    border-radius: 8px;
+    background: rgba(15, 118, 110, 0.1);
+  }
+
+  .nitrogenProcessPanel {
+    display: none;
+    position: static;
+    z-index: 34;
+    order: 0;
+    max-height: min(62vh, 520px);
+    overflow: auto;
+  }
+
+  .nitrogenProcessPanel.is-mobile-open {
+    display: block;
+  }
+
+  .nitrogenProcessPanel__close {
+    display: inline-flex;
+    min-height: 32px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    color: #0f4f46;
+    font-size: 0.82rem;
+    font-weight: 900;
+    border: 1px solid rgba(13, 79, 70, 0.14);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.92);
+  }
+
+  .nitrogenExplanationPanel {
+    order: 2;
+  }
+
+  .nitrogenSceneColumn {
+    order: 1;
+  }
+
+  .nitrogenScene {
+    min-width: 670px;
+  }
+
+  .nitrogenBottomProgress__steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .nitrogenChallengeActions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .nitrogenHeader__title h1 {
+    font-size: 1.72rem;
+  }
+
+  .nitrogenHeader,
+  .nitrogenGuidePanel,
+  .nitrogenPanel,
+  .nitrogenBottomProgress,
+  .nitrogenChallengeFooter,
+  .nitrogenUnlockNotice {
+    box-shadow: 0 12px 30px rgba(19, 52, 48, 0.11);
+  }
+
+  .nitrogenScene {
+    min-width: 620px;
+  }
+
+  .nitrogenBottomProgress__steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .nitrogenUnlockNotice,
+  .nitrogenChallengeFooter {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .nitrogenChallengeDots {
+    justify-content: flex-start;
+  }
+
+  .nitrogenLearningCard dl div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}

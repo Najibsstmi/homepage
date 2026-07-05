@@ -1,3 +1,5 @@
+import nitrogenBackgroundUrl from "../assets/kitar-nitrogen/kitar-nitrogen.webp";
+
 export type SimulatorLevel = 4 | 5;
 
 export interface SimulatorMetadata {
@@ -116,6 +118,34 @@ export const SIMULATORS: readonly SimulatorMetadata[] = [
     ],
     path: "/simulator/detektif-pencemaran-alam",
     image: "/assets/pencemaran%20background.webp",
+  },
+  {
+    id: "kitar-nitrogen",
+    title: "Kitar Nitrogen",
+    description:
+      "Teroka tindakan kilat, pengikatan nitrogen, penguraian, penitritan, penyerapan ion nitrat, pemakanan dan pendenitritan dalam ekosistem.",
+    tingkatan: 5,
+    bab: "Bab 2: Nutrisi dan Teknologi Makanan",
+    topik: "Kitar Nitrogen",
+    keywords: [
+      "kitar nitrogen",
+      "tindakan kilat",
+      "pengikatan nitrogen",
+      "penitritan",
+      "penguraian",
+      "penyerapan",
+      "pemakanan",
+      "pendenitritan",
+      "melarut resap nitrat",
+      "bakteria pengikat nitrogen",
+      "bakteria penitritan",
+      "bakteria pendenitritan",
+      "Tingkatan 5",
+      "Nutrisi dan Teknologi Makanan",
+      "Model-Based Learning",
+    ],
+    path: "/simulator/kitar-nitrogen",
+    image: nitrogenBackgroundUrl,
   },
   {
     id: "kadar-tindak-balas",

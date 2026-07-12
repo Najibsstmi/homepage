@@ -97,6 +97,28 @@ export const SIMULATORS: readonly SimulatorMetadata[] = [
     image: "/assets/background%20aloi.png",
   },
   {
+    id: "pengoksidaan-epal",
+    title: "ANTIOKSIDAN: Pengoksidaan Buah Epal",
+    description:
+      "Mengkaji kesan jenis larutan seperti jus limau, larutan gula, natrium bikarbonat dan garam terhadap perubahan warna hirisan epal.",
+    tingkatan: 4,
+    topik: "Antioksidan dan Pengoksidaan Makanan",
+    keywords: [
+      "antioksidan",
+      "pengoksidaan",
+      "epal",
+      "jus limau",
+      "larutan gula",
+      "natrium bikarbonat",
+      "garam",
+      "pemboleh ubah",
+      "pemerhatian",
+      "Tingkatan 4",
+    ],
+    path: "/simulator/pengoksidaan-epal",
+    image: "/assets/pengoksidaan-epal/hirisan-epal.webp",
+  },
+  {
     id: "detektif-pencemaran-alam",
     title: "Detektif Pencemaran Alam",
     description:

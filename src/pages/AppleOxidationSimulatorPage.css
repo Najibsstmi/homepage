@@ -1,0 +1,1244 @@
+.appleOxidationPage {
+  --apple-green: #58a83a;
+  --apple-deep-green: #2f7d42;
+  --apple-purple: #6950b7;
+  --apple-blue: #246bb8;
+  --apple-teal: #238c89;
+  --apple-orange: #e89b2f;
+  --apple-pink: #d75891;
+  --apple-ink: #172033;
+  --apple-muted: #5b6474;
+  --apple-line: #dce3ef;
+  --apple-panel: #ffffff;
+  --apple-soft: #f5f8fc;
+  min-height: 100vh;
+  padding: 18px;
+  background:
+    linear-gradient(180deg, rgba(243, 249, 255, 0.92), rgba(255, 251, 244, 0.96)),
+    #f6f8fb;
+  color: var(--apple-ink);
+}
+
+.appleOxidationPage *,
+.appleOxidationPage *::before,
+.appleOxidationPage *::after {
+  box-sizing: border-box;
+}
+
+.appleOxidationHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  max-width: 1560px;
+  margin: 0 auto 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(220, 227, 239, 0.85);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 16px 35px rgba(42, 60, 90, 0.1);
+}
+
+.appleOxidationTitleBlock {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.appleOxidationTitleBlock img {
+  width: 78px;
+  height: 62px;
+  object-fit: contain;
+  border-radius: 14px;
+  background: #f8fbf5;
+}
+
+.appleOxidationTitleBlock span,
+.appleOxidationPanel__header span,
+.appleOxidationStageTop span,
+.appleOxidationMuted {
+  color: var(--apple-muted);
+  font-size: 0.9rem;
+}
+
+.appleOxidationTitleBlock h1 {
+  margin: 0;
+  font-size: clamp(1.45rem, 2.2vw, 2.45rem);
+  line-height: 1.06;
+  letter-spacing: 0;
+}
+
+.appleOxidationTitleBlock p {
+  margin: 6px 0 0;
+  color: #263044;
+  font-size: clamp(0.98rem, 1.4vw, 1.25rem);
+}
+
+.appleOxidationHeaderActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 9px;
+}
+
+.appleOxidationHeaderActions button,
+.appleOxidationPrimaryButton,
+.appleOxidationModalActions button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 10px;
+  padding: 0.72rem 0.9rem;
+  font: inherit;
+  font-weight: 800;
+  color: #fff;
+  background: var(--apple-purple);
+  box-shadow: 0 8px 18px rgba(76, 59, 152, 0.22);
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+}
+
+.appleOxidationHeaderActions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.appleOxidationHeaderActions button:nth-child(2) {
+  background: var(--apple-teal);
+}
+
+.appleOxidationHeaderActions button:nth-child(3) {
+  background: var(--apple-orange);
+}
+
+.appleOxidationHeaderActions button:nth-child(4) {
+  background: #586170;
+}
+
+.appleOxidationHeaderActions button:hover,
+.appleOxidationPrimaryButton:hover:not(:disabled),
+.appleOxidationModalActions button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 22px rgba(45, 55, 85, 0.2);
+}
+
+.appleOxidationHeaderActions svg,
+.appleOxidationPrimaryButton svg,
+.appleOxidationTip svg,
+.appleOxidationObjective svg,
+.appleOxidationSteps svg,
+.appleOxidationTimerPanel svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: 0 0 auto;
+}
+
+.appleOxidationPrimaryButton {
+  background: var(--apple-purple);
+}
+
+.appleOxidationPrimaryButton--green {
+  background: var(--apple-green);
+}
+
+.appleOxidationPrimaryButton--orange {
+  background: var(--apple-orange);
+}
+
+.appleOxidationPrimaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  box-shadow: none;
+}
+
+.appleOxidationObjective {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 1560px;
+  margin: 0 auto 14px;
+  padding: 12px 16px;
+  border: 1px solid #f2c76a;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #fff8dc, #fff);
+}
+
+.appleOxidationObjective p {
+  margin: 0;
+}
+
+.appleOxidationLayout {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.78fr) minmax(0, 2.45fr) minmax(280px, 0.95fr);
+  gap: 14px;
+  align-items: start;
+  max-width: 1560px;
+  margin: 0 auto;
+}
+
+.appleOxidationLeftRail,
+.appleOxidationMainColumn,
+.appleOxidationRightRail {
+  display: grid;
+  gap: 14px;
+}
+
+.appleOxidationPanel,
+.appleOxidationStageCard {
+  overflow: hidden;
+  border: 1px solid rgba(220, 227, 239, 0.92);
+  border-radius: 14px;
+  background: var(--apple-panel);
+  box-shadow: 0 14px 30px rgba(42, 60, 90, 0.09);
+}
+
+.appleOxidationPanel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  color: #fff;
+}
+
+.appleOxidationPanel__header h2 {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.appleOxidationPanel__header span {
+  color: rgba(255, 255, 255, 0.86);
+  text-align: right;
+}
+
+.appleOxidationPanel__header--green {
+  background: linear-gradient(90deg, var(--apple-green), #76b82e);
+}
+
+.appleOxidationPanel__header--pink {
+  background: linear-gradient(90deg, var(--apple-pink), #e889b8);
+}
+
+.appleOxidationPanel__header--purple {
+  background: linear-gradient(90deg, var(--apple-purple), #8666ce);
+}
+
+.appleOxidationPanel__header--teal {
+  background: linear-gradient(90deg, var(--apple-teal), #2db0a5);
+}
+
+.appleOxidationPanel__header--orange {
+  background: linear-gradient(90deg, var(--apple-orange), #f1bd5b);
+}
+
+.appleOxidationPanel__header--blue {
+  background: linear-gradient(90deg, var(--apple-blue), #48a4de);
+}
+
+.appleOxidationMaterials section {
+  padding: 12px 14px;
+}
+
+.appleOxidationMaterials section + section {
+  border-top: 1px solid var(--apple-line);
+}
+
+.appleOxidationMaterials h3 {
+  margin: 0 0 10px;
+  font-size: 0.98rem;
+}
+
+.appleOxidationMaterialGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.appleOxidationMaterialGrid figure {
+  display: grid;
+  place-items: center;
+  min-height: 116px;
+  margin: 0;
+  padding: 8px;
+  border: 1px solid #e5ebf4;
+  border-radius: 12px;
+  background: #fbfdff;
+}
+
+.appleOxidationMaterialGrid img {
+  width: min(88px, 100%);
+  height: 72px;
+  object-fit: contain;
+}
+
+.appleOxidationMaterialGrid figcaption {
+  color: #172033;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.appleOxidationMiniBeaker {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 86px;
+  height: 72px;
+}
+
+.appleOxidationMiniBeaker img {
+  position: relative;
+  z-index: 2;
+  width: 72px;
+  height: 72px;
+}
+
+.appleOxidationMiniBeaker i {
+  position: absolute;
+  z-index: 1;
+  left: 23%;
+  right: 22%;
+  bottom: 17%;
+  height: 26%;
+  border-radius: 48% 48% 16% 16%;
+  background: var(--liquid-color);
+}
+
+.appleOxidationVariables {
+  padding-bottom: 12px;
+}
+
+.appleOxidationVariableList {
+  display: grid;
+  gap: 9px;
+  padding: 12px;
+}
+
+.appleOxidationVariableCard {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid #e5ebf4;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.appleOxidationVariableCard span {
+  color: #29344b;
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.appleOxidationVariableCard strong {
+  color: #1f6f3f;
+  font-size: 0.92rem;
+}
+
+.appleOxidationVariableCard select,
+.appleOxidationTablePanel select,
+.appleOxidationConclusion select,
+.appleOxidationConclusion input {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #cfd8e6;
+  border-radius: 10px;
+  padding: 0 10px;
+  background: #fff;
+  color: var(--apple-ink);
+  font: inherit;
+}
+
+.appleOxidationVariables .appleOxidationPrimaryButton,
+.appleOxidationTablePanel .appleOxidationPrimaryButton,
+.appleOxidationConclusion .appleOxidationPrimaryButton,
+.appleOxidationQuiz .appleOxidationPrimaryButton {
+  width: calc(100% - 24px);
+  margin: 0 12px;
+}
+
+.appleOxidationFeedback,
+.appleOxidationMuted {
+  margin: 10px 12px 0;
+  padding: 9px 10px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+
+.appleOxidationFeedback--success {
+  background: #e8f7eb;
+  color: #1d6d38;
+}
+
+.appleOxidationFeedback--error {
+  background: #ffecec;
+  color: #9f2323;
+}
+
+.appleOxidationVariables--correct {
+  border-color: rgba(56, 158, 83, 0.45);
+}
+
+.appleOxidationVariables--incorrect {
+  border-color: rgba(215, 65, 65, 0.55);
+}
+
+.appleOxidationStageCard {
+  padding: 12px;
+}
+
+.appleOxidationStageTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.appleOxidationStageTop h2 {
+  margin: 4px 0 0;
+  font-size: clamp(1rem, 1.2vw, 1.24rem);
+  line-height: 1.25;
+}
+
+.appleOxidationPhaseBadge {
+  align-self: start;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 8px 12px;
+  color: #fff;
+  font-weight: 900;
+  background: var(--apple-blue);
+}
+
+.appleOxidationSceneScroll {
+  overflow-x: auto;
+  border-radius: 13px;
+  border: 1px solid #cfd9e8;
+  background: #d8e7f1;
+}
+
+.appleOxidationScene {
+  position: relative;
+  min-width: 760px;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+
+.appleOxidationLabImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+.appleOxidationDropTarget {
+  position: absolute;
+  z-index: 5;
+  min-width: 44px;
+  min-height: 44px;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--apple-ink);
+  cursor: pointer;
+}
+
+.appleOxidationDropTarget:focus-visible,
+.appleOxidationSliceButton:focus-visible,
+.appleOxidationHeaderActions button:focus-visible,
+.appleOxidationPrimaryButton:focus-visible,
+.appleOxidationModal button:focus-visible,
+.appleOxidationQuiz input:focus-visible,
+.appleOxidationConclusion input:focus-visible,
+.appleOxidationConclusion select:focus-visible {
+  outline: 3px solid rgba(232, 155, 47, 0.65);
+  outline-offset: 3px;
+}
+
+.appleOxidationDropTarget:hover,
+.appleOxidationDropTarget.is-selected {
+  border-color: rgba(105, 80, 183, 0.7);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.appleOxidationDropTarget--beaker {
+  top: 28.2%;
+  width: 14.8%;
+  height: 31.8%;
+}
+
+.appleOxidationDropTarget--petri {
+  top: 67%;
+  width: 16.5%;
+  height: 18%;
+  border-radius: 999px;
+}
+
+.appleOxidationStation--control {
+  left: 3.8%;
+}
+
+.appleOxidationDropTarget--beaker.appleOxidationStation--sugar {
+  left: 13.2%;
+}
+
+.appleOxidationDropTarget--beaker.appleOxidationStation--lemon {
+  left: 32.7%;
+}
+
+.appleOxidationDropTarget--beaker.appleOxidationStation--bicarbonate {
+  left: 52.4%;
+}
+
+.appleOxidationDropTarget--beaker.appleOxidationStation--salt {
+  left: 71.8%;
+}
+
+.appleOxidationDropTarget--petri.appleOxidationStation--sugar {
+  left: 22.7%;
+}
+
+.appleOxidationDropTarget--petri.appleOxidationStation--lemon {
+  left: 42.1%;
+}
+
+.appleOxidationDropTarget--petri.appleOxidationStation--bicarbonate {
+  left: 61.5%;
+}
+
+.appleOxidationDropTarget--petri.appleOxidationStation--salt {
+  left: 80.7%;
+}
+
+.appleOxidationStationLabel {
+  position: absolute;
+  left: 50%;
+  z-index: 8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 96px;
+  min-height: 34px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(90, 103, 128, 0.2);
+  border-radius: 9px;
+  padding: 5px 8px;
+  color: #151b2c;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 16px rgba(45, 55, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1.05;
+  text-align: center;
+}
+
+.appleOxidationDropTarget--beaker .appleOxidationStationLabel {
+  top: -38px;
+}
+
+.appleOxidationDropTarget--petri .appleOxidationStationLabel {
+  bottom: -48px;
+}
+
+.appleOxidationBeakerImage {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  z-index: 8;
+  width: 82%;
+  max-height: 100%;
+  height: auto;
+  transform: translateX(-50%);
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 8px 8px rgba(49, 55, 66, 0.14));
+}
+
+.appleOxidationStationDone {
+  position: absolute;
+  z-index: 10;
+  right: 6px;
+  top: 6px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--apple-deep-green);
+}
+
+.appleOxidationStationDone svg {
+  width: 17px;
+  height: 17px;
+}
+
+.appleOxidationSliceVisual {
+  position: relative;
+  display: inline-block;
+  width: 76px;
+  aspect-ratio: 0.55;
+}
+
+.appleOxidationSliceVisual img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 500ms ease;
+}
+
+.appleOxidationSliceVisual__next {
+  z-index: 2;
+}
+
+.appleOxidationSliceVisual--beaker,
+.appleOxidationSliceVisual--petri {
+  position: absolute;
+  z-index: 7;
+  left: 50%;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 6px rgba(45, 39, 26, 0.22));
+}
+
+.appleOxidationSliceVisual--beaker {
+  bottom: 20%;
+  width: 48px;
+  z-index: 10;
+  transform: translateX(-50%) rotate(-6deg);
+  opacity: 0.92;
+}
+
+.appleOxidationSliceVisual--petri {
+  bottom: 13%;
+  width: 82px;
+  transform: translateX(-50%) rotate(-72deg);
+}
+
+.appleOxidationSliceVisual--table {
+  width: 46px;
+  transform: rotate(-72deg);
+}
+
+.appleOxidationSliceVisual--antioxidant::after {
+  content: "";
+  position: absolute;
+  inset: 11% -14%;
+  border: 2px solid rgba(113, 211, 103, 0.55);
+  border-radius: 50%;
+  box-shadow: 0 0 18px rgba(113, 211, 103, 0.46);
+  animation: appleOxidationSoftPulse 1.6s ease-in-out infinite;
+}
+
+.appleOxidationOxygenLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.appleOxidationOxygenLayer span {
+  position: absolute;
+  color: rgba(40, 103, 184, 0.5);
+  font-size: 0.78rem;
+  font-weight: 900;
+  animation: appleOxidationOxygenDrift 5.4s linear infinite;
+}
+
+.appleOxidationOxygenLayer span:nth-child(1) {
+  left: 18%;
+  top: 54%;
+}
+
+.appleOxidationOxygenLayer span:nth-child(2) {
+  left: 38%;
+  top: 50%;
+  animation-delay: 0.8s;
+}
+
+.appleOxidationOxygenLayer span:nth-child(3) {
+  left: 57%;
+  top: 52%;
+  animation-delay: 1.5s;
+}
+
+.appleOxidationOxygenLayer span:nth-child(4) {
+  left: 74%;
+  top: 50%;
+  animation-delay: 2.1s;
+}
+
+.appleOxidationOxygenLayer span:nth-child(5) {
+  left: 88%;
+  top: 55%;
+  animation-delay: 2.8s;
+}
+
+.appleOxidationPrepTray {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 116px;
+  margin-top: 10px;
+  padding: 10px;
+  overflow-x: auto;
+  border: 1px dashed #cfd8e6;
+  border-radius: 14px;
+  background: #fbfdff;
+}
+
+.appleOxidationWholeApple {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 142px;
+  height: 94px;
+}
+
+.appleOxidationWholeApple img {
+  width: 116px;
+  height: 86px;
+  object-fit: contain;
+}
+
+.appleOxidationKnifeCue {
+  position: absolute;
+  right: 4px;
+  bottom: 8px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--apple-orange);
+  animation: appleOxidationKnifeMove 1.7s ease-in-out infinite;
+}
+
+.appleOxidationSliceButton {
+  display: grid;
+  place-items: center;
+  gap: 4px;
+  min-width: 104px;
+  min-height: 92px;
+  border: 2px solid #dfe7f2;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--apple-ink);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.appleOxidationSliceButton .appleOxidationSliceVisual {
+  width: 42px;
+}
+
+.appleOxidationSliceButton span:last-child {
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.appleOxidationSliceButton.is-selected {
+  border-color: var(--apple-purple);
+  box-shadow: 0 0 0 4px rgba(105, 80, 183, 0.15);
+}
+
+.appleOxidationActionBar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.appleOxidationTimerPanel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.appleOxidationTimerPanel article {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #dfe7f2;
+  border-radius: 13px;
+  background: #fff;
+}
+
+.appleOxidationTimerPanel strong {
+  display: block;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.appleOxidationTimerPanel span {
+  color: var(--apple-muted);
+  font-size: 0.85rem;
+}
+
+.appleOxidationProgressTrack {
+  grid-column: 1 / -1;
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e7edf6;
+}
+
+.appleOxidationProgressTrack i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--apple-teal), var(--apple-orange));
+  transition: width 130ms linear;
+}
+
+.appleOxidationSteps ol {
+  display: grid;
+  gap: 0;
+  max-height: 470px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.appleOxidationSteps li {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid #edf1f7;
+  color: #697286;
+}
+
+.appleOxidationSteps li > span:first-child {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: #fff;
+  background: #b9c3d2;
+  font-weight: 900;
+}
+
+.appleOxidationSteps li p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.appleOxidationSteps li.is-active {
+  color: var(--apple-ink);
+  background: #fff6e4;
+}
+
+.appleOxidationSteps li.is-active > span:first-child {
+  background: var(--apple-orange);
+}
+
+.appleOxidationSteps li.is-complete {
+  color: #1c6d35;
+  background: #eef9f0;
+}
+
+.appleOxidationSteps li.is-complete > span:first-child {
+  background: var(--apple-deep-green);
+}
+
+.appleOxidationLegend {
+  display: flex;
+  gap: 12px;
+  padding: 10px 12px;
+  color: var(--apple-muted);
+  font-size: 0.83rem;
+}
+
+.appleOxidationLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.appleOxidationLegend i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #b9c3d2;
+}
+
+.appleOxidationLegend i.is-complete {
+  background: var(--apple-deep-green);
+}
+
+.appleOxidationLegend i.is-active {
+  background: var(--apple-orange);
+}
+
+.appleOxidationTablePanel {
+  padding-bottom: 12px;
+}
+
+.appleOxidationTableScroll {
+  overflow-x: auto;
+}
+
+.appleOxidationTablePanel table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.appleOxidationTablePanel th,
+.appleOxidationTablePanel td {
+  padding: 9px 10px;
+  border-bottom: 1px solid #e7edf6;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.appleOxidationTablePanel th {
+  color: #263044;
+  background: #f7f9fc;
+  font-size: 0.86rem;
+}
+
+.appleOxidationTablePanel tr.is-correct td {
+  background: #eef9f0;
+}
+
+.appleOxidationTablePanel tr.is-incorrect td {
+  background: #fff0f0;
+}
+
+.appleOxidationConclusion {
+  display: grid;
+  gap: 10px;
+  padding-bottom: 12px;
+}
+
+.appleOxidationConclusion label {
+  display: grid;
+  gap: 8px;
+  margin: 0 12px;
+  padding: 10px;
+  border: 1px solid #e5ebf4;
+  border-radius: 12px;
+  background: #fffdf8;
+}
+
+.appleOxidationConclusion label.is-incorrect {
+  border-color: #e87777;
+  background: #fff1f1;
+}
+
+.appleOxidationConclusion label span {
+  color: #29344b;
+  font-size: 0.9rem;
+}
+
+.appleOxidationSummaryCard {
+  margin: 0 12px;
+  padding: 12px;
+  border-radius: 12px;
+  color: #1d5f35;
+  background: #eaf8ed;
+}
+
+.appleOxidationSummaryCard p {
+  margin: 6px 0 0;
+}
+
+.appleOxidationTip {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 14px;
+  border-color: #f0ce8a;
+  background: #fff8e9;
+}
+
+.appleOxidationTip p {
+  margin: 0;
+  color: #263044;
+  line-height: 1.45;
+}
+
+.appleOxidationTip svg {
+  color: var(--apple-orange);
+}
+
+.appleOxidationQuiz {
+  padding-bottom: 12px;
+}
+
+.appleOxidationQuizList {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+}
+
+.appleOxidationQuiz fieldset {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid #dfe7f2;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.appleOxidationQuiz legend {
+  padding: 0 4px;
+  color: #202a3d;
+  font-weight: 900;
+}
+
+.appleOxidationQuiz label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  align-items: start;
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.appleOxidationQuiz label.is-selected {
+  border-color: rgba(36, 107, 184, 0.35);
+  background: #edf6ff;
+}
+
+.appleOxidationToast {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 50;
+  max-width: min(420px, calc(100vw - 36px));
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: #fff;
+  background: #263044;
+  box-shadow: 0 18px 38px rgba(24, 32, 51, 0.28);
+  font-weight: 800;
+}
+
+.appleOxidationModalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(20, 29, 47, 0.55);
+}
+
+.appleOxidationModal {
+  width: min(620px, 100%);
+  max-height: min(720px, calc(100vh - 36px));
+  overflow-y: auto;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(17, 24, 39, 0.3);
+}
+
+.appleOxidationModal header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5ebf4;
+}
+
+.appleOxidationModal h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.appleOxidationModal header button {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  background: #596273;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.appleOxidationModal p,
+.appleOxidationModalList {
+  margin: 0;
+  padding: 16px;
+  line-height: 1.55;
+}
+
+.appleOxidationModalList {
+  padding-left: 36px;
+}
+
+.appleOxidationModalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 0 16px 16px;
+}
+
+.appleOxidationModalActions button:first-child {
+  color: #263044;
+  background: #eef2f7;
+  box-shadow: none;
+}
+
+@keyframes appleOxidationSoftPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes appleOxidationOxygenDrift {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.75;
+  }
+  to {
+    transform: translateY(95px);
+    opacity: 0;
+  }
+}
+
+@keyframes appleOxidationKnifeMove {
+  0%,
+  100% {
+    transform: translate(-3px, -2px) rotate(-12deg);
+  }
+  50% {
+    transform: translate(8px, 4px) rotate(5deg);
+  }
+}
+
+@media (max-width: 1240px) {
+  .appleOxidationLayout {
+    grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.6fr);
+  }
+
+  .appleOxidationRightRail {
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .appleOxidationPage {
+    padding: 10px;
+  }
+
+  .appleOxidationHeader,
+  .appleOxidationTitleBlock {
+    align-items: flex-start;
+  }
+
+  .appleOxidationHeader {
+    flex-direction: column;
+  }
+
+  .appleOxidationHeaderActions {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .appleOxidationHeaderActions button {
+    flex: 1 1 145px;
+  }
+
+  .appleOxidationLayout,
+  .appleOxidationRightRail,
+  .appleOxidationActionBar,
+  .appleOxidationTimerPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .appleOxidationScene {
+    min-width: 620px;
+  }
+
+  .appleOxidationMaterialGrid {
+    grid-template-columns: repeat(4, minmax(110px, 1fr));
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .appleOxidationTitleBlock img {
+    width: 60px;
+    height: 54px;
+  }
+
+  .appleOxidationObjective {
+    align-items: flex-start;
+  }
+
+  .appleOxidationStageTop {
+    flex-direction: column;
+  }
+
+  .appleOxidationPhaseBadge {
+    align-self: stretch;
+    text-align: center;
+  }
+
+  .appleOxidationScene {
+    min-width: 620px;
+  }
+
+  .appleOxidationDropTarget--petri .appleOxidationStationLabel {
+    bottom: -43px;
+    min-width: 82px;
+    font-size: 0.7rem;
+  }
+
+  .appleOxidationDropTarget--beaker .appleOxidationStationLabel {
+    min-width: 86px;
+    font-size: 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .appleOxidationPage *,
+  .appleOxidationPage *::before,
+  .appleOxidationPage *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}

@@ -5,6 +5,7 @@ import SimulatorReviewPanel from "../components/reviews/SimulatorReviewPanel";
 import useRatingSummaries from "../components/reviews/useRatingSummaries";
 import AlloyHardnessSimulatorPage from "./AlloyHardnessSimulatorPage";
 import AlloyDiscoverySimulatorPage from "./AlloyDiscoverySimulatorPage";
+import AppleOxidationSimulatorPage from "./AppleOxidationSimulatorPage";
 import AtomMoleculeCompoundSimulatorPage from "./AtomMoleculeCompoundSimulatorPage";
 import ChemicalCellSimulatorPage from "./ChemicalCellSimulatorPage";
 import ElectrolysisSimulatorPage from "./ElectrolysisSimulatorPage";
@@ -151,6 +152,14 @@ export default function SimulatorPage({ onOpenSimulator }) {
 
   if (path === "/simulator/alloy-hardness") {
     return <AlloyHardnessSimulatorPage reviewPanel={getReviewPanel("aloi")} />;
+  }
+
+  if (path === "/simulator/pengoksidaan-epal") {
+    return (
+      <AppleOxidationSimulatorPage
+        reviewPanel={getReviewPanel("pengoksidaan-epal")}
+      />
+    );
   }
 
   if (path === "/simulator/kadar-tindak-balas") {

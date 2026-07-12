@@ -3,6 +3,35 @@ import { useEffect, useState } from "react";
 import emailjs from "@emailjs/browser";
 import SimulatorPage from "./pages/SimulatorPage";
 
+const VISITOR_COUNT_FALLBACK = "1,000+";
+
+const formatVisitorCount = (value: unknown) => {
+  if (value === null || value === undefined || value === "") {
+    return null;
+  }
+
+  const rawValue = String(value).trim();
+  const compactValue = rawValue.match(/^([\d,.]+)\s*([kmb])?$/i);
+  const multiplier = compactValue?.[2]?.toLowerCase();
+  const normalizedValue = compactValue
+    ? compactValue[1].replace(/,/g, "")
+    : rawValue.replace(/[^\d.-]/g, "");
+
+  if (!/\d/.test(normalizedValue)) {
+    return null;
+  }
+
+  const count =
+    Number(normalizedValue) *
+    (multiplier === "b" ? 1_000_000_000 : multiplier === "m" ? 1_000_000 : multiplier === "k" ? 1_000 : 1);
+
+  if (!Number.isFinite(count)) {
+    return null;
+  }
+
+  return `${Math.max(0, Math.round(count)).toLocaleString("en-MY")}+`;
+};
+
 export default function App() {
   type Page = "home" | "about" | "inovasi" | "modul" | "banksoalan" | "rpm" | "simulator";
   type SharePlatform = "facebook" | "whatsapp" | "telegram" | "x";
@@ -173,12 +202,16 @@ export default function App() {
         }
 
         const data = await response.json();
-        const count = Number(data?.count_unique ?? data?.count ?? 0);
+        const count = formatVisitorCount(data?.count_unique ?? data?.count);
 
-        setTotalVisitors(count.toLocaleString("en-MY"));
+        if (!count) {
+          throw new Error("Invalid visitor count");
+        }
+
+        setTotalVisitors(count);
       } catch (error) {
         console.error("Visitor counter error:", error);
-        setTotalVisitors("1k");
+        setTotalVisitors(VISITOR_COUNT_FALLBACK);
       }
     };
 
@@ -2114,7 +2147,7 @@ export default function App() {
 
           <div className="statsGrid">
             <article className="statCard statsCard statCardPrimary">
-              <p className="statValue">{totalVisitors}+</p>
+              <p className="statValue">{totalVisitors}</p>
               <p className="statLabel">Pelawat</p>
               <span className="statHint">telah singgah ke CikguSTEM</span>
             </article>

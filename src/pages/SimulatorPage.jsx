@@ -7,6 +7,7 @@ import AlloyHardnessSimulatorPage from "./AlloyHardnessSimulatorPage";
 import AlloyDiscoverySimulatorPage from "./AlloyDiscoverySimulatorPage";
 import AppleOxidationSimulatorPage from "./AppleOxidationSimulatorPage";
 import AtomMoleculeCompoundSimulatorPage from "./AtomMoleculeCompoundSimulatorPage";
+import CalorieExperimentPage from "./CalorieExperimentPage";
 import ChemicalCellSimulatorPage from "./ChemicalCellSimulatorPage";
 import ElectrolysisSimulatorPage from "./ElectrolysisSimulatorPage";
 import EndocrineSystemSimulatorPage from "./EndocrineSystemSimulatorPage";
@@ -158,6 +159,14 @@ export default function SimulatorPage({ onOpenSimulator }) {
     return (
       <AppleOxidationSimulatorPage
         reviewPanel={getReviewPanel("pengoksidaan-epal")}
+      />
+    );
+  }
+
+  if (path === "/simulator/nilai-kalori-makanan") {
+    return (
+      <CalorieExperimentPage
+        reviewPanel={getReviewPanel("nilai-kalori-makanan")}
       />
     );
   }

@@ -170,6 +170,30 @@ export const SIMULATORS: readonly SimulatorMetadata[] = [
     image: nitrogenBackgroundUrl,
   },
   {
+    id: "nilai-kalori-makanan",
+    title: "Eksperimen 2.1: Nilai Kalori Makanan",
+    description:
+      "Menganggarkan nilai kalori kacang tanah, ikan bilis dan roti melalui pembakaran sampel makanan di bawah tabung didih.",
+    tingkatan: 5,
+    bab: "Bab 2: Nutrisi dan Teknologi Makanan",
+    topik: "Menganggarkan Nilai Kalori Makanan",
+    keywords: [
+      "nilai kalori",
+      "kalori makanan",
+      "nutrisi",
+      "makanan",
+      "kacang tanah",
+      "ikan bilis",
+      "roti",
+      "kalorimeter",
+      "suhu air",
+      "Tingkatan 5",
+      "eksperimen 2.1",
+    ],
+    path: "/simulator/nilai-kalori-makanan",
+    image: "/assets/nilai%20kalori/kacang-tanah-terbakar.webp",
+  },
+  {
     id: "kadar-tindak-balas",
     title: "Kadar Tindak Balas",
     description:

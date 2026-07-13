@@ -35,11 +35,13 @@ type IconName =
   | "flask"
   | "info"
   | "lock"
+  | "menu"
   | "reset"
   | "table"
   | "thermometer"
   | "timer"
-  | "water";
+  | "water"
+  | "x";
 
 const STAGE_STEP_INDEX: Record<ExperimentStage, number> = {
   "select-food": 0,
@@ -116,6 +118,13 @@ function Icon({ name }: { name: IconName }) {
         <path d="M8 11V8a4 4 0 0 1 8 0v3" />
       </>
     ),
+    menu: (
+      <>
+        <path d="M4 7h16" />
+        <path d="M4 12h16" />
+        <path d="M4 17h16" />
+      </>
+    ),
     reset: (
       <>
         <path d="M4 12a8 8 0 1 0 2.4-5.7" />
@@ -147,6 +156,12 @@ function Icon({ name }: { name: IconName }) {
       <>
         <path d="M12 3C9.6 6.2 6 10.5 6 14a6 6 0 0 0 12 0c0-3.5-3.6-7.8-6-11Z" />
         <path d="M9.2 15.8A3.2 3.2 0 0 0 12 17" />
+      </>
+    ),
+    x: (
+      <>
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
       </>
     ),
   };
@@ -981,6 +996,7 @@ export default function CalorieExperimentPage({
   const [modal, setModal] = useState<ModalKind>(null);
   const [dragTargetActive, setDragTargetActive] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<FoodId | null>(null);
+  const [mobilePanelOpen, setMobilePanelOpen] = useState(false);
   const tableRef = useRef<HTMLDivElement | null>(null);
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -988,6 +1004,27 @@ export default function CalorieExperimentPage({
   const allSamplesCompleted = FOOD_ORDER.every((foodId) => Boolean(results[foodId]));
   const hasCalculated = selectedFoodId ? Boolean(results[selectedFoodId]) : false;
   const canSelectFood = stage === "select-food";
+
+  useEffect(() => {
+    if (!mobilePanelOpen) {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMobilePanelOpen(false);
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [mobilePanelOpen]);
 
   const beginFoodExperiment = useCallback((foodId: FoodId) => {
     const food = FOOD_DATA[foodId];
@@ -1185,6 +1222,62 @@ export default function CalorieExperimentPage({
     [stage],
   );
 
+  const selectFoodFromMobilePanel = (foodId: FoodId) => {
+    selectFood(foodId);
+    setMobilePanelOpen(false);
+  };
+
+  const runPanelAction = (action: () => void, closePanel: boolean) => {
+    action();
+    if (closePanel) {
+      setMobilePanelOpen(false);
+    }
+  };
+
+  const renderPrimaryActions = (variant: "desktop" | "mobile") => (
+    <div
+      className={`calorieActionBar calorieActionBar--${variant}`}
+      aria-label={
+        variant === "mobile"
+          ? "Butang utama eksperimen dalam panel kawalan"
+          : "Butang utama eksperimen"
+      }
+    >
+      {stageActions.map((action) => (
+        <button
+          key={`${variant}-${action.label}`}
+          type="button"
+          disabled={action.disabled}
+          onClick={() => runPanelAction(action.onClick, variant === "mobile")}
+          aria-label={action.label}
+        >
+          <Icon name={action.icon} />
+          {action.label}
+        </button>
+      ))}
+    </div>
+  );
+
+  const renderSecondaryActions = (variant: "desktop" | "mobile") => (
+    <div className={`calorieSecondaryActions calorieSecondaryActions--${variant}`}>
+      <button
+        type="button"
+        disabled={stage !== "completed" || allSamplesCompleted}
+        onClick={() => runPanelAction(chooseNextSample, variant === "mobile")}
+      >
+        Uji Sampel Seterusnya
+        <Icon name="arrowRight" />
+      </button>
+      <button type="button" onClick={() => runPanelAction(showObservationTable, variant === "mobile")}>
+        <Icon name="table" />
+        Lihat Jadual
+      </button>
+      <button type="button" onClick={() => runPanelAction(finishExperiment, variant === "mobile")}>
+        Tamat Eksperimen
+      </button>
+    </div>
+  );
+
   return (
     <main className="calorieExperimentPage">
       <header className="calorieHeader">
@@ -1217,18 +1310,144 @@ export default function CalorieExperimentPage({
         </div>
       </header>
 
-      {reviewPanel}
+      {reviewPanel && <div className="calorieReviewSlot">{reviewPanel}</div>}
 
       <section className="calorieWorkspace" aria-label="Simulator eksperimen nilai kalori makanan">
-        <aside className="calorieLeftRail">
-          <FoodSelector
-            selectedFoodId={selectedFoodId}
-            completedResults={results}
-            canSelect={canSelectFood}
-            onSelect={selectFood}
-          />
-          <LockedTextbookPanel />
-          <ExperimentSteps stage={stage} />
+        <button
+          type="button"
+          className={`calorieMobilePanelToggle${mobilePanelOpen ? " is-open" : ""}`}
+          aria-controls="calorie-mobile-panel"
+          aria-expanded={mobilePanelOpen}
+          onClick={() => setMobilePanelOpen(true)}
+        >
+          <Icon name="menu" />
+          Panel
+        </button>
+
+        <button
+          type="button"
+          className={`calorieMobilePanelBackdrop${mobilePanelOpen ? " is-open" : ""}`}
+          aria-label="Tutup panel kawalan"
+          onClick={() => setMobilePanelOpen(false)}
+        />
+
+        <aside
+          id="calorie-mobile-panel"
+          className={`calorieMobilePanelShell${mobilePanelOpen ? " is-open" : ""}`}
+          aria-label="Panel kawalan eksperimen"
+        >
+          <div className="calorieMobilePanel__header">
+            <strong>Panel Kawalan</strong>
+            <button
+              type="button"
+              aria-label="Tutup panel kawalan"
+              onClick={() => setMobilePanelOpen(false)}
+            >
+              <Icon name="x" />
+            </button>
+          </div>
+
+          <div className="calorieMobileActionBlock">
+            <div className="calorieMobileUtilityActions" aria-label="Tindakan simulator">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobilePanelOpen(false);
+                  setModal("instructions");
+                }}
+              >
+                <Icon name="book" />
+                Arahan
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setMobilePanelOpen(false);
+                  setModal("info");
+                }}
+              >
+                <Icon name="info" />
+                Info
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  resetAll();
+                  setMobilePanelOpen(false);
+                }}
+              >
+                <Icon name="reset" />
+                Semula
+              </button>
+              <a href="/simulator">
+                <Icon name="exit" />
+                Keluar
+              </a>
+            </div>
+            {renderPrimaryActions("mobile")}
+            {renderSecondaryActions("mobile")}
+          </div>
+
+          <aside className="calorieLeftRail">
+            <FoodSelector
+              selectedFoodId={selectedFoodId}
+              completedResults={results}
+              canSelect={canSelectFood}
+              onSelect={canSelectFood ? selectFoodFromMobilePanel : selectFood}
+            />
+            <LockedTextbookPanel />
+            <ExperimentSteps stage={stage} />
+          </aside>
+
+          <aside className="calorieRightRail">
+            <section className="caloriePanel calorieStatusPanel" aria-label="Status eksperimen">
+              <div className="caloriePanel__header caloriePanel__header--orange">
+                <Icon name={stage === "heating" ? "fire" : "timer"} />
+                <h2>
+                  {stage === "heating"
+                    ? "Eksperimen Sedang Berjalan"
+                    : stage === "completed"
+                      ? "Sampel Selesai"
+                      : "Status Semasa"}
+                </h2>
+              </div>
+              <div className="calorieStatusGrid">
+                <article>
+                  <Icon name="timer" />
+                  <span>Masa</span>
+                  <strong>
+                    {selectedFood ? formatTimer(elapsedMs, selectedFood.burnDurationMs) : "0:00"}
+                  </strong>
+                </article>
+                <article>
+                  <Icon name="thermometer" />
+                  <span>Suhu</span>
+                  <strong>{temperature.toFixed(1)} °C</strong>
+                </article>
+              </div>
+              <DigitalTemperature value={temperature} />
+            </section>
+
+            <TemperatureGraph
+              selectedFoodId={selectedFoodId}
+              stage={stage}
+              elapsedMs={elapsedMs}
+            />
+
+            <DataPanel
+              selectedFoodId={selectedFoodId}
+              initialTemperature={initialTemperature}
+              finalTemperature={finalTemperature}
+              temperature={temperature}
+            />
+
+            <CalculationPanel
+              selectedFoodId={selectedFoodId}
+              initialTemperature={initialTemperature}
+              finalTemperature={finalTemperature}
+              hasCalculated={hasCalculated}
+            />
+          </aside>
         </aside>
 
         <section className="calorieCenterColumn">
@@ -1244,41 +1463,11 @@ export default function CalorieExperimentPage({
             onDragTargetActiveChange={setDragTargetActive}
           />
 
-          <div className="calorieActionBar" aria-label="Butang utama eksperimen">
-            {stageActions.map((action) => (
-              <button
-                key={action.label}
-                type="button"
-                disabled={action.disabled}
-                onClick={action.onClick}
-                aria-label={action.label}
-              >
-                <Icon name={action.icon} />
-                {action.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="calorieSecondaryActions">
-            <button
-              type="button"
-              disabled={stage !== "completed" || allSamplesCompleted}
-              onClick={chooseNextSample}
-            >
-              Uji Sampel Seterusnya
-              <Icon name="arrowRight" />
-            </button>
-            <button type="button" onClick={showObservationTable}>
-              <Icon name="table" />
-              Lihat Jadual
-            </button>
-            <button type="button" onClick={finishExperiment}>
-              Tamat Eksperimen
-            </button>
-          </div>
+          {renderPrimaryActions("desktop")}
+          {renderSecondaryActions("desktop")}
         </section>
 
-        <aside className="calorieRightRail">
+        <aside className="calorieRightRail calorieRightRail--legacy" hidden>
           <section className="caloriePanel calorieStatusPanel" aria-label="Status eksperimen">
             <div className="caloriePanel__header caloriePanel__header--orange">
               <Icon name={stage === "heating" ? "fire" : "timer"} />

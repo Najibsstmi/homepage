@@ -132,18 +132,6 @@ export default function AnalysisPanel({ analysis, structureVersion }: AnalysisPa
             </dd>
           </div>
         )}
-        <div>
-          <dt>Bilangan Atom</dt>
-          <dd>{displayAnalysis.atomCount}</dd>
-        </div>
-        <div>
-          <dt>Bilangan Ikatan</dt>
-          <dd>{displayAnalysis.bondCount}</dd>
-        </div>
-        <div>
-          <dt>Unsur Berbeza</dt>
-          <dd>{displayAnalysis.uniqueElementCount}</dd>
-        </div>
       </dl>
 
       <div className="atomExplanation">

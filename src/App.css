@@ -18230,12 +18230,54 @@ section {
   background: rgba(8, 47, 73, 0.26);
 }
 
+.atomResultCard {
+  position: relative;
+  display: grid;
+  align-content: center;
+  min-height: 178px;
+  overflow: hidden;
+  border-color: rgba(34, 211, 238, 0.42);
+  background:
+    radial-gradient(circle at 88% 18%, rgba(255, 255, 255, 0.3), transparent 28%),
+    linear-gradient(135deg, rgba(6, 182, 212, 0.92), rgba(14, 165, 233, 0.72) 48%, rgba(20, 184, 166, 0.76)),
+    rgba(8, 47, 73, 0.8);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    0 18px 34px rgba(8, 145, 178, 0.24);
+}
+
+.atomResultCard::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 7px;
+  background: #fef08a;
+  content: "";
+}
+
+.atomResultCard span {
+  position: relative;
+  z-index: 1;
+  color: #ecfeff;
+  letter-spacing: 0.08em;
+}
+
 .atomResultCard strong {
+  position: relative;
+  z-index: 1;
   display: block;
-  margin-top: 0.35rem;
-  color: #f8fafc;
-  font-size: 2rem;
-  line-height: 1;
+  margin-top: 0.55rem;
+  color: #ffffff;
+  font-size: clamp(3rem, 8vw, 4.45rem);
+  line-height: 0.92;
+  text-shadow: 0 8px 24px rgba(8, 47, 73, 0.32);
+}
+
+.atomResultCard strong span {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .atomResultCard p,
@@ -18253,6 +18295,14 @@ section {
   font-size: 0.88rem;
   font-weight: 700;
   line-height: 1.55;
+}
+
+.atomResultCard p {
+  position: relative;
+  z-index: 1;
+  color: #ecfeff;
+  font-size: 1.05rem;
+  font-weight: 950;
 }
 
 .atomIonicCard strong {
@@ -18460,7 +18510,7 @@ section {
 
 .atomAnalysisGrid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 0.65rem;
   margin: 0.85rem 0 0;
 }

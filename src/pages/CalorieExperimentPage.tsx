@@ -1321,7 +1321,7 @@ export default function CalorieExperimentPage({
           onClick={() => setMobilePanelOpen(true)}
         >
           <Icon name="menu" />
-          Panel
+          <span>Panel Kawalan</span>
         </button>
 
         <button

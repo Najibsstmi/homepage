@@ -1354,7 +1354,7 @@
 
 @media (max-width: 760px) {
   .calorieExperimentPage {
-    padding: 5px 5px calc(82px + env(safe-area-inset-bottom));
+    padding: 5px 5px calc(112px + env(safe-area-inset-bottom));
   }
 
   .calorieReviewSlot {
@@ -1478,24 +1478,41 @@
 
   .calorieMobilePanelToggle {
     position: fixed;
-    right: 12px;
-    bottom: calc(12px + env(safe-area-inset-bottom));
+    right: 14px;
+    bottom: calc(14px + env(safe-area-inset-bottom));
     z-index: 94;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    min-height: 52px;
-    border: 1px solid rgba(255, 255, 255, 0.32);
+    gap: 10px;
+    min-width: min(272px, calc(100vw - 28px));
+    min-height: 66px;
+    border: 2px solid rgba(255, 255, 255, 0.76);
     border-radius: 999px;
-    padding: 0 16px;
+    padding: 0 24px;
     color: #fff;
-    background: linear-gradient(135deg, #0f6dbc, #0f9c7a);
-    box-shadow: 0 18px 34px rgba(5, 22, 42, 0.32);
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0)),
+      linear-gradient(135deg, #f97316, #0f8f86 62%, #0b6cb8);
+    box-shadow:
+      0 22px 42px rgba(5, 22, 42, 0.38),
+      0 0 0 6px rgba(249, 115, 22, 0.16);
+    font-size: 1.08rem;
     font-weight: 950;
+    line-height: 1;
     transition:
       opacity 160ms ease,
       transform 160ms ease;
+  }
+
+  .calorieMobilePanelToggle svg {
+    width: 26px;
+    height: 26px;
+    stroke-width: 2.6;
+  }
+
+  .calorieMobilePanelToggle span {
+    white-space: nowrap;
   }
 
   .calorieMobilePanelToggle.is-open {

@@ -39,6 +39,18 @@ type VariableField = "manipulated" | "responding" | "controlled";
 type VariableFeedback = "idle" | "correct" | "incorrect";
 type ModalKind = "instructions" | "info" | "reset" | null;
 type ToneKind = "click" | "success" | "error" | "done";
+type IconName =
+  | "book"
+  | "info"
+  | "volume"
+  | "volumeOff"
+  | "reset"
+  | "check"
+  | "timer"
+  | "flask"
+  | "knife"
+  | "menu"
+  | "x";
 
 const SOAK_REAL_MS = 7000;
 const AIR_REAL_MS = 14000;
@@ -176,8 +188,8 @@ function getStageBlend(
   return { from: "fresh", to: "fresh", mix: 0 };
 }
 
-function Icon({ name }: { name: "book" | "info" | "volume" | "volumeOff" | "reset" | "check" | "timer" | "flask" | "knife" }) {
-  const paths = {
+function Icon({ name }: { name: IconName }) {
+  const paths: Record<IconName, ReactNode> = {
     book: (
       <>
         <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H7a3 3 0 0 0-3 3V5.5Z" />
@@ -231,6 +243,19 @@ function Icon({ name }: { name: "book" | "info" | "volume" | "volumeOff" | "rese
       <>
         <path d="M14 3 4 13l7 7L21 10V3h-7Z" />
         <path d="m4 13 7 7" />
+      </>
+    ),
+    menu: (
+      <>
+        <path d="M4 7h16" />
+        <path d="M4 12h16" />
+        <path d="M4 17h16" />
+      </>
+    ),
+    x: (
+      <>
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
       </>
     ),
   };
@@ -819,6 +844,7 @@ export default function AppleOxidationSimulatorPage({
   const [phase, setPhase] = useState<ExperimentPhase>("variables");
   const [soundOn, setSoundOn] = useState(true);
   const [activeModal, setActiveModal] = useState<ModalKind>(null);
+  const [mobilePanelOpen, setMobilePanelOpen] = useState(false);
   const [toast, setToast] = useState("");
   const [variableAnswers, setVariableAnswers] = useState(INITIAL_VARIABLE_ANSWERS);
   const [variableLocked, setVariableLocked] = useState(false);
@@ -851,6 +877,27 @@ export default function AppleOxidationSimulatorPage({
   );
   const conclusionComplete = Object.values(conclusionResults).every(Boolean);
   const progressLabel = getPhaseInstruction(phase);
+
+  useEffect(() => {
+    if (!mobilePanelOpen || typeof document === "undefined") {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMobilePanelOpen(false);
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [mobilePanelOpen]);
 
   const showToast = useCallback((message: string) => {
     setToast(message);
@@ -1253,6 +1300,42 @@ export default function AppleOxidationSimulatorPage({
     [sliceLocations],
   );
 
+  const runMobilePanelAction = (action: () => void, closePanel = true) => {
+    action();
+    if (closePanel) {
+      setMobilePanelOpen(false);
+    }
+  };
+
+  const renderActionBar = (variant: "desktop" | "mobile") => (
+    <div className={`appleOxidationActionBar appleOxidationActionBar--${variant}`}>
+      <button
+        type="button"
+        className="appleOxidationPrimaryButton"
+        disabled={phase !== "cutting"}
+        onClick={() => runMobilePanelAction(cutApple, variant === "mobile")}
+      >
+        Potong Epal kepada 5 Hirisan Sama Saiz
+      </button>
+      <button
+        type="button"
+        className="appleOxidationPrimaryButton appleOxidationPrimaryButton--green"
+        disabled={phase !== "immersing" || !canStartSoak}
+        onClick={() => runMobilePanelAction(startSoaking, variant === "mobile")}
+      >
+        {phase === "soaking" ? "Sedang Merendam..." : "Mulakan Rendaman 1 Minit"}
+      </button>
+      <button
+        type="button"
+        className="appleOxidationPrimaryButton appleOxidationPrimaryButton--orange"
+        disabled={phase !== "transferring" || !canStartAir}
+        onClick={() => runMobilePanelAction(startAirExposure, variant === "mobile")}
+      >
+        Dedahkan kepada Udara selama 15 Minit
+      </button>
+    </div>
+  );
+
   return (
     <main className="appleOxidationPage">
       <header className="appleOxidationHeader">
@@ -1294,7 +1377,7 @@ export default function AppleOxidationSimulatorPage({
         </div>
       </header>
 
-      {reviewPanel}
+      {reviewPanel && <div className="appleOxidationReviewSlot">{reviewPanel}</div>}
 
       <section className="appleOxidationObjective" aria-label="Tujuan eksperimen">
         <Icon name="flask" />
@@ -1305,6 +1388,131 @@ export default function AppleOxidationSimulatorPage({
       </section>
 
       <section className="appleOxidationLayout" aria-label="Simulator pengoksidaan buah epal">
+        <button
+          type="button"
+          className={`appleOxidationMobilePanelToggle${mobilePanelOpen ? " is-open" : ""}`}
+          aria-controls="apple-oxidation-mobile-panel"
+          aria-expanded={mobilePanelOpen}
+          onClick={() => setMobilePanelOpen(true)}
+        >
+          <Icon name="menu" />
+          <span>Panel Kawalan</span>
+        </button>
+
+        <button
+          type="button"
+          className={`appleOxidationMobilePanelBackdrop${mobilePanelOpen ? " is-open" : ""}`}
+          aria-label="Tutup panel kawalan"
+          onClick={() => setMobilePanelOpen(false)}
+        />
+
+        <aside
+          id="apple-oxidation-mobile-panel"
+          className={`appleOxidationMobilePanelShell${mobilePanelOpen ? " is-open" : ""}`}
+          aria-label="Panel kawalan eksperimen antioksidan"
+        >
+          <div className="appleOxidationMobilePanel__header">
+            <strong>Panel Kawalan</strong>
+            <button
+              type="button"
+              aria-label="Tutup panel kawalan"
+              onClick={() => setMobilePanelOpen(false)}
+            >
+              <Icon name="x" />
+            </button>
+          </div>
+
+          <div className="appleOxidationMobileUtilityActions" aria-label="Tindakan simulator">
+            <button
+              type="button"
+              onClick={() => {
+                setMobilePanelOpen(false);
+                setActiveModal("instructions");
+              }}
+            >
+              <Icon name="book" />
+              Arahan
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setMobilePanelOpen(false);
+                setActiveModal("info");
+              }}
+            >
+              <Icon name="info" />
+              Info
+            </button>
+            <button
+              type="button"
+              aria-pressed={soundOn}
+              onClick={() => setSoundOn((current) => !current)}
+            >
+              <Icon name={soundOn ? "volume" : "volumeOff"} />
+              Bunyi {soundOn ? "ON" : "OFF"}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setMobilePanelOpen(false);
+                setActiveModal("reset");
+              }}
+            >
+              <Icon name="reset" />
+              Reset
+            </button>
+          </div>
+
+          {renderActionBar("mobile")}
+
+          <div className="appleOxidationLeftRail appleOxidationLeftRail--panel">
+            <VariablesPanel
+              answers={variableAnswers}
+              feedback={variableFeedback}
+              locked={variableLocked}
+              onChange={(field, value) =>
+                setVariableAnswers((current) => ({ ...current, [field]: value }))
+              }
+              onCheck={checkVariables}
+            />
+            <MaterialsPanel />
+          </div>
+
+          <div className="appleOxidationRightRail appleOxidationRightRail--panel">
+            <StepsPanel
+              phase={phase}
+              variableLocked={variableLocked}
+              sliceLocations={sliceLocations}
+              observationComplete={observationComplete}
+              conclusionComplete={conclusionComplete}
+            />
+
+            <ConclusionPanel
+              phase={phase}
+              answers={conclusionAnswers}
+              results={conclusionResults}
+              onChange={(field, value) => {
+                setConclusionAnswers((current) => ({ ...current, [field]: value }));
+                setConclusionResults((current) => ({ ...current, [field]: null }));
+                if (PHASE_ORDER[phase] > PHASE_ORDER.conclusion) {
+                  setPhase("conclusion");
+                  setQuizAnswers({});
+                  setQuizScore(null);
+                }
+              }}
+              onCheck={checkConclusion}
+            />
+
+            <aside className="appleOxidationPanel appleOxidationTip">
+              <Icon name="info" />
+              <p>
+                Pastikan semua hirisan epal mempunyai saiz yang sama dan suhu
+                persekitaran adalah sama sepanjang eksperimen.
+              </p>
+            </aside>
+          </div>
+        </aside>
+
         <div className="appleOxidationLeftRail">
           <VariablesPanel
             answers={variableAnswers}
@@ -1454,32 +1662,7 @@ export default function AppleOxidationSimulatorPage({
               ))}
             </div>
 
-            <div className="appleOxidationActionBar">
-              <button
-                type="button"
-                className="appleOxidationPrimaryButton"
-                disabled={phase !== "cutting"}
-                onClick={cutApple}
-              >
-                Potong Epal kepada 5 Hirisan Sama Saiz
-              </button>
-              <button
-                type="button"
-                className="appleOxidationPrimaryButton appleOxidationPrimaryButton--green"
-                disabled={phase !== "immersing" || !canStartSoak}
-                onClick={startSoaking}
-              >
-                {phase === "soaking" ? "Sedang Merendam..." : "Mulakan Rendaman 1 Minit"}
-              </button>
-              <button
-                type="button"
-                className="appleOxidationPrimaryButton appleOxidationPrimaryButton--orange"
-                disabled={phase !== "transferring" || !canStartAir}
-                onClick={startAirExposure}
-              >
-                Dedahkan kepada Udara selama 15 Minit
-              </button>
-            </div>
+            {renderActionBar("desktop")}
 
             <TimerPanel phase={phase} progress={timerProgress} />
           </section>

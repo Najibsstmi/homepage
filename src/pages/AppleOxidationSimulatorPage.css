@@ -182,6 +182,13 @@
   margin: 0 auto;
 }
 
+.appleOxidationMobilePanelToggle,
+.appleOxidationMobilePanelBackdrop,
+.appleOxidationMobilePanelShell,
+.appleOxidationActionBar--mobile {
+  display: none;
+}
+
 .appleOxidationLeftRail,
 .appleOxidationMainColumn,
 .appleOxidationRightRail {
@@ -455,6 +462,10 @@
 .appleOxidationDropTarget:focus-visible,
 .appleOxidationSliceButton:focus-visible,
 .appleOxidationHeaderActions button:focus-visible,
+.appleOxidationMobilePanelToggle:focus-visible,
+.appleOxidationMobilePanelBackdrop:focus-visible,
+.appleOxidationMobilePanel__header button:focus-visible,
+.appleOxidationMobileUtilityActions button:focus-visible,
 .appleOxidationPrimaryButton:focus-visible,
 .appleOxidationModal button:focus-visible,
 .appleOxidationQuiz input:focus-visible,
@@ -1197,10 +1208,257 @@
   }
 }
 
+@media (max-width: 760px) {
+  .appleOxidationPage {
+    padding: 6px 6px calc(116px + env(safe-area-inset-bottom));
+  }
+
+  .appleOxidationReviewSlot,
+  .appleOxidationObjective {
+    display: none;
+  }
+
+  .appleOxidationHeader {
+    margin-bottom: 6px;
+    padding: 8px 9px;
+    border-radius: 10px;
+  }
+
+  .appleOxidationTitleBlock {
+    gap: 8px;
+    width: 100%;
+  }
+
+  .appleOxidationTitleBlock img {
+    width: 42px;
+    height: 38px;
+    border-radius: 9px;
+  }
+
+  .appleOxidationTitleBlock span {
+    font-size: 0.7rem;
+  }
+
+  .appleOxidationTitleBlock h1 {
+    font-size: 0.98rem;
+    line-height: 1.08;
+  }
+
+  .appleOxidationTitleBlock p,
+  .appleOxidationHeaderActions {
+    display: none;
+  }
+
+  .appleOxidationLayout {
+    display: block;
+    margin: 0;
+  }
+
+  .appleOxidationLayout > .appleOxidationLeftRail,
+  .appleOxidationLayout > .appleOxidationRightRail,
+  .appleOxidationActionBar--desktop {
+    display: none;
+  }
+
+  .appleOxidationMainColumn {
+    display: grid;
+    gap: 8px;
+  }
+
+  .appleOxidationStageCard {
+    border-radius: 10px;
+  }
+
+  .appleOxidationStageTop {
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .appleOxidationStageTop h2 {
+    font-size: 0.96rem;
+    line-height: 1.18;
+  }
+
+  .appleOxidationSceneScroll {
+    border-radius: 10px;
+  }
+
+  .appleOxidationActionBar--mobile {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 0;
+  }
+
+  .appleOxidationActionBar--mobile .appleOxidationPrimaryButton {
+    min-height: 52px;
+    padding: 0.72rem 0.78rem;
+    line-height: 1.12;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .appleOxidationMobilePanelToggle {
+    position: fixed;
+    right: 14px;
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    z-index: 94;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: min(272px, calc(100vw - 28px));
+    min-height: 66px;
+    border: 2px solid rgba(255, 255, 255, 0.78);
+    border-radius: 999px;
+    padding: 0 24px;
+    color: #fff;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)),
+      linear-gradient(135deg, var(--apple-orange), var(--apple-teal) 62%, var(--apple-blue));
+    box-shadow:
+      0 22px 42px rgba(25, 35, 58, 0.34),
+      0 0 0 6px rgba(232, 155, 47, 0.16);
+    font: inherit;
+    font-size: 1.08rem;
+    font-weight: 950;
+    line-height: 1;
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+
+  .appleOxidationMobilePanelToggle svg {
+    width: 26px;
+    height: 26px;
+    stroke-width: 2.6;
+  }
+
+  .appleOxidationMobilePanelToggle span {
+    white-space: nowrap;
+  }
+
+  .appleOxidationMobilePanelToggle.is-open {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(14px);
+  }
+
+  .appleOxidationMobilePanelBackdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 88;
+    display: block;
+    border: 0;
+    padding: 0;
+    background: rgba(5, 14, 28, 0.52);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+  }
+
+  .appleOxidationMobilePanelBackdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .appleOxidationMobilePanelShell {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    display: grid;
+    align-content: start;
+    gap: 9px;
+    width: min(372px, calc(100vw - 18px));
+    padding: calc(12px + env(safe-area-inset-top)) 10px calc(18px + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    background: linear-gradient(180deg, #fff9f2, #edf8f5);
+    box-shadow: -22px 0 48px rgba(5, 18, 34, 0.3);
+    transform: translateX(106%);
+    transition: transform 220ms ease;
+  }
+
+  .appleOxidationMobilePanelShell.is-open {
+    transform: translateX(0);
+  }
+
+  .appleOxidationMobilePanel__header {
+    position: sticky;
+    top: calc(-12px - env(safe-area-inset-top));
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: calc(-12px - env(safe-area-inset-top)) -10px 0;
+    padding: calc(12px + env(safe-area-inset-top)) 10px 10px;
+    color: #fff;
+    background: linear-gradient(90deg, #3d2f87, #1d8581);
+    box-shadow: 0 8px 18px rgba(5, 18, 34, 0.16);
+  }
+
+  .appleOxidationMobilePanel__header button {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 50%;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .appleOxidationMobilePanel__header svg,
+  .appleOxidationMobileUtilityActions svg {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .appleOxidationMobileUtilityActions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .appleOxidationMobileUtilityActions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 44px;
+    border: 1px solid #d4e0ed;
+    border-radius: 10px;
+    padding: 0.56rem 0.6rem;
+    color: #18304d;
+    background: #fff;
+    box-shadow: 0 8px 16px rgba(12, 42, 72, 0.08);
+    font: inherit;
+    font-weight: 900;
+    line-height: 1.12;
+    text-align: center;
+  }
+
+  .appleOxidationMobilePanelShell .appleOxidationLeftRail,
+  .appleOxidationMobilePanelShell .appleOxidationRightRail {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .appleOxidationMobilePanelShell .appleOxidationSteps ol {
+    max-height: none;
+  }
+}
+
 @media (max-width: 560px) {
   .appleOxidationTitleBlock img {
-    width: 60px;
-    height: 54px;
+    width: 42px;
+    height: 38px;
   }
 
   .appleOxidationObjective {

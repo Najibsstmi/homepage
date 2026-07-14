@@ -9,6 +9,7 @@ export interface SimulatorMetadata {
   tingkatan: SimulatorLevel;
   bab?: string;
   topik?: string;
+  requiredExperimentTopics?: readonly string[];
   keywords: readonly string[];
   path: string;
   image?: string;
@@ -44,6 +45,9 @@ export const SIMULATORS: readonly SimulatorMetadata[] = [
     tingkatan: 4,
     bab: "Bab 11: Daya dan Gerakan",
     topik: "Jisim dan Inersia",
+    requiredExperimentTopics: [
+      "Hubungan antara jisim dengan inersia",
+    ],
     keywords: [
       "inersia",
       "jisim",
@@ -85,6 +89,9 @@ export const SIMULATORS: readonly SimulatorMetadata[] = [
     tingkatan: 4,
     bab: "Bab 9: Kimia Industri",
     topik: "Aloi dan Kekerasan Logam",
+    requiredExperimentTopics: [
+      "Kekerasan logam tulen dan aloi",
+    ],
     keywords: [
       "aloi",
       "logam tulen",
@@ -103,6 +110,9 @@ export const SIMULATORS: readonly SimulatorMetadata[] = [
       "Mengkaji kesan jenis larutan seperti jus limau, larutan gula, natrium bikarbonat dan garam terhadap perubahan warna hirisan epal.",
     tingkatan: 4,
     topik: "Antioksidan dan Pengoksidaan Makanan",
+    requiredExperimentTopics: [
+      "Kesan antioksidan terhadap pengoksidaan makanan",
+    ],
     keywords: [
       "antioksidan",
       "pengoksidaan",
@@ -177,6 +187,9 @@ export const SIMULATORS: readonly SimulatorMetadata[] = [
     tingkatan: 5,
     bab: "Bab 2: Nutrisi dan Teknologi Makanan",
     topik: "Menganggarkan Nilai Kalori Makanan",
+    requiredExperimentTopics: [
+      "Menganggar nilai kalori bagi beberapa sampel makanan",
+    ],
     keywords: [
       "nilai kalori",
       "kalori makanan",
@@ -201,6 +214,12 @@ export const SIMULATORS: readonly SimulatorMetadata[] = [
     tingkatan: 5,
     bab: "Bab 4: Kadar Tindak Balas",
     topik: "Faktor yang Mempengaruhi Kadar Tindak Balas",
+    requiredExperimentTopics: [
+      "Kesan suhu bahan tindak balas terhadap kadar tindak balas",
+      "Kesan kepekatan bahan tindak balas terhadap kadar tindak balas",
+      "Kesan saiz bahan tindak balas pepejal terhadap kadar tindak balas",
+      "Kesan kehadiran mangkin terhadap kadar tindak balas",
+    ],
     keywords: [
       "kadar tindak balas",
       "kepekatan",

@@ -33,6 +33,9 @@ export default function SimulatorCard({
   return (
     <article className="simulatorCard">
       <div className="simulatorCard__meta">
+        {simulator.requiredExperimentTopics?.length ? (
+          <span>Eksperimen Wajib</span>
+        ) : null}
         <span>Tingkatan {simulator.tingkatan}</span>
         {simulator.bab && <span>{simulator.bab}</span>}
         {simulator.topik && <span>{simulator.topik}</span>}

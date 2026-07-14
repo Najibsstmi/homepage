@@ -7,7 +7,7 @@ import {
 } from "../data/simulators";
 import { shareSimulator } from "../utils/shareSimulator";
 
-type SimulatorFilter = "all" | SimulatorLevel;
+type SimulatorFilter = "all" | "required" | SimulatorLevel;
 type ShareStatus = "idle" | "copied" | "shared" | "unsupported";
 
 interface SimulatorSearchProps {
@@ -16,6 +16,7 @@ interface SimulatorSearchProps {
 
 const FILTERS: ReadonlyArray<{ label: string; value: SimulatorFilter }> = [
   { label: "Semua", value: "all" },
+  { label: "Eksperimen Wajib", value: "required" },
   { label: "Tingkatan 4", value: 4 },
   { label: "Tingkatan 5", value: 5 },
 ];
@@ -40,6 +41,12 @@ function getSearchScore(simulator: SimulatorMetadata, query: string) {
     { value: simulator.bab ?? "", weight: 5 },
     { value: simulator.description, weight: 3 },
     { value: `Tingkatan ${simulator.tingkatan}`, weight: 4 },
+    {
+      value: simulator.requiredExperimentTopics?.length
+        ? `Eksperimen Wajib ${simulator.requiredExperimentTopics.join(" ")}`
+        : "",
+      weight: 7,
+    },
     { value: simulator.keywords.join(" "), weight: 7 },
   ].map((field) => ({ ...field, value: normalizeSearchText(field.value) }));
 
@@ -73,7 +80,11 @@ export function SimulatorSearch({ onOpenSimulator }: SimulatorSearchProps) {
       }))
         .filter(
           ({ simulator, score }) =>
-            score > 0 && (filter === "all" || simulator.tingkatan === filter),
+            score > 0 &&
+            (filter === "all" ||
+              (filter === "required" &&
+                Boolean(simulator.requiredExperimentTopics?.length)) ||
+              simulator.tingkatan === filter),
         )
         .sort((first, second) => second.score - first.score || first.index - second.index)
         .map(({ simulator }) => simulator),
@@ -221,7 +232,7 @@ export function SimulatorSearch({ onOpenSimulator }: SimulatorSearchProps) {
           )}
         </div>
 
-        <div className="simulatorSearchPanel__filters" aria-label="Tapis tingkatan">
+        <div className="simulatorSearchPanel__filters" aria-label="Tapis simulator">
           {FILTERS.map((option) => (
             <button
               key={option.label}
@@ -259,6 +270,9 @@ export function SimulatorSearch({ onOpenSimulator }: SimulatorSearchProps) {
                 </div>
                 <div className="simulatorSearchResult__content">
                   <div className="simulatorSearchResult__badges">
+                    {simulator.requiredExperimentTopics?.length ? (
+                      <span>Eksperimen Wajib</span>
+                    ) : null}
                     <span>Tingkatan {simulator.tingkatan}</span>
                     {simulator.bab && <span>{simulator.bab}</span>}
                     {simulator.topik && <span>{simulator.topik}</span>}

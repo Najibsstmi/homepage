@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { DragEvent, ReactNode } from "react";
 import {
   CALORIE_ASSET_BASE,
@@ -173,8 +173,16 @@ function Icon({ name }: { name: IconName }) {
   );
 }
 
+function getInitialReducedMotionPreference() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
 function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(false);
+  const [reduced, setReduced] = useState(getInitialReducedMotionPreference);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -182,8 +190,7 @@ function usePrefersReducedMotion() {
     }
 
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(media.matches);
-    const updateMotion = () => setReduced(media.matches);
+    const updateMotion = (event: MediaQueryListEvent) => setReduced(event.matches);
     media.addEventListener("change", updateMotion);
 
     return () => media.removeEventListener("change", updateMotion);
@@ -1186,41 +1193,38 @@ export default function CalorieExperimentPage({
     return () => window.cancelAnimationFrame(animationFrame);
   }, [stage, selectedFoodId, prefersReducedMotion]);
 
-  const stageActions = useMemo(
-    () => [
-      {
-        label: "Masukkan 10 g Air",
-        icon: "water" as const,
-        disabled: stage !== "prepare-water",
-        onClick: prepareWater,
-      },
-      {
-        label: "Rekod Suhu Awal",
-        icon: "thermometer" as const,
-        disabled: stage !== "record-initial",
-        onClick: recordInitialTemperature,
-      },
-      {
-        label: "Nyalakan dengan Pemetik Api",
-        icon: "fire" as const,
-        disabled: stage !== "ready-to-ignite",
-        onClick: igniteSample,
-      },
-      {
-        label: "Rekod Suhu Akhir",
-        icon: "thermometer" as const,
-        disabled: stage !== "burned",
-        onClick: recordFinalTemperature,
-      },
-      {
-        label: "Kira Nilai Kalori",
-        icon: "calculator" as const,
-        disabled: stage !== "calculate",
-        onClick: calculateResult,
-      },
-    ],
-    [stage],
-  );
+  const stageActions = [
+    {
+      label: "Masukkan 10 g Air",
+      icon: "water" as const,
+      disabled: stage !== "prepare-water",
+      onClick: prepareWater,
+    },
+    {
+      label: "Rekod Suhu Awal",
+      icon: "thermometer" as const,
+      disabled: stage !== "record-initial",
+      onClick: recordInitialTemperature,
+    },
+    {
+      label: "Nyalakan dengan Pemetik Api",
+      icon: "fire" as const,
+      disabled: stage !== "ready-to-ignite",
+      onClick: igniteSample,
+    },
+    {
+      label: "Rekod Suhu Akhir",
+      icon: "thermometer" as const,
+      disabled: stage !== "burned",
+      onClick: recordFinalTemperature,
+    },
+    {
+      label: "Kira Nilai Kalori",
+      icon: "calculator" as const,
+      disabled: stage !== "calculate",
+      onClick: calculateResult,
+    },
+  ];
 
   const selectFoodFromMobilePanel = (foodId: FoodId) => {
     selectFood(foodId);

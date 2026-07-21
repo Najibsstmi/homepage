@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Raw programme videos are kept locally; only optimized web assets are committed.
+public/PERJALANAN/KID PASIR GUDANG 2026/*.mp4
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

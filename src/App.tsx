@@ -35,6 +35,13 @@ const formatVisitorCount = (value: unknown) => {
 export default function App() {
   type Page = "home" | "about" | "inovasi" | "modul" | "banksoalan" | "rpm" | "simulator";
   type SharePlatform = "facebook" | "whatsapp" | "telegram" | "x";
+  const kidPgJourneyId = "journey-edusim-kid-pg-2026";
+  const kidPgJourneySlug = "edusim-karnival-inovasi-daerah-pasir-gudang-2026";
+  const kidPgJourneyTitle =
+    "Dari Bilik Darjah ke Pentas Inovasi: Perjalanan EduSim di KID-PG 2026";
+  const kidPgJourneyCardTitle = "EduSim di Karnival Inovasi Daerah Pasir Gudang 2026";
+  const kidPgJourneyDescription =
+    "Catatan perjalanan Mohd Najib bin Jaafar membawa inovasi EduSim ke Karnival Inovasi Daerah Pasir Gudang 2026 sehingga memenangi Anugerah 3 Minutes Pitching Terbaik dan Anugerah Inovasi Terbaik.";
   const smartLabSectionIds = new Set([
     "smartlab-hero",
     "smartlab-pengenalan",
@@ -45,6 +52,7 @@ export default function App() {
     "smartlab-pengiktirafan",
   ]);
   const journeySectionIds = new Set([
+    kidPgJourneyId,
     "journey-catatan-seorang-menantu",
     "journey-guru-cemerlang-ksl",
     "journey-padang-line",
@@ -71,6 +79,9 @@ export default function App() {
   const [readMore, setReadMore] = useState(false);
   const [eduTrackReadMore, setEduTrackReadMore] = useState(false);
   const [eduSlotReadMore, setEduSlotReadMore] = useState(false);
+  const [kidPgReadMore, setKidPgReadMore] = useState(false);
+  const [canNativeShare, setCanNativeShare] = useState(false);
+  const [shareNoticeByAnchor, setShareNoticeByAnchor] = useState<Record<string, string>>({});
   const [totalVisitors, setTotalVisitors] = useState<string>("...");
 
   const ReadMore = ({
@@ -139,6 +150,8 @@ export default function App() {
     const pathName = window.location.pathname;
     const targetParam = params.get("target") || "";
     const hashTarget = window.location.hash.replace(/^#/, "") || targetParam;
+    const isKidPgJourneyTarget =
+      hashTarget === kidPgJourneyId || pathName.includes(kidPgJourneySlug);
     const shouldOpenInovasi =
       params.get("page") === "inovasi" ||
       smartLabSectionIds.has(hashTarget) ||
@@ -168,6 +181,25 @@ export default function App() {
     if (smartLabHiddenSectionIds.has(hashTarget)) {
       setReadMore(true);
     }
+
+    if (isKidPgJourneyTarget) {
+      setKidPgReadMore(true);
+      document.title = `${kidPgJourneyTitle} | CikguSTEM`;
+      document
+        .querySelector('meta[name="description"]')
+        ?.setAttribute("content", kidPgJourneyDescription);
+      document
+        .querySelector('link[rel="canonical"]')
+        ?.setAttribute("href", `https://www.cikgustem.com/${kidPgJourneySlug}.html`);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof navigator === "undefined") {
+      return;
+    }
+
+    setCanNativeShare(typeof navigator.share === "function");
   }, []);
 
   useEffect(() => {
@@ -190,7 +222,7 @@ export default function App() {
     }, 180);
 
     return () => window.clearTimeout(timer);
-  }, [currentPage, readMore, eduTrackReadMore, eduSlotReadMore]);
+  }, [currentPage, readMore, eduTrackReadMore, eduSlotReadMore, kidPgReadMore]);
 
   useEffect(() => {
     const fetchVisitorCount = async () => {
@@ -362,6 +394,8 @@ export default function App() {
       ? "share-catatan-seorang-menantu.html"
       : targetId === "journey-guru-cemerlang-ksl"
       ? "share-guru-cemerlang.html"
+      : targetId === kidPgJourneyId
+      ? `${kidPgJourneySlug}.html`
       : isRpmTarget
       ? "share-rpm-2026-2035.html"
       : isJourneyTarget
@@ -377,6 +411,21 @@ export default function App() {
     }
 
     return appUrl.toString();
+  };
+
+  const showShareNotice = (anchor: string, message: string) => {
+    setShareNoticeByAnchor((current) => ({
+      ...current,
+      [anchor]: message,
+    }));
+
+    window.setTimeout(() => {
+      setShareNoticeByAnchor((current) => {
+        const next = { ...current };
+        delete next[anchor];
+        return next;
+      });
+    }, 2600);
   };
 
   const openSocialShare = (platform: SharePlatform, title: string, anchor: string) => {
@@ -402,34 +451,77 @@ export default function App() {
 
     try {
       await navigator.clipboard.writeText(url);
-      alert("Pautan berjaya disalin.");
+      showShareNotice(anchor, "Pautan telah disalin.");
     } catch {
       window.prompt("Salin pautan ini:", url);
     }
   };
 
-  const ShareBar = ({ title, anchor }: { title: string; anchor: string }) => (
-    <div className="share-row" aria-label={`Kongsi ${title}`}>
-      <span className="share-row__label">Kongsi:</span>
-      {sharePlatforms.map(({ platform, label }) => (
+  const nativeShare = async (title: string, anchor: string) => {
+    if (!navigator.share) {
+      await copyShareLink(anchor);
+      return;
+    }
+
+    const url = getShareUrl(anchor);
+
+    try {
+      await navigator.share({
+        title,
+        text: `Jom lihat ${title} di CikguSTEM.`,
+        url,
+      });
+      showShareNotice(anchor, "Panel perkongsian dibuka.");
+    } catch (error) {
+      if ((error as DOMException).name !== "AbortError") {
+        await copyShareLink(anchor);
+      }
+    }
+  };
+
+  const ShareBar = ({ title, anchor }: { title: string; anchor: string }) => {
+    const shareNotice = shareNoticeByAnchor[anchor];
+
+    return (
+      <div className="share-row" aria-label={`Kongsi ${title}`}>
+        <span className="share-row__label">Kongsi:</span>
+        {canNativeShare && (
+          <button
+            type="button"
+            className="share-row__btn share-row__btn--native"
+            onClick={() => nativeShare(title, anchor)}
+            aria-label={`Kongsi ${title} menggunakan fungsi perkongsian peranti`}
+          >
+            Kongsi
+          </button>
+        )}
+        {sharePlatforms.map(({ platform, label }) => (
+          <button
+            type="button"
+            key={`${anchor}-${platform}`}
+            className={`share-row__btn share-row__btn--${platform}`}
+            onClick={() => openSocialShare(platform, title, anchor)}
+            aria-label={`Kongsi ${title} melalui ${label}`}
+          >
+            {label}
+          </button>
+        ))}
         <button
           type="button"
-          key={`${anchor}-${platform}`}
-          className={`share-row__btn share-row__btn--${platform}`}
-          onClick={() => openSocialShare(platform, title, anchor)}
+          className="share-row__btn share-row__btn--copy"
+          onClick={() => copyShareLink(anchor)}
+          aria-label={`Salin pautan ${title}`}
         >
-          {label}
+          Salin Link
         </button>
-      ))}
-      <button
-        type="button"
-        className="share-row__btn share-row__btn--copy"
-        onClick={() => copyShareLink(anchor)}
-      >
-        Salin Link
-      </button>
-    </div>
-  );
+        {shareNotice && (
+          <span className="share-row__notice" role="status" aria-live="polite">
+            {shareNotice}
+          </span>
+        )}
+      </div>
+    );
+  };
 
   const menantuImageBase = "/PERJALANAN/Catatan seorang menantu";
   const menantuImages = {
@@ -441,6 +533,29 @@ export default function App() {
     ambulanceInside: `${menantuImageBase}/WhatsApp Image 2026-05-30 at 09.42.23.jpeg`,
     ambulanceArrival: `${menantuImageBase}/WhatsApp Image 2026-05-30 at 09.42.24.jpeg`,
   };
+
+  const kidPgImageBase = "/PERJALANAN/KID PASIR GUDANG 2026/webp";
+  const kidPgImages = {
+    hero: `${kidPgImageBase}/edusim-kipmall-masai-hero.webp`,
+    suasana: `${kidPgImageBase}/edusim-kipmall-masai-suasana.webp`,
+    pitchingWide: `${kidPgImageBase}/edusim-kipmall-masai-pitching-01.webp`,
+    pitchingDemo: `${kidPgImageBase}/edusim-kipmall-masai-pitching-02.webp`,
+    reruai: `${kidPgImageBase}/edusim-kipmall-masai-reruai.webp`,
+    poster: `${kidPgImageBase}/kid-pg-2026-poster.webp`,
+    pempamer: `${kidPgImageBase}/kid-pg-2026-senarai-pempamer.webp`,
+    pesertaPitching: `${kidPgImageBase}/kid-pg-2026-senarai-peserta-pitching.webp`,
+  };
+
+  const kidPgTags = [
+    "EduSim",
+    "Inovasi Pendidikan",
+    "Simulator Sains",
+    "KID-PG 2026",
+    "Guru Cemerlang",
+    "Kecerdasan Buatan",
+    "DELIMa",
+    "Teknologi Pendidikan",
+  ];
 
   const rpmStrategicCores = [
     {
@@ -1541,6 +1656,440 @@ export default function App() {
             </p>
           </div>
         </div>
+
+        <article id={kidPgJourneyId} className="journey-post journey-post--latest journey-post--edusim">
+          <nav className="journey-post__breadcrumb" aria-label="Breadcrumb">
+            <button type="button" onClick={() => navigateTo("home")}>
+              Laman Utama
+            </button>
+            <span aria-hidden="true">/</span>
+            <button type="button" onClick={() => goToHomeSection("journey")}>
+              Perjalanan
+            </button>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">EduSim di KID-PG 2026</span>
+          </nav>
+
+          <div className="journey-post__header">
+            <div>
+              <span className="section-kicker">Inovasi Pendidikan - KIPMall Masai, Johor - 2026</span>
+              <h3>{kidPgJourneyTitle}</h3>
+              <p className="journey-post__summary">
+                Perjalanan EduSim daripada sebuah idea di bilik darjah sehingga terpilih
+                sebagai pameran inovasi, memenangi Anugerah 3 Minutes Pitching Terbaik dan
+                Anugerah Inovasi Terbaik di Karnival Inovasi Daerah Pasir Gudang 2026.
+              </p>
+
+              <dl className="journey-post__metaGrid">
+                <div>
+                  <dt>Penulis</dt>
+                  <dd>Mohd Najib bin Jaafar</dd>
+                </div>
+                <div>
+                  <dt>Jawatan</dt>
+                  <dd>Guru Cemerlang Sains</dd>
+                </div>
+                <div>
+                  <dt>Lokasi</dt>
+                  <dd>KIPMall Masai, Johor</dd>
+                </div>
+                <div>
+                  <dt>Kategori</dt>
+                  <dd>Inovasi Pendidikan</dd>
+                </div>
+              </dl>
+
+              <div className="journey-post__tags" aria-label="Tag artikel">
+                {kidPgTags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+
+              <ShareBar title={kidPgJourneyCardTitle} anchor={`#${kidPgJourneyId}`} />
+            </div>
+          </div>
+
+          <div className="journey-post__lead">
+            <div className="journey-post__text">
+              <p className="journey-post__dateLine">Karnival Inovasi Daerah Pasir Gudang 2026.</p>
+              <p>
+                Ada perjalanan yang bermula dengan perancangan yang besar. Ada juga perjalanan
+                yang bermula daripada satu persoalan kecil di dalam bilik darjah.
+              </p>
+              <p>
+                Bagi saya, perjalanan EduSim bermula apabila saya melihat sendiri cabaran yang
+                dihadapi oleh murid ketika mempelajari konsep Sains yang abstrak. Ada proses
+                yang terlalu kecil untuk dilihat, terlalu pantas untuk diperhatikan dan terlalu
+                sukar untuk dilaksanakan berulang kali di dalam makmal.
+              </p>
+              <p>
+                Pada ketika itulah saya mula bertanya kepada diri sendiri: adakah teknologi
+                boleh membantu murid melihat, mencuba dan memahami konsep tersebut dengan lebih
+                jelas? Persoalan itu akhirnya membawa saya kepada pembangunan EduSim, iaitu
+                himpunan simulator Sains interaktif yang dibina berasaskan keperluan sebenar
+                pengajaran dan pembelajaran.
+              </p>
+            </div>
+
+            <figure className="journey-post__heroImage journey-post__heroImage--edusim">
+              <img
+                src={kidPgImages.hero}
+                alt="Mohd Najib bin Jaafar membentangkan inovasi EduSim di pentas Karnival Inovasi Daerah Pasir Gudang 2026"
+                width={1600}
+                height={1067}
+              />
+              <figcaption>
+                Perkongsian EduSim di pentas Karnival Inovasi Daerah Pasir Gudang 2026 di KIPMall Masai.
+              </figcaption>
+            </figure>
+          </div>
+
+          <figure className="journey-post__galleryItem journey-post__figureWide">
+            <img
+              src={kidPgImages.pempamer}
+              alt="Poster senarai pempamer KID-PG 2026 yang menyenaraikan Mohd Najib bin Jaafar dan inovasi EduSim"
+              width={1280}
+              height={720}
+              loading="lazy"
+            />
+            <figcaption>
+              EduSim disenaraikan sebagai salah satu inovasi sekolah menengah yang dipamerkan dalam program.
+            </figcaption>
+          </figure>
+
+          <ReadMore
+            className="journey-post__readmore"
+            contentClassName="journey-post__more"
+            open={kidPgReadMore}
+            onToggle={() => setKidPgReadMore((current) => !current)}
+            expandLabel="Baca Catatan Penuh"
+            collapseLabel="Lihat Ringkas"
+          >
+            <div className="journey-post__body">
+              <h4>Melangkah keluar daripada ruang selesa</h4>
+              <p>
+                Sebagai seorang Guru Cemerlang Sains, saya sentiasa percaya bahawa tugas
+                seorang guru bukan sekadar menyampaikan kandungan dalam buku teks. Seorang
+                guru juga perlu terus belajar, meneroka pendekatan baharu dan berani menilai
+                semula kaedah yang digunakan.
+              </p>
+              <p>
+                Menyertai Karnival Inovasi Daerah Pasir Gudang 2026 atau KID-PG 2026
+                memberikan saya ruang untuk melakukan semua perkara tersebut.
+              </p>
+              <p>
+                Saya hadir bukan dengan anggapan bahawa inovasi saya sudah sempurna.
+                Sebaliknya, saya hadir sebagai seorang guru yang mahu belajar. Saya mahu
+                mendengar pandangan, menerima teguran, melihat hasil kreativiti guru lain dan
+                memahami bagaimana sesuatu idea boleh dikembangkan sehingga memberi impak
+                yang lebih luas.
+              </p>
+              <p>
+                Pengalaman berada bersama guru-guru hebat daripada pelbagai sekolah benar-benar
+                membuka mata saya. Setiap peserta membawa cerita, cabaran dan penyelesaian
+                tersendiri. Walaupun inovasi yang dibawa berbeza, kami berkongsi matlamat yang
+                sama, iaitu menjadikan pengalaman pembelajaran murid lebih bermakna.
+              </p>
+
+              <h4>Terpilih sebagai pembentang dan pempamer</h4>
+              <p>
+                Saya amat bersyukur apabila EduSim terpilih untuk dibawa sebagai pameran
+                inovasi dalam Karnival Pendidikan MADANI yang berlangsung di KIPMall Masai.
+              </p>
+              <p>
+                Di sana, saya diberikan sebuah reruai yang dikongsi bersama beberapa orang
+                guru hebat. Ruang itu bukan sekadar tempat mempamerkan produk. Ia menjadi
+                ruang pertemuan idea, perkongsian pengalaman dan perbincangan tentang masa
+                depan pendidikan.
+              </p>
+
+              <div className="journey-post__inlineVisual">
+                <img
+                  src={kidPgImages.reruai}
+                  alt="Mohd Najib bin Jaafar menerangkan EduSim di ruang pameran KIPMall Masai"
+                  width={1280}
+                  height={720}
+                  loading="lazy"
+                />
+                <div>
+                  <span className="section-kicker">Reruai EduSim</span>
+                  <h4>Peluang berkongsi EduSim bersama para pendidik dan pengunjung di KIPMall Masai.</h4>
+                  <p>
+                    Di ruang kecil inilah saya dapat menunjukkan bagaimana murid boleh membuat
+                    pemerhatian, mengubah pemboleh ubah, menjalankan simulasi dan melihat kesan
+                    sesuatu perubahan secara terus.
+                  </p>
+                </div>
+              </div>
+
+              <p>
+                Sepanjang berada di reruai, saya berpeluang menerangkan bagaimana EduSim
+                digunakan dalam pembelajaran Sains. Saya juga dapat menunjukkan bagaimana
+                murid boleh membuat pemerhatian, mengubah pemboleh ubah, menjalankan simulasi
+                dan melihat kesan sesuatu perubahan secara terus.
+              </p>
+              <p>
+                Antara perkara yang paling menggembirakan saya ialah apabila pengunjung mula
+                bertanya soalan, mencuba sendiri simulator dan memberikan cadangan. Setiap
+                pertanyaan tersebut membuatkan saya melihat EduSim daripada sudut pandang yang
+                berbeza.
+              </p>
+              <p>
+                Pada ketika itu, saya semakin memahami bahawa inovasi tidak seharusnya berhenti
+                selepas dibangunkan. Inovasi perlu diuji, dikongsi, dinilai dan ditambah baik
+                secara berterusan.
+              </p>
+
+              <blockquote className="journey-post__quote">
+                Sebuah inovasi pendidikan menjadi benar-benar bermakna apabila ia bukan sahaja
+                memudahkan tugas guru, tetapi turut membantu murid melihat sesuatu yang sebelum
+                ini sukar mereka bayangkan.
+              </blockquote>
+
+              <h4>Tiga minit yang penuh debaran</h4>
+              <p>
+                Salah satu pengalaman yang paling mencabar ialah sesi 3 Minutes Pitching.
+              </p>
+              <p>
+                Tiga minit kelihatan singkat, tetapi dalam tempoh itulah saya perlu menerangkan
+                masalah yang ingin diselesaikan, idea di sebalik EduSim, cara ia digunakan dan
+                impak yang diharapkan.
+              </p>
+              <p>
+                Saya perlu memilih setiap perkataan dengan teliti. Saya tidak boleh menerangkan
+                semua ciri yang telah dibangunkan. Saya perlu kembali kepada persoalan paling
+                asas: mengapa EduSim dibina dan siapakah yang ingin dibantu?
+              </p>
+
+              <div className="journey-post__gallery journey-post__gallery--end">
+                {[
+                  {
+                    src: kidPgImages.pitchingWide,
+                    alt: "Sesi 3 Minutes Pitching EduSim di pentas KID-PG 2026 dengan paparan simulator pada skrin",
+                    caption: "Tiga minit yang memerlukan idea EduSim disampaikan dengan ringkas, jelas dan berfokus.",
+                  },
+                  {
+                    src: kidPgImages.pitchingDemo,
+                    alt: "Mohd Najib bin Jaafar menunjukkan paparan EduSim semasa sesi pitching KID-PG 2026",
+                    caption: "Setiap paparan dipilih untuk menunjukkan masalah PdP Sains dan cara simulasi membantu murid.",
+                  },
+                ].map((image) => (
+                  <figure className="journey-post__galleryItem" key={image.src}>
+                    <img src={image.src} alt={image.alt} width={1280} height={960} loading="lazy" />
+                    <figcaption>{image.caption}</figcaption>
+                  </figure>
+                ))}
+              </div>
+
+              <figure className="journey-post__galleryItem journey-post__figureWide">
+                <img
+                  src={kidPgImages.pesertaPitching}
+                  alt="Poster senarai peserta 3 Minutes Pitching KID-PG 2026 yang menyenaraikan inovasi EduSim"
+                  width={1280}
+                  height={720}
+                  loading="lazy"
+                />
+                <figcaption>
+                  EduSim turut terpilih untuk sesi 3 Minutes Pitching dalam kategori sekolah menengah.
+                </figcaption>
+              </figure>
+
+              <p>
+                Apabila berdiri di hadapan panel penilai, sudah tentu ada perasaan berdebar.
+                Namun, pada masa yang sama saya berasa sangat teruja. Saya bukan sekadar
+                mempersembahkan sebuah laman web atau aplikasi. Saya sedang berkongsi
+                pengalaman sebenar seorang guru yang mahu membantu murid memahami Sains dengan
+                lebih baik.
+              </p>
+              <p>
+                Saya sangat bersyukur apabila diumumkan sebagai penerima
+                <strong> Anugerah 3 Minutes Pitching Terbaik</strong>.
+              </p>
+              <p>
+                Pengiktirafan tersebut memberikan keyakinan bahawa idea yang lahir daripada
+                masalah di bilik darjah juga boleh disampaikan dengan jelas dan diterima oleh
+                orang lain.
+              </p>
+
+              <h4>Anugerah Inovasi Terbaik</h4>
+              <p>
+                Kegembiraan saya bertambah apabila EduSim turut menerima
+                <strong> Anugerah Inovasi Terbaik</strong>.
+              </p>
+              <p>
+                Saya menerima anugerah ini dengan penuh rasa syukur dan rendah hati. Bagi saya,
+                kemenangan ini bukanlah penamat kepada perjalanan EduSim. Sebaliknya, ia membawa
+                tanggungjawab yang lebih besar untuk memastikan inovasi ini terus dikembangkan
+                dan benar-benar memberikan manfaat.
+              </p>
+
+              <div className="journey-post__inlineVisual journey-post__inlineVisual--reverse">
+                <img
+                  src={kidPgImages.suasana}
+                  alt="Suasana pentas KID-PG 2026 ketika perkongsian inovasi EduSim berlangsung"
+                  width={1280}
+                  height={960}
+                  loading="lazy"
+                />
+                <div>
+                  <span className="section-kicker">Pengiktirafan</span>
+                  <h4>Pengiktirafan ini menjadi pendorong untuk EduSim terus dikembangkan dan dikongsi.</h4>
+                  <p>
+                    Kemenangan ini saya terima sebagai penghargaan kepada proses belajar,
+                    mencuba dan berkongsi ilmu, bukan sebagai ruang untuk bermegah.
+                  </p>
+                </div>
+              </div>
+
+              <p>
+                Anugerah tersebut juga menjadi satu bentuk penghargaan terhadap masa yang
+                diluangkan untuk membina, menguji dan menambah baik setiap simulator.
+              </p>
+              <p>
+                Ada bahagian yang perlu dibina semula. Ada fungsi yang tidak berjalan seperti
+                yang dirancang. Ada reka bentuk yang kelihatan baik pada komputer tetapi kurang
+                sesuai apabila digunakan pada telefon. Ada juga simulator yang perlu diubah
+                selepas melihat cara murid menggunakannya.
+              </p>
+              <p>Semua proses itu merupakan sebahagian daripada pembelajaran saya.</p>
+
+              <h4>Dibangunkan bersama teknologi, dipandu pengalaman seorang guru</h4>
+              <p>
+                EduSim dibangunkan dengan memanfaatkan teknologi kecerdasan buatan dan bantuan
+                Codex dalam proses pembangunan kod. Teknologi ini membantu mempercepatkan
+                pembinaan prototaip, menguji idea dan menambah baik fungsi tertentu.
+              </p>
+              <p>Namun begitu, teknologi hanyalah alat.</p>
+              <p>
+                Arah pembangunan EduSim tetap berpandukan pengalaman di dalam bilik darjah.
+                Pemilihan topik, bentuk interaksi, susunan langkah eksperimen, pemboleh ubah,
+                soalan pemerhatian dan cara maklum balas dipaparkan semuanya berkait rapat
+                dengan keperluan murid serta kandungan kurikulum Sains.
+              </p>
+              <p>
+                Saya percaya gabungan antara pengalaman guru dan keupayaan teknologi boleh
+                membuka ruang yang sangat besar dalam pendidikan. Guru memahami murid,
+                kurikulum dan realiti bilik darjah. Teknologi pula membolehkan idea tersebut
+                diterjemahkan kepada pengalaman pembelajaran yang interaktif, boleh dicapai
+                pada bila-bila masa dan boleh ditambah baik secara berterusan.
+              </p>
+
+              <figure className="journey-post__galleryItem journey-post__figureWide">
+                <img
+                  src={kidPgImages.poster}
+                  alt="Poster pertandingan 3 Minutes Pitching dan Pameran Inovasi KID-PG 2026 di KIPMall Masai"
+                  width={1280}
+                  height={853}
+                  loading="lazy"
+                />
+                <figcaption>
+                  KID-PG 2026 membuka ruang untuk guru berkongsi inovasi, mendapatkan maklum balas dan belajar daripada komuniti pendidikan.
+                </figcaption>
+              </figure>
+
+              <h4>Pengalaman yang lebih besar daripada sebuah kemenangan</h4>
+              <p>
+                Antara perkara paling bernilai sepanjang menyertai pertandingan ini bukan
+                sekadar piala atau pengiktirafan.
+              </p>
+              <p>
+                Nilai yang lebih besar datang melalui pertemuan dengan guru-guru yang kreatif,
+                maklum balas daripada panel, perbualan bersama pengunjung dan peluang melihat
+                pelbagai inovasi pendidikan yang dibangunkan dengan penuh kesungguhan.
+              </p>
+              <p>
+                Pengalaman ini mengingatkan saya bahawa guru juga perlu keluar daripada ruang
+                selesa. Kadangkala kita terlalu sibuk dengan rutin sehingga terlupa bahawa
+                hasil kerja kita mungkin boleh membantu guru lain. Apabila kita berkongsi,
+                kita bukan sahaja memberikan sesuatu kepada orang lain. Kita turut memperoleh
+                pandangan baharu yang membantu kita berkembang.
+              </p>
+              <p>
+                Saya pulang daripada program ini dengan lebih banyak idea berbanding ketika
+                saya datang. Saya juga pulang dengan semangat yang lebih kuat untuk terus
+                membangunkan simulator baharu, memperkemas simulator sedia ada dan memastikan
+                EduSim lebih mudah digunakan oleh guru serta murid.
+              </p>
+
+              <h4>Impian untuk EduSim</h4>
+              <p>
+                Harapan saya adalah supaya EduSim tidak hanya digunakan di sekolah saya.
+              </p>
+              <p>
+                Saya berharap semakin ramai guru Sains di seluruh Malaysia dapat menggunakannya
+                sebagai salah satu pilihan bahan bantu mengajar. EduSim bukan bertujuan
+                menggantikan eksperimen sebenar atau peranan guru. Sebaliknya, ia dihasilkan
+                untuk melengkapkan pembelajaran, khususnya apabila eksperimen sukar
+                dilaksanakan, bahan tidak mencukupi atau konsep memerlukan visualisasi yang
+                lebih jelas.
+              </p>
+              <p>
+                Saya membayangkan satu keadaan apabila guru di bandar, luar bandar dan kawasan
+                yang mempunyai kemudahan terhad tetap boleh memberikan pengalaman pembelajaran
+                interaktif kepada murid.
+              </p>
+              <p>
+                Impian yang lebih besar adalah untuk melihat simulator Sains tempatan seperti
+                EduSim suatu hari nanti dipertimbangkan dalam ekosistem DELIMa dan digunakan
+                sebagai salah satu sumber simulasi Sains Kementerian Pendidikan Malaysia.
+              </p>
+              <p>
+                Seperti mana guru dan murid menggunakan platform antarabangsa seperti PhET
+                Colorado untuk membantu memahami konsep Sains, saya berharap Malaysia juga
+                dapat mempunyai koleksi simulator yang dibangunkan oleh guru tempatan,
+                berdasarkan kurikulum tempatan dan sesuai dengan konteks bilik darjah negara
+                kita.
+              </p>
+              <p>
+                Perjalanan ke arah itu mungkin masih panjang. Namun, setiap perjalanan besar
+                bermula dengan satu langkah kecil. Bagi EduSim, langkah itu bermula daripada
+                bilik darjah, berkembang melalui proses mencuba dan belajar, kemudian dibawa
+                ke pentas inovasi KID-PG 2026.
+              </p>
+
+              <h4>Terima kasih kepada semua yang menjadi sebahagian daripada perjalanan ini</h4>
+              <p>
+                Saya merakamkan penghargaan kepada pihak penganjur Karnival Inovasi Daerah
+                Pasir Gudang 2026, para panel penilai, rakan-rakan guru, pihak sekolah,
+                murid-murid serta semua yang telah memberikan pandangan dan sokongan.
+              </p>
+              <p>
+                Terima kasih juga kepada para pengunjung yang singgah di reruai, mencuba EduSim
+                dan berkongsi cadangan. Setiap maklum balas sangat bermakna kepada saya.
+              </p>
+              <p>
+                Anugerah 3 Minutes Pitching Terbaik dan Anugerah Inovasi Terbaik ini saya
+                jadikan sebagai sumber semangat untuk terus belajar, berkongsi dan menghasilkan
+                sesuatu yang memberi manfaat kepada pendidikan.
+              </p>
+              <p>
+                Saya percaya guru bukan sekadar pengguna teknologi. Guru juga boleh menjadi
+                pencipta, pereka bentuk pengalaman pembelajaran dan penggerak kepada perubahan.
+              </p>
+              <p>
+                Perjalanan EduSim masih belum selesai. Ini hanyalah satu lagi halaman dalam
+                perjalanan saya sebagai seorang pendidik.
+              </p>
+              <p>
+                Semoga langkah kecil ini terus berkembang dan suatu hari nanti dapat memberi
+                manfaat kepada guru dan murid di seluruh Malaysia.
+              </p>
+              <p className="journey-post__prayer">
+                Inovasi bermula daripada masalah yang kita lihat, tetapi impaknya berkembang
+                apabila kita berani berkongsi penyelesaiannya.
+              </p>
+            </div>
+
+            <div className="journey-post__shareFooter">
+              <div className="journey-post__closingActions">
+                <button type="button" className="secondary-btn" onClick={() => goToHomeSection("journey")}>
+                  Kembali ke Perjalanan
+                </button>
+              </div>
+              <ShareBar title={kidPgJourneyCardTitle} anchor={`#${kidPgJourneyId}`} />
+            </div>
+          </ReadMore>
+        </article>
 
         <article id="journey-catatan-seorang-menantu" className="journey-post journey-post--latest journey-post--memorial">
           <div className="journey-post__header">

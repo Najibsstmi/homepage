@@ -33,7 +33,7 @@ const formatVisitorCount = (value: unknown) => {
 };
 
 export default function App() {
-  type Page = "home" | "about" | "inovasi" | "modul" | "banksoalan" | "rpm" | "simulator";
+  type Page = "home" | "about" | "inovasi" | "modul" | "banksoalan" | "rpm" | "plc" | "simulator";
   type SharePlatform = "facebook" | "whatsapp" | "telegram" | "x";
   const mrccJourneyId = "journey-sumpit-v1-mrcc-uthm-2026";
   const mrccJourneySlug = "sumpit-v1-naib-johan-mrcc-uthm-2026";
@@ -71,6 +71,7 @@ export default function App() {
   const eduTrackSectionIds = new Set(["edutrack-post"]);
   const eduSlotSectionIds = new Set(["eduslot-post"]);
   const rpmSectionIds = new Set(["rpm-2026-2035"]);
+  const plcSectionIds = new Set(["plc-guru-sains"]);
   const smartLabHiddenSectionIds = new Set([
     "smartlab-cara",
     "smartlab-status",
@@ -172,6 +173,7 @@ export default function App() {
     const shouldOpenModul = params.get("page") === "modul";
     const shouldOpenBankSoalan = params.get("page") === "banksoalan";
     const shouldOpenRpm = params.get("page") === "rpm" || rpmSectionIds.has(hashTarget);
+    const shouldOpenPlc = params.get("page") === "plc" || plcSectionIds.has(hashTarget);
     const shouldOpenSimulator =
       params.get("page") === "simulator" || pathName.startsWith("/simulator");
 
@@ -183,6 +185,8 @@ export default function App() {
       setCurrentPage("about");
     } else if (shouldOpenRpm) {
       setCurrentPage("rpm");
+    } else if (shouldOpenPlc) {
+      setCurrentPage("plc");
     } else if (shouldOpenBankSoalan) {
       setCurrentPage("banksoalan");
     } else if (shouldOpenModul) {
@@ -385,6 +389,7 @@ export default function App() {
 
     const isJourneyTarget = journeySectionIds.has(targetId);
     const isRpmTarget = rpmSectionIds.has(targetId);
+    const isPlcTarget = plcSectionIds.has(targetId);
 
     const appUrl = new URL(publicSiteUrl);
     appUrl.hash = "";
@@ -396,6 +401,10 @@ export default function App() {
 
     if (isRpmTarget) {
       appUrl.searchParams.set("page", "rpm");
+    }
+
+    if (isPlcTarget) {
+      appUrl.searchParams.set("page", "plc");
     }
 
     if (targetId) {
@@ -422,6 +431,8 @@ export default function App() {
       ? `${kidPgJourneySlug}.html`
       : isRpmTarget
       ? "share-rpm-2026-2035.html"
+      : isPlcTarget
+      ? "share-plc-guru-sains.html"
       : isJourneyTarget
       ? "share-journey.html"
       : "";
@@ -606,6 +617,145 @@ export default function App() {
     "Final Kebangsaan",
   ];
 
+  const plcVisuals = {
+    cover: "/PERKONGSIAN/PLC/kit-plc-cover-crop.jpg",
+    focusImproveShare: "/PERKONGSIAN/PLC/kit-plc-focus-improve-share.jpg",
+    strategyTools: "/PERKONGSIAN/PLC/kit-plc-strategi-alat.jpg",
+    learningWalk: "/PERKONGSIAN/PLC/kit-plc-learning-walk.jpg",
+    lessonStudy: "/PERKONGSIAN/PLC/kit-plc-lesson-study.jpg",
+    pbd: "/PERKONGSIAN/PLC/kit-plc-pbd.jpg",
+  };
+
+  const plcCycleSteps = [
+    {
+      label: "Focus",
+      title: "Kenal pasti isu sebenar",
+      text: "Mulakan dengan bukti pembelajaran murid seperti rekod PBD, analisis item, buku amali, pemerhatian kerja kumpulan atau respon murid semasa eksperimen.",
+    },
+    {
+      label: "Improve",
+      title: "Baiki PdP secara kolaboratif",
+      text: "Pilih satu alat PLC yang sesuai, rancang tindakan kecil, cuba di bilik darjah atau makmal, kemudian lihat semula kesannya kepada pemahaman murid.",
+    },
+    {
+      label: "Share",
+      title: "Sebarkan amalan yang menjadi",
+      text: "Kongsi bahan, RPH, rubrik, strategi soalan, video pendek atau dapatan data supaya guru Sains lain boleh menyesuaikannya mengikut kelas masing-masing.",
+    },
+  ];
+
+  const plcScienceMethods = [
+    {
+      title: "Dialog Prestasi",
+      subtitle: "Performance Dialogue",
+      bestFor: "Membaca data PBD, UASA, peperiksaan atau ujian topikal.",
+      science: "Sesuai untuk melihat topik yang ramai murid belum kuasai, contohnya graf gerakan, elektrik, kadar tindak balas, mikroorganisma atau pewarisan.",
+    },
+    {
+      title: "Kelab Buku",
+      subtitle: "Book Club",
+      bestFor: "Membina budaya membaca bahan profesional dan pedagogi Sains.",
+      science: "Guru boleh membaca bab berkaitan inkuiri, STEM, KBAT, miskonsepsi Sains atau pentaksiran amali, kemudian pilih idea yang boleh dicuba dalam PdP.",
+    },
+    {
+      title: "Kumpulan Belajar Guru",
+      subtitle: "Teacher Study Group",
+      bestFor: "Mendalami satu isu pengajaran secara berfokus.",
+      science: "Contohnya kumpulan kecil panitia mengkaji cara mengajar pemboleh ubah, kemahiran mengeksperimen, pembinaan inferens atau penulisan kesimpulan.",
+    },
+    {
+      title: "Kritikan Video",
+      subtitle: "Video Critique",
+      bestFor: "Menilai rakaman PdP secara profesional dan berhemah.",
+      science: "Rakam sebahagian aktiviti eksperimen atau perbincangan murid, kemudian lihat semula aspek arahan guru, soalan mencungkil idea dan penglibatan murid.",
+    },
+    {
+      title: "Jelajah Pembelajaran",
+      subtitle: "Learning Walk",
+      bestFor: "Melihat amalan bilik darjah atau makmal tanpa mengganggu PdP.",
+      science: "Fokus pemerhatian boleh jadi keselamatan makmal, penggunaan radas, komunikasi kumpulan, catatan pemerhatian atau cara murid membuat justifikasi.",
+    },
+    {
+      title: "Bimbingan Rakan Sekerja",
+      subtitle: "Peer Coaching",
+      bestFor: "Membantu guru melalui pemerhatian dan maklum balas rakan.",
+      science: "Guru boleh meminta rakan melihat satu kemahiran tertentu, seperti demonstrasi radas, pengurusan eksperimen, scaffolding graf atau soalan KBAT.",
+    },
+    {
+      title: "Lesson Study",
+      subtitle: "Belajar Menggunakan RPH",
+      bestFor: "Membina, mencuba dan memurnikan RPH bersama-sama.",
+      science: "Sangat sesuai untuk topik sukar atau aktiviti amali. Satu guru mengajar, rakan lain memerhati respons murid, kemudian RPH dimurnikan.",
+    },
+    {
+      title: "Sesi Perkongsian Guru",
+      subtitle: "Teacher Sharing Session",
+      bestFor: "Berkongsi amalan pedagogi yang praktikal dan cepat dicuba.",
+      science: "Contohnya perkongsian teknik mengajar graf, penggunaan simulasi, cara menanda soalan struktur, idea aktiviti stesen atau bahan ulang kaji topik tertentu.",
+    },
+    {
+      title: "Analisis Data",
+      subtitle: "Data Analysis",
+      bestFor: "Menukar data mentah kepada pelan intervensi.",
+      science: "Panitia boleh analisis item, TP PBD, keputusan amali atau miskonsepsi lazim, kemudian tetapkan kumpulan sasaran dan tindakan susulan.",
+    },
+    {
+      title: "Kumpulan Rakan Kritik",
+      subtitle: "Critical Friends Group",
+      bestFor: "Mendapat maklum balas jujur dalam suasana saling percaya.",
+      science: "Gunakan untuk menyemak RPH, instrumen PBD, rubrik amali, soalan KBAT atau bahan modul sebelum digunakan kepada murid.",
+    },
+    {
+      title: "Induksi dan Pementoran Guru Baharu",
+      subtitle: "New Teacher Induction and Mentoring",
+      bestFor: "Menyokong guru baharu atau guru yang bertukar opsyen.",
+      science: "Mentor boleh membimbing rutin makmal, keselamatan, penyediaan amali, pengurusan buku amali dan strategi mengajar konsep abstrak.",
+    },
+    {
+      title: "Kumpulan Penyelesai Masalah",
+      subtitle: "Problem Solving Group",
+      bestFor: "Menyelesaikan masalah khusus yang menghalang pembelajaran.",
+      science: "Contohnya isu radas tidak cukup, murid lemah menulis inferens, kelas pasif semasa perbincangan atau kerja amali tidak siap mengikut masa.",
+    },
+    {
+      title: "Pasukan Melintang dan Menegak",
+      subtitle: "Horizontal and Vertical Teams",
+      bestFor: "Menyelaras kandungan antara kelas, tingkatan dan tahap.",
+      science: "Guru tingkatan sama boleh selaras bahan dan pentaksiran, manakala guru tingkatan berbeza boleh menyambung kemahiran Sains dari Tingkatan 1 hingga 5.",
+    },
+  ];
+
+  const plcScienceSituations = [
+    {
+      title: "Apabila topik Sains sukar dikuasai",
+      methods: "Analisis Data + Dialog Prestasi + Lesson Study",
+      text: "Gunakan data murid untuk mengenal pasti punca, bina semula PdP bersama rakan, kemudian nilai sama ada pemahaman murid meningkat selepas intervensi.",
+    },
+    {
+      title: "Apabila eksperimen kurang lancar",
+      methods: "Learning Walk + Peer Coaching",
+      text: "Perhatikan rutin keselamatan, arahan guru, susunan radas dan peranan murid dalam kumpulan. Maklum balas rakan membantu guru membetulkan bahagian yang kecil tetapi kritikal.",
+    },
+    {
+      title: "Apabila panitia mahu selaras PBD",
+      methods: "Critical Friends Group + Pasukan Melintang",
+      text: "Semak evidens, rubrik, instrumen dan standard prestasi bersama-sama supaya pertimbangan profesional guru lebih konsisten antara kelas.",
+    },
+    {
+      title: "Apabila ada amalan baik yang patut disebar",
+      methods: "Teacher Sharing Session + Video Critique",
+      text: "Kongsikan strategi yang sudah menjadi, tunjuk bukti pembelajaran murid dan sediakan bahan ringkas supaya guru lain mudah mencuba.",
+    },
+  ];
+
+  const plcStarterPlan = [
+    "Pilih satu isu kecil yang jelas, contohnya murid tidak dapat membezakan pemerhatian dengan inferens.",
+    "Bawa bukti ringkas: contoh jawapan murid, data PBD, gambar kerja amali atau catatan pemerhatian guru.",
+    "Pilih satu alat PLC yang sesuai dan tetapkan tindakan yang boleh dibuat dalam 1 hingga 2 minggu.",
+    "Kumpul semula evidens selepas tindakan, kemudian bincang sama ada strategi itu perlu dikekalkan, diubah atau dikongsi.",
+    "Rekodkan aktiviti dalam SPLKPM mengikut ketetapan sekolah supaya pembangunan profesional guru terdokumentasi.",
+  ];
+
   const rpmStrategicCores = [
     {
       number: 1,
@@ -764,7 +914,7 @@ export default function App() {
             onMouseLeave={() => setModulMenuOpen(false)}
           >
             <button
-              className={`navDropdownTrigger${currentPage === "modul" || currentPage === "banksoalan" || currentPage === "rpm" ? " navDropdownTrigger--active" : ""}`}
+              className={`navDropdownTrigger${currentPage === "modul" || currentPage === "banksoalan" || currentPage === "rpm" || currentPage === "plc" ? " navDropdownTrigger--active" : ""}`}
               type="button"
               aria-expanded={modulMenuOpen}
               onClick={() => setModulMenuOpen((prev) => !prev)}
@@ -777,6 +927,7 @@ export default function App() {
                 <button onClick={() => navigateTo("modul")}>Modul</button>
                 <button onClick={() => navigateTo("banksoalan")}>Bank Soalan</button>
                 <button onClick={() => navigateTo("rpm")}>RPM2026-2035</button>
+                <button onClick={() => navigateTo("plc")}>PLC Guru Sains</button>
               </div>
             )}
           </div>
@@ -1420,6 +1571,221 @@ export default function App() {
             <div className="journey-post__shareFooter rpmShareFooter">
               <ShareBar title="Rancangan Pendidikan Malaysia (RPM) 2026–2035: Apa yang Guru Perlu Tahu?" anchor="#rpm-2026-2035" />
             </div>
+          </article>
+        </main>
+      ) : currentPage === "plc" ? (
+        <main id="plc-guru-sains" className="plcPage">
+          <article className="plcArticle" aria-labelledby="plc-title">
+            <header className="plcHero">
+              <div className="plcHero__content">
+                <span className="plcEyebrow">Perkongsian Profesional</span>
+                <h1 id="plc-title">PLC Guru Sains</h1>
+                <p className="plcHero__subtitle">
+                  Sinopsis dan kaedah Professional Learning Community berdasarkan KIT PLC KPM,
+                  disesuaikan untuk amalan guru Sains di Malaysia.
+                </p>
+                <div className="plcHero__meta">
+                  <span>Fokus: panitia Sains, PdP, PBD dan amali</span>
+                  <span>Rujukan: KIT PLC KPM 2019</span>
+                </div>
+                <ShareBar title="PLC Guru Sains: Kaedah PLC yang boleh diamalkan guru Sains" anchor="#plc-guru-sains" />
+              </div>
+
+              <figure className="plcHero__visual">
+                <img src={plcVisuals.cover} alt="Petikan muka depan KIT PLC Kementerian Pendidikan Malaysia" />
+                <figcaption>Petikan visual daripada KIT PLC KPM sebagai rujukan utama posting ini.</figcaption>
+              </figure>
+            </header>
+
+            <section className="plcIntro" aria-labelledby="plc-sinopsis">
+              <div>
+                <span className="plcSectionNumber">01</span>
+                <h2 id="plc-sinopsis">Sinopsis Ringkas PLC</h2>
+                <p>
+                  Professional Learning Community atau PLC ialah komuniti guru yang bekerja
+                  secara kolaboratif dan berterusan untuk meningkatkan kualiti pengajaran,
+                  seterusnya memberi kesan kepada pembelajaran murid. Dalam konteks guru
+                  Sains, PLC bukan sekadar mesyuarat panitia atau laporan aktiviti. PLC
+                  sepatutnya menjadi ruang profesional untuk guru meneliti bukti pembelajaran
+                  murid, membincangkan punca masalah, mencuba strategi PdP yang lebih sesuai
+                  dan berkongsi amalan yang terbukti membantu murid.
+                </p>
+                <p>
+                  KIT PLC KPM menggariskan idea utama PLC iaitu memastikan pembelajaran murid,
+                  mengukuhkan kolaborasi guru dan memberi fokus kepada pencapaian. Melalui
+                  kitaran Focus, Improve dan Share, guru Sains boleh menjadikan PLC sebagai
+                  amalan kecil tetapi konsisten: kenal pasti isu, baiki tindakan PdP, kemudian
+                  kongsikan dapatan kepada rakan sejawat.
+                </p>
+              </div>
+
+              <figure className="plcInlineFigure">
+                <img src={plcVisuals.focusImproveShare} alt="Konsep Focus Improve Share daripada KIT PLC" />
+                <figcaption>Konsep asas PLC: Focus, Improve dan Share.</figcaption>
+              </figure>
+            </section>
+
+            <section className="plcCycle" aria-labelledby="plc-kitaran">
+              <span className="plcSectionNumber">02</span>
+              <div>
+                <h2 id="plc-kitaran">Kitaran PLC Untuk Guru Sains</h2>
+                <p className="plcLead">
+                  Cara paling mudah untuk memulakan PLC ialah bermula dengan satu masalah
+                  pembelajaran yang nyata. Guru tidak perlu menunggu program besar. Satu isu
+                  kecil yang dibincang, diuji dan dikongsi sudah cukup untuk menghidupkan
+                  budaya PLC.
+                </p>
+                <div className="plcCycleGrid">
+                  {plcCycleSteps.map((step) => (
+                    <article className="plcCycleCard" key={step.label}>
+                      <span>{step.label}</span>
+                      <h3>{step.title}</h3>
+                      <p>{step.text}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <section className="plcVisualBand" aria-label="Strategi dan alat kolaboratif PLC">
+              <figure>
+                <img src={plcVisuals.strategyTools} alt="Strategi dan alat kolaboratif dalam KIT PLC" />
+                <figcaption>Strategi dan alat kolaboratif yang menjadi asas pilihan aktiviti PLC.</figcaption>
+              </figure>
+              <div>
+                <h2>Memilih Kaedah PLC Yang Sesuai</h2>
+                <p>
+                  Setiap alat PLC ada fungsi tersendiri. Guru Sains boleh memilih kaedah
+                  berdasarkan isu yang sedang berlaku: isu data murid, isu amali, isu
+                  pedagogi, keperluan guru baharu atau keperluan menyelaras pentaksiran.
+                </p>
+              </div>
+            </section>
+
+            <section className="plcMethods" aria-labelledby="plc-kaedah">
+              <span className="plcSectionNumber">03</span>
+              <h2 id="plc-kaedah">13 Kaedah PLC Untuk Panitia Sains</h2>
+              <p className="plcLead">
+                Berikut ialah kaedah dalam KIT PLC yang boleh diterjemahkan kepada amalan
+                harian guru Sains di sekolah.
+              </p>
+
+              <div className="plcMethodGrid">
+                {plcScienceMethods.map((method) => (
+                  <article className="plcMethodCard" key={method.title}>
+                    <span>{method.subtitle}</span>
+                    <h3>{method.title}</h3>
+                    <p><strong>Bila sesuai:</strong> {method.bestFor}</p>
+                    <p><strong>Contoh Sains:</strong> {method.science}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section className="plcSplit" aria-labelledby="plc-amali">
+              <div className="plcSplit__text">
+                <span className="plcSectionNumber">04</span>
+                <h2 id="plc-amali">PLC Dalam Bilik Darjah dan Makmal</h2>
+                <p>
+                  Dalam subjek Sains, banyak isu PdP boleh dilihat secara terus melalui
+                  tindakan murid: cara mereka menggunakan radas, menulis pemerhatian,
+                  mentafsir graf, membina inferens atau menghubungkan konsep dengan fenomena
+                  sebenar. Sebab itu PLC sangat sesuai diamalkan bersama bukti yang konkrit,
+                  bukan sekadar andaian guru.
+                </p>
+                <p>
+                  Learning Walk dan Peer Coaching boleh membantu guru melihat rutin makmal
+                  dengan lebih jelas. Lesson Study pula membantu panitia membina satu
+                  pengalaman pembelajaran yang lebih kemas, diuji dan diperbaiki berdasarkan
+                  respons sebenar murid.
+                </p>
+              </div>
+
+              <div className="plcSplit__figures">
+                <figure>
+                  <img src={plcVisuals.learningWalk} alt="Petikan Learning Walk daripada KIT PLC" />
+                  <figcaption>Learning Walk sesuai untuk pemerhatian berfokus terhadap aktiviti murid.</figcaption>
+                </figure>
+                <figure>
+                  <img src={plcVisuals.lessonStudy} alt="Petikan Lesson Study daripada KIT PLC" />
+                  <figcaption>Lesson Study membantu guru merancang, mencuba dan memurnikan RPH.</figcaption>
+                </figure>
+              </div>
+            </section>
+
+            <section className="plcSituations" aria-labelledby="plc-situasi">
+              <span className="plcSectionNumber">05</span>
+              <h2 id="plc-situasi">Contoh Situasi PLC Untuk Guru Sains</h2>
+              <div className="plcSituationGrid">
+                {plcScienceSituations.map((item) => (
+                  <article className="plcSituationCard" key={item.title}>
+                    <h3>{item.title}</h3>
+                    <span>{item.methods}</span>
+                    <p>{item.text}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section className="plcPbd" aria-labelledby="plc-pbd">
+              <figure>
+                <img src={plcVisuals.pbd} alt="Petikan KIT PLC berkaitan PLC sebagai platform pelaksanaan PBD" />
+                <figcaption>PLC boleh menyokong keberkesanan PBD apabila evidens murid dibincang secara kolaboratif.</figcaption>
+              </figure>
+              <div>
+                <span className="plcSectionNumber">06</span>
+                <h2 id="plc-pbd">PLC Sebagai Sokongan PBD</h2>
+                <p>
+                  PBD memerlukan pertimbangan profesional guru. Melalui PLC, guru Sains boleh
+                  menyemak evidens murid bersama rakan panitia, menyelaraskan kefahaman
+                  terhadap Standard Prestasi dan merancang intervensi yang lebih tepat.
+                </p>
+                <p>
+                  Contohnya, jika ramai murid berada pada tahap penguasaan rendah dalam
+                  kemahiran mengeksperimen, panitia boleh memilih satu strategi PLC,
+                  melaksanakan tindakan susulan dan melihat semula evidens selepas beberapa
+                  minggu.
+                </p>
+              </div>
+            </section>
+
+            <section className="plcStarter" aria-labelledby="plc-mula">
+              <div>
+                <span className="plcSectionNumber">07</span>
+                <h2 id="plc-mula">Cadangan Mula Untuk Panitia Sains</h2>
+                <p className="plcLead">
+                  Jika panitia mahu memulakan PLC dengan mudah, gunakan aliran ringkas ini.
+                  Pilih isu kecil, bina tindakan kecil dan semak kesannya dengan bukti.
+                </p>
+              </div>
+              <ol>
+                {plcStarterPlan.map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
+              </ol>
+            </section>
+
+            <section className="plcClosing" aria-labelledby="plc-refleksi">
+              <span className="plcEyebrow">Refleksi Guru Sains</span>
+              <h2 id="plc-refleksi">PLC hidup apabila guru berani melihat pembelajaran murid dengan jujur.</h2>
+              <p>
+                Dalam Sains, kita selalu mengajar murid supaya membuat pemerhatian, mengumpul
+                data dan membuat kesimpulan berdasarkan bukti. Prinsip yang sama boleh
+                digunakan oleh guru. PLC ialah ruang untuk guru melihat PdP sendiri secara
+                saintifik: ada isu, ada bukti, ada tindakan, ada semakan dan ada perkongsian.
+              </p>
+              <blockquote>
+                PLC yang baik tidak perlu besar. Yang penting, ia membantu guru Sains membuat
+                satu penambahbaikan yang benar-benar sampai kepada murid.
+              </blockquote>
+              <p className="plcSource">
+                <strong>Sumber rujukan:</strong> KIT PLC Professional Learning Community,
+                Kementerian Pendidikan Malaysia, 2019.
+              </p>
+              <div className="journey-post__shareFooter plcShareFooter">
+                <ShareBar title="PLC Guru Sains: Kaedah PLC yang boleh diamalkan guru Sains" anchor="#plc-guru-sains" />
+              </div>
+            </section>
           </article>
         </main>
       ) : currentPage === "modul" ? (

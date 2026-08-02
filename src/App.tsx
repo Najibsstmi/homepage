@@ -927,7 +927,7 @@ export default function App() {
                 <button onClick={() => navigateTo("modul")}>Modul</button>
                 <button onClick={() => navigateTo("banksoalan")}>Bank Soalan</button>
                 <button onClick={() => navigateTo("rpm")}>RPM2026-2035</button>
-                <button onClick={() => navigateTo("plc")}>PLC Guru Sains</button>
+                <button onClick={() => navigateTo("plc")}>PLC Kit</button>
               </div>
             )}
           </div>

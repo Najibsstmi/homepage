@@ -704,6 +704,8 @@ export default function App() {
 
   const achievements = [
     "Naib Johan MRCC UTHM 2026 - Pasukan Sumpit V1",
+    "Johan Pertandingan Inovasi Terbaik Karnival Inovasi Daerah Pasir Gudang 2026",
+    "Pembentang 3 Minutes Pitching Terbaik Karnival Inovasi Daerah Pasir Gudang 2026",
     "Johan pertandingan Inovasi cetakan 3D Malaysia Techlympics Zon Selatan Peringkat Kebangsaan 2022",
     "Johan Pertandingan Inovasi Sungai Kim Kim Peringkat Kebangsaan 2022",
     "Pingat Emas Karnival Kreatif dan Inovasi PdPc Kebangsaan 2019",

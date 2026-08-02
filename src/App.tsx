@@ -35,6 +35,13 @@ const formatVisitorCount = (value: unknown) => {
 export default function App() {
   type Page = "home" | "about" | "inovasi" | "modul" | "banksoalan" | "rpm" | "simulator";
   type SharePlatform = "facebook" | "whatsapp" | "telegram" | "x";
+  const mrccJourneyId = "journey-sumpit-v1-mrcc-uthm-2026";
+  const mrccJourneySlug = "sumpit-v1-naib-johan-mrcc-uthm-2026";
+  const mrccJourneyTitle =
+    "Sumpit V1 di MRCC UTHM: Naib Johan yang Membawa Kami ke Final Kebangsaan";
+  const mrccJourneyCardTitle = "Sumpit V1 Naib Johan MRCC UTHM";
+  const mrccJourneyDescription =
+    "Catatan perjalanan Cikgu Najib bersama Cikgu Nurulain binti Nardir dan murid pasukan Sumpit V1 sehingga meraih Naib Johan MRCC di UTHM serta melayakkan diri ke final kebangsaan di Perak.";
   const kidPgJourneyId = "journey-edusim-kid-pg-2026";
   const kidPgJourneySlug = "edusim-karnival-inovasi-daerah-pasir-gudang-2026";
   const kidPgJourneyTitle =
@@ -52,6 +59,7 @@ export default function App() {
     "smartlab-pengiktirafan",
   ]);
   const journeySectionIds = new Set([
+    mrccJourneyId,
     kidPgJourneyId,
     "journey-catatan-seorang-menantu",
     "journey-guru-cemerlang-ksl",
@@ -79,6 +87,7 @@ export default function App() {
   const [readMore, setReadMore] = useState(false);
   const [eduTrackReadMore, setEduTrackReadMore] = useState(false);
   const [eduSlotReadMore, setEduSlotReadMore] = useState(false);
+  const [mrccReadMore, setMrccReadMore] = useState(false);
   const [kidPgReadMore, setKidPgReadMore] = useState(false);
   const [canNativeShare, setCanNativeShare] = useState(false);
   const [shareNoticeByAnchor, setShareNoticeByAnchor] = useState<Record<string, string>>({});
@@ -150,6 +159,8 @@ export default function App() {
     const pathName = window.location.pathname;
     const targetParam = params.get("target") || "";
     const hashTarget = window.location.hash.replace(/^#/, "") || targetParam;
+    const isMrccJourneyTarget =
+      hashTarget === mrccJourneyId || pathName.includes(mrccJourneySlug);
     const isKidPgJourneyTarget =
       hashTarget === kidPgJourneyId || pathName.includes(kidPgJourneySlug);
     const shouldOpenInovasi =
@@ -180,6 +191,17 @@ export default function App() {
 
     if (smartLabHiddenSectionIds.has(hashTarget)) {
       setReadMore(true);
+    }
+
+    if (isMrccJourneyTarget) {
+      setMrccReadMore(true);
+      document.title = `${mrccJourneyTitle} | CikguSTEM`;
+      document
+        .querySelector('meta[name="description"]')
+        ?.setAttribute("content", mrccJourneyDescription);
+      document
+        .querySelector('link[rel="canonical"]')
+        ?.setAttribute("href", `https://www.cikgustem.com/${mrccJourneySlug}.html`);
     }
 
     if (isKidPgJourneyTarget) {
@@ -222,7 +244,7 @@ export default function App() {
     }, 180);
 
     return () => window.clearTimeout(timer);
-  }, [currentPage, readMore, eduTrackReadMore, eduSlotReadMore, kidPgReadMore]);
+  }, [currentPage, readMore, eduTrackReadMore, eduSlotReadMore, mrccReadMore, kidPgReadMore]);
 
   useEffect(() => {
     const fetchVisitorCount = async () => {
@@ -394,6 +416,8 @@ export default function App() {
       ? "share-catatan-seorang-menantu.html"
       : targetId === "journey-guru-cemerlang-ksl"
       ? "share-guru-cemerlang.html"
+      : targetId === mrccJourneyId
+      ? `${mrccJourneySlug}.html`
       : targetId === kidPgJourneyId
       ? `${kidPgJourneySlug}.html`
       : isRpmTarget
@@ -557,6 +581,31 @@ export default function App() {
     "Teknologi Pendidikan",
   ];
 
+  const mrccImageBase = "/PERJALANAN/MRCC/webp";
+  const mrccImages = {
+    hero: `${mrccImageBase}/sumpit-v1-mrcc-award-ceremony.webp`,
+    judging: `${mrccImageBase}/sumpit-v1-mrcc-presentation-judging.webp`,
+    booth: `${mrccImageBase}/sumpit-v1-mrcc-team-booth.webp`,
+    fieldTeam: `${mrccImageBase}/sumpit-v1-mrcc-launch-field-team.webp`,
+    fieldPrep: `${mrccImageBase}/sumpit-v1-mrcc-field-prep.webp`,
+    naibJohan: `${mrccImageBase}/sumpit-v1-mrcc-naib-johan-portrait.webp`,
+    launchTeam: `${mrccImageBase}/sumpit-v1-mrcc-launch-team-portrait.webp`,
+    rocketCheck: `${mrccImageBase}/sumpit-v1-mrcc-rocket-check.webp`,
+    boothTeam: `${mrccImageBase}/sumpit-v1-mrcc-booth-team.webp`,
+    boothUthm: `${mrccImageBase}/sumpit-v1-mrcc-booth-uthm.webp`,
+  };
+
+  const mrccTags = [
+    "MRCC",
+    "Sumpit V1",
+    "Model Roket",
+    "OpenRocket",
+    "UTHM",
+    "Naib Johan",
+    "Solid Fuel 1 km",
+    "Final Kebangsaan",
+  ];
+
   const rpmStrategicCores = [
     {
       number: 1,
@@ -654,6 +703,7 @@ export default function App() {
   ];
 
   const achievements = [
+    "Naib Johan MRCC UTHM 2026 - Pasukan Sumpit V1",
     "Johan pertandingan Inovasi cetakan 3D Malaysia Techlympics Zon Selatan Peringkat Kebangsaan 2022",
     "Johan Pertandingan Inovasi Sungai Kim Kim Peringkat Kebangsaan 2022",
     "Pingat Emas Karnival Kreatif dan Inovasi PdPc Kebangsaan 2019",
@@ -1656,6 +1706,340 @@ export default function App() {
             </p>
           </div>
         </div>
+
+        <article id={mrccJourneyId} className="journey-post journey-post--latest journey-post--mrcc">
+          <nav className="journey-post__breadcrumb" aria-label="Breadcrumb">
+            <button type="button" onClick={() => navigateTo("home")}>
+              Laman Utama
+            </button>
+            <span aria-hidden="true">/</span>
+            <button type="button" onClick={() => goToHomeSection("journey")}>
+              Perjalanan
+            </button>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">Sumpit V1 di MRCC UTHM</span>
+          </nav>
+
+          <div className="journey-post__header">
+            <div>
+              <span className="section-kicker">STEM Roket - UTHM - 2026</span>
+              <h3>{mrccJourneyTitle}</h3>
+              <p className="journey-post__summary">
+                Catatan kegembiraan seorang guru bersama pasukan Sumpit V1 yang berjaya
+                menjadi Naib Johan MRCC di UTHM, antara empat pasukan terbaik daripada 10
+                sekolah yang layak ke final kebangsaan di Perak untuk acara 1 km Solid Fuel.
+              </p>
+
+              <dl className="journey-post__metaGrid">
+                <div>
+                  <dt>Penulis</dt>
+                  <dd>Mohd Najib bin Jaafar</dd>
+                </div>
+                <div>
+                  <dt>Pembimbing</dt>
+                  <dd>Cikgu Najib & Nurulain binti Nardir</dd>
+                </div>
+                <div>
+                  <dt>Pasukan</dt>
+                  <dd>Nabil, Ammar, Damia, Chinta & Imran Hailmy</dd>
+                </div>
+                <div>
+                  <dt>Seterusnya</dt>
+                  <dd>Final Kebangsaan Perak, 8-11 September 2026</dd>
+                </div>
+              </dl>
+
+              <div className="journey-post__tags" aria-label="Tag artikel">
+                {mrccTags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+
+              <ShareBar title={mrccJourneyCardTitle} anchor={`#${mrccJourneyId}`} />
+            </div>
+          </div>
+
+          <div className="journey-post__lead">
+            <div className="journey-post__text">
+              <p className="journey-post__dateLine">MRCC di Universiti Tun Hussein Onn Malaysia.</p>
+              <p>
+                Ada kemenangan yang terasa lebih besar daripada angka kedudukan. Bagi saya,
+                kejayaan pasukan Sumpit V1 menjadi <strong>Naib Johan MRCC di UTHM</strong>{" "}
+                ialah salah satu daripadanya.
+              </p>
+              <p>
+                Ia bukan sekadar cerita tentang roket yang dilancarkan, laporan teknikal
+                yang dihantar atau sesi pembentangan di hadapan juri. Ia cerita tentang
+                murid yang berani mencuba, guru yang belajar bersama murid, dan satu pasukan
+                kecil yang bekerja keras sehingga layak berdiri dalam kelompok terbaik.
+              </p>
+              <p>
+                Saya hadir bersama Cikgu Nurulain binti Nardir, membimbing Nabil, Ammar,
+                Damia, Chinta dan Imran Hailmy. Ain juga sebahagian daripada pasukan ini,
+                cuma tidak dapat turut serta kerana kurang sihat. Walaupun dia tidak berada
+                bersama kami pada hari pertandingan, namanya tetap kami bawa dalam semangat
+                Sumpit V1.
+              </p>
+            </div>
+
+            <figure className="journey-post__heroImage journey-post__heroImage--mrcc">
+              <img
+                src={mrccImages.hero}
+                alt="Pasukan Sumpit V1 menerima pengiktirafan Naib Johan MRCC di UTHM"
+                width={1280}
+                height={960}
+              />
+              <figcaption>
+                Detik pengiktirafan Sumpit V1 sebagai Naib Johan MRCC di UTHM.
+              </figcaption>
+            </figure>
+          </div>
+
+          <figure className="journey-post__galleryItem journey-post__figureWide">
+            <img
+              src={mrccImages.booth}
+              alt="Pasukan Sumpit V1 di ruang pameran dan pembentangan MRCC UTHM"
+              width={1280}
+              height={960}
+              loading="lazy"
+            />
+            <figcaption>
+              Ruang pembentangan menjadi tempat murid mempertahankan idea, reka bentuk dan proses kejuruteraan Sumpit V1.
+            </figcaption>
+          </figure>
+
+          <ReadMore
+            className="journey-post__readmore"
+            contentClassName="journey-post__more"
+            open={mrccReadMore}
+            onToggle={() => setMrccReadMore((current) => !current)}
+            expandLabel="Baca Catatan Penuh"
+            collapseLabel="Lihat Ringkas"
+          >
+            <div className="journey-post__body">
+              <h4>Sebuah roket kecil yang membawa kerja besar</h4>
+              <p>
+                Projek Sumpit V1 bermula sebagai sebuah cabaran STEM, tetapi semakin lama
+                semakin jelas bahawa ia bukan sekadar aktiviti membina roket. Di sebalik
+                nama Sumpit, ada usaha untuk menghubungkan inspirasi tempatan dengan
+                pemikiran kejuruteraan moden.
+              </p>
+              <p>
+                Murid bukan hanya perlu menghasilkan bentuk yang menarik. Mereka perlu
+                memahami mengapa sesuatu reka bentuk dipilih. Kami berbincang tentang
+                kestabilan, CG, CP, bentuk nose cone, fin trapezoidal, anggaran apogee,
+                halaju, pecutan dan sistem recovery. OpenRocket menjadi ruang untuk murid
+                melihat bagaimana idea di atas kertas boleh diuji melalui simulasi sebelum
+                dibawa ke pelancaran sebenar.
+              </p>
+              <p>
+                Reka bentuk akhir SUMPIT-1 pernah diramal mencapai apogee sekitar 72.4 m
+                dengan masa ke apogee 5.38 s melalui OpenRocket. Apabila pelancaran sebenar
+                menunjukkan bacaan apogee dan masa penerbangan yang hampir dengan simulasi,
+                murid dapat melihat sendiri bahawa data, pemerhatian dan reka bentuk saling
+                berkait. Pada saat itu, Sains tidak lagi berada dalam buku. Sains berada di
+                hadapan mata mereka.
+              </p>
+
+              <div className="journey-post__inlineVisual">
+                <img
+                  src={mrccImages.judging}
+                  alt="Murid Sumpit V1 menerangkan projek kepada juri di reruai MRCC UTHM"
+                  width={1280}
+                  height={960}
+                  loading="lazy"
+                />
+                <div>
+                  <span className="section-kicker">Pembentangan</span>
+                  <h4>Setiap murid belajar menyampaikan alasan teknikal di sebalik reka bentuk mereka.</h4>
+                  <p>
+                    Bahagian yang paling membanggakan saya ialah melihat murid mula yakin
+                    menerangkan apa yang mereka buat. Mereka bukan sekadar hafal jawapan,
+                    tetapi cuba memahami mengapa reka bentuk itu dipilih.
+                  </p>
+                </div>
+              </div>
+
+              <h4>Murid yang menghidupkan pasukan</h4>
+              <p>
+                Dalam pasukan ini, Nabil, Ammar, Damia, Chinta dan Imran Hailmy membawa
+                tenaga masing-masing. Ada yang lebih teliti dengan susunan bahan, ada yang
+                cepat menangkap idea teknikal, ada yang membantu mengemas pembentangan, dan
+                ada yang menceriakan pasukan ketika semua orang mula penat.
+              </p>
+              <p>
+                Sebagai guru, saya selalu percaya bahawa pertandingan seperti ini bukan
+                semata-mata untuk mencari pemenang. Ia medan untuk murid belajar bertanya,
+                mencuba, gagal sedikit, membetulkan semula dan akhirnya berani berdiri
+                mempertahankan hasil kerja sendiri.
+              </p>
+              <p>
+                Ain tidak dapat bersama kami kerana tidak sihat, dan tentu sekali kami rasa
+                kekurangan itu. Namun dalam perjalanan sebuah pasukan, kehadiran bukan hanya
+                diukur pada hari pertandingan. Usaha sebelum itu juga sebahagian daripada
+                cerita yang membawa kami sampai ke UTHM.
+              </p>
+
+              <blockquote className="journey-post__quote">
+                Kemenangan paling indah bagi seorang guru ialah apabila murid mula percaya
+                bahawa kerja keras mereka mampu membawa mereka lebih jauh daripada yang
+                mereka bayangkan.
+              </blockquote>
+
+              <h4>Dari padang pelancaran ke detik yang membuat kami tersenyum</h4>
+              <p>
+                Hari pertandingan di UTHM penuh dengan debaran. Di satu sisi, kami perlu
+                memastikan pembentangan, laporan dan pemerhatian teknikal berada dalam keadaan
+                terbaik. Di sisi lain, murid perlu melalui suasana pertandingan sebenar
+                bersama sekolah-sekolah lain yang juga datang dengan persediaan rapi.
+              </p>
+              <p>
+                Di padang pelancaran, setiap detik terasa panjang. Apabila roket naik,
+                semua mata memerhati. Apabila data dibandingkan, semua orang mula melihat
+                hubungan antara simulasi dan dunia sebenar. Walaupun ada cabaran pada fasa
+                recovery apabila sistem telemetry tidak mencetuskan bukaan parachute seperti
+                yang dirancang, murid belajar bahawa dunia kejuruteraan sebenar memang
+                penuh dengan pemerhatian, penambahbaikan dan pembelajaran selepas ujian.
+              </p>
+
+              <div className="journey-post__gallery journey-post__gallery--end">
+                {[
+                  {
+                    src: mrccImages.fieldTeam,
+                    alt: "Pasukan Sumpit V1 bersama guru di kawasan padang pelancaran MRCC UTHM",
+                    caption: "Suasana padang pelancaran yang menguji persediaan, fokus dan semangat pasukan.",
+                    width: 1280,
+                    height: 576,
+                  },
+                  {
+                    src: mrccImages.fieldPrep,
+                    alt: "Murid Sumpit V1 membuat persediaan di kawasan pelancaran roket",
+                    caption: "Saat sebelum dan selepas pelancaran menjadi ruang pembelajaran paling nyata untuk murid.",
+                    width: 1280,
+                    height: 576,
+                  },
+                ].map((image) => (
+                  <figure className="journey-post__galleryItem" key={image.src}>
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      width={image.width}
+                      height={image.height}
+                      loading="lazy"
+                    />
+                    <figcaption>{image.caption}</figcaption>
+                  </figure>
+                ))}
+              </div>
+
+              <h4>Naib Johan daripada 10 sekolah</h4>
+              <p>
+                Apabila keputusan diumumkan, perasaan syukur itu sukar digambarkan. Daripada
+                10 sekolah yang bertanding, Sumpit V1 dari Sekolah Seni Malaysia Johor berjaya
+                meraih <strong>Naib Johan</strong>.
+              </p>
+
+              <ol className="journey-post__rankingList" aria-label="Keputusan MRCC UTHM">
+                <li>
+                  <span>Johan</span>
+                  <strong>Sekolah Sains Kota Tinggi</strong>
+                </li>
+                <li>
+                  <span>Naib Johan</span>
+                  <strong>Sekolah Seni Malaysia Johor - Sumpit V1</strong>
+                </li>
+                <li>
+                  <span>Ketiga</span>
+                  <strong>MRSM Mersing</strong>
+                </li>
+                <li>
+                  <span>Keempat</span>
+                  <strong>MRSM Johor Bahru</strong>
+                </li>
+              </ol>
+
+              <p>
+                Empat pasukan inilah yang layak ke final kebangsaan di Perak bagi acara
+                {" "}<strong>1 km Solid Fuel</strong>. Final tersebut dijadualkan berlangsung
+                pada <strong>8 hingga 11 September 2026</strong>.
+              </p>
+
+              <div className="journey-post__inlineVisual journey-post__inlineVisual--reverse">
+                <img
+                  src={mrccImages.naibJohan}
+                  alt="Cikgu Najib bersama pasukan Sumpit V1 selepas menerima pengiktirafan Naib Johan"
+                  width={900}
+                  height={1200}
+                  loading="lazy"
+                />
+                <div>
+                  <span className="section-kicker">Pengiktirafan</span>
+                  <h4>Naib Johan ini menjadi tiket semangat menuju final kebangsaan di Perak.</h4>
+                  <p>
+                    Kemenangan ini bukan penamat. Ia permulaan kepada tanggungjawab baharu:
+                    memperkemas reka bentuk, memperkukuh data, membaiki kelemahan dan
+                    memastikan murid terus percaya kepada proses.
+                  </p>
+                </div>
+              </div>
+
+              <h4>Kegembiraan seorang guru</h4>
+              <p>
+                Saya sangat gembira bukan semata-mata kerana kami menang. Saya gembira kerana
+                melihat murid-murid ini melalui proses yang panjang dengan hati yang kuat.
+                Mereka belajar bahawa kejayaan tidak datang daripada satu malam, tetapi
+                daripada perbincangan berulang, semakan laporan, pembaikan reka bentuk,
+                latihan pembentangan dan keberanian untuk turun bertanding.
+              </p>
+              <p>
+                Saya juga bersyukur dapat berkongsi perjalanan ini bersama Cikgu Nurulain
+                binti Nardir. Dalam projek seperti ini, guru bukan hanya memberi arahan.
+                Guru turut menjadi penyusun langkah, penenang ketika murid gelisah, penyemak
+                terakhir sebelum dihantar dan orang yang paling kuat percaya bahawa murid
+                mampu pergi lebih jauh.
+              </p>
+
+              <figure className="journey-post__galleryItem journey-post__figureWide">
+                <img
+                  src={mrccImages.boothUthm}
+                  alt="Guru dan murid Sumpit V1 di reruai MRCC UTHM dengan paparan projek roket"
+                  width={1280}
+                  height={960}
+                  loading="lazy"
+                />
+                <figcaption>
+                  Di sebalik piala dan sijil, ada proses belajar, mencuba dan membimbing yang menjadikan perjalanan ini bermakna.
+                </figcaption>
+              </figure>
+
+              <p>
+                Perjalanan ke Perak pada September nanti sudah tentu menuntut persediaan yang
+                lebih rapi. Namun untuk hari ini, saya mahu merakamkan rasa syukur ini sebagai
+                satu halaman penting dalam perjalanan saya sebagai guru Sains.
+              </p>
+              <p>
+                Terima kasih kepada semua murid pasukan Sumpit V1, pihak sekolah, rakan guru,
+                ibu bapa dan semua yang mendoakan. Naib Johan ini milik pasukan, tetapi nilai
+                sebenar yang kami bawa pulang ialah keyakinan bahawa usaha kecil, apabila
+                dibuat bersama-sama dengan bersungguh-sungguh, mampu membuka laluan yang lebih
+                besar.
+              </p>
+              <p className="journey-post__prayer">
+                Semoga Sumpit V1 terus terbang lebih tinggi, bukan hanya di langit pertandingan,
+                tetapi dalam keyakinan dan impian murid-murid yang membinanya.
+              </p>
+            </div>
+
+            <div className="journey-post__shareFooter">
+              <div className="journey-post__closingActions">
+                <button type="button" className="secondary-btn" onClick={() => goToHomeSection("journey")}>
+                  Kembali ke Perjalanan
+                </button>
+              </div>
+              <ShareBar title={mrccJourneyCardTitle} anchor={`#${mrccJourneyId}`} />
+            </div>
+          </ReadMore>
+        </article>
 
         <article id={kidPgJourneyId} className="journey-post journey-post--latest journey-post--edusim">
           <nav className="journey-post__breadcrumb" aria-label="Breadcrumb">

@@ -2712,7 +2712,7 @@ a {
   position: absolute;
   top: 100%;
   left: 0;
-  min-width: 200px;
+  min-width: 230px;
   padding: 0.6rem;
   border-radius: 16px;
   background: rgba(7, 15, 35, 0.96);
@@ -2739,6 +2739,41 @@ a {
 .navDropdownMenu button:hover {
   background: rgba(103, 232, 249, 0.08);
   color: #67e8f9;
+}
+
+.navDropdownSubmenu {
+  position: relative;
+}
+
+.navDropdownMenu__item--parent {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.navDropdownMenu__item--active {
+  background: rgba(103, 232, 249, 0.12) !important;
+  color: #67e8f9 !important;
+}
+
+.navDropdownMenu--nested {
+  position: static;
+  min-width: min(430px, calc(100vw - 72px));
+  margin: 0.35rem 0 0.4rem 0.35rem;
+  padding: 0.35rem;
+  border-color: rgba(250, 204, 21, 0.18);
+  border-radius: 12px;
+  background: rgba(2, 8, 23, 0.78);
+  box-shadow: none;
+}
+
+.navDropdownMenu--nested button {
+  padding: 0.62rem 0.72rem;
+  color: #dbeafe;
+  font-size: 0.84rem;
+  line-height: 1.35;
+  white-space: normal;
 }
 
 .navbar__toggle {
@@ -8018,6 +8053,16 @@ section {
     min-width: 0;
     margin-top: 0.55rem;
     box-shadow: none;
+  }
+
+  .navDropdownMenu--nested {
+    width: auto;
+    min-width: 0;
+    margin: 0.45rem 0 0.35rem;
+  }
+
+  .navDropdownMenu--nested button {
+    font-size: 0.82rem;
   }
 
   .simulatorSearchTrigger {

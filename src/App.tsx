@@ -33,6 +33,17 @@ const formatVisitorCount = (value: unknown) => {
 };
 
 export default function App() {
+  type ScienceManagementPageId =
+    | "sains-carta-organisasi"
+    | "sains-perancangan-program"
+    | "sains-biodata-guru"
+    | "sains-jadual-guru"
+    | "sains-spi-kurikulum-panitia"
+    | "sains-perancangan-strategik"
+    | "sains-laporan-plc"
+    | "sains-anggaran-belanja"
+    | "sains-analisis-peperiksaan";
+  type ManagementPageId = ScienceManagementPageId | "panitia-matematik";
   type Page =
     | "home"
     | "about"
@@ -41,8 +52,7 @@ export default function App() {
     | "banksoalan"
     | "rpm"
     | "plc"
-    | "panitia-sains"
-    | "panitia-matematik"
+    | ManagementPageId
     | "simulator";
   type SharePlatform = "facebook" | "whatsapp" | "telegram" | "x";
   const mrccJourneyId = "journey-sumpit-v1-mrcc-uthm-2026";
@@ -82,7 +92,21 @@ export default function App() {
   const eduSlotSectionIds = new Set(["eduslot-post"]);
   const rpmSectionIds = new Set(["rpm-2026-2035"]);
   const plcSectionIds = new Set(["plc-guru-sains"]);
-  const managementPages = new Set<Page>(["panitia-sains", "panitia-matematik"]);
+  const scienceManagementPageIds: ScienceManagementPageId[] = [
+    "sains-carta-organisasi",
+    "sains-perancangan-program",
+    "sains-biodata-guru",
+    "sains-jadual-guru",
+    "sains-spi-kurikulum-panitia",
+    "sains-perancangan-strategik",
+    "sains-laporan-plc",
+    "sains-anggaran-belanja",
+    "sains-analisis-peperiksaan",
+  ];
+  const managementPages = new Set<Page>([
+    ...scienceManagementPageIds,
+    "panitia-matematik",
+  ]);
   const smartLabHiddenSectionIds = new Set([
     "smartlab-cara",
     "smartlab-status",
@@ -97,6 +121,7 @@ export default function App() {
   const [simulatorRouteVersion, setSimulatorRouteVersion] = useState(0);
   const [modulMenuOpen, setModulMenuOpen] = useState(false);
   const [pengurusanMenuOpen, setPengurusanMenuOpen] = useState(false);
+  const [panitiaSainsMenuOpen, setPanitiaSainsMenuOpen] = useState(false);
   const [readMore, setReadMore] = useState(false);
   const [eduTrackReadMore, setEduTrackReadMore] = useState(false);
   const [eduSlotReadMore, setEduSlotReadMore] = useState(false);
@@ -186,8 +211,9 @@ export default function App() {
     const shouldOpenBankSoalan = params.get("page") === "banksoalan";
     const shouldOpenRpm = params.get("page") === "rpm" || rpmSectionIds.has(hashTarget);
     const shouldOpenPlc = params.get("page") === "plc" || plcSectionIds.has(hashTarget);
-    const shouldOpenPanitiaSains = params.get("page") === "panitia-sains";
-    const shouldOpenPanitiaMatematik = params.get("page") === "panitia-matematik";
+    const requestedManagementPage = params.get("page") as Page | null;
+    const shouldOpenManagementPage =
+      requestedManagementPage !== null && managementPages.has(requestedManagementPage);
     const shouldOpenSimulator =
       params.get("page") === "simulator" || pathName.startsWith("/simulator");
 
@@ -201,10 +227,8 @@ export default function App() {
       setCurrentPage("rpm");
     } else if (shouldOpenPlc) {
       setCurrentPage("plc");
-    } else if (shouldOpenPanitiaSains) {
-      setCurrentPage("panitia-sains");
-    } else if (shouldOpenPanitiaMatematik) {
-      setCurrentPage("panitia-matematik");
+    } else if (shouldOpenManagementPage) {
+      setCurrentPage(requestedManagementPage);
     } else if (shouldOpenBankSoalan) {
       setCurrentPage("banksoalan");
     } else if (shouldOpenModul) {
@@ -299,6 +323,7 @@ export default function App() {
     setMobileMenuOpen(false);
     setModulMenuOpen(false);
     setPengurusanMenuOpen(false);
+    setPanitiaSainsMenuOpen(false);
 
     if (typeof window !== "undefined") {
       if (page === "home") {
@@ -329,6 +354,7 @@ export default function App() {
     setMobileMenuOpen(false);
     setModulMenuOpen(false);
     setPengurusanMenuOpen(false);
+    setPanitiaSainsMenuOpen(false);
 
     if (typeof window !== "undefined") {
       window.history.replaceState(null, "", path);
@@ -342,6 +368,7 @@ export default function App() {
     setMobileMenuOpen(false);
     setModulMenuOpen(false);
     setPengurusanMenuOpen(false);
+    setPanitiaSainsMenuOpen(false);
 
     if (typeof window !== "undefined") {
       const targetUrl = new URL(window.location.href);
@@ -892,7 +919,58 @@ export default function App() {
     "/gallery4.jpg",
   ];
 
-  type ManagementPageId = "panitia-sains" | "panitia-matematik";
+  const scienceManagementItems: Array<{
+    page: ScienceManagementPageId;
+    label: string;
+    lead: string;
+  }> = [
+    {
+      page: "sains-carta-organisasi",
+      label: "1. Carta Organisasi (SK@S 3.1.2.1)",
+      lead: "Ruang untuk carta organisasi Panitia Sains, jawatan, peranan dan aliran tanggungjawab ahli panitia.",
+    },
+    {
+      page: "sains-perancangan-program",
+      label: "2. Perancangan Program Panitia (SK@S 3.1.2.1)",
+      lead: "Ruang untuk menyusun program tahunan, pelan tindakan, sasaran, tempoh pelaksanaan dan status program Panitia Sains.",
+    },
+    {
+      page: "sains-biodata-guru",
+      label: "3. Biodata Guru Mata Pelajaran (SK@S 3.1.2.1)",
+      lead: "Ruang untuk biodata guru mata pelajaran Sains, opsyen, kelas yang diajar, pengalaman dan maklumat profesional.",
+    },
+    {
+      page: "sains-jadual-guru",
+      label: "4. Jadual Guru Mata Pelajaran (SK@S 3.1.2.1)",
+      lead: "Ruang untuk jadual guru mata pelajaran Sains, pembahagian kelas, waktu PdP dan penggunaan makmal.",
+    },
+    {
+      page: "sains-spi-kurikulum-panitia",
+      label: "5. SPI Berkaitan Pengurusan Kurikulum dan Panitia (SK@S 3.1.2.1)",
+      lead: "Ruang untuk surat pekeliling, dokumen dasar dan rujukan rasmi berkaitan pengurusan kurikulum serta panitia.",
+    },
+    {
+      page: "sains-perancangan-strategik",
+      label: "6. Perancangan Strategik Panitia (SK@S 3.1.2.2)(SK@S 3.1.2.3)",
+      lead: "Ruang untuk hala tuju strategik Panitia Sains, isu, objektif, KPI, intervensi dan pelan penambahbaikan.",
+    },
+    {
+      page: "sains-laporan-plc",
+      label: "7. Laporan PLC KMK Minit Curai (SK@S 3.1.2.2)",
+      lead: "Ruang untuk laporan PLC, KMK, minit curai, dapatan perbincangan profesional dan tindakan susulan.",
+    },
+    {
+      page: "sains-anggaran-belanja",
+      label: "8. Anggaran Belanja Mengurus (SK@S 3.1.2.4)",
+      lead: "Ruang untuk cadangan bajet, anggaran belanja mengurus, keperluan bahan, radas, program dan sokongan PdP.",
+    },
+    {
+      page: "sains-analisis-peperiksaan",
+      label: "9. Analisis Peperiksaan",
+      lead: "Ruang untuk analisis peperiksaan, analisis item, post-mortem, pencapaian murid dan cadangan intervensi.",
+    },
+  ];
+
   const managementContent: Record<
     ManagementPageId,
     {
@@ -902,26 +980,35 @@ export default function App() {
       cards: Array<{ title: string; text: string }>;
     }
   > = {
-    "panitia-sains": {
-      title: "Panitia Sains",
-      lead:
-        "Ruang pengurusan untuk menyusun maklumat Panitia Sains seperti carta organisasi, takwim, mesyuarat, program, analisis pencapaian dan evidens aktiviti.",
-      tags: ["Sains", "Makmal", "PLC", "PBD"],
-      cards: [
+    ...(Object.fromEntries(
+      scienceManagementItems.map((item) => [
+        item.page,
         {
-          title: "Maklumat Panitia",
-          text: "Letakkan senarai guru, ketua panitia, bidang tugas, kelas yang diajar dan dokumen rujukan utama panitia.",
+          title: item.label,
+          lead: item.lead,
+          tags: ["Panitia Sains", "SK@S", "Dokumen"],
+          cards: [
+            {
+              title: "Dokumen & Pautan",
+              text: "Letakkan fail, pautan Google Drive, gambar atau dokumen rasmi berkaitan folder ini.",
+            },
+            {
+              title: "Catatan Pengurusan",
+              text: "Tambah ringkasan, tarikh kemas kini, pegawai bertanggungjawab dan status pelaksanaan.",
+            },
+            {
+              title: "Evidens & Tindakan",
+              text: "Kumpulkan evidens, laporan, keputusan, minit atau tindakan susulan supaya mudah dirujuk semula.",
+            },
+          ],
         },
-        {
-          title: "Program & Aktiviti",
-          text: "Susun takwim, program peningkatan akademik, aktiviti makmal, STEM, inovasi dan intervensi murid.",
-        },
-        {
-          title: "Analisis & Evidens",
-          text: "Kumpulkan analisis peperiksaan, PBD, laporan post-mortem, minit mesyuarat dan gambar aktiviti panitia.",
-        },
-      ],
-    },
+      ])
+    ) as Record<ScienceManagementPageId, {
+      title: string;
+      lead: string;
+      tags: string[];
+      cards: Array<{ title: string; text: string }>;
+    }>),
     "panitia-matematik": {
       title: "Panitia Matematik",
       lead:
@@ -946,6 +1033,9 @@ export default function App() {
   const activeManagementContent = managementPages.has(currentPage)
     ? managementContent[currentPage as ManagementPageId]
     : null;
+  const sainsManagementActive = scienceManagementPageIds.includes(
+    currentPage as ScienceManagementPageId
+  );
 
   return (
     <div className="page">
@@ -990,7 +1080,10 @@ export default function App() {
               setPengurusanMenuOpen(true);
               setModulMenuOpen(false);
             }}
-            onMouseLeave={() => setPengurusanMenuOpen(false)}
+            onMouseLeave={() => {
+              setPengurusanMenuOpen(false);
+              setPanitiaSainsMenuOpen(false);
+            }}
           >
             <button
               className={`navDropdownTrigger${managementPages.has(currentPage) ? " navDropdownTrigger--active" : ""}`}
@@ -998,7 +1091,11 @@ export default function App() {
               aria-haspopup="true"
               aria-expanded={pengurusanMenuOpen}
               onClick={() => {
-                setPengurusanMenuOpen((prev) => !prev);
+                const nextOpen = !pengurusanMenuOpen;
+                setPengurusanMenuOpen(nextOpen);
+                if (!nextOpen) {
+                  setPanitiaSainsMenuOpen(false);
+                }
                 setModulMenuOpen(false);
               }}
             >
@@ -1007,7 +1104,36 @@ export default function App() {
 
             {pengurusanMenuOpen && (
               <div className="navDropdownMenu">
-                <button onClick={() => navigateTo("panitia-sains")}>Panitia Sains</button>
+                <div
+                  className="navDropdownSubmenu"
+                  onMouseEnter={() => setPanitiaSainsMenuOpen(true)}
+                  onMouseLeave={() => setPanitiaSainsMenuOpen(false)}
+                >
+                  <button
+                    className={`navDropdownMenu__item navDropdownMenu__item--parent${sainsManagementActive ? " navDropdownMenu__item--active" : ""}`}
+                    type="button"
+                    aria-haspopup="true"
+                    aria-expanded={panitiaSainsMenuOpen}
+                    onClick={() => setPanitiaSainsMenuOpen((prev) => !prev)}
+                  >
+                    Panitia Sains <span className="navCaret" aria-hidden="true">&#9656;</span>
+                  </button>
+
+                  {panitiaSainsMenuOpen && (
+                    <div className="navDropdownMenu navDropdownMenu--nested">
+                      {scienceManagementItems.map((item) => (
+                        <button
+                          type="button"
+                          className={currentPage === item.page ? "navDropdownMenu__item--active" : ""}
+                          key={item.page}
+                          onClick={() => navigateTo(item.page)}
+                        >
+                          {item.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <button onClick={() => navigateTo("panitia-matematik")}>Panitia Matematik</button>
               </div>
             )}
@@ -1018,6 +1144,7 @@ export default function App() {
             onMouseEnter={() => {
               setModulMenuOpen(true);
               setPengurusanMenuOpen(false);
+              setPanitiaSainsMenuOpen(false);
             }}
             onMouseLeave={() => setModulMenuOpen(false)}
           >

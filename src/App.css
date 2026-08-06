@@ -2155,11 +2155,11 @@ a {
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 18px 32px;
+  padding: 18px clamp(18px, 2.2vw, 32px);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  gap: clamp(12px, 1.5vw, 20px);
   backdrop-filter: blur(14px);
   background: rgba(2, 6, 23, 0.55);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -2174,7 +2174,7 @@ a {
 
 .navbar__links {
   display: flex;
-  gap: 22px;
+  gap: clamp(10px, 1.4vw, 22px);
   flex-wrap: wrap;
   align-items: center;
 }
@@ -2245,7 +2245,7 @@ a {
   border-radius: 999px;
   font: inherit;
   cursor: pointer;
-  padding: 8px 20px;
+  padding: 8px clamp(14px, 1.25vw, 20px);
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -2689,7 +2689,7 @@ a {
   border-radius: 999px;
   font: inherit;
   cursor: pointer;
-  padding: 8px 20px;
+  padding: 8px clamp(14px, 1.25vw, 20px);
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -4018,7 +4018,7 @@ a {
   color: #082f49;
   border: none;
   border-radius: 999px;
-  padding: 8px 20px;
+  padding: 8px clamp(14px, 1.25vw, 20px);
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
@@ -5073,6 +5073,161 @@ section {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
+}
+
+.managementPage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+}
+
+.managementHero {
+  margin-bottom: 2rem;
+  padding-bottom: 1.6rem;
+  border-bottom: 1px solid rgba(103, 232, 249, 0.16);
+}
+
+.managementKicker {
+  display: inline-flex;
+  margin-bottom: 0.75rem;
+  color: #67e8f9;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.managementHero h1 {
+  margin: 0 0 1rem;
+  color: #f8fafc;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.08;
+}
+
+.managementHero p {
+  max-width: 900px;
+  margin: 0;
+  color: rgba(226, 232, 240, 0.84);
+  font-size: 1.06rem;
+  line-height: 1.8;
+}
+
+.managementTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1.25rem;
+}
+
+.managementTags span {
+  padding: 0.38rem 0.72rem;
+  border: 1px solid rgba(103, 232, 249, 0.16);
+  border-radius: 999px;
+  color: #67e8f9;
+  background: rgba(34, 211, 238, 0.08);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.managementGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.managementCard {
+  min-height: 210px;
+  padding: 1.35rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(145deg, rgba(15, 23, 42, 0.86), rgba(8, 13, 28, 0.82)),
+    rgba(15, 23, 42, 0.72);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16);
+}
+
+.managementCard h2 {
+  margin: 0 0 0.8rem;
+  color: #f8fafc;
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+
+.managementCard p {
+  margin: 0;
+  color: rgba(226, 232, 240, 0.78);
+  line-height: 1.7;
+}
+
+.managementNote {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+  padding: 1.35rem;
+  border: 1px solid rgba(250, 204, 21, 0.22);
+  border-radius: 8px;
+  background: rgba(113, 63, 18, 0.18);
+}
+
+.managementNote span {
+  display: inline-flex;
+  margin-bottom: 0.45rem;
+  color: #fde68a;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.managementNote h2 {
+  margin: 0 0 0.6rem;
+  color: #fff7ed;
+  font-size: clamp(1.25rem, 2.2vw, 1.8rem);
+  line-height: 1.2;
+}
+
+.managementNote p {
+  max-width: 780px;
+  margin: 0;
+  color: rgba(255, 247, 237, 0.78);
+  line-height: 1.7;
+}
+
+.managementNote .btn {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 900px) {
+  .managementGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .managementCard {
+    min-height: 0;
+  }
+
+  .managementNote {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 640px) {
+  .managementPage {
+    padding: 2.2rem 1rem 4rem;
+  }
+
+  .managementHero p,
+  .managementCard p,
+  .managementNote p {
+    font-size: 0.98rem;
+  }
+
+  .managementNote .btn {
+    width: 100%;
+  }
 }
 
 .simulatorPage {

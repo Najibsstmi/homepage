@@ -33,7 +33,17 @@ const formatVisitorCount = (value: unknown) => {
 };
 
 export default function App() {
-  type Page = "home" | "about" | "inovasi" | "modul" | "banksoalan" | "rpm" | "plc" | "simulator";
+  type Page =
+    | "home"
+    | "about"
+    | "inovasi"
+    | "modul"
+    | "banksoalan"
+    | "rpm"
+    | "plc"
+    | "panitia-sains"
+    | "panitia-matematik"
+    | "simulator";
   type SharePlatform = "facebook" | "whatsapp" | "telegram" | "x";
   const mrccJourneyId = "journey-sumpit-v1-mrcc-uthm-2026";
   const mrccJourneySlug = "sumpit-v1-naib-johan-mrcc-uthm-2026";
@@ -72,6 +82,7 @@ export default function App() {
   const eduSlotSectionIds = new Set(["eduslot-post"]);
   const rpmSectionIds = new Set(["rpm-2026-2035"]);
   const plcSectionIds = new Set(["plc-guru-sains"]);
+  const managementPages = new Set<Page>(["panitia-sains", "panitia-matematik"]);
   const smartLabHiddenSectionIds = new Set([
     "smartlab-cara",
     "smartlab-status",
@@ -85,6 +96,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>("home");
   const [simulatorRouteVersion, setSimulatorRouteVersion] = useState(0);
   const [modulMenuOpen, setModulMenuOpen] = useState(false);
+  const [pengurusanMenuOpen, setPengurusanMenuOpen] = useState(false);
   const [readMore, setReadMore] = useState(false);
   const [eduTrackReadMore, setEduTrackReadMore] = useState(false);
   const [eduSlotReadMore, setEduSlotReadMore] = useState(false);
@@ -174,6 +186,8 @@ export default function App() {
     const shouldOpenBankSoalan = params.get("page") === "banksoalan";
     const shouldOpenRpm = params.get("page") === "rpm" || rpmSectionIds.has(hashTarget);
     const shouldOpenPlc = params.get("page") === "plc" || plcSectionIds.has(hashTarget);
+    const shouldOpenPanitiaSains = params.get("page") === "panitia-sains";
+    const shouldOpenPanitiaMatematik = params.get("page") === "panitia-matematik";
     const shouldOpenSimulator =
       params.get("page") === "simulator" || pathName.startsWith("/simulator");
 
@@ -187,6 +201,10 @@ export default function App() {
       setCurrentPage("rpm");
     } else if (shouldOpenPlc) {
       setCurrentPage("plc");
+    } else if (shouldOpenPanitiaSains) {
+      setCurrentPage("panitia-sains");
+    } else if (shouldOpenPanitiaMatematik) {
+      setCurrentPage("panitia-matematik");
     } else if (shouldOpenBankSoalan) {
       setCurrentPage("banksoalan");
     } else if (shouldOpenModul) {
@@ -280,6 +298,7 @@ export default function App() {
     setCurrentPage(page);
     setMobileMenuOpen(false);
     setModulMenuOpen(false);
+    setPengurusanMenuOpen(false);
 
     if (typeof window !== "undefined") {
       if (page === "home") {
@@ -309,6 +328,7 @@ export default function App() {
     setCurrentPage("simulator");
     setMobileMenuOpen(false);
     setModulMenuOpen(false);
+    setPengurusanMenuOpen(false);
 
     if (typeof window !== "undefined") {
       window.history.replaceState(null, "", path);
@@ -321,6 +341,7 @@ export default function App() {
     setCurrentPage("home");
     setMobileMenuOpen(false);
     setModulMenuOpen(false);
+    setPengurusanMenuOpen(false);
 
     if (typeof window !== "undefined") {
       const targetUrl = new URL(window.location.href);
@@ -871,6 +892,61 @@ export default function App() {
     "/gallery4.jpg",
   ];
 
+  type ManagementPageId = "panitia-sains" | "panitia-matematik";
+  const managementContent: Record<
+    ManagementPageId,
+    {
+      title: string;
+      lead: string;
+      tags: string[];
+      cards: Array<{ title: string; text: string }>;
+    }
+  > = {
+    "panitia-sains": {
+      title: "Panitia Sains",
+      lead:
+        "Ruang pengurusan untuk menyusun maklumat Panitia Sains seperti carta organisasi, takwim, mesyuarat, program, analisis pencapaian dan evidens aktiviti.",
+      tags: ["Sains", "Makmal", "PLC", "PBD"],
+      cards: [
+        {
+          title: "Maklumat Panitia",
+          text: "Letakkan senarai guru, ketua panitia, bidang tugas, kelas yang diajar dan dokumen rujukan utama panitia.",
+        },
+        {
+          title: "Program & Aktiviti",
+          text: "Susun takwim, program peningkatan akademik, aktiviti makmal, STEM, inovasi dan intervensi murid.",
+        },
+        {
+          title: "Analisis & Evidens",
+          text: "Kumpulkan analisis peperiksaan, PBD, laporan post-mortem, minit mesyuarat dan gambar aktiviti panitia.",
+        },
+      ],
+    },
+    "panitia-matematik": {
+      title: "Panitia Matematik",
+      lead:
+        "Ruang pengurusan untuk menghimpunkan maklumat Panitia Matematik termasuk guru, program, intervensi, analisis pencapaian dan bahan sokongan pembelajaran.",
+      tags: ["Matematik", "Numerasi", "Intervensi", "PBD"],
+      cards: [
+        {
+          title: "Maklumat Panitia",
+          text: "Letakkan senarai guru, ketua panitia, pembahagian kelas, bidang tugas dan dokumen pengurusan Matematik.",
+        },
+        {
+          title: "Program & Intervensi",
+          text: "Susun aktiviti panitia, program pengukuhan numerasi, bengkel teknik menjawab dan pelan sokongan murid.",
+        },
+        {
+          title: "Analisis & Evidens",
+          text: "Kumpulkan data pencapaian, analisis item, laporan program, minit mesyuarat dan evidens pelaksanaan.",
+        },
+      ],
+    },
+  };
+  const activeManagementContent = managementPages.has(currentPage)
+    ? managementContent[currentPage as ManagementPageId]
+    : null;
+
   return (
     <div className="page">
       <nav className="navbar">
@@ -910,14 +986,50 @@ export default function App() {
 
           <div
             className="navDropdown"
-            onMouseEnter={() => setModulMenuOpen(true)}
+            onMouseEnter={() => {
+              setPengurusanMenuOpen(true);
+              setModulMenuOpen(false);
+            }}
+            onMouseLeave={() => setPengurusanMenuOpen(false)}
+          >
+            <button
+              className={`navDropdownTrigger${managementPages.has(currentPage) ? " navDropdownTrigger--active" : ""}`}
+              type="button"
+              aria-haspopup="true"
+              aria-expanded={pengurusanMenuOpen}
+              onClick={() => {
+                setPengurusanMenuOpen((prev) => !prev);
+                setModulMenuOpen(false);
+              }}
+            >
+              Pengurusan <span className="navCaret" aria-hidden="true">&#9662;</span>
+            </button>
+
+            {pengurusanMenuOpen && (
+              <div className="navDropdownMenu">
+                <button onClick={() => navigateTo("panitia-sains")}>Panitia Sains</button>
+                <button onClick={() => navigateTo("panitia-matematik")}>Panitia Matematik</button>
+              </div>
+            )}
+          </div>
+
+          <div
+            className="navDropdown"
+            onMouseEnter={() => {
+              setModulMenuOpen(true);
+              setPengurusanMenuOpen(false);
+            }}
             onMouseLeave={() => setModulMenuOpen(false)}
           >
             <button
               className={`navDropdownTrigger${currentPage === "modul" || currentPage === "banksoalan" || currentPage === "rpm" || currentPage === "plc" ? " navDropdownTrigger--active" : ""}`}
               type="button"
+              aria-haspopup="true"
               aria-expanded={modulMenuOpen}
-              onClick={() => setModulMenuOpen((prev) => !prev)}
+              onClick={() => {
+                setModulMenuOpen((prev) => !prev);
+                setPengurusanMenuOpen(false);
+              }}
             >
               Perkongsian <span className="navCaret">▾</span>
             </button>
@@ -1430,6 +1542,49 @@ export default function App() {
             <p>STEM Educator • Innovation • Education Technology</p>
           </footer>
         </div>
+      ) : activeManagementContent ? (
+        <main className="managementPage">
+          <section className="managementHero">
+            <span className="managementKicker">Pengurusan</span>
+            <h1>{activeManagementContent.title}</h1>
+            <p>{activeManagementContent.lead}</p>
+
+            <div className="managementTags" aria-label={`Fokus ${activeManagementContent.title}`}>
+              {activeManagementContent.tags.map((tag) => (
+                <span key={tag}>{tag}</span>
+              ))}
+            </div>
+          </section>
+
+          <section className="managementGrid" aria-label={`Maklumat ${activeManagementContent.title}`}>
+            {activeManagementContent.cards.map((card) => (
+              <article className="managementCard" key={card.title}>
+                <h2>{card.title}</h2>
+                <p>{card.text}</p>
+              </article>
+            ))}
+          </section>
+
+          <section className="managementNote">
+            <div>
+              <span>Ruang Kemas Kini</span>
+              <h2>Maklumat panitia boleh ditambah secara berperingkat.</h2>
+              <p>
+                Bahagian ini disediakan sebagai tapak pengurusan. Cikgu boleh tambah
+                dokumen, pautan, gambar aktiviti, jadual atau laporan rasmi panitia
+                mengikut keperluan sekolah.
+              </p>
+            </div>
+            <button type="button" className="btn btn--secondary" onClick={() => navigateTo("home")}>
+              Kembali ke Utama
+            </button>
+          </section>
+
+          <footer className="footer">
+            <p>&copy; 2026 Najib Jaafar &bull; cikgustem.com</p>
+            <p>STEM Educator &bull; Innovation &bull; Education Technology</p>
+          </footer>
+        </main>
       ) : currentPage === "about" ? (
         <main className="about-page">
           <section id="about" className="section about about-page__section">

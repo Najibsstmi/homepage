@@ -28166,6 +28166,438 @@ section {
   }
 }
 
+/* SK@S dan Guru Sains */
+.skasPage {
+  min-height: 100vh;
+  padding: 2.5rem 1.5rem 5rem;
+  background:
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 46%, #ffffff 100%);
+  color: #0f172a;
+}
+
+.skasArticle {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.skasHero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.78fr);
+  gap: 2rem;
+  align-items: center;
+  padding: clamp(1.4rem, 3.4vw, 2.8rem);
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(245, 158, 11, 0.1)),
+    #ffffff;
+  box-shadow: 0 24px 55px rgba(15, 23, 42, 0.08);
+}
+
+.skasEyebrow,
+.skasSectionNumber,
+.skasStandardCard__number {
+  display: inline-flex;
+  color: #0f766e;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.skasHero h1,
+.skasIntro h2,
+.skasSourcePanel h2,
+.skasBlock h2,
+.skasStatement h2,
+.skasClosing h2 {
+  margin: 0.75rem 0 0;
+  color: #0f172a;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.skasHero h1 {
+  font-size: clamp(2.7rem, 6vw, 4.5rem);
+  line-height: 1.02;
+}
+
+.skasHero__subtitle,
+.skasLead,
+.skasIntro p,
+.skasSourcePanel p,
+.skasStatement p,
+.skasClosing p,
+.skasStandardCard p,
+.skasKokoCard p,
+.skasStandard4Card p {
+  color: #334155;
+  font-size: 1.03rem;
+  line-height: 1.82;
+}
+
+.skasHero__subtitle {
+  max-width: 760px;
+  margin: 1rem 0 0;
+  font-size: 1.15rem;
+}
+
+.skasHero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1.3rem;
+}
+
+.skasHero__meta span,
+.skasKokoCard__header span,
+.skasStandard4Card__heading span {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.38rem 0.7rem;
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.skasHero .share-row,
+.skasShareFooter {
+  margin-top: 1.35rem;
+}
+
+.skasHero__visual,
+.skasSourcePanel figure,
+.skasStatement figure,
+.skasCropFigure {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+}
+
+.skasHero__visual img,
+.skasSourcePanel img,
+.skasStatement img,
+.skasCropFigure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.skasHero__visual figcaption,
+.skasSourcePanel figcaption,
+.skasStatement figcaption,
+.skasCropFigure figcaption {
+  padding: 0.72rem 0.85rem;
+  color: #475569;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.skasIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(320px, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+  margin-top: 2.6rem;
+}
+
+.skasRoleGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.skasRoleCard,
+.skasStandardCard,
+.skasKokoCard,
+.skasStandard4Card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+.skasRoleCard {
+  padding: 1.1rem;
+}
+
+.skasRoleCard:nth-child(2) {
+  border-top: 4px solid #38bdf8;
+}
+
+.skasRoleCard:nth-child(3) {
+  border-top: 4px solid #f59e0b;
+}
+
+.skasRoleCard:nth-child(4) {
+  border-top: 4px solid #818cf8;
+}
+
+.skasRoleCard span {
+  color: #0f766e;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.skasRoleCard h3,
+.skasStandardCard h3,
+.skasKokoCard h3,
+.skasStandard4Card h3 {
+  margin: 0.55rem 0 0;
+  color: #0f172a;
+  font-size: 1.25rem;
+  line-height: 1.34;
+}
+
+.skasRoleCard p {
+  margin: 0.7rem 0 0;
+  color: #475569;
+  font-size: 0.94rem;
+  line-height: 1.62;
+}
+
+.skasSourcePanel,
+.skasStatement {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.72fr) minmax(0, 1fr);
+  gap: 1.6rem;
+  align-items: center;
+  margin-top: 3rem;
+  padding: 1.3rem;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  background: #f0fdf4;
+}
+
+.skasStatement {
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.78fr);
+  border-color: #bae6fd;
+  background: #f0f9ff;
+}
+
+.skasBlock,
+.skasStandard4List {
+  margin-top: 3.2rem;
+}
+
+.skasStandardList,
+.skasStandard4List {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.skasStandardCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.82fr);
+  gap: 1.2rem;
+  align-items: start;
+  padding: 1.25rem;
+}
+
+.skasStandardCard__text,
+.skasKokoCard,
+.skasStandard4Card {
+  min-width: 0;
+}
+
+.skasInfoBox {
+  margin-top: 1rem;
+  padding: 0.95rem 1rem;
+  border-left: 4px solid #f59e0b;
+  border-radius: 0 8px 8px 0;
+  background: #fffbeb;
+}
+
+.skasInfoBox strong,
+.skasTwoColumn h4,
+.skasChecklist h4 {
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.skasInfoBox p {
+  margin: 0.45rem 0 0;
+  font-size: 0.97rem;
+  line-height: 1.72;
+}
+
+.skasTwoColumn {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.skasTwoColumn h4,
+.skasChecklist h4 {
+  margin: 0 0 0.55rem;
+}
+
+.skasTwoColumn ul,
+.skasChecklist ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: #334155;
+  line-height: 1.72;
+}
+
+.skasTwoColumn li + li,
+.skasChecklist li + li {
+  margin-top: 0.5rem;
+}
+
+.skasChecklist {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #dbeafe;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.skasCropFigure {
+  align-self: start;
+}
+
+.skasKokoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.skasKokoCard {
+  padding: 1.25rem;
+}
+
+.skasKokoCard__header p,
+.skasStandard4Card__heading p {
+  margin: 0.6rem 0 0;
+  color: #0f766e;
+  font-size: 0.86rem;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.skasKokoCard__statement {
+  margin: 0.85rem 0 0;
+  padding: 0.85rem 0.95rem;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.skasKokoCard .skasCropFigure {
+  margin-top: 1rem;
+}
+
+.skasStandard4Card {
+  padding: 1.35rem;
+}
+
+.skasStandard4Card:nth-child(3n + 1) {
+  border-top: 4px solid #0f766e;
+}
+
+.skasStandard4Card:nth-child(3n + 2) {
+  border-top: 4px solid #2563eb;
+}
+
+.skasStandard4Card:nth-child(3n + 3) {
+  border-top: 4px solid #f59e0b;
+}
+
+.skasFigureGrid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.1rem;
+}
+
+.skasFigureGrid--double {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.skasClosing {
+  margin-top: 3.2rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+}
+
+.skasClosing blockquote {
+  margin: 1.25rem 0 0;
+  padding: 1rem 1.2rem;
+  border-left: 4px solid #0f766e;
+  border-radius: 0 8px 8px 0;
+  background: #ecfdf5;
+  color: #14532d;
+  font-size: 1.08rem;
+  font-weight: 800;
+  line-height: 1.65;
+}
+
+.skasSource {
+  color: #64748b !important;
+  font-size: 0.92rem !important;
+}
+
+.skasPage .share-row__label {
+  color: #475569;
+}
+
+.skasPage .share-row__btn {
+  border-color: #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+}
+
+@media (max-width: 1020px) {
+  .skasHero,
+  .skasIntro,
+  .skasSourcePanel,
+  .skasStatement,
+  .skasStandardCard {
+    grid-template-columns: 1fr;
+  }
+
+  .skasKokoGrid,
+  .skasFigureGrid--double {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .skasPage {
+    padding: 1rem 1rem 4rem;
+  }
+
+  .skasHero,
+  .skasStandardCard,
+  .skasKokoCard,
+  .skasStandard4Card,
+  .skasSourcePanel,
+  .skasStatement,
+  .skasClosing {
+    padding: 1rem;
+  }
+
+  .skasRoleGrid,
+  .skasTwoColumn {
+    grid-template-columns: 1fr;
+  }
+
+  .skasHero h1 {
+    font-size: 2.45rem;
+  }
+}
+
 /* Alloy hardness simulator: light, tidy page treatment */
 .electrolysisPage.alloyPage {
   width: 100%;

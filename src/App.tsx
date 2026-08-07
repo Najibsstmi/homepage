@@ -52,6 +52,7 @@ export default function App() {
     | "banksoalan"
     | "rpm"
     | "plc"
+    | "skasGuruSains"
     | ManagementPageId
     | "simulator";
   type SharePlatform = "facebook" | "whatsapp" | "telegram" | "x";
@@ -107,6 +108,7 @@ export default function App() {
   const eduSlotSectionIds = new Set(["eduslot-post"]);
   const rpmSectionIds = new Set(["rpm-2026-2035"]);
   const plcSectionIds = new Set(["plc-guru-sains"]);
+  const skasSectionIds = new Set(["skas-guru-sains"]);
   const scienceManagementPageIds: ScienceManagementPageId[] = [
     "sains-carta-organisasi",
     "sains-perancangan-program",
@@ -230,6 +232,8 @@ export default function App() {
       const shouldOpenBankSoalan = params.get("page") === "banksoalan";
       const shouldOpenRpm = params.get("page") === "rpm" || rpmSectionIds.has(hashTarget);
       const shouldOpenPlc = params.get("page") === "plc" || plcSectionIds.has(hashTarget);
+      const shouldOpenSkas =
+        params.get("page") === "skasGuruSains" || skasSectionIds.has(hashTarget);
       const requestedManagementPage = params.get("page") as Page | null;
       const shouldOpenManagementPage =
         requestedManagementPage !== null && managementPages.has(requestedManagementPage);
@@ -247,6 +251,8 @@ export default function App() {
         nextPage = "rpm";
       } else if (shouldOpenPlc) {
         nextPage = "plc";
+      } else if (shouldOpenSkas) {
+        nextPage = "skasGuruSains";
       } else if (shouldOpenManagementPage) {
         nextPage = requestedManagementPage;
       } else if (shouldOpenBankSoalan) {
@@ -509,6 +515,7 @@ export default function App() {
     const isJourneyTarget = journeySectionIds.has(targetId);
     const isRpmTarget = rpmSectionIds.has(targetId);
     const isPlcTarget = plcSectionIds.has(targetId);
+    const isSkasTarget = skasSectionIds.has(targetId);
 
     const appUrl = new URL(publicSiteUrl);
     appUrl.hash = "";
@@ -524,6 +531,10 @@ export default function App() {
 
     if (isPlcTarget) {
       appUrl.searchParams.set("page", "plc");
+    }
+
+    if (isSkasTarget) {
+      appUrl.searchParams.set("page", "skasGuruSains");
     }
 
     if (targetId) {
@@ -552,6 +563,8 @@ export default function App() {
       ? "share-rpm-2026-2035.html"
       : isPlcTarget
       ? "share-plc-guru-sains.html"
+      : isSkasTarget
+      ? "share-skas-guru-sains.html"
       : isJourneyTarget
       ? "share-journey.html"
       : "";
@@ -969,6 +982,459 @@ export default function App() {
     "Rekodkan aktiviti dalam SPLKPM mengikut ketetapan sekolah supaya pembangunan profesional guru terdokumentasi.",
   ];
 
+  const skasVisualBase = "/PERKONGSIAN/SKAS";
+  const skasVisuals = {
+    standard3121: `${skasVisualBase}/skas-3-1-2-1-pengurusan-mata-pelajaran.webp`,
+    standard3122: `${skasVisualBase}/skas-3-1-2-2-program-guru.webp`,
+    standard3123: `${skasVisualBase}/skas-3-1-2-3-program-murid.webp`,
+    standard3124: `${skasVisualBase}/skas-3-1-2-4-pcg.webp`,
+    standard322: `${skasVisualBase}/skas-3-2-2-kelab-persatuan.webp`,
+    standard324: `${skasVisualBase}/skas-3-2-4-sukan-permainan.webp`,
+    standard4Overview: `${skasVisualBase}/skas-standard-4-overview.webp`,
+    standard4Statement: `${skasVisualBase}/skas-standard-4-pernyataan.webp`,
+    standard41: `${skasVisualBase}/skas-4-1-perancang.webp`,
+    standard421: `${skasVisualBase}/skas-4-2-1-pengawal-proses.webp`,
+    standard422: `${skasVisualBase}/skas-4-2-2-pengawal-suasana.webp`,
+    standard43: `${skasVisualBase}/skas-4-3-pembimbing.webp`,
+    standard441a: `${skasVisualBase}/skas-4-4-1-pendorong-minda-a-d.webp`,
+    standard441b: `${skasVisualBase}/skas-4-4-1-pendorong-minda-e-g.webp`,
+    standard442: `${skasVisualBase}/skas-4-4-2-pendorong-emosi.webp`,
+    standard45: `${skasVisualBase}/skas-4-5-penilai.webp`,
+    standard46a: `${skasVisualBase}/skas-4-6-pembelajar-aktif-a-c.webp`,
+    standard46b: `${skasVisualBase}/skas-4-6-pembelajar-aktif-d-g.webp`,
+  };
+
+  const skasRoleCards = [
+    {
+      role: "Ketua Panitia Sains",
+      standard: "Standard 3.1.2",
+      text: "Mengurus mata pelajaran Sains: dokumen kurikulum, RPT/RPH, pentaksiran, tugasan, data, program guru, program murid dan PCG.",
+    },
+    {
+      role: "Ketua Kelab STEM",
+      standard: "Standard 3.2.2",
+      text: "Mengurus kelab/persatuan supaya aktiviti berteraskan ilmu pengetahuan, kemahiran dan kreativiti/inovasi.",
+    },
+    {
+      role: "Ketua Sukan Badminton",
+      standard: "Standard 3.2.4",
+      text: "Mengurus sukan/permainan melalui perancangan aktiviti, pelaksanaan, rekod, analisis data dan tindakan susulan.",
+    },
+    {
+      role: "Guru Mata Pelajaran Sains",
+      standard: "Standard 4",
+      text: "Merancang dan melaksanakan PdPc supaya murid aktif, dibimbing, didorong, dinilai dan terlibat secara berkesan.",
+    },
+  ];
+
+  const skas312Standards = [
+    {
+      number: "3.1.2.1",
+      title: "Pelaksanaan mata pelajaran diurus secara profesional dan terancang.",
+      action:
+        "Memperoleh dokumen kurikulum, menyelaras penyediaan RPT dan RPH, pentaksiran, tugasan, menganalisis data dan mengambil tindakan susulan.",
+      practical: [
+        "Sebagai Ketua Panitia Sains, kerja harian bermula dengan memastikan dokumen kurikulum yang digunakan guru adalah betul dan terkini.",
+        "RPT, RPH, pentaksiran dan tugasan murid perlu diselaraskan supaya semua tingkatan bergerak mengikut keperluan kurikulum dan arahan yang berkuat kuasa.",
+        "Data dan maklumat pentaksiran tidak cukup sekadar dikumpul; ia perlu dianalisis dan disusuli dengan tindakan panitia.",
+      ],
+      evidence: [
+        "Dokumen kurikulum atau ketetapan kurikulum yang dirujuk oleh panitia.",
+        "RPT, RPH, rekod penyelarasan pentaksiran dan tugasan murid.",
+        "Analisis data pentaksiran serta rekod tindakan susulan panitia.",
+      ],
+      checklist: [
+        "Dokumen kurikulum telah diperoleh dan dikongsi kepada guru Sains.",
+        "RPT dan RPH diselaras untuk semua tahun atau tingkatan berkaitan.",
+        "Pentaksiran dan tugasan murid diselaras mengikut ketetapan.",
+        "Data pentaksiran dianalisis dan tindakan susulan direkodkan.",
+      ],
+      image: skasVisuals.standard3121,
+      caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 38: Standard 3.1.2.1.",
+    },
+    {
+      number: "3.1.2.2",
+      title: "Program peningkatan kualiti pengajaran guru diurus secara terancang.",
+      action:
+        "Merancang dan melaksanakan program pembangunan profesionalisme yang berkaitan dengan mata pelajaran, menilai keberkesanan program dan mengambil tindakan susulan.",
+      practical: [
+        "Untuk panitia Sains, program ini boleh berbentuk PLC, bengkel, kursus dan lain-lain yang berkaitan seperti dinyatakan dalam instrumen.",
+        "Program perlu berfokus kepada keperluan guru atau panitia dan mengambil kira perkembangan pendidikan semasa.",
+        "Selepas program, Ketua Panitia perlu melihat keberkesanan dan menentukan tindakan susulan secara objektif.",
+      ],
+      evidence: [
+        "Perancangan program pembangunan profesionalisme berkaitan mata pelajaran.",
+        "Rekod pelaksanaan program seperti PLC, bengkel atau kursus.",
+        "Penilaian keberkesanan program dan tindakan susulan.",
+      ],
+      checklist: [
+        "Program guru dirancang berdasarkan keperluan panitia Sains.",
+        "Pelaksanaan dibuat dari semasa ke semasa.",
+        "Keberkesanan program dinilai secara objektif.",
+        "Ada tindakan susulan selepas program.",
+      ],
+      image: skasVisuals.standard3122,
+      caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 39: Standard 3.1.2.2.",
+    },
+    {
+      number: "3.1.2.3",
+      title: "Program peningkatan pencapaian murid diurus secara profesional dan terancang.",
+      action:
+        "Merancang dan melaksanakan program yang menjurus ke arah peningkatan ilmu dan kemahiran, menilai keberkesanan program dan mengambil tindakan susulan.",
+      practical: [
+        "Dalam Sains, fokusnya ialah program yang benar-benar membantu murid meningkatkan ilmu dan kemahiran berdasarkan keperluan mereka.",
+        "Perancangan perlu mengambil kira tahap keupayaan dan potensi murid, bukan sekadar membuat program umum.",
+        "Program perlu melibatkan murid di semua tahun atau tingkatan yang berkaitan dan disemak dari semasa ke semasa.",
+      ],
+      evidence: [
+        "Perancangan program peningkatan ilmu dan kemahiran murid.",
+        "Rekod pelaksanaan program mengikut kumpulan sasaran.",
+        "Penilaian keberkesanan program dan tindakan susulan.",
+      ],
+      checklist: [
+        "Keperluan murid dikenal pasti sebelum program dirancang.",
+        "Tahap keupayaan dan potensi murid diambil kira.",
+        "Program melibatkan tahun atau tingkatan yang berkaitan.",
+        "Keberkesanan program dinilai dan tindakan susulan dibuat.",
+      ],
+      image: skasVisuals.standard3123,
+      caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 40: Standard 3.1.2.3.",
+    },
+    {
+      number: "3.1.2.4",
+      title: "Bantuan geran per kapita mata pelajaran dimanfaatkan secara sistematik dan terancang.",
+      action:
+        "Merancang dan melaksanakan perbelanjaan, memanfaatkan sumber pendidikan dan merekodkan penerimaan serta penggunaan sumber pendidikan.",
+      practical: [
+        "Bahagian ini mengingatkan Ketua Panitia bahawa PCG Sains bukan sekadar urusan pembelian, tetapi perlu menyokong PdPc.",
+        "Perbelanjaan dan penggunaan sumber pendidikan perlu mengikut prosedur, keperluan dan kesesuaian.",
+        "Penerimaan serta penggunaan sumber pendidikan perlu direkodkan secara menyeluruh dan dari semasa ke semasa.",
+      ],
+      evidence: [
+        "Perancangan perbelanjaan panitia yang mengikut prosedur.",
+        "Rekod pelaksanaan perbelanjaan dan penggunaan sumber pendidikan.",
+        "Rekod penerimaan serta penggunaan sumber pendidikan.",
+      ],
+      checklist: [
+        "Perbelanjaan dirancang mengikut prosedur dan keperluan.",
+        "Pembelian atau penggunaan sumber pendidikan sesuai dengan PdPc Sains.",
+        "Sumber dimanfaatkan secara optimum.",
+        "Penerimaan dan penggunaan sumber direkodkan.",
+      ],
+      image: skasVisuals.standard3124,
+      caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 41: Standard 3.1.2.4.",
+    },
+  ];
+
+  const skasKokoStandards = [
+    {
+      number: "3.2.2",
+      role: "Ketua Kelab STEM",
+      title: "Kelab/persatuan diurus secara sistematik dan terancang.",
+      statement:
+        "Kelab/persatuan diurus untuk mengukuhkan pembelajaran di bilik darjah, mengembangkan potensi dan memupuk nilai estetika dan sosial yang positif.",
+      action:
+        "Merancang dan melaksanakan aktiviti kelab/persatuan, merekod dan menganalisis data serta mengambil tindakan susulan.",
+      practical: [
+        "Untuk Kelab STEM, aktiviti perlu berteraskan ilmu pengetahuan, kemahiran dan kreativiti/inovasi.",
+        "Pengurusan tidak berhenti pada aktiviti mingguan; data dan maklumat aktiviti perlu direkod, dianalisis dan diikuti tindakan susulan.",
+        "Aktiviti perlu mengikut arahan yang berkuat kuasa, kurikulum atau modul, serta mengambil kira keperluan dan kesesuaian murid.",
+      ],
+      evidence: [
+        "Perancangan aktiviti Kelab STEM berteraskan ilmu, kemahiran dan kreativiti/inovasi.",
+        "Rekod data dan maklumat aktiviti kelab.",
+        "Analisis data serta tindakan susulan selepas aktiviti.",
+      ],
+      checklist: [
+        "Aktiviti Kelab STEM dirancang mengikut keperluan dan arahan.",
+        "Aktiviti dilaksanakan mengikut kesesuaian.",
+        "Data dan maklumat direkodkan.",
+        "Data dianalisis dan tindakan susulan dibuat.",
+      ],
+      image: skasVisuals.standard322,
+      caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 46: Standard 3.2.2.",
+    },
+    {
+      number: "3.2.4",
+      role: "Ketua Sukan Badminton",
+      title: "Sukan/permainan diurus secara sistematik dan terancang.",
+      statement:
+        "Sukan/permainan diurus untuk mengukuhkan pengetahuan, kemahiran dan memupuk nilai estetika dan sosial positif.",
+      action:
+        "Merancang dan melaksanakan aktiviti sukan/permainan, merekod dan menganalisis data serta mengambil tindakan susulan.",
+      practical: [
+        "Untuk sukan Badminton, aktiviti perlu berteraskan ilmu pengetahuan, kemahiran dan kreativiti/inovasi dalam konteks permainan.",
+        "Latihan, penglibatan murid dan perkembangan kemahiran perlu direkod sebagai data atau maklumat pengurusan.",
+        "Ketua sukan perlu menganalisis data dan membuat tindakan susulan, contohnya menambah baik aktiviti latihan berdasarkan keperluan dan kesesuaian.",
+      ],
+      evidence: [
+        "Perancangan aktiviti sukan/permainan Badminton.",
+        "Rekod data dan maklumat aktiviti sukan.",
+        "Analisis data serta tindakan susulan.",
+      ],
+      checklist: [
+        "Aktiviti Badminton dirancang mengikut arahan dan keperluan.",
+        "Aktiviti dilaksanakan secara menyeluruh dan dari semasa ke semasa.",
+        "Data dan maklumat direkodkan.",
+        "Analisis dibuat dan tindakan susulan direkodkan.",
+      ],
+      image: skasVisuals.standard324,
+      caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 48: Standard 3.2.4.",
+    },
+  ];
+
+  const skasStandard4Aspects = [
+    {
+      number: "4.1.1",
+      aspect: "Guru Sebagai Perancang",
+      title: "Guru merancang pelaksanaan PdPc secara profesional dan sistematik.",
+      action:
+        "Menyediakan RPH, menentukan kaedah pentaksiran dan menyediakan sumber pendidikan mengikut keupayaan murid, peruntukan masa dan ketetapan kurikulum.",
+      practical: [
+        "Untuk guru Sains, RPH perlu mempunyai objektif yang boleh diukur dan aktiviti pembelajaran yang sesuai.",
+        "Kaedah pentaksiran perlu ditentukan awal supaya guru tahu bukti pembelajaran yang hendak diperhatikan.",
+        "ABM, BBM, BBB atau TMK dipilih berdasarkan keupayaan murid dan masa PdPc.",
+      ],
+      evidence: [
+        "RPH yang mengandungi objektif boleh diukur dan aktiviti pembelajaran.",
+        "Kaedah pentaksiran yang dirancang.",
+        "Sumber pendidikan seperti ABM/BBM/BBB/TMK yang sesuai.",
+      ],
+      checklist: [
+        "Objektif PdPc boleh diukur.",
+        "Aktiviti sesuai dengan keupayaan murid.",
+        "Pentaksiran dirancang dalam PdPc.",
+        "Sumber pendidikan disediakan mengikut masa dan ketetapan kurikulum.",
+      ],
+      images: [
+        {
+          src: skasVisuals.standard41,
+          alt: "Keratan Standard 4.1 Guru Sebagai Perancang dalam Instrumen SKPM Kualiti@Sekolah",
+          caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 63: Aspek 4.1.",
+        },
+      ],
+    },
+    {
+      number: "4.2.1",
+      aspect: "Guru Sebagai Pengawal",
+      title: "Guru mengawal proses pembelajaran secara profesional dan terancang.",
+      action:
+        "Mengelola isi pelajaran, mengelola masa PdPc dan memberi peluang kepada penyertaan aktif murid.",
+      practical: [
+        "Guru Sains perlu memastikan isi pelajaran atau skop pembelajaran tidak lari daripada objektif.",
+        "Masa aktiviti, perbincangan, amali atau latihan perlu dikelola supaya PdPc berjalan lancar.",
+        "Murid perlu diberi peluang aktif, bukan hanya mendengar penerangan guru.",
+      ],
+      evidence: [
+        "RPH atau rekod pelaksanaan yang menunjukkan isi, masa dan aktiviti.",
+        "Bukti penyertaan aktif murid dalam aktiviti pembelajaran.",
+        "Catatan refleksi atau semakan guru tentang kelancaran PdPc.",
+      ],
+      checklist: [
+        "Isi pelajaran selaras dengan objektif.",
+        "Masa PdPc dikawal mengikut aktiviti.",
+        "Murid diberi ruang menyertai aktiviti secara aktif.",
+        "Pelaksanaan mengambil kira pelbagai aras keupayaan murid.",
+      ],
+      images: [
+        {
+          src: skasVisuals.standard421,
+          alt: "Keratan Standard 4.2.1 Guru mengawal proses pembelajaran",
+          caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 64: Aspek 4.2.1.",
+        },
+      ],
+    },
+    {
+      number: "4.2.2",
+      aspect: "Guru Sebagai Pengawal",
+      title: "Guru mengawal suasana pembelajaran secara profesional dan terancang.",
+      action:
+        "Mengawasi komunikasi dan perlakuan murid, menyusun atur kedudukan murid dan mewujudkan suasana pembelajaran yang menyeronokkan.",
+      practical: [
+        "Dalam kelas atau makmal Sains, komunikasi, perlakuan murid dan susun atur kumpulan mempengaruhi keselamatan serta kelancaran pembelajaran.",
+        "Suasana menyeronokkan bukan bermaksud bebas tanpa kawalan, tetapi aktiviti sesuai, berhemah dan melibatkan semua murid.",
+      ],
+      evidence: [
+        "Susun atur murid yang sesuai dengan aktiviti pembelajaran.",
+        "Rekod atau pemerhatian pengurusan komunikasi dan perlakuan murid.",
+        "Bukti aktiviti pembelajaran yang menyeronokkan dan sesuai.",
+      ],
+      checklist: [
+        "Komunikasi murid diawasi secara berhemah.",
+        "Perlakuan murid diawasi secara menyeluruh.",
+        "Kedudukan murid sesuai dengan aktiviti.",
+        "Aktiviti pembelajaran menyeronokkan dan terkawal.",
+      ],
+      images: [
+        {
+          src: skasVisuals.standard422,
+          alt: "Keratan Standard 4.2.2 Guru mengawal suasana pembelajaran",
+          caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 65: Aspek 4.2.2.",
+        },
+      ],
+    },
+    {
+      number: "4.3.1",
+      aspect: "Guru Sebagai Pembimbing",
+      title: "Guru membimbing murid secara profesional dan terancang.",
+      action:
+        "Memberi tunjuk ajar menguasai isi pelajaran dan kemahiran, memandu murid membuat keputusan, menyelesaikan masalah, menggunakan sumber pendidikan dan mengaitkan isi pelajaran dengan kemahiran atau mata pelajaran lain.",
+      practical: [
+        "Dalam Sains, guru membimbing murid memahami konsep, fakta, kemahiran proses sains dan penggunaan sumber pendidikan dengan betul.",
+        "Murid dipandu membuat keputusan dan menyelesaikan masalah semasa aktiviti pembelajaran.",
+        "Isi pelajaran boleh dikaitkan dengan nilai, kemahiran, tajuk lain atau mata pelajaran lain mengikut keperluan murid.",
+      ],
+      evidence: [
+        "Bahan panduan, lembaran kerja atau catatan aktiviti yang menunjukkan bimbingan guru.",
+        "Hasil kerja murid yang menunjukkan penggunaan sumber dan penyelesaian masalah.",
+        "Refleksi guru tentang murid yang perlu bimbingan susulan.",
+      ],
+      checklist: [
+        "Tunjuk ajar isi pelajaran dibuat mengikut keperluan murid.",
+        "Kemahiran dalam aktiviti pembelajaran dibimbing dengan betul.",
+        "Murid dipandu membuat keputusan dan menyelesaikan masalah.",
+        "Isi pelajaran dikaitkan dengan tajuk, nilai atau kemahiran lain.",
+      ],
+      images: [
+        {
+          src: skasVisuals.standard43,
+          alt: "Keratan Standard 4.3 Guru Sebagai Pembimbing",
+          caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 66: Aspek 4.3.",
+        },
+      ],
+    },
+    {
+      number: "4.4.1",
+      aspect: "Guru Sebagai Pendorong",
+      title: "Guru mendorong minda murid dalam melaksanakan aktiviti pembelajaran secara profesional dan terancang.",
+      action:
+        "Merangsang murid berkomunikasi dan berkolaboratif, mengemukakan soalan kritis dan kreatif, memberi peluang memimpin, menggalakkan soalan murid serta pembelajaran kendiri.",
+      practical: [
+        "PdPc Sains perlu memberi ruang kepada murid berfikir, bercakap, bertanya dan bekerjasama.",
+        "Soalan guru perlu menjurus kepada pemikiran kritis, kreatif, membuat keputusan dan menyelesaikan masalah.",
+        "Murid juga perlu diberi peluang memimpin dan memperoleh pengetahuan atau kemahiran secara kendiri.",
+      ],
+      evidence: [
+        "Soalan, tugasan atau aktiviti yang merangsang pemikiran kritis dan kreatif.",
+        "Bukti komunikasi, kolaborasi dan kepimpinan murid.",
+        "Hasil pembelajaran kendiri murid.",
+      ],
+      checklist: [
+        "Murid berkomunikasi semasa aktiviti.",
+        "Murid berkolaboratif dalam pembelajaran.",
+        "Soalan guru mendorong pemikiran kritis dan kreatif.",
+        "Murid diberi peluang memimpin, bertanya dan belajar kendiri.",
+      ],
+      images: [
+        {
+          src: skasVisuals.standard441a,
+          alt: "Keratan Standard 4.4.1 Guru mendorong minda murid bahagian a hingga d",
+          caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 67: Aspek 4.4.1.",
+        },
+        {
+          src: skasVisuals.standard441b,
+          alt: "Keratan Standard 4.4.1 Guru mendorong minda murid bahagian e hingga g",
+          caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 68: sambungan Aspek 4.4.1.",
+        },
+      ],
+    },
+    {
+      number: "4.4.2",
+      aspect: "Guru Sebagai Pendorong",
+      title: "Guru mendorong emosi murid dalam melaksanakan aktiviti pembelajaran secara profesional dan terancang.",
+      action:
+        "Memberi pujian, galakan, penghargaan dan keyakinan serta prihatin terhadap keperluan murid secara berhemah dan menyeluruh.",
+      practical: [
+        "Dalam PdPc Sains, murid lebih berani mencuba apabila guru memberi galakan dan keyakinan secara berhemah.",
+        "Penghargaan terhadap idea, hasil kerja dan respons murid membantu membina suasana pembelajaran yang selamat.",
+        "Keperluan murid perlu diberi perhatian dari semasa ke semasa.",
+      ],
+      evidence: [
+        "Catatan pemerhatian atau refleksi tentang galakan dan respons murid.",
+        "Hasil kerja atau idea murid yang diberi penghargaan.",
+        "Rekod tindakan guru terhadap keperluan murid.",
+      ],
+      checklist: [
+        "Pujian dan galakan diberi secara berhemah.",
+        "Hasil kerja atau idea murid dihargai.",
+        "Murid diberi keyakinan untuk bertanya dan memberi respons.",
+        "Keperluan murid diberi perhatian.",
+      ],
+      images: [
+        {
+          src: skasVisuals.standard442,
+          alt: "Keratan Standard 4.4.2 Guru mendorong emosi murid",
+          caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 69: Aspek 4.4.2.",
+        },
+      ],
+    },
+    {
+      number: "4.5.1",
+      aspect: "Guru Sebagai Penilai",
+      title: "Guru melaksanakan penilaian secara sistematik dan terancang.",
+      action:
+        "Menggunakan pelbagai kaedah pentaksiran, menjalankan pemulihan atau pengayaan, memberi tugasan, membuat refleksi dan menyemak hasil kerja murid.",
+      practical: [
+        "Pentaksiran dalam Sains berlaku semasa PdPc, bukan hanya selepas ujian atau peperiksaan.",
+        "Guru perlu menggunakan kaedah pentaksiran yang sesuai dengan objektif pelajaran dan ketetapan kurikulum.",
+        "Selepas menilai, guru perlu menjalankan pemulihan atau pengayaan, memberi tugasan, membuat refleksi dan menyemak hasil kerja.",
+      ],
+      evidence: [
+        "Rekod pelbagai kaedah pentaksiran dalam PdPc.",
+        "Bukti pemulihan, pengayaan, latihan atau tugasan.",
+        "Refleksi PdPc dan semakan hasil kerja murid.",
+      ],
+      checklist: [
+        "Pentaksiran selaras dengan objektif pelajaran.",
+        "Pemulihan atau pengayaan dilaksanakan apabila perlu.",
+        "Latihan atau tugasan mencukupi dan mencakupi.",
+        "Refleksi serta semakan hasil kerja dibuat.",
+      ],
+      images: [
+        {
+          src: skasVisuals.standard45,
+          alt: "Keratan Standard 4.5 Guru Sebagai Penilai",
+          caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 70: Aspek 4.5.",
+        },
+      ],
+    },
+    {
+      number: "4.6.1",
+      aspect: "Murid Sebagai Pembelajar Aktif",
+      title: "Murid melibatkan diri dalam proses pembelajaran secara berkesan.",
+      action:
+        "Murid memberi respons, berkomunikasi, berkolaboratif, berfikir kritis dan kreatif, mengemukakan soalan, menyelesaikan masalah dan mengaitkan isi pelajaran dengan kehidupan.",
+      practical: [
+        "Bahagian ini melihat kesan PdPc kepada murid: adakah murid benar-benar terlibat secara aktif, yakin dan berhemah.",
+        "Dalam Sains, murid perlu memberi respons, berbincang, bekerja secara kolaboratif, bertanya dan mengaitkan konsep dengan kehidupan.",
+        "Guru perlu merancang PdPc yang membuka ruang murid menyelesaikan masalah berkaitan aktiviti pembelajaran.",
+      ],
+      evidence: [
+        "Bukti respons, komunikasi dan kolaborasi murid.",
+        "Soalan murid, jawapan kritis/kreatif atau penyelesaian masalah.",
+        "Hasil kerja yang mengaitkan isi pelajaran dengan kehidupan murid atau isu lokal/global.",
+      ],
+      checklist: [
+        "Murid memberi respons berkaitan isi pelajaran.",
+        "Murid berkomunikasi dan berkolaboratif.",
+        "Murid bertanya, berfikir kritis/kreatif dan menyelesaikan masalah.",
+        "Murid mengaitkan isi pelajaran dengan kehidupan atau isu semasa.",
+      ],
+      images: [
+        {
+          src: skasVisuals.standard46a,
+          alt: "Keratan Standard 4.6 Murid Sebagai Pembelajar Aktif bahagian a hingga c",
+          caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 71: Aspek 4.6.",
+        },
+        {
+          src: skasVisuals.standard46b,
+          alt: "Keratan Standard 4.6 Murid Sebagai Pembelajar Aktif bahagian d hingga g",
+          caption: "Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 72: sambungan Aspek 4.6.",
+        },
+      ],
+    },
+  ];
+
   const rpmStrategicCores = [
     {
       number: 1,
@@ -1358,7 +1824,7 @@ export default function App() {
             onMouseLeave={() => setModulMenuOpen(false)}
           >
             <button
-              className={`navDropdownTrigger${currentPage === "modul" || currentPage === "banksoalan" || currentPage === "rpm" || currentPage === "plc" ? " navDropdownTrigger--active" : ""}`}
+              className={`navDropdownTrigger${currentPage === "modul" || currentPage === "banksoalan" || currentPage === "rpm" || currentPage === "plc" || currentPage === "skasGuruSains" ? " navDropdownTrigger--active" : ""}`}
               type="button"
               aria-haspopup="true"
               aria-expanded={modulMenuOpen}
@@ -1376,6 +1842,7 @@ export default function App() {
                 <button onClick={() => navigateTo("banksoalan")}>Bank Soalan</button>
                 <button onClick={() => navigateTo("rpm")}>RPM2026-2035</button>
                 <button onClick={() => navigateTo("plc")}>PLC Kit</button>
+                <button onClick={() => navigateTo("skasGuruSains")}>SK@S dan Guru Sains</button>
               </div>
             )}
           </div>
@@ -1965,6 +2432,308 @@ export default function App() {
             <p>&copy; 2026 Najib Jaafar &bull; cikgustem.com</p>
             <p>STEM Educator &bull; Innovation &bull; Education Technology</p>
           </footer>
+        </main>
+      ) : currentPage === "skasGuruSains" ? (
+        <main id="skas-guru-sains" className="skasPage">
+          <article className="skasArticle" aria-labelledby="skas-title">
+            <header className="skasHero">
+              <div className="skasHero__content">
+                <span className="skasEyebrow">Perkongsian SKPM Kualiti@Sekolah</span>
+                <h1 id="skas-title">SK@S dan Guru Sains</h1>
+                <p className="skasHero__subtitle">
+                  Rujukan praktikal untuk menghubungkan Standard 3.1.2, 3.2.2,
+                  3.2.4 dan Standard 4 dengan tugas sebenar di sekolah.
+                </p>
+                <div className="skasHero__meta">
+                  <span>Ketua Panitia Sains</span>
+                  <span>Ketua Kelab STEM</span>
+                  <span>Ketua Sukan Badminton</span>
+                  <span>Guru Sains</span>
+                </div>
+                <ShareBar title="SK@S dan Guru Sains" anchor="#skas-guru-sains" />
+              </div>
+
+              <figure className="skasHero__visual">
+                <img
+                  src={skasVisuals.standard3121}
+                  alt="Keratan Standard 3.1.2.1 daripada Instrumen SKPM Kualiti@Sekolah"
+                />
+                <figcaption>
+                  Keratan instrumen digunakan sebagai rujukan visual supaya artikel ini
+                  mudah dirujuk semula.
+                </figcaption>
+              </figure>
+            </header>
+
+            <section className="skasIntro" aria-labelledby="skas-peta-peranan">
+              <div>
+                <span className="skasSectionNumber">01</span>
+                <h2 id="skas-peta-peranan">Peta Ringkas Peranan Saya</h2>
+                <p>
+                  Artikel ini bukan nota umum tentang semua SK@S. Fokusnya ialah bahagian
+                  yang paling rapat dengan tugas seorang guru Sains di sekolah: pengurusan
+                  mata pelajaran, pengurusan kokurikulum dan pelaksanaan PdPc.
+                </p>
+                <p>
+                  Dalam bacaan mudah, Standard 3.1.2 bergerak bersama tugas Ketua Panitia
+                  Sains, Standard 3.2.2 bersama tugas Ketua Kelab STEM, Standard 3.2.4
+                  bersama tugas Ketua Sukan Badminton, dan Standard 4 bersama tugas harian
+                  sebagai Guru Mata Pelajaran Sains.
+                </p>
+              </div>
+
+              <div className="skasRoleGrid">
+                {skasRoleCards.map((card) => (
+                  <article className="skasRoleCard" key={card.role}>
+                    <span>{card.standard}</span>
+                    <h3>{card.role}</h3>
+                    <p>{card.text}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section className="skasSourcePanel" aria-label="Sumber utama SK@S">
+              <figure>
+                <img
+                  src={skasVisuals.standard4Overview}
+                  alt="Senarai aspek Standard 4 dalam Instrumen SKPM Kualiti@Sekolah"
+                />
+                <figcaption>
+                  Standard 4 mengandungi aspek Guru Sebagai Perancang, Pengawal,
+                  Pembimbing, Pendorong, Penilai dan Murid Sebagai Pembelajar Aktif.
+                </figcaption>
+              </figure>
+              <div>
+                <h2>Prinsip bacaan artikel ini</h2>
+                <p>
+                  Saya kekalkan istilah utama daripada instrumen seperti Standard Kualiti,
+                  Tindakan Untuk Mencapai Standard, Tindakan Penskoran, evidens dan
+                  checklist. Bahagian contoh diterjemahkan kepada amalan sekolah tanpa
+                  menambah standard baharu yang tiada dalam instrumen.
+                </p>
+              </div>
+            </section>
+
+            <section className="skasBlock" aria-labelledby="skas-312">
+              <span className="skasSectionNumber">02</span>
+              <h2 id="skas-312">Standard 3.1.2 - Pengurusan Mata Pelajaran</h2>
+              <p className="skasLead">
+                Kriteria kritikal bagi Aspek 3.1.2 ialah mata pelajaran diurus untuk
+                meningkatkan kualiti pengajaran dan pembelajaran. Bagi Ketua Panitia
+                Sains, inilah bahagian paling langsung kerana ia menyentuh penyelarasan
+                kurikulum, program guru, program murid dan penggunaan PCG mata pelajaran.
+              </p>
+
+              <div className="skasStandardList">
+                {skas312Standards.map((standard) => (
+                  <section
+                    className="skasStandardCard"
+                    id={`skas-${standard.number.replaceAll(".", "-")}`}
+                    key={standard.number}
+                    aria-labelledby={`skas-title-${standard.number.replaceAll(".", "-")}`}
+                  >
+                    <div className="skasStandardCard__text">
+                      <span className="skasStandardCard__number">{standard.number}</span>
+                      <h3 id={`skas-title-${standard.number.replaceAll(".", "-")}`}>
+                        {standard.title}
+                      </h3>
+
+                      <div className="skasInfoBox">
+                        <strong>Tindakan untuk mencapai standard</strong>
+                        <p>{standard.action}</p>
+                      </div>
+
+                      <div className="skasTwoColumn">
+                        <div>
+                          <h4>Maksud praktikal dalam tugas harian</h4>
+                          <ul>
+                            {standard.practical.map((item) => (
+                              <li key={item}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div>
+                          <h4>Contoh evidens yang sesuai</h4>
+                          <ul>
+                            {standard.evidence.map((item) => (
+                              <li key={item}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+
+                      <div className="skasChecklist">
+                        <h4>Checklist ringkas</h4>
+                        <ul>
+                          {standard.checklist.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    <figure className="skasCropFigure">
+                      <img src={standard.image} alt={`Keratan ${standard.number} Instrumen SKPM Kualiti@Sekolah`} />
+                      <figcaption>{standard.caption}</figcaption>
+                    </figure>
+                  </section>
+                ))}
+              </div>
+            </section>
+
+            <section className="skasBlock" aria-labelledby="skas-kokurikulum">
+              <span className="skasSectionNumber">03</span>
+              <h2 id="skas-kokurikulum">Standard 3.2.2 dan 3.2.4 - Kokurikulum</h2>
+              <p className="skasLead">
+                Kedua-dua standard ini mempunyai pola pengurusan yang hampir sama:
+                merancang, melaksanakan, merekodkan data dan maklumat, menganalisis data
+                dan maklumat, kemudian mengambil tindakan susulan.
+              </p>
+
+              <div className="skasKokoGrid">
+                {skasKokoStandards.map((standard) => (
+                  <section className="skasKokoCard" key={standard.number}>
+                    <div className="skasKokoCard__header">
+                      <span>{standard.number}</span>
+                      <p>{standard.role}</p>
+                      <h3>{standard.title}</h3>
+                    </div>
+                    <p className="skasKokoCard__statement">{standard.statement}</p>
+                    <div className="skasInfoBox">
+                      <strong>Tindakan untuk mencapai standard</strong>
+                      <p>{standard.action}</p>
+                    </div>
+                    <div className="skasTwoColumn skasTwoColumn--compact">
+                      <div>
+                        <h4>Maksud praktikal</h4>
+                        <ul>
+                          {standard.practical.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <h4>Evidens dan checklist</h4>
+                        <ul>
+                          {[...standard.evidence, ...standard.checklist].map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <figure className="skasCropFigure">
+                      <img src={standard.image} alt={`Keratan Standard ${standard.number} Instrumen SKPM Kualiti@Sekolah`} />
+                      <figcaption>{standard.caption}</figcaption>
+                    </figure>
+                  </section>
+                ))}
+              </div>
+            </section>
+
+            <section className="skasStatement" aria-labelledby="skas-standard-4">
+              <div>
+                <span className="skasSectionNumber">04</span>
+                <h2 id="skas-standard-4">Standard 4 - Pembelajaran dan Pemudahcaraan (PdPc)</h2>
+                <p>
+                  Standard 4 memberi tumpuan kepada peranan guru sebagai pemudah cara
+                  yang memastikan proses PdP berkesan, potensi murid berkembang secara
+                  menyeluruh dan pencapaian murid meningkat secara berterusan.
+                </p>
+                <p>
+                  Untuk guru Sains, maksud mudahnya ialah setiap PdPc perlu dirancang,
+                  dikawal, dibimbing, didorong, dinilai dan akhirnya membawa murid
+                  menjadi pembelajar aktif.
+                </p>
+              </div>
+              <figure>
+                <img
+                  src={skasVisuals.standard4Statement}
+                  alt="Pernyataan Standard 4 dalam Instrumen SKPM Kualiti@Sekolah"
+                />
+                <figcaption>
+                  Keratan Instrumen SKPM Kualiti@Sekolah, hlm. 62: pernyataan Standard 4.
+                </figcaption>
+              </figure>
+            </section>
+
+            <section className="skasStandard4List" aria-label="Perincian aspek Standard 4">
+              {skasStandard4Aspects.map((aspect) => (
+                <section className="skasStandard4Card" key={aspect.number}>
+                  <div className="skasStandard4Card__heading">
+                    <span>{aspect.number}</span>
+                    <p>{aspect.aspect}</p>
+                    <h3>{aspect.title}</h3>
+                  </div>
+
+                  <div className="skasInfoBox">
+                    <strong>Tindakan untuk mencapai standard</strong>
+                    <p>{aspect.action}</p>
+                  </div>
+
+                  <div className="skasTwoColumn">
+                    <div>
+                      <h4>Maksud praktikal dalam PdPc Sains</h4>
+                      <ul>
+                        {aspect.practical.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h4>Contoh evidens yang sesuai</h4>
+                      <ul>
+                        {aspect.evidence.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="skasChecklist">
+                    <h4>Checklist ringkas</h4>
+                    <ul>
+                      {aspect.checklist.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className={`skasFigureGrid${aspect.images.length > 1 ? " skasFigureGrid--double" : ""}`}>
+                    {aspect.images.map((image) => (
+                      <figure className="skasCropFigure" key={image.src}>
+                        <img src={image.src} alt={image.alt} />
+                        <figcaption>{image.caption}</figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </section>
+
+            <section className="skasClosing" aria-labelledby="skas-rumusan">
+              <span className="skasEyebrow">Rumusan Untuk Rujukan</span>
+              <h2 id="skas-rumusan">Cara paling mudah membaca SK@S ialah ikut peranan.</h2>
+              <p>
+                Jika saya membaca instrumen ini sebagai Ketua Panitia Sains, saya fokus
+                kepada 3.1.2. Jika saya membaca sebagai Ketua Kelab STEM, saya fokus
+                kepada 3.2.2. Jika saya membaca sebagai Ketua Sukan Badminton, saya fokus
+                kepada 3.2.4. Jika saya membaca sebagai guru Sains di kelas, saya fokus
+                kepada Standard 4.
+              </p>
+              <blockquote>
+                Urus dengan terancang, laksana dengan bukti, nilai keberkesanan dan buat
+                tindakan susulan. Itulah bahasa kerja yang berulang dalam instrumen SK@S.
+              </blockquote>
+              <p className="skasSource">
+                <strong>Sumber utama:</strong> Instrumen SKPM Kualiti@Sekolah,
+                khususnya halaman 38-41, 46, 48 dan 61-72.
+              </p>
+              <div className="journey-post__shareFooter skasShareFooter">
+                <ShareBar title="SK@S dan Guru Sains" anchor="#skas-guru-sains" />
+              </div>
+            </section>
+          </article>
         </main>
       ) : currentPage === "rpm" ? (
         <main id="rpm-2026-2035" className="rpmPage">

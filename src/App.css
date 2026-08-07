@@ -2712,11 +2712,13 @@ a {
   position: absolute;
   top: 100%;
   left: 0;
-  min-width: 230px;
-  padding: 0.6rem;
+  min-width: 250px;
+  padding: 0.55rem;
   border-radius: 16px;
-  background: rgba(7, 15, 35, 0.96);
-  border: 1px solid rgba(103, 232, 249, 0.14);
+  background:
+    linear-gradient(180deg, rgba(13, 29, 55, 0.98), rgba(4, 10, 27, 0.98)),
+    rgba(7, 15, 35, 0.96);
+  border: 1px solid rgba(103, 232, 249, 0.18);
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(12px);
   z-index: 50;
@@ -2724,16 +2726,23 @@ a {
 }
 
 .navDropdownMenu button {
-  display: block;
+  position: relative;
+  display: flex;
+  min-height: 42px;
   width: 100%;
+  align-items: center;
+  gap: 0.55rem;
   background: transparent;
   border: none;
   color: #e2e8f0;
   text-align: left;
-  padding: 0.8rem 0.9rem;
+  padding: 0.72rem 0.85rem;
   border-radius: 10px;
   cursor: pointer;
   font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .navDropdownMenu button:hover {
@@ -2748,32 +2757,83 @@ a {
 .navDropdownMenu__item--parent {
   display: flex !important;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 0.75rem;
+  border: 1px solid rgba(103, 232, 249, 0.18) !important;
+  color: #67e8f9 !important;
+  background:
+    linear-gradient(90deg, rgba(34, 211, 238, 0.16), rgba(34, 211, 238, 0.06)) !important;
+  font-size: 0.9rem !important;
+  font-weight: 900 !important;
+}
+
+.navDropdownMenu__item--parent::before {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border: 2px solid #67e8f9;
+  border-radius: 50%;
+  content: "";
+}
+
+.navDropdownMenu__item--parent .navCaret {
+  margin-left: auto;
 }
 
 .navDropdownMenu__item--active {
-  background: rgba(103, 232, 249, 0.12) !important;
+  background: rgba(103, 232, 249, 0.15) !important;
   color: #67e8f9 !important;
 }
 
 .navDropdownMenu--nested {
   position: static;
   min-width: min(430px, calc(100vw - 72px));
-  margin: 0.35rem 0 0.4rem 0.35rem;
-  padding: 0.35rem;
-  border-color: rgba(250, 204, 21, 0.18);
+  margin: 0.45rem 0 0.7rem 0.75rem;
+  padding: 0.35rem 0.35rem 0.35rem 0.85rem;
+  border: 1px solid rgba(250, 204, 21, 0.18);
+  border-left: 3px solid rgba(250, 204, 21, 0.7);
   border-radius: 12px;
-  background: rgba(2, 8, 23, 0.78);
+  background: rgba(2, 8, 23, 0.72);
   box-shadow: none;
 }
 
 .navDropdownMenu--nested button {
-  padding: 0.62rem 0.72rem;
-  color: #dbeafe;
-  font-size: 0.84rem;
+  min-height: 36px;
+  padding: 0.58rem 0.65rem 0.58rem 1rem;
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  font-weight: 700;
   line-height: 1.35;
   white-space: normal;
+}
+
+.navDropdownMenu__item--child::before {
+  position: absolute;
+  top: 50%;
+  left: 0.35rem;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(250, 204, 21, 0.82);
+  content: "";
+  transform: translateY(-50%);
+}
+
+.navDropdownMenu__item--section {
+  margin-top: 0.35rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.16) !important;
+  border-radius: 0 0 10px 10px !important;
+  color: #f8fafc !important;
+  font-weight: 800 !important;
+}
+
+.navDropdownMenu__item--section::before {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 3px;
+  background: #38bdf8;
+  content: "";
 }
 
 .navbar__toggle {
@@ -5194,6 +5254,186 @@ section {
   line-height: 1.7;
 }
 
+.managementMaterials {
+  display: grid;
+  gap: 1rem;
+}
+
+.managementMaterials__header {
+  max-width: 900px;
+}
+
+.managementMaterials__header span {
+  display: inline-flex;
+  margin-bottom: 0.45rem;
+  color: #fde68a;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.managementMaterials__header h2 {
+  margin: 0 0 0.55rem;
+  color: #f8fafc;
+  font-size: clamp(1.35rem, 2.6vw, 2rem);
+  line-height: 1.18;
+}
+
+.managementMaterials__header p,
+.managementMaterials__empty p {
+  margin: 0;
+  color: rgba(226, 232, 240, 0.78);
+  line-height: 1.7;
+}
+
+.managementMaterials__grid {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.managementMaterial {
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.74);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16);
+}
+
+.managementMaterial__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1rem 0.85rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.managementMaterial__top span {
+  display: inline-flex;
+  margin-bottom: 0.45rem;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  color: #082f49;
+  background: #67e8f9;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.managementMaterial__top h3 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.3;
+}
+
+.managementMaterial__top p {
+  margin: 0.35rem 0 0;
+  color: rgba(226, 232, 240, 0.62);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.managementMaterial__top strong {
+  flex: 0 0 auto;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid rgba(103, 232, 249, 0.2);
+  border-radius: 999px;
+  color: #67e8f9;
+  background: rgba(34, 211, 238, 0.08);
+  font-size: 0.8rem;
+}
+
+.managementMaterial__viewer {
+  position: relative;
+  display: grid;
+  min-height: min(72vh, 860px);
+  place-items: center;
+  padding: clamp(0.7rem, 2vw, 1.1rem);
+  background:
+    linear-gradient(135deg, rgba(2, 8, 23, 0.92), rgba(15, 23, 42, 0.8)),
+    #020617;
+}
+
+.managementMaterial__viewer img {
+  display: block;
+  width: 100%;
+  max-height: min(70vh, 840px);
+  object-fit: contain;
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+}
+
+.managementMaterial__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid rgba(103, 232, 249, 0.22);
+  border-radius: 999px;
+  color: #e0faff;
+  background: rgba(2, 8, 23, 0.76);
+  font: inherit;
+  font-size: 1.15rem;
+  font-weight: 900;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.managementMaterial__arrow:hover {
+  border-color: rgba(103, 232, 249, 0.48);
+  background: rgba(8, 47, 73, 0.9);
+}
+
+.managementMaterial__arrow--prev {
+  left: 1rem;
+}
+
+.managementMaterial__arrow--next {
+  right: 1rem;
+}
+
+.managementMaterial__pager {
+  display: flex;
+  gap: 0.35rem;
+  overflow-x: auto;
+  padding: 0.85rem 1rem 1rem;
+  scrollbar-color: rgba(103, 232, 249, 0.5) rgba(15, 23, 42, 0.4);
+}
+
+.managementMaterial__pager button {
+  min-width: 34px;
+  height: 34px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 999px;
+  color: #cbd5e1;
+  background: rgba(15, 23, 42, 0.84);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.managementMaterial__pager button:hover,
+.managementMaterial__pager button.is-active {
+  border-color: rgba(103, 232, 249, 0.5);
+  color: #082f49;
+  background: #67e8f9;
+}
+
+.managementMaterial__empty,
+.managementMaterials__empty {
+  padding: 1rem;
+  border: 1px dashed rgba(148, 163, 184, 0.24);
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.46);
+}
+
 .managementNote {
   display: flex;
   align-items: center;
@@ -5243,6 +5483,10 @@ section {
     min-height: 0;
   }
 
+  .managementMaterial__viewer {
+    min-height: 58vh;
+  }
+
   .managementNote {
     align-items: flex-start;
     flex-direction: column;
@@ -5256,8 +5500,48 @@ section {
 
   .managementHero p,
   .managementCard p,
+  .managementMaterials__header p,
   .managementNote p {
     font-size: 0.98rem;
+  }
+
+  .managementMaterial__top {
+    flex-direction: column;
+  }
+
+  .managementMaterial__top strong {
+    align-self: flex-start;
+  }
+
+  .managementMaterial__viewer {
+    min-height: 50vh;
+    padding: 0.55rem;
+  }
+
+  .managementMaterial__viewer img {
+    max-height: 62vh;
+  }
+
+  .managementMaterial__arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .managementMaterial__arrow--prev {
+    left: 0.55rem;
+  }
+
+  .managementMaterial__arrow--next {
+    right: 0.55rem;
+  }
+
+  .managementMaterial__pager {
+    padding: 0.7rem;
+  }
+
+  .managementMaterial__pager button {
+    min-width: 32px;
+    height: 32px;
   }
 
   .managementNote .btn {

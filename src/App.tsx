@@ -55,6 +55,21 @@ export default function App() {
     | ManagementPageId
     | "simulator";
   type SharePlatform = "facebook" | "whatsapp" | "telegram" | "x";
+  type PanitiaSainsMaterialPage = {
+    page: number;
+    src: string;
+    alt: string;
+  };
+  type PanitiaSainsMaterial = {
+    title: string;
+    sourceName: string;
+    fileType: string;
+    pages: PanitiaSainsMaterialPage[];
+    error?: string;
+  };
+  type PanitiaSainsManifest = {
+    pages?: Partial<Record<ScienceManagementPageId, PanitiaSainsMaterial[]>>;
+  };
   const mrccJourneyId = "journey-sumpit-v1-mrcc-uthm-2026";
   const mrccJourneySlug = "sumpit-v1-naib-johan-mrcc-uthm-2026";
   const mrccJourneyTitle =
@@ -122,6 +137,9 @@ export default function App() {
   const [modulMenuOpen, setModulMenuOpen] = useState(false);
   const [pengurusanMenuOpen, setPengurusanMenuOpen] = useState(false);
   const [panitiaSainsMenuOpen, setPanitiaSainsMenuOpen] = useState(false);
+  const [panitiaSainsMaterialsByPage, setPanitiaSainsMaterialsByPage] = useState<
+    Partial<Record<ScienceManagementPageId, PanitiaSainsMaterial[]>>
+  >({});
   const [readMore, setReadMore] = useState(false);
   const [eduTrackReadMore, setEduTrackReadMore] = useState(false);
   const [eduSlotReadMore, setEduSlotReadMore] = useState(false);
@@ -268,6 +286,31 @@ export default function App() {
     }
 
     setCanNativeShare(typeof navigator.share === "function");
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+
+    fetch("/pengurusan/panitia-sains/manifest.json")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Manifest Panitia Sains tidak dapat dibaca.");
+        }
+
+        return response.json() as Promise<PanitiaSainsManifest>;
+      })
+      .then((manifest) => {
+        if (active) {
+          setPanitiaSainsMaterialsByPage(manifest.pages ?? {});
+        }
+      })
+      .catch((error) => {
+        console.error("Panitia Sains materials error:", error);
+      });
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -603,6 +646,100 @@ export default function App() {
           </span>
         )}
       </div>
+    );
+  };
+
+  const ManagementDocumentViewer = ({ material }: { material: PanitiaSainsMaterial }) => {
+    const [activePageIndex, setActivePageIndex] = useState(0);
+    const hasPages = material.pages.length > 0;
+    const activePage = hasPages
+      ? material.pages[Math.min(activePageIndex, material.pages.length - 1)]
+      : null;
+    const hasCarousel = material.pages.length > 1;
+
+    const goToPreviousPage = () => {
+      if (!hasCarousel) {
+        return;
+      }
+
+      setActivePageIndex((current) =>
+        current === 0 ? material.pages.length - 1 : current - 1
+      );
+    };
+
+    const goToNextPage = () => {
+      if (!hasCarousel) {
+        return;
+      }
+
+      setActivePageIndex((current) =>
+        current === material.pages.length - 1 ? 0 : current + 1
+      );
+    };
+
+    return (
+      <article className="managementMaterial">
+        <div className="managementMaterial__top">
+          <div>
+            <span>{material.fileType}</span>
+            <h3>{material.title}</h3>
+            <p>{material.sourceName}</p>
+          </div>
+          {hasPages && (
+            <strong>
+              {activePageIndex + 1}/{material.pages.length}
+            </strong>
+          )}
+        </div>
+
+        {activePage ? (
+          <div className="managementMaterial__viewer">
+            {hasCarousel && (
+              <button
+                type="button"
+                className="managementMaterial__arrow managementMaterial__arrow--prev"
+                onClick={goToPreviousPage}
+                aria-label={`Halaman sebelumnya untuk ${material.title}`}
+              >
+                &lt;
+              </button>
+            )}
+
+            <img src={activePage.src} alt={activePage.alt} loading="lazy" decoding="async" />
+
+            {hasCarousel && (
+              <button
+                type="button"
+                className="managementMaterial__arrow managementMaterial__arrow--next"
+                onClick={goToNextPage}
+                aria-label={`Halaman seterusnya untuk ${material.title}`}
+              >
+                &gt;
+              </button>
+            )}
+          </div>
+        ) : (
+          <div className="managementMaterial__empty">
+            <p>{material.error || "Bahan ini belum mempunyai paparan WebP."}</p>
+          </div>
+        )}
+
+        {hasCarousel && (
+          <div className="managementMaterial__pager" aria-label={`Pilih halaman ${material.title}`}>
+            {material.pages.map((page, index) => (
+              <button
+                key={page.src}
+                type="button"
+                className={index === activePageIndex ? "is-active" : ""}
+                onClick={() => setActivePageIndex(index)}
+                aria-label={`Buka halaman ${page.page} untuk ${material.title}`}
+              >
+                {page.page}
+              </button>
+            ))}
+          </div>
+        )}
+      </article>
     );
   };
 
@@ -1036,6 +1173,9 @@ export default function App() {
   const sainsManagementActive = scienceManagementPageIds.includes(
     currentPage as ScienceManagementPageId
   );
+  const activeScienceMaterials = sainsManagementActive
+    ? panitiaSainsMaterialsByPage[currentPage as ScienceManagementPageId] ?? []
+    : [];
 
   return (
     <div className="page">
@@ -1124,7 +1264,7 @@ export default function App() {
                       {scienceManagementItems.map((item) => (
                         <button
                           type="button"
-                          className={currentPage === item.page ? "navDropdownMenu__item--active" : ""}
+                          className={`navDropdownMenu__item navDropdownMenu__item--child${currentPage === item.page ? " navDropdownMenu__item--active" : ""}`}
                           key={item.page}
                           onClick={() => navigateTo(item.page)}
                         >
@@ -1134,7 +1274,13 @@ export default function App() {
                     </div>
                   )}
                 </div>
-                <button onClick={() => navigateTo("panitia-matematik")}>Panitia Matematik</button>
+                <button
+                  type="button"
+                  className={`navDropdownMenu__item navDropdownMenu__item--section${currentPage === "panitia-matematik" ? " navDropdownMenu__item--active" : ""}`}
+                  onClick={() => navigateTo("panitia-matematik")}
+                >
+                  Panitia Matematik
+                </button>
               </div>
             )}
           </div>
@@ -1683,14 +1829,39 @@ export default function App() {
             </div>
           </section>
 
-          <section className="managementGrid" aria-label={`Maklumat ${activeManagementContent.title}`}>
-            {activeManagementContent.cards.map((card) => (
-              <article className="managementCard" key={card.title}>
-                <h2>{card.title}</h2>
-                <p>{card.text}</p>
-              </article>
-            ))}
-          </section>
+          {sainsManagementActive ? (
+            <section className="managementMaterials" aria-label={`Bahan ${activeManagementContent.title}`}>
+              <div className="managementMaterials__header">
+                <span>Bahan WebP</span>
+                <h2>Dokumen dalam folder ini</h2>
+                <p>
+                  Setiap PDF dan dokumen Office dalam folder tempatan telah ditukar kepada
+                  paparan WebP. Dokumen yang mempunyai banyak halaman dipaparkan sebagai carousel.
+                </p>
+              </div>
+
+              {activeScienceMaterials.length > 0 ? (
+                <div className="managementMaterials__grid">
+                  {activeScienceMaterials.map((material) => (
+                    <ManagementDocumentViewer material={material} key={material.sourceName} />
+                  ))}
+                </div>
+              ) : (
+                <div className="managementMaterials__empty">
+                  <p>Bahan sedang dimuatkan atau belum dijana untuk folder ini.</p>
+                </div>
+              )}
+            </section>
+          ) : (
+            <section className="managementGrid" aria-label={`Maklumat ${activeManagementContent.title}`}>
+              {activeManagementContent.cards.map((card) => (
+                <article className="managementCard" key={card.title}>
+                  <h2>{card.title}</h2>
+                  <p>{card.text}</p>
+                </article>
+              ))}
+            </section>
+          )}
 
           <section className="managementNote">
             <div>

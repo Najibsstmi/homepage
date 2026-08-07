@@ -211,73 +211,93 @@ export default function App() {
       return;
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const pathName = window.location.pathname;
-    const targetParam = params.get("target") || "";
-    const hashTarget = window.location.hash.replace(/^#/, "") || targetParam;
-    const isMrccJourneyTarget =
-      hashTarget === mrccJourneyId || pathName.includes(mrccJourneySlug);
-    const isKidPgJourneyTarget =
-      hashTarget === kidPgJourneyId || pathName.includes(kidPgJourneySlug);
-    const shouldOpenInovasi =
-      params.get("page") === "inovasi" ||
-      smartLabSectionIds.has(hashTarget) ||
-      eduTrackSectionIds.has(hashTarget) ||
-      eduSlotSectionIds.has(hashTarget);
-    const shouldOpenAbout = params.get("page") === "about" || hashTarget === "about";
-    const shouldOpenModul = params.get("page") === "modul";
-    const shouldOpenBankSoalan = params.get("page") === "banksoalan";
-    const shouldOpenRpm = params.get("page") === "rpm" || rpmSectionIds.has(hashTarget);
-    const shouldOpenPlc = params.get("page") === "plc" || plcSectionIds.has(hashTarget);
-    const requestedManagementPage = params.get("page") as Page | null;
-    const shouldOpenManagementPage =
-      requestedManagementPage !== null && managementPages.has(requestedManagementPage);
-    const shouldOpenSimulator =
-      params.get("page") === "simulator" || pathName.startsWith("/simulator");
+    const syncPageFromUrl = () => {
+      const params = new URLSearchParams(window.location.search);
+      const pathName = window.location.pathname;
+      const targetParam = params.get("target") || "";
+      const hashTarget = window.location.hash.replace(/^#/, "") || targetParam;
+      const isMrccJourneyTarget =
+        hashTarget === mrccJourneyId || pathName.includes(mrccJourneySlug);
+      const isKidPgJourneyTarget =
+        hashTarget === kidPgJourneyId || pathName.includes(kidPgJourneySlug);
+      const shouldOpenInovasi =
+        params.get("page") === "inovasi" ||
+        smartLabSectionIds.has(hashTarget) ||
+        eduTrackSectionIds.has(hashTarget) ||
+        eduSlotSectionIds.has(hashTarget);
+      const shouldOpenAbout = params.get("page") === "about" || hashTarget === "about";
+      const shouldOpenModul = params.get("page") === "modul";
+      const shouldOpenBankSoalan = params.get("page") === "banksoalan";
+      const shouldOpenRpm = params.get("page") === "rpm" || rpmSectionIds.has(hashTarget);
+      const shouldOpenPlc = params.get("page") === "plc" || plcSectionIds.has(hashTarget);
+      const requestedManagementPage = params.get("page") as Page | null;
+      const shouldOpenManagementPage =
+        requestedManagementPage !== null && managementPages.has(requestedManagementPage);
+      const shouldOpenSimulator =
+        params.get("page") === "simulator" || pathName.startsWith("/simulator");
+      let nextPage: Page = "home";
 
-    if (shouldOpenInovasi) {
-      setCurrentPage("inovasi");
-    } else if (shouldOpenSimulator) {
-      setCurrentPage("simulator");
-    } else if (shouldOpenAbout) {
-      setCurrentPage("about");
-    } else if (shouldOpenRpm) {
-      setCurrentPage("rpm");
-    } else if (shouldOpenPlc) {
-      setCurrentPage("plc");
-    } else if (shouldOpenManagementPage) {
-      setCurrentPage(requestedManagementPage);
-    } else if (shouldOpenBankSoalan) {
-      setCurrentPage("banksoalan");
-    } else if (shouldOpenModul) {
-      setCurrentPage("modul");
-    }
+      if (shouldOpenInovasi) {
+        nextPage = "inovasi";
+      } else if (shouldOpenSimulator) {
+        nextPage = "simulator";
+      } else if (shouldOpenAbout) {
+        nextPage = "about";
+      } else if (shouldOpenRpm) {
+        nextPage = "rpm";
+      } else if (shouldOpenPlc) {
+        nextPage = "plc";
+      } else if (shouldOpenManagementPage) {
+        nextPage = requestedManagementPage;
+      } else if (shouldOpenBankSoalan) {
+        nextPage = "banksoalan";
+      } else if (shouldOpenModul) {
+        nextPage = "modul";
+      }
 
-    if (smartLabHiddenSectionIds.has(hashTarget)) {
-      setReadMore(true);
-    }
+      setCurrentPage(nextPage);
+      setMobileMenuOpen(false);
+      setModulMenuOpen(false);
+      setPengurusanMenuOpen(false);
+      setPanitiaSainsMenuOpen(false);
 
-    if (isMrccJourneyTarget) {
-      setMrccReadMore(true);
-      document.title = `${mrccJourneyTitle} | CikguSTEM`;
-      document
-        .querySelector('meta[name="description"]')
-        ?.setAttribute("content", mrccJourneyDescription);
-      document
-        .querySelector('link[rel="canonical"]')
-        ?.setAttribute("href", `https://www.cikgustem.com/${mrccJourneySlug}.html`);
-    }
+      if (nextPage === "simulator") {
+        setSimulatorRouteVersion((version) => version + 1);
+      }
 
-    if (isKidPgJourneyTarget) {
-      setKidPgReadMore(true);
-      document.title = `${kidPgJourneyTitle} | CikguSTEM`;
-      document
-        .querySelector('meta[name="description"]')
-        ?.setAttribute("content", kidPgJourneyDescription);
-      document
-        .querySelector('link[rel="canonical"]')
-        ?.setAttribute("href", `https://www.cikgustem.com/${kidPgJourneySlug}.html`);
-    }
+      if (smartLabHiddenSectionIds.has(hashTarget)) {
+        setReadMore(true);
+      }
+
+      if (isMrccJourneyTarget) {
+        setMrccReadMore(true);
+        document.title = `${mrccJourneyTitle} | CikguSTEM`;
+        document
+          .querySelector('meta[name="description"]')
+          ?.setAttribute("content", mrccJourneyDescription);
+        document
+          .querySelector('link[rel="canonical"]')
+          ?.setAttribute("href", `https://www.cikgustem.com/${mrccJourneySlug}.html`);
+      }
+
+      if (isKidPgJourneyTarget) {
+        setKidPgReadMore(true);
+        document.title = `${kidPgJourneyTitle} | CikguSTEM`;
+        document
+          .querySelector('meta[name="description"]')
+          ?.setAttribute("content", kidPgJourneyDescription);
+        document
+          .querySelector('link[rel="canonical"]')
+          ?.setAttribute("href", `https://www.cikgustem.com/${kidPgJourneySlug}.html`);
+      }
+    };
+
+    syncPageFromUrl();
+    window.addEventListener("popstate", syncPageFromUrl);
+
+    return () => {
+      window.removeEventListener("popstate", syncPageFromUrl);
+    };
   }, []);
 
   useEffect(() => {
@@ -361,6 +381,17 @@ export default function App() {
     fetchVisitorCount();
   }, []);
 
+  const pushNavigationEntry = (url: string) => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    if (currentUrl !== url) {
+      window.history.pushState({ cikgustem: true }, "", url);
+    }
+  };
+
   const navigateTo = (page: Page) => {
     setCurrentPage(page);
     setMobileMenuOpen(false);
@@ -371,21 +402,21 @@ export default function App() {
     if (typeof window !== "undefined") {
       if (page === "home") {
         const homeUrl = new URL(window.location.href);
+        homeUrl.pathname = "/";
         homeUrl.searchParams.delete("page");
+        homeUrl.searchParams.delete("target");
         homeUrl.hash = "";
-        window.history.replaceState(null, "", `/${homeUrl.search}`);
+        pushNavigationEntry(`${homeUrl.pathname}${homeUrl.search}${homeUrl.hash}`);
       } else if (page === "simulator") {
-        window.history.replaceState(null, "", "/simulator");
+        pushNavigationEntry("/simulator");
         setSimulatorRouteVersion((version) => version + 1);
       } else {
         const targetUrl = new URL(window.location.href);
+        targetUrl.pathname = "/";
         targetUrl.searchParams.set("page", page);
+        targetUrl.searchParams.delete("target");
         targetUrl.hash = "";
-        window.history.replaceState(
-          null,
-          "",
-          `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`
-        );
+        pushNavigationEntry(`${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`);
       }
     }
 
@@ -400,7 +431,7 @@ export default function App() {
     setPanitiaSainsMenuOpen(false);
 
     if (typeof window !== "undefined") {
-      window.history.replaceState(null, "", path);
+      pushNavigationEntry(path);
       setSimulatorRouteVersion((version) => version + 1);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -416,13 +447,10 @@ export default function App() {
     if (typeof window !== "undefined") {
       const targetUrl = new URL(window.location.href);
       targetUrl.searchParams.delete("page");
+      targetUrl.searchParams.delete("target");
       targetUrl.pathname = "/";
       targetUrl.hash = sectionId;
-      window.history.replaceState(
-        null,
-        "",
-        `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`
-      );
+      pushNavigationEntry(`${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`);
     }
 
     window.setTimeout(() => {

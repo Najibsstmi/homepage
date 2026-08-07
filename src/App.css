@@ -5428,29 +5428,103 @@ section {
 
 @media (max-width: 640px) {
   .managementPage {
-    padding: 2.2rem 1rem 4rem;
+    padding: 1rem 0.75rem 3rem;
+  }
+
+  .managementHero {
+    margin-bottom: 1rem;
+    padding: 0.95rem;
+    border: 1px solid rgba(103, 232, 249, 0.14);
+    border-radius: 12px;
+    background: rgba(15, 23, 42, 0.46);
+  }
+
+  .managementKicker {
+    margin-bottom: 0.55rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+  }
+
+  .managementHero h1 {
+    margin-bottom: 0.75rem;
+    font-size: clamp(1.35rem, 8.5vw, 2rem);
+    line-height: 1.16;
+    overflow-wrap: anywhere;
   }
 
   .managementHero p,
   .managementCard p {
-    font-size: 0.98rem;
+    font-size: 0.92rem;
+    line-height: 1.62;
+  }
+
+  .managementTags {
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    margin-top: 0.85rem;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+  }
+
+  .managementTags span {
+    flex: 0 0 auto;
+    padding: 0.28rem 0.55rem;
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  .managementMaterials__grid {
+    gap: 0.85rem;
+  }
+
+  .managementMaterial {
+    border-radius: 12px;
   }
 
   .managementMaterial__top {
     flex-direction: column;
+    gap: 0.55rem;
+    padding: 0.85rem;
+  }
+
+  .managementMaterial__top span {
+    margin-bottom: 0.35rem;
+    padding: 0.22rem 0.5rem;
+    font-size: 0.66rem;
+  }
+
+  .managementMaterial__top h3 {
+    font-size: 0.98rem;
+    line-height: 1.32;
+  }
+
+  .managementMaterial__top p {
+    display: none;
   }
 
   .managementMaterial__top strong {
     align-self: flex-start;
+    padding: 0.28rem 0.55rem;
+    font-size: 0.74rem;
   }
 
   .managementMaterial__viewer {
-    min-height: 50vh;
-    padding: 0.55rem;
+    justify-content: flex-start;
+    min-height: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.7rem;
+    place-items: center start;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
   }
 
   .managementMaterial__viewer img {
-    max-height: 62vh;
+    width: auto;
+    min-width: min(760px, 175vw);
+    max-width: none;
+    max-height: none;
+    scroll-snap-align: start;
   }
 
   .managementMaterial__arrow {
@@ -5467,7 +5541,8 @@ section {
   }
 
   .managementMaterial__pager {
-    padding: 0.7rem;
+    gap: 0.3rem;
+    padding: 0.65rem 0.75rem 0.75rem;
   }
 
   .managementMaterial__pager button {
@@ -8223,18 +8298,20 @@ section {
     display: none !important;
     position: absolute;
     top: 100%;
-    left: 12px;
-    right: 12px;
+    left: 8px;
+    right: 8px;
     width: auto;
-    max-height: calc(100vh - 76px);
+    max-height: calc(100dvh - 70px);
     overflow-y: auto;
     flex-direction: column;
     align-items: stretch;
-    gap: 0.55rem;
-    padding: 0.85rem;
+    gap: 0.45rem;
+    padding: 0.7rem;
     border: 1px solid rgba(103, 232, 249, 0.16);
-    border-radius: 18px;
-    background: rgba(2, 6, 23, 0.98);
+    border-radius: 16px;
+    background:
+      linear-gradient(180deg, rgba(7, 15, 35, 0.99), rgba(2, 6, 23, 0.99)),
+      rgba(2, 6, 23, 0.98);
     box-shadow: 0 20px 48px rgba(0, 0, 0, 0.34);
   }
 
@@ -8263,17 +8340,41 @@ section {
     width: 100%;
     min-width: 0;
     margin-top: 0.55rem;
+    padding: 0.55rem;
+    border-radius: 14px;
     box-shadow: none;
+  }
+
+  .navDropdownMenu button {
+    min-height: 40px;
+    padding: 0.65rem 0.75rem;
+    font-size: 0.86rem;
+  }
+
+  .navDropdownMenu__item--parent {
+    min-height: 42px;
+    font-size: 0.86rem !important;
   }
 
   .navDropdownMenu--nested {
     width: auto;
     min-width: 0;
-    margin: 0.45rem 0 0.35rem;
+    max-height: 46vh;
+    margin: 0.4rem 0 0.55rem 0.45rem;
+    overflow-y: auto;
+    padding: 0.35rem 0.3rem 0.35rem 0.75rem;
   }
 
   .navDropdownMenu--nested button {
-    font-size: 0.82rem;
+    min-height: 34px;
+    padding: 0.52rem 0.5rem 0.52rem 0.9rem;
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .navDropdownMenu__item--section {
+    margin-top: 0.25rem;
+    padding-top: 0.75rem !important;
   }
 
   .simulatorSearchTrigger {

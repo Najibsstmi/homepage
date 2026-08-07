@@ -1831,15 +1831,6 @@ export default function App() {
 
           {sainsManagementActive ? (
             <section className="managementMaterials" aria-label={`Bahan ${activeManagementContent.title}`}>
-              <div className="managementMaterials__header">
-                <span>Bahan WebP</span>
-                <h2>Dokumen dalam folder ini</h2>
-                <p>
-                  Setiap PDF dan dokumen Office dalam folder tempatan telah ditukar kepada
-                  paparan WebP. Dokumen yang mempunyai banyak halaman dipaparkan sebagai carousel.
-                </p>
-              </div>
-
               {activeScienceMaterials.length > 0 ? (
                 <div className="managementMaterials__grid">
                   {activeScienceMaterials.map((material) => (
@@ -1848,7 +1839,7 @@ export default function App() {
                 </div>
               ) : (
                 <div className="managementMaterials__empty">
-                  <p>Bahan sedang dimuatkan atau belum dijana untuk folder ini.</p>
+                  <p>Tiada bahan dipaparkan buat masa ini.</p>
                 </div>
               )}
             </section>
@@ -1862,21 +1853,6 @@ export default function App() {
               ))}
             </section>
           )}
-
-          <section className="managementNote">
-            <div>
-              <span>Ruang Kemas Kini</span>
-              <h2>Maklumat panitia boleh ditambah secara berperingkat.</h2>
-              <p>
-                Bahagian ini disediakan sebagai tapak pengurusan. Cikgu boleh tambah
-                dokumen, pautan, gambar aktiviti, jadual atau laporan rasmi panitia
-                mengikut keperluan sekolah.
-              </p>
-            </div>
-            <button type="button" className="btn btn--secondary" onClick={() => navigateTo("home")}>
-              Kembali ke Utama
-            </button>
-          </section>
 
           <footer className="footer">
             <p>&copy; 2026 Najib Jaafar &bull; cikgustem.com</p>

@@ -5259,28 +5259,6 @@ section {
   gap: 1rem;
 }
 
-.managementMaterials__header {
-  max-width: 900px;
-}
-
-.managementMaterials__header span {
-  display: inline-flex;
-  margin-bottom: 0.45rem;
-  color: #fde68a;
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.managementMaterials__header h2 {
-  margin: 0 0 0.55rem;
-  color: #f8fafc;
-  font-size: clamp(1.35rem, 2.6vw, 2rem);
-  line-height: 1.18;
-}
-
-.managementMaterials__header p,
 .managementMaterials__empty p {
   margin: 0;
   color: rgba(226, 232, 240, 0.78);
@@ -5434,46 +5412,6 @@ section {
   background: rgba(15, 23, 42, 0.46);
 }
 
-.managementNote {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  margin-top: 1.25rem;
-  padding: 1.35rem;
-  border: 1px solid rgba(250, 204, 21, 0.22);
-  border-radius: 8px;
-  background: rgba(113, 63, 18, 0.18);
-}
-
-.managementNote span {
-  display: inline-flex;
-  margin-bottom: 0.45rem;
-  color: #fde68a;
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.managementNote h2 {
-  margin: 0 0 0.6rem;
-  color: #fff7ed;
-  font-size: clamp(1.25rem, 2.2vw, 1.8rem);
-  line-height: 1.2;
-}
-
-.managementNote p {
-  max-width: 780px;
-  margin: 0;
-  color: rgba(255, 247, 237, 0.78);
-  line-height: 1.7;
-}
-
-.managementNote .btn {
-  flex: 0 0 auto;
-}
-
 @media (max-width: 900px) {
   .managementGrid {
     grid-template-columns: 1fr;
@@ -5486,11 +5424,6 @@ section {
   .managementMaterial__viewer {
     min-height: 58vh;
   }
-
-  .managementNote {
-    align-items: flex-start;
-    flex-direction: column;
-  }
 }
 
 @media (max-width: 640px) {
@@ -5499,9 +5432,7 @@ section {
   }
 
   .managementHero p,
-  .managementCard p,
-  .managementMaterials__header p,
-  .managementNote p {
+  .managementCard p {
     font-size: 0.98rem;
   }
 
@@ -5542,10 +5473,6 @@ section {
   .managementMaterial__pager button {
     min-width: 32px;
     height: 32px;
-  }
-
-  .managementNote .btn {
-    width: 100%;
   }
 }
 

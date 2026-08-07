@@ -1198,7 +1198,40 @@ export default function App() {
           <span></span>
           <span></span>
         </button>
+        <div
+          className={`navbar__scrim${mobileMenuOpen ? " navbar__scrim--active" : ""}`}
+          aria-hidden="true"
+          onClick={() => {
+            setMobileMenuOpen(false);
+            setModulMenuOpen(false);
+            setPengurusanMenuOpen(false);
+            setPanitiaSainsMenuOpen(false);
+          }}
+        ></div>
         <div className={`navbar__links ${mobileMenuOpen ? "navbar__links--active" : ""}`}>
+          <div className="navbar__drawerHeader">
+            <button
+              className="navbar__drawerClose"
+              type="button"
+              aria-label="Tutup menu navigasi"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setModulMenuOpen(false);
+                setPengurusanMenuOpen(false);
+                setPanitiaSainsMenuOpen(false);
+              }}
+            >
+              &times;
+            </button>
+            <div className="navbar__drawerIdentity">
+              <span className="navbar__drawerMark" aria-hidden="true">C</span>
+              <div>
+                <strong>CIKGUSTEM</strong>
+                <span>STEM Educator</span>
+              </div>
+            </div>
+          </div>
+          <span className="navbar__drawerLabel">Utama</span>
           <button
             className={`navbar__linkBtn${currentPage === "about" ? " navbar__linkBtn--active" : ""}`}
             onClick={() => navigateTo("about")}
@@ -1214,6 +1247,7 @@ export default function App() {
           </button>
           <button className="navbar__linkBtn" onClick={() => goToHomeSection("achievements")}>Pencapaian</button>
 
+          <span className="navbar__drawerLabel">Pengurusan</span>
           <div
             className="navDropdown"
             onMouseEnter={() => {
@@ -1285,6 +1319,7 @@ export default function App() {
             )}
           </div>
 
+          <span className="navbar__drawerLabel">Perkongsian</span>
           <div
             className="navDropdown"
             onMouseEnter={() => {
@@ -1317,6 +1352,7 @@ export default function App() {
             )}
           </div>
 
+          <span className="navbar__drawerLabel">Lain-lain</span>
           <button className="navbar__linkBtn" onClick={() => goToHomeSection("gallery")}>Galeri</button>
           <button className="navbar__linkBtn" onClick={() => goToHomeSection("contact")}>Hubungi</button>
           <button

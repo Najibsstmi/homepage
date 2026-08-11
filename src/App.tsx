@@ -398,6 +398,11 @@ export default function App() {
     }
   };
 
+  const shouldUseHoverMenus = () =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 769px)")
+      .matches;
+
   const navigateTo = (page: Page) => {
     setCurrentPage(page);
     setMobileMenuOpen(false);
@@ -1745,10 +1750,18 @@ export default function App() {
           <div
             className="navDropdown"
             onMouseEnter={() => {
+              if (!shouldUseHoverMenus()) {
+                return;
+              }
+
               setPengurusanMenuOpen(true);
               setModulMenuOpen(false);
             }}
             onMouseLeave={() => {
+              if (!shouldUseHoverMenus()) {
+                return;
+              }
+
               setPengurusanMenuOpen(false);
               setPanitiaSainsMenuOpen(false);
             }}
@@ -1774,8 +1787,20 @@ export default function App() {
               <div className="navDropdownMenu">
                 <div
                   className="navDropdownSubmenu"
-                  onMouseEnter={() => setPanitiaSainsMenuOpen(true)}
-                  onMouseLeave={() => setPanitiaSainsMenuOpen(false)}
+                  onMouseEnter={() => {
+                    if (!shouldUseHoverMenus()) {
+                      return;
+                    }
+
+                    setPanitiaSainsMenuOpen(true);
+                  }}
+                  onMouseLeave={() => {
+                    if (!shouldUseHoverMenus()) {
+                      return;
+                    }
+
+                    setPanitiaSainsMenuOpen(false);
+                  }}
                 >
                   <button
                     className={`navDropdownMenu__item navDropdownMenu__item--parent${sainsManagementActive ? " navDropdownMenu__item--active" : ""}`}
@@ -1784,7 +1809,10 @@ export default function App() {
                     aria-expanded={panitiaSainsMenuOpen}
                     onClick={() => setPanitiaSainsMenuOpen((prev) => !prev)}
                   >
-                    Panitia Sains <span className="navCaret" aria-hidden="true">&#9656;</span>
+                    Panitia Sains{" "}
+                    <span className="navCaret" aria-hidden="true">
+                      {panitiaSainsMenuOpen ? <>&#9662;</> : <>&#9656;</>}
+                    </span>
                   </button>
 
                   {panitiaSainsMenuOpen && (
@@ -1817,11 +1845,21 @@ export default function App() {
           <div
             className="navDropdown"
             onMouseEnter={() => {
+              if (!shouldUseHoverMenus()) {
+                return;
+              }
+
               setModulMenuOpen(true);
               setPengurusanMenuOpen(false);
               setPanitiaSainsMenuOpen(false);
             }}
-            onMouseLeave={() => setModulMenuOpen(false)}
+            onMouseLeave={() => {
+              if (!shouldUseHoverMenus()) {
+                return;
+              }
+
+              setModulMenuOpen(false);
+            }}
           >
             <button
               className={`navDropdownTrigger${currentPage === "modul" || currentPage === "banksoalan" || currentPage === "rpm" || currentPage === "plc" || currentPage === "skasGuruSains" ? " navDropdownTrigger--active" : ""}`}
@@ -1831,9 +1869,10 @@ export default function App() {
               onClick={() => {
                 setModulMenuOpen((prev) => !prev);
                 setPengurusanMenuOpen(false);
+                setPanitiaSainsMenuOpen(false);
               }}
             >
-              Perkongsian <span className="navCaret">▾</span>
+              Perkongsian <span className="navCaret" aria-hidden="true">&#9662;</span>
             </button>
 
             {modulMenuOpen && (

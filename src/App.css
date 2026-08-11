@@ -8329,8 +8329,11 @@ section {
     height: 100dvh;
     max-height: none;
     overflow-y: auto;
+    overflow-x: hidden;
     flex-direction: column;
+    flex-wrap: nowrap;
     align-items: stretch;
+    align-content: stretch;
     gap: 0.2rem;
     padding: 1.15rem 1.25rem 1.6rem;
     border: 0;
@@ -8464,7 +8467,13 @@ section {
   .navDropdown {
     width: 100%;
     display: grid;
+    min-width: 0;
     padding-bottom: 0;
+  }
+
+  .navDropdownSubmenu {
+    width: 100%;
+    min-width: 0;
   }
 
   .navDropdownTrigger .navCaret {
@@ -8473,7 +8482,9 @@ section {
 
   .navDropdownMenu {
     position: static;
+    inset: auto;
     width: 100%;
+    max-width: 100%;
     min-width: 0;
     margin: 0.25rem 0 0.65rem;
     padding: 0.2rem 0 0.2rem 0.75rem;
@@ -8483,14 +8494,19 @@ section {
     background: transparent;
     box-shadow: none;
     backdrop-filter: none;
+    overflow-x: hidden;
   }
 
   .navDropdownMenu button {
     min-height: 40px;
+    width: 100%;
+    min-width: 0;
     border-radius: 0;
     border-bottom: 1px solid rgba(190, 242, 100, 0.22);
     padding: 0.68rem 0.75rem;
     font-size: 0.86rem;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .navDropdownMenu__item--parent {
@@ -8509,16 +8525,22 @@ section {
   }
 
   .navDropdownMenu--nested {
-    width: auto;
+    position: static;
+    inset: auto;
+    display: grid;
+    width: 100%;
+    max-width: 100%;
     min-width: 0;
     max-height: none;
-    margin: 0.25rem 0 0.6rem 0.55rem;
-    overflow: visible;
-    padding: 0.15rem 0 0.2rem 0.7rem;
+    margin: 0.35rem 0 0.7rem;
+    overflow: hidden;
+    padding: 0.2rem 0 0.25rem 0.85rem;
+    border-left: 2px solid rgba(250, 204, 21, 0.58);
   }
 
   .navDropdownMenu--nested button {
     min-height: 34px;
+    width: 100%;
     padding: 0.52rem 0.5rem 0.52rem 0.9rem;
     font-size: 0.75rem;
     line-height: 1.3;

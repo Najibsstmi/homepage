@@ -4,6 +4,8 @@ import emailjs from "@emailjs/browser";
 import SimulatorPage from "./pages/SimulatorPage";
 
 const VISITOR_COUNT_FALLBACK = "1,000+";
+const MANAGEMENT_ACCESS_PASSWORD = "JEA1091";
+const MANAGEMENT_ACCESS_SESSION_PREFIX = "cikgustem:management-access:";
 
 const formatVisitorCount = (value: unknown) => {
   if (value === null || value === undefined || value === "") {
@@ -44,6 +46,13 @@ export default function App() {
     | "sains-anggaran-belanja"
     | "sains-analisis-peperiksaan";
   type ManagementPageId = ScienceManagementPageId | "panitia-matematik";
+  type ProtectedManagementArea = "sains" | "matematik";
+  type ManagementPasswordDialog =
+    | {
+        area: ProtectedManagementArea;
+        targetPage?: ManagementPageId;
+      }
+    | null;
   type Page =
     | "home"
     | "about"
@@ -139,6 +148,23 @@ export default function App() {
   const [modulMenuOpen, setModulMenuOpen] = useState(false);
   const [pengurusanMenuOpen, setPengurusanMenuOpen] = useState(false);
   const [panitiaSainsMenuOpen, setPanitiaSainsMenuOpen] = useState(false);
+  const [unlockedManagementAreas, setUnlockedManagementAreas] = useState<
+    Record<ProtectedManagementArea, boolean>
+  >(() => {
+    if (typeof window === "undefined") {
+      return { sains: false, matematik: false };
+    }
+
+    return {
+      sains: window.sessionStorage.getItem(`${MANAGEMENT_ACCESS_SESSION_PREFIX}sains`) === "true",
+      matematik:
+        window.sessionStorage.getItem(`${MANAGEMENT_ACCESS_SESSION_PREFIX}matematik`) === "true",
+    };
+  });
+  const [managementPasswordDialog, setManagementPasswordDialog] =
+    useState<ManagementPasswordDialog>(null);
+  const [managementPasswordInput, setManagementPasswordInput] = useState("");
+  const [managementPasswordError, setManagementPasswordError] = useState("");
   const [panitiaSainsMaterialsByPage, setPanitiaSainsMaterialsByPage] = useState<
     Partial<Record<ScienceManagementPageId, PanitiaSainsMaterial[]>>
   >({});
@@ -470,6 +496,85 @@ export default function App() {
         block: "start",
       });
     }, 180);
+  };
+
+  const getManagementAreaForPage = (page: ManagementPageId): ProtectedManagementArea =>
+    scienceManagementPageIds.includes(page as ScienceManagementPageId) ? "sains" : "matematik";
+
+  const getManagementAreaLabel = (area: ProtectedManagementArea) =>
+    area === "sains" ? "Panitia Sains" : "Panitia Matematik";
+
+  const openManagementPasswordDialog = (
+    area: ProtectedManagementArea,
+    targetPage?: ManagementPageId
+  ) => {
+    setManagementPasswordDialog({ area, targetPage });
+    setManagementPasswordInput("");
+    setManagementPasswordError("");
+  };
+
+  const closeManagementPasswordDialog = () => {
+    setManagementPasswordDialog(null);
+    setManagementPasswordInput("");
+    setManagementPasswordError("");
+  };
+
+  const unlockManagementArea = (area: ProtectedManagementArea) => {
+    setUnlockedManagementAreas((prev) => ({ ...prev, [area]: true }));
+
+    if (typeof window !== "undefined") {
+      window.sessionStorage.setItem(`${MANAGEMENT_ACCESS_SESSION_PREFIX}${area}`, "true");
+    }
+  };
+
+  const requestPanitiaSainsMenu = () => {
+    if (unlockedManagementAreas.sains) {
+      setPanitiaSainsMenuOpen((prev) => !prev);
+      return;
+    }
+
+    setPanitiaSainsMenuOpen(false);
+    openManagementPasswordDialog("sains");
+  };
+
+  const navigateToProtectedManagement = (page: ManagementPageId) => {
+    const area = getManagementAreaForPage(page);
+
+    if (unlockedManagementAreas[area]) {
+      navigateTo(page);
+      return;
+    }
+
+    setPanitiaSainsMenuOpen(false);
+    openManagementPasswordDialog(area, page);
+  };
+
+  const submitManagementPassword = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!managementPasswordDialog) {
+      return;
+    }
+
+    if (managementPasswordInput.trim() !== MANAGEMENT_ACCESS_PASSWORD) {
+      setManagementPasswordError("Password tidak tepat. Sila cuba semula.");
+      return;
+    }
+
+    const { area, targetPage } = managementPasswordDialog;
+    unlockManagementArea(area);
+    closeManagementPasswordDialog();
+
+    if (targetPage) {
+      navigateTo(targetPage);
+      return;
+    }
+
+    if (area === "sains") {
+      setPengurusanMenuOpen(true);
+      setPanitiaSainsMenuOpen(true);
+      setModulMenuOpen(false);
+    }
   };
 
   const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
@@ -1792,7 +1897,9 @@ export default function App() {
                       return;
                     }
 
-                    setPanitiaSainsMenuOpen(true);
+                    if (unlockedManagementAreas.sains) {
+                      setPanitiaSainsMenuOpen(true);
+                    }
                   }}
                   onMouseLeave={() => {
                     if (!shouldUseHoverMenus()) {
@@ -1807,7 +1914,7 @@ export default function App() {
                     type="button"
                     aria-haspopup="true"
                     aria-expanded={panitiaSainsMenuOpen}
-                    onClick={() => setPanitiaSainsMenuOpen((prev) => !prev)}
+                    onClick={requestPanitiaSainsMenu}
                   >
                     Panitia Sains{" "}
                     <span className="navCaret" aria-hidden="true">
@@ -1822,7 +1929,7 @@ export default function App() {
                           type="button"
                           className={`navDropdownMenu__item navDropdownMenu__item--child${currentPage === item.page ? " navDropdownMenu__item--active" : ""}`}
                           key={item.page}
-                          onClick={() => navigateTo(item.page)}
+                          onClick={() => navigateToProtectedManagement(item.page)}
                         >
                           {item.label}
                         </button>
@@ -1833,7 +1940,7 @@ export default function App() {
                 <button
                   type="button"
                   className={`navDropdownMenu__item navDropdownMenu__item--section${currentPage === "panitia-matematik" ? " navDropdownMenu__item--active" : ""}`}
-                  onClick={() => navigateTo("panitia-matematik")}
+                  onClick={() => navigateToProtectedManagement("panitia-matematik")}
                 >
                   Panitia Matematik
                 </button>
@@ -1897,6 +2004,66 @@ export default function App() {
           </button>
         </div>
       </nav>
+
+      {managementPasswordDialog && (
+        <div
+          className="managementAccess"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              closeManagementPasswordDialog();
+            }
+          }}
+        >
+          <form
+            className="managementAccess__dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="management-access-title"
+            aria-describedby="management-access-description"
+            onSubmit={submitManagementPassword}
+          >
+            <button
+              className="managementAccess__close"
+              type="button"
+              aria-label="Tutup popup password"
+              onClick={closeManagementPasswordDialog}
+            >
+              &times;
+            </button>
+            <span className="managementAccess__kicker">Akses Pengurusan</span>
+            <h2 id="management-access-title">
+              {getManagementAreaLabel(managementPasswordDialog.area)}
+            </h2>
+            <p id="management-access-description">
+              Masukkan password untuk membuka bahan pengurusan.
+            </p>
+            <label htmlFor="management-password">Password</label>
+            <input
+              id="management-password"
+              type="password"
+              value={managementPasswordInput}
+              autoFocus
+              autoComplete="off"
+              onChange={(event) => {
+                setManagementPasswordInput(event.target.value);
+                setManagementPasswordError("");
+              }}
+            />
+            {managementPasswordError && (
+              <p className="managementAccess__error" role="alert">
+                {managementPasswordError}
+              </p>
+            )}
+            <div className="managementAccess__actions">
+              <button type="button" onClick={closeManagementPasswordDialog}>
+                Batal
+              </button>
+              <button type="submit">Buka</button>
+            </div>
+          </form>
+        </div>
+      )}
 
       {currentPage === "simulator" ? (
         <SimulatorPage

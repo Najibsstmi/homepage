@@ -14,9 +14,8 @@ export type MatterCategory =
   | "UNSUR"
   | "MOLEKUL UNSUR"
   | "SEBATIAN MOLEKUL"
-  | "SEBATIAN IONIK"
+  | "SEBATIAN ION"
   | "ION"
-  | "SEBATIAN MOLEKUL TIDAK DIKENALI"
   | "STRUKTUR TIDAK STABIL"
   | "LARUTAN AKUEUS"
   | "CAMPURAN"
@@ -141,7 +140,7 @@ export const KNOWN_COMPOUNDS: KnownCompound[] = [
     formula: "H2O",
     name: "Air",
     category: "SEBATIAN MOLEKUL",
-    typeLabel: "Sebatian kovalen diskrit",
+    typeLabel: "Sebatian molekul",
     expectedBonds: 2,
     composition: { H: 2, O: 1 },
     description: "Mengandungi atom hidrogen dan oksigen yang berikatan secara kimia.",
@@ -150,7 +149,7 @@ export const KNOWN_COMPOUNDS: KnownCompound[] = [
     formula: "CO2",
     name: "Karbon dioksida",
     category: "SEBATIAN MOLEKUL",
-    typeLabel: "Sebatian kovalen diskrit",
+    typeLabel: "Sebatian molekul",
     expectedBonds: 2,
     composition: { C: 1, O: 2 },
     description: "Mengandungi atom karbon dan oksigen yang membentuk molekul sebatian.",
@@ -159,7 +158,7 @@ export const KNOWN_COMPOUNDS: KnownCompound[] = [
     formula: "NH3",
     name: "Ammonia",
     category: "SEBATIAN MOLEKUL",
-    typeLabel: "Molekul / sebatian molekul",
+    typeLabel: "Sebatian molekul",
     expectedBonds: 3,
     composition: { N: 1, H: 3 },
     description: "Ammonia ialah molekul sebatian yang mengandungi satu atom nitrogen dan tiga atom hidrogen.",
@@ -168,7 +167,7 @@ export const KNOWN_COMPOUNDS: KnownCompound[] = [
     formula: "CH4",
     name: "Metana",
     category: "SEBATIAN MOLEKUL",
-    typeLabel: "Sebatian kovalen diskrit",
+    typeLabel: "Sebatian molekul",
     expectedBonds: 4,
     composition: { C: 1, H: 4 },
     description: "Mengandungi atom karbon dan hidrogen yang membentuk molekul sebatian.",
@@ -177,7 +176,7 @@ export const KNOWN_COMPOUNDS: KnownCompound[] = [
     formula: "HCl",
     name: "Hidrogen klorida",
     category: "SEBATIAN MOLEKUL",
-    typeLabel: "Sebatian kovalen diskrit",
+    typeLabel: "Sebatian molekul",
     expectedBonds: 1,
     composition: { H: 1, Cl: 1 },
     description: "Hidrogen klorida ialah sebatian molekul yang boleh membentuk asid hidroklorik apabila larut dalam air.",
@@ -185,18 +184,18 @@ export const KNOWN_COMPOUNDS: KnownCompound[] = [
   {
     formula: "NaCl",
     name: "Natrium klorida",
-    category: "SEBATIAN IONIK",
-    typeLabel: "Sebatian ionik",
+    category: "SEBATIAN ION",
+    typeLabel: "Sebatian ion",
     expectedBonds: 1,
     composition: { Na: 1, Cl: 1 },
     description:
-      "Sebatian ionik terbentuk melalui pemindahan elektron dan daya tarikan elektrostatik antara ion positif dan ion negatif.",
+      "Sebatian ion terbentuk melalui pemindahan elektron dan daya tarikan elektrostatik antara ion positif dan ion negatif.",
   },
   {
     formula: "CO",
     name: "Karbon monoksida",
     category: "SEBATIAN MOLEKUL",
-    typeLabel: "Sebatian kovalen diskrit",
+    typeLabel: "Sebatian molekul",
     expectedBonds: 1,
     composition: { C: 1, O: 1 },
     description: "Mengandungi atom karbon dan oksigen yang berikatan secara kimia.",
@@ -205,7 +204,7 @@ export const KNOWN_COMPOUNDS: KnownCompound[] = [
     formula: "NO",
     name: "Nitrogen oksida",
     category: "SEBATIAN MOLEKUL",
-    typeLabel: "Molekul / sebatian molekul",
+    typeLabel: "Sebatian molekul",
     expectedBonds: 1,
     composition: { N: 1, O: 1 },
     description: "Nitrogen oksida ialah molekul sebatian yang mengandungi nitrogen dan oksigen.",
@@ -214,7 +213,7 @@ export const KNOWN_COMPOUNDS: KnownCompound[] = [
     formula: "NO2",
     name: "Nitrogen dioksida",
     category: "SEBATIAN MOLEKUL",
-    typeLabel: "Molekul / sebatian molekul",
+    typeLabel: "Sebatian molekul",
     expectedBonds: 2,
     composition: { N: 1, O: 2 },
     description: "Nitrogen dioksida ialah molekul sebatian yang mengandungi satu atom nitrogen dan dua atom oksigen.",
@@ -241,7 +240,7 @@ export const KNOWN_COMPOUNDS: KnownCompound[] = [
     formula: "H2O2",
     name: "Hidrogen peroksida",
     category: "SEBATIAN MOLEKUL",
-    typeLabel: "Sebatian kovalen diskrit",
+    typeLabel: "Sebatian molekul",
     expectedBonds: 3,
     composition: { H: 2, O: 2 },
     description: "Mengandungi atom hidrogen dan oksigen yang membentuk molekul sebatian.",
@@ -281,7 +280,7 @@ export const ATOM_CHALLENGES: AtomChallenge[] = [
     id: "sodium-chloride",
     title: "Bina natrium klorida",
     targetFormula: "NaCl",
-    targetCategory: "SEBATIAN IONIK",
+    targetCategory: "SEBATIAN ION",
     hint: "Sasaran ialah pasangan ion Na+ dan Cl-.",
   },
 ];
@@ -303,7 +302,7 @@ export const ATOM_QUIZ: AtomQuizQuestion[] = [
     options: {
       A: "Atom",
       B: "Molekul unsur",
-      C: "Sebatian ionik",
+      C: "Sebatian ion",
       D: "Campuran",
     },
     answer: "B",
@@ -323,7 +322,7 @@ export const ATOM_QUIZ: AtomQuizQuestion[] = [
   {
     question: "NaCl ialah sebatian jenis apa?",
     options: {
-      A: "Sebatian ionik",
+      A: "Sebatian ion",
       B: "Molekul unsur",
       C: "Atom tunggal",
       D: "Campuran fizikal",
@@ -345,7 +344,7 @@ export const ATOM_QUIZ: AtomQuizQuestion[] = [
   {
     question: "Jika dua atom H tidak berikatan, ia dikira sebagai apa?",
     options: {
-      A: "Sebatian ionik",
+      A: "Sebatian ion",
       B: "Sebatian molekul",
       C: "Unsur",
       D: "Karbon dioksida",
@@ -365,7 +364,7 @@ export const ATOM_QUIZ: AtomQuizQuestion[] = [
     explanation: "Karbon dioksida mempunyai satu atom karbon dan dua atom oksigen.",
   },
   {
-    question: "Antara berikut yang manakah sebatian ionik?",
+    question: "Antara berikut yang manakah sebatian ion?",
     options: {
       A: "H2",
       B: "O2",

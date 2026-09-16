@@ -90,15 +90,12 @@ export default function AnalysisPanel({ analysis, structureVersion }: AnalysisPa
     <aside className="atomAnalysis atomSimPanel" aria-label="Panel analisis">
       <div className="atomAnalysis__header">
         <span>Hasil Analisis</span>
-        <strong className={`atomCategoryBadge atomCategoryBadge--${displayAnalysis.tone}`}>
-          {displayAnalysis.category}
-        </strong>
       </div>
 
       <div className={`atomIdentityCard atomIdentityCard--${displayAnalysis.tone}`}>
         <span>Keputusan bahan</span>
         <strong>{identity.label}</strong>
-        <p>{identity.detail}</p>
+        {identity.detail && <p>{identity.detail}</p>}
       </div>
 
       <div className="atomResultCard">
@@ -109,7 +106,7 @@ export default function AnalysisPanel({ analysis, structureVersion }: AnalysisPa
         <p>{displayAnalysis.name}</p>
       </div>
 
-      {displayAnalysis.category === "SEBATIAN IONIK" && (
+      {displayAnalysis.category === "SEBATIAN ION" && (
         <div className="atomIonicCard">
           <span>Model ionik</span>
           <strong>
@@ -197,9 +194,9 @@ function getMatterIdentity(analysis: MatterAnalysis) {
     case "MOLEKUL UNSUR":
       return { label: "Molekul", detail: "Molekul unsur" };
     case "SEBATIAN MOLEKUL":
-    case "SEBATIAN IONIK":
-    case "SEBATIAN MOLEKUL TIDAK DIKENALI":
-      return { label: "Sebatian", detail: analysis.typeLabel };
+      return { label: "Sebatian Molekul", detail: "" };
+    case "SEBATIAN ION":
+      return { label: "Sebatian Ion", detail: "" };
     case "ION":
       return { label: "Ion", detail: analysis.typeLabel };
     case "CAMPURAN":

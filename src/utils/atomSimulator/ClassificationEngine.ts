@@ -402,7 +402,7 @@ function classifyUnit(id: string, groupIds: string[], atoms: AtomNode[], bonds: 
 
   const known = getKnownCompound(elementCounts);
 
-  if (known && known.category === "SEBATIAN IONIK") {
+  if (known && known.category === "SEBATIAN ION") {
     return fromKnownCompound(id, groupIds, elementCounts, groupAtoms.length, groupBonds.length, known);
   }
 
@@ -412,11 +412,11 @@ function classifyUnit(id: string, groupIds: string[], atoms: AtomNode[], bonds: 
 
   return {
     id,
-    category: "SEBATIAN MOLEKUL TIDAK DIKENALI",
+    category: "SEBATIAN MOLEKUL",
     formula,
     primaryFormula: formula,
     name: "Sebatian tidak dikenali",
-    typeLabel: "Sebatian molekul belum dipadankan",
+    typeLabel: "Sebatian molekul",
     atomCount: groupAtoms.length,
     bondCount: groupBonds.length,
     uniqueElementCount,
@@ -448,7 +448,7 @@ function fromKnownCompound(
     elementCounts,
     atomIds,
     description: compound.description,
-    tone: compound.category === "SEBATIAN IONIK" || compound.category === "ION"
+    tone: compound.category === "SEBATIAN ION" || compound.category === "ION"
       ? "green"
       : compound.category === "MOLEKUL UNSUR"
         ? "cyan"

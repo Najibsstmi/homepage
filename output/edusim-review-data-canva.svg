@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fbff"/>
+      <stop offset="1" stop-color="#eefdf8"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#0f172a" flood-opacity="0.11"/>
+    </filter>
+    <style>
+      text { font-family: Arial, Helvetica, sans-serif; }
+      .kicker { font-size: 28px; font-weight: 700; fill: #0369a1; letter-spacing: 0; }
+      .title { font-size: 70px; font-weight: 800; fill: #0f172a; letter-spacing: 0; }
+      .subtitle { font-size: 30px; fill: #475569; }
+      .section { font-size: 28px; font-weight: 800; fill: #0f172a; }
+      .stat { font-size: 54px; font-weight: 800; }
+      .label { font-size: 24px; font-weight: 700; fill: #334155; }
+      .note { font-size: 20px; fill: #64748b; }
+      .bar-label { font-size: 23px; font-weight: 700; fill: #334155; }
+      .bar-value { font-size: 22px; font-weight: 800; fill: #075985; }
+      .legend { font-size: 19px; fill: #334155; }
+      .donut-number { font-size: 38px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+      .donut-label { font-size: 18px; fill: #64748b; text-anchor: middle; }
+      .tag { font-size: 22px; font-weight: 800; fill: #0f766e; }
+      .quote { font-size: 25px; font-weight: 700; fill: #1e293b; }
+      .quote-mark { font-size: 32px; font-weight: 800; fill: #2563eb; }
+      .source { font-size: 20px; fill: #64748b; }
+    </style>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <circle cx="1660" cy="120" r="190" fill="#dbeafe" opacity="0.55"/>
+  <circle cx="1760" cy="880" r="250" fill="#ccfbf1" opacity="0.55"/>
+
+  <text x="92" y="95" class="kicker">DAPATAN REVIEW PENGGUNA</text>
+  <text x="92" y="172" class="title">EduSim Membantu PdP Sains Lebih Interaktif</text>
+  <text x="94" y="220" class="subtitle">Analisis ringkas daripada Google Sheet “REVIEW SIMULATOR” | Jun hingga Sep 2026</text>
+
+  <g filter="url(#shadow)">
+    
+  <g>
+    <rect x="92" y="286" width="392" height="148" rx="22" fill="#ffffff" stroke="#dbeafe" stroke-width="2"/>
+    <rect x="92" y="286" width="10" height="148" rx="5" fill="#2563eb"/>
+    <text x="126" y="344" class="stat" fill="#0f172a">89</text>
+    <text x="126" y="380" class="label">review pengguna</text>
+    <text x="126" y="408" class="note">Guru, Murid dan Orang Awam</text>
+  </g>
+    
+  <g>
+    <rect x="520" y="286" width="392" height="148" rx="22" fill="#ffffff" stroke="#dbeafe" stroke-width="2"/>
+    <rect x="520" y="286" width="10" height="148" rx="5" fill="#16a34a"/>
+    <text x="554" y="344" class="stat" fill="#0f172a">4.81/5</text>
+    <text x="554" y="380" class="label">purata rating</text>
+    <text x="554" y="408" class="note">rating keseluruhan sangat positif</text>
+  </g>
+    
+  <g>
+    <rect x="948" y="286" width="392" height="148" rx="22" fill="#ffffff" stroke="#dbeafe" stroke-width="2"/>
+    <rect x="948" y="286" width="10" height="148" rx="5" fill="#14b8a6"/>
+    <text x="982" y="344" class="stat" fill="#0f172a">98.9%</text>
+    <text x="982" y="380" class="label">rating 4-5 bintang</text>
+    <text x="982" y="408" class="note">88 daripada 89 review</text>
+  </g>
+    
+  <g>
+    <rect x="1376" y="286" width="452" height="148" rx="22" fill="#ffffff" stroke="#dbeafe" stroke-width="2"/>
+    <rect x="1376" y="286" width="10" height="148" rx="5" fill="#f97316"/>
+    <text x="1410" y="344" class="stat" fill="#0f172a">18</text>
+    <text x="1410" y="380" class="label">simulator ada review</text>
+    <text x="1410" y="408" class="note">54 ulasan bertulis direkodkan</text>
+  </g>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="80" y="468" width="700" height="305" rx="26" fill="#ffffff" stroke="#dbeafe" stroke-width="2"/>
+    <text x="102" y="526" class="section">Simulator Paling Banyak Mendapat Review</text>
+    
+    <text x="102" y="576" class="bar-label">Aloi / Kenali Aloi</text>
+    <rect x="410" y="556" width="320" height="26" rx="13" fill="#e0f2fe"/>
+    <rect x="410" y="556" width="320" height="26" rx="13" fill="#0ea5e9"/>
+    <text x="744" y="576" class="bar-value">14</text>
+
+    <text x="102" y="614" class="bar-label">Gerakan Linear</text>
+    <rect x="410" y="594" width="320" height="26" rx="13" fill="#e0f2fe"/>
+    <rect x="410" y="594" width="297" height="26" rx="13" fill="#0ea5e9"/>
+    <text x="721" y="614" class="bar-value">13</text>
+
+    <text x="102" y="652" class="bar-label">Atom, Molekul &amp; Sebatian</text>
+    <rect x="410" y="632" width="320" height="26" rx="13" fill="#e0f2fe"/>
+    <rect x="410" y="632" width="274" height="26" rx="13" fill="#0ea5e9"/>
+    <text x="698" y="652" class="bar-value">12</text>
+
+    <text x="102" y="690" class="bar-label">Inersia</text>
+    <rect x="410" y="670" width="320" height="26" rx="13" fill="#e0f2fe"/>
+    <rect x="410" y="670" width="206" height="26" rx="13" fill="#0ea5e9"/>
+    <text x="630" y="690" class="bar-value">9</text>
+
+    <text x="102" y="728" class="bar-label">Elektrokimia</text>
+    <rect x="410" y="708" width="320" height="26" rx="13" fill="#e0f2fe"/>
+    <rect x="410" y="708" width="183" height="26" rx="13" fill="#0ea5e9"/>
+    <text x="607" y="728" class="bar-value">8</text>
+
+    <text x="102" y="766" class="bar-label">Tenaga Nuklear</text>
+    <rect x="410" y="746" width="320" height="26" rx="13" fill="#e0f2fe"/>
+    <rect x="410" y="746" width="160" height="26" rx="13" fill="#0ea5e9"/>
+    <text x="584" y="766" class="bar-value">7</text>
+
+    <rect x="820" y="468" width="348" height="305" rx="26" fill="#ffffff" stroke="#dbeafe" stroke-width="2"/>
+    <text x="850" y="526" class="section">Taburan Rating</text>
+    <path d="M 990.00 566.00 A 56 56 0 1 1 939.36 598.08" fill="none" stroke="#16a34a" stroke-width="20" stroke-linecap="round" />
+<path d="M 939.36 598.08 A 56 56 0 0 1 986.05 566.14" fill="none" stroke="#22c55e" stroke-width="20" stroke-linecap="round" />
+<path d="M 986.05 566.14 A 56 56 0 0 1 990.00 566.00" fill="none" stroke="#f59e0b" stroke-width="20" stroke-linecap="round" />
+    <text x="990" y="618" class="donut-number">82%</text>
+    <text x="990" y="644" class="donut-label">5 bintang</text>
+    
+    <circle cx="868" cy="698" r="8" fill="#16a34a"/>
+    <text x="888" y="704" class="legend">5 bintang: 73</text>
+
+    <circle cx="868" cy="725" r="8" fill="#22c55e"/>
+    <text x="888" y="731" class="legend">4 bintang: 15</text>
+
+    <circle cx="868" cy="752" r="8" fill="#f59e0b"/>
+    <text x="888" y="758" class="legend">3 bintang: 1</text>
+
+    <rect x="1198" y="468" width="630" height="305" rx="26" fill="#ffffff" stroke="#dbeafe" stroke-width="2"/>
+    <text x="1228" y="526" class="section">Profil Pengguna Review</text>
+    <path d="M 1586.00 563.00 A 70 70 0 1 1 1528.94 673.54" fill="none" stroke="#2563eb" stroke-width="24" stroke-linecap="round" />
+<path d="M 1528.94 673.54 A 70 70 0 0 1 1576.15 563.70" fill="none" stroke="#14b8a6" stroke-width="24" stroke-linecap="round" />
+<path d="M 1576.15 563.70 A 70 70 0 0 1 1586.00 563.00" fill="none" stroke="#f97316" stroke-width="24" stroke-linecap="round" />
+    <text x="1586" y="628" class="donut-number">65%</text>
+    <text x="1586" y="654" class="donut-label">Guru</text>
+    
+    <circle cx="1210" cy="596" r="9" fill="#2563eb"/>
+    <text x="1230" y="602" class="legend">Guru: 58</text>
+
+    <circle cx="1210" cy="638" r="9" fill="#14b8a6"/>
+    <text x="1230" y="644" class="legend">Murid: 29</text>
+
+    <circle cx="1210" cy="680" r="9" fill="#f97316"/>
+    <text x="1230" y="686" class="legend">Orang Awam: 2</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="80" y="806" width="1122" height="224" rx="26" fill="#ffffff" stroke="#dbeafe" stroke-width="2"/>
+    <text x="102" y="864" class="section">Suara Pengguna</text>
+    
+    <g>
+      <circle cx="108" cy="901" r="18" fill="#dbeafe"/>
+      <text x="101" y="909" class="quote-mark">“</text>
+      <text x="144" y="910" class="quote">Simulasi ini menjadikan pembelajaran lebih interaktif dan berkesan.</text>
+    </g>
+
+    <g>
+      <circle cx="108" cy="948" r="18" fill="#dbeafe"/>
+      <text x="101" y="956" class="quote-mark">“</text>
+      <text x="144" y="957" class="quote">Simulator mudah difahami. Murid boleh tambah kefahaman.</text>
+    </g>
+
+    <g>
+      <circle cx="108" cy="995" r="18" fill="#dbeafe"/>
+      <text x="101" y="1003" class="quote-mark">“</text>
+      <text x="144" y="1004" class="quote">Aplikasi ini sangat membantu saya dalam memahami sains.</text>
+    </g>
+
+    <rect x="1232" y="806" width="596" height="224" rx="26" fill="#ecfeff" stroke="#bae6fd" stroke-width="2"/>
+    <text x="1262" y="864" class="section">Tema Impak</text>
+    <text x="1280" y="922" class="tag">Mudah difahami</text>
+    <text x="1532" y="922" class="tag">Interaktif</text>
+    <text x="1280" y="976" class="tag">Sesuai untuk PdP</text>
+    <text x="1532" y="976" class="tag">Pembelajaran kendiri</text>
+  </g>
+
+  <text x="92" y="1054" class="source">Sumber: REVIEW SIMULATOR, Sheet1. Nota: “Aloi” dan “Kenali Aloi” digabungkan sebagai pengalaman simulator yang sama.</text>
+</svg>

@@ -6,6 +6,7 @@ import useRatingSummaries from "../components/reviews/useRatingSummaries";
 import AlloyHardnessSimulatorPage from "./AlloyHardnessSimulatorPage";
 import AlloyDiscoverySimulatorPage from "./AlloyDiscoverySimulatorPage";
 import AppleOxidationSimulatorPage from "./AppleOxidationSimulatorPage";
+import FreeFallSimulatorPage from "./FreeFallSimulatorPage";
 import AtomMoleculeCompoundSimulatorPage from "./AtomMoleculeCompoundSimulatorPage";
 import CalorieExperimentPage from "./CalorieExperimentPage";
 import ChemicalCellSimulatorPage from "./ChemicalCellSimulatorPage";
@@ -120,6 +121,10 @@ export default function SimulatorPage({ onOpenSimulator }) {
       </div>
     );
   };
+
+  if (path === "/simulator/jatuh-bebas") {
+    return <FreeFallSimulatorPage reviewPanel={getReviewPanel("jatuh-bebas")} />;
+  }
 
   if (path === "/simulator/gerakan-linear") {
     return <LinearMotionSimulator reviewPanel={getReviewPanel("gerakan-linear")} />;

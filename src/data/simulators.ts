@@ -17,6 +17,17 @@ export interface SimulatorMetadata {
 
 export const SIMULATORS: readonly SimulatorMetadata[] = [
   {
+    id: "jatuh-bebas",
+    title: "Jatuh Bebas",
+    description: "Siasat kesan kehadiran udara terhadap masa jatuh objek melalui pendekatan IBSE.",
+    tingkatan: 4,
+    bab: "Bab 11: Daya dan Gerakan",
+    topik: "Jatuh Bebas dan Rintangan Udara",
+    keywords: ["jatuh bebas", "graviti", "rintangan udara", "vakum", "IBSE", "bulu", "bola logam"],
+    path: "/simulator/jatuh-bebas",
+    image: "/assets/Jatuh%20bebas/statik1.png",
+  },
+  {
     id: "gerakan-linear",
     title: "Gerakan Linear / Pita Detik",
     description:

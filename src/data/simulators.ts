@@ -25,7 +25,7 @@ export const SIMULATORS: readonly SimulatorMetadata[] = [
     topik: "Jatuh Bebas dan Rintangan Udara",
     keywords: ["jatuh bebas", "graviti", "rintangan udara", "vakum", "IBSE", "bulu", "bola logam"],
     path: "/simulator/jatuh-bebas",
-    image: "/assets/Jatuh%20bebas/statik1.png",
+    image: "/assets/Jatuh%20bebas/statik%202.png",
   },
   {
     id: "gerakan-linear",

@@ -2166,10 +2166,12 @@ a {
 }
 
 .navbar__brand {
+  text-decoration: none;
   font-size: 2rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   color: #67e8f9;
+  cursor: pointer;
 }
 
 .navbar__links {
@@ -2206,7 +2208,6 @@ a {
   }
 }
 
-.navbar__links a,
 .navbar__linkBtn {
   position: relative;
   text-decoration: none;
@@ -2219,7 +2220,6 @@ a {
   cursor: pointer;
 }
 
-.navbar__links a::after,
 .navbar__linkBtn::after {
   content: "";
   position: absolute;
@@ -2231,13 +2231,11 @@ a {
   transition: width 0.3s ease;
 }
 
-.navbar__links a:hover::after,
 .navbar__linkBtn:hover::after,
 .navbar__linkBtn--active::after {
   width: 100%;
 }
 
-.navbar__links a:hover,
 .navbar__linkBtn:hover,
 .navbar__linkBtn--active {
   color: #67e8f9;
@@ -2245,6 +2243,9 @@ a {
 }
 
 .navbar__edusim-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: linear-gradient(135deg, #facc15, #f59e0b);
   color: #422006;
   border: none;
@@ -2255,6 +2256,7 @@ a {
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.04em;
+  text-decoration: none;
   transition: 0.22s ease;
 }
 
@@ -2731,7 +2733,8 @@ a {
   margin-top: 0;
 }
 
-.navDropdownMenu button {
+.navDropdownMenu button,
+.navDropdownMenu a {
   position: relative;
   display: flex;
   min-height: 42px;
@@ -2749,9 +2752,11 @@ a {
   font-size: 0.9rem;
   font-weight: 700;
   line-height: 1.35;
+  text-decoration: none;
 }
 
-.navDropdownMenu button:hover {
+.navDropdownMenu button:hover,
+.navDropdownMenu a:hover {
   background: rgba(103, 232, 249, 0.08);
   color: #67e8f9;
 }
@@ -2803,7 +2808,8 @@ a {
   box-shadow: none;
 }
 
-.navDropdownMenu--nested button {
+.navDropdownMenu--nested button,
+.navDropdownMenu--nested a {
   min-height: 36px;
   padding: 0.58rem 0.65rem 0.58rem 1rem;
   color: #cbd5e1;
@@ -8636,7 +8642,8 @@ section {
     overflow-x: hidden;
   }
 
-  .navDropdownMenu button {
+  .navDropdownMenu button,
+  .navDropdownMenu a {
     min-height: 40px;
     width: 100%;
     min-width: 0;
@@ -8677,7 +8684,8 @@ section {
     border-left: 2px solid rgba(250, 204, 21, 0.58);
   }
 
-  .navDropdownMenu--nested button {
+  .navDropdownMenu--nested button,
+  .navDropdownMenu--nested a {
     min-height: 34px;
     width: 100%;
     padding: 0.52rem 0.5rem 0.52rem 0.9rem;

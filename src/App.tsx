@@ -424,6 +424,43 @@ export default function App() {
     }
   };
 
+  const pageHref = (page: Page) => {
+    if (page === "home") {
+      return "/";
+    }
+
+    if (page === "simulator") {
+      return "/simulator";
+    }
+
+    return `/?page=${page}`;
+  };
+
+  const sectionHref = (sectionId: string) => `/#${sectionId}`;
+
+  const shouldLetBrowserHandleLink = (event: React.MouseEvent<HTMLAnchorElement>) =>
+    event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+
+  const handlePageLinkClick =
+    (page: Page) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (shouldLetBrowserHandleLink(event)) {
+        return;
+      }
+
+      event.preventDefault();
+      navigateTo(page);
+    };
+
+  const handleSectionLinkClick =
+    (sectionId: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (shouldLetBrowserHandleLink(event)) {
+        return;
+      }
+
+      event.preventDefault();
+      goToHomeSection(sectionId);
+    };
+
   const shouldUseHoverMenus = () =>
     typeof window !== "undefined" &&
     window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 769px)")
@@ -1784,13 +1821,13 @@ export default function App() {
   return (
     <div className="page">
       <nav className="navbar">
-        <div
+        <a
+          href={pageHref("home")}
           className="navbar__brand"
-          style={{ cursor: "pointer" }}
-          onClick={() => navigateTo("home")}
+          onClick={handlePageLinkClick("home")}
         >
           CIKGUSTEM
-        </div>
+        </a>
         <button
           className="navbar__toggle"
           type="button"
@@ -1836,20 +1873,22 @@ export default function App() {
             </div>
           </div>
           <span className="navbar__drawerLabel">Utama</span>
-          <button
+          <a
+            href={pageHref("about")}
             className={`navbar__linkBtn${currentPage === "about" ? " navbar__linkBtn--active" : ""}`}
-            onClick={() => navigateTo("about")}
+            onClick={handlePageLinkClick("about")}
           >
             Tentang
-          </button>
-          <button className="navbar__linkBtn" onClick={() => goToHomeSection("journey")}>Perjalanan</button>
-          <button
+          </a>
+          <a className="navbar__linkBtn" href={sectionHref("journey")} onClick={handleSectionLinkClick("journey")}>Perjalanan</a>
+          <a
+            href={pageHref("simulator")}
             className={`navbar__edusim-btn${currentPage === "simulator" ? " navbar__edusim-btn--active" : ""}`}
-            onClick={() => navigateTo("simulator")}
+            onClick={handlePageLinkClick("simulator")}
           >
             EduSim
-          </button>
-          <button className="navbar__linkBtn" onClick={() => goToHomeSection("achievements")}>Pencapaian</button>
+          </a>
+          <a className="navbar__linkBtn" href={sectionHref("achievements")} onClick={handleSectionLinkClick("achievements")}>Pencapaian</a>
 
           <span className="navbar__drawerLabel">Pengurusan</span>
           <div
@@ -1984,24 +2023,25 @@ export default function App() {
 
             {modulMenuOpen && (
               <div className="navDropdownMenu">
-                <button onClick={() => navigateTo("modul")}>Modul</button>
-                <button onClick={() => navigateTo("banksoalan")}>Bank Soalan</button>
-                <button onClick={() => navigateTo("rpm")}>RPM2026-2035</button>
-                <button onClick={() => navigateTo("plc")}>PLC Kit</button>
-                <button onClick={() => navigateTo("skasGuruSains")}>SK@S dan Guru Sains</button>
+                <a href={pageHref("modul")} onClick={handlePageLinkClick("modul")}>Modul</a>
+                <a href={pageHref("banksoalan")} onClick={handlePageLinkClick("banksoalan")}>Bank Soalan</a>
+                <a href={pageHref("rpm")} onClick={handlePageLinkClick("rpm")}>RPM2026-2035</a>
+                <a href={pageHref("plc")} onClick={handlePageLinkClick("plc")}>PLC Kit</a>
+                <a href={pageHref("skasGuruSains")} onClick={handlePageLinkClick("skasGuruSains")}>SK@S dan Guru Sains</a>
               </div>
             )}
           </div>
 
           <span className="navbar__drawerLabel">Lain-lain</span>
-          <button className="navbar__linkBtn" onClick={() => goToHomeSection("gallery")}>Galeri</button>
-          <button className="navbar__linkBtn" onClick={() => goToHomeSection("contact")}>Hubungi</button>
-          <button
+          <a className="navbar__linkBtn" href={sectionHref("gallery")} onClick={handleSectionLinkClick("gallery")}>Galeri</a>
+          <a className="navbar__linkBtn" href={sectionHref("contact")} onClick={handleSectionLinkClick("contact")}>Hubungi</a>
+          <a
+            href={pageHref("inovasi")}
             className={`navbar__inovasi-btn${currentPage === "inovasi" ? " navbar__inovasi-btn--active" : ""}`}
-            onClick={() => navigateTo("inovasi")}
+            onClick={handlePageLinkClick("inovasi")}
           >
             Inovasi
-          </button>
+          </a>
         </div>
       </nav>
 

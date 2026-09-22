@@ -153,6 +153,14 @@ export default function MacronutrientLab({
                 reducedMotion={reducedMotion}
                 variant="root"
               />
+              {solutionDefinition ? (
+                <div
+                  key={`${setId}-${solutionDefinition.id}`}
+                  className="macro-solution-liquid"
+                  style={{ "--liquid-color": solutionDefinition.liquidColor } as CSSProperties}
+                  aria-hidden="true"
+                />
+              ) : null}
               {pumpActive ? (
                 <div className={`macro-bubbles${phase === "paused" ? " is-paused" : ""}`} aria-hidden="true">
                   <i />

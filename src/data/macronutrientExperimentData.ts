@@ -14,6 +14,7 @@ export interface SolutionDefinition {
   shortLabel: string;
   nutrient: string;
   color: string;
+  liquidColor: string;
   bottle: string;
   explanation: string;
 }
@@ -25,6 +26,7 @@ export const SOLUTIONS: readonly SolutionDefinition[] = [
     shortLabel: "Lengkap",
     nutrient: "N + P + K",
     color: "#168552",
+    liquidColor: "#b8dfe4",
     bottle: `${MACRONUTRIENT_ASSET_BASE}/solutions/complete.webp`,
     explanation:
       "Larutan lengkap membekalkan makronutrien yang diperlukan. Tumbuhan dapat membentuk daun hijau, batang dan akar dengan pertumbuhan yang lebih baik.",
@@ -35,6 +37,7 @@ export const SOLUTIONS: readonly SolutionDefinition[] = [
     shortLabel: "−N",
     nutrient: "Nitrogen",
     color: "#d94141",
+    liquidColor: "#e4d757",
     bottle: `${MACRONUTRIENT_ASSET_BASE}/solutions/no-n.webp`,
     explanation:
       "Nitrogen diperlukan untuk pertumbuhan tumbuhan dan pembentukan klorofil. Kekurangan nitrogen mengganggu pertumbuhan dan menyebabkan daun menjadi lebih pucat atau kuning.",
@@ -45,6 +48,7 @@ export const SOLUTIONS: readonly SolutionDefinition[] = [
     shortLabel: "−P",
     nutrient: "Fosforus",
     color: "#d89d13",
+    liquidColor: "#41a8da",
     bottle: `${MACRONUTRIENT_ASSET_BASE}/solutions/no-p.webp`,
     explanation:
       "Fosforus membantu pemindahan tenaga serta perkembangan akar. Kekurangannya membantutkan pertumbuhan dan boleh menghasilkan pigmentasi pada daun seperti yang ditunjukkan dalam aset eksperimen.",
@@ -55,6 +59,7 @@ export const SOLUTIONS: readonly SolutionDefinition[] = [
     shortLabel: "−K",
     nutrient: "Kalium",
     color: "#7541b4",
+    liquidColor: "#d982aa",
     bottle: `${MACRONUTRIENT_ASSET_BASE}/solutions/no-k.webp`,
     explanation:
       "Kalium membantu fungsi sel dan pertumbuhan yang sihat. Kekurangan kalium menyebabkan pertumbuhan tidak optimum serta simptom pada hujung dan tepi daun seperti dalam pemerhatian eksperimen.",

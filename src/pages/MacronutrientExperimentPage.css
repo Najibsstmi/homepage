@@ -197,6 +197,40 @@
 .macro-lab__set { position: absolute; z-index: 2; inset: 0; pointer-events: none; }
 .macro-lab__set--front { z-index: 4; }
 
+.macro-solution-liquid {
+  position: absolute;
+  z-index: 2;
+  left: var(--set-x);
+  top: 49%;
+  width: 5.25%;
+  height: 25%;
+  transform: translateX(-50%);
+  transform-origin: 50% 100%;
+  overflow: hidden;
+  border-radius: 3px 3px 42% 42% / 3px 3px 10px 10px;
+  background:
+    linear-gradient(90deg, #ffffff40, transparent 24% 74%, #ffffff28),
+    linear-gradient(180deg, color-mix(in srgb, var(--liquid-color) 72%, white 28%), var(--liquid-color));
+  box-shadow: inset 0 2px 0 #ffffff99, inset 0 -8px 14px #16384b1c;
+  opacity: .68;
+  animation: macro-liquid-fill 520ms cubic-bezier(.2, .75, .3, 1) both;
+}
+.macro-solution-liquid::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 4%;
+  width: 92%;
+  height: 5px;
+  border: 1px solid #ffffff80;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--liquid-color) 58%, white 42%);
+}
+@keyframes macro-liquid-fill {
+  from { opacity: .2; transform: translateX(-50%) scaleY(.08); }
+  to { opacity: .68; transform: translateX(-50%) scaleY(1); }
+}
+
 .macro-plant {
   position: absolute;
   top: 15.5%;

@@ -191,6 +191,33 @@ export const SIMULATORS: readonly SimulatorMetadata[] = [
     image: nitrogenBackgroundUrl,
   },
   {
+    id: "kesan-kekurangan-makronutrien",
+    title: "Kesan Kekurangan Makronutrien",
+    description:
+      "Jalankan eksperimen maya untuk memerhatikan kesan kekurangan nitrogen, fosforus dan kalium terhadap pertumbuhan tumbuhan.",
+    tingkatan: 5,
+    bab: "Bab 2: Nutrisi dan Teknologi Makanan",
+    topik: "Kesan Kekurangan Makronutrien terhadap Pertumbuhan Tumbuhan",
+    requiredExperimentTopics: [
+      "Kesan kekurangan makronutrien terhadap pertumbuhan tumbuhan",
+    ],
+    keywords: [
+      "makronutrien",
+      "nitrogen",
+      "fosforus",
+      "kalium",
+      "pertumbuhan tumbuhan",
+      "akar",
+      "klorofil",
+      "anak pokok jagung",
+      "eksperimen 2.2",
+      "Tingkatan 5",
+    ],
+    path: "/simulator/kesan-kekurangan-makronutrien",
+    image:
+      "/assets/kesan%20kekurangan%20mikronutrien/processed/lab-background.webp",
+  },
+  {
     id: "nilai-kalori-makanan",
     title: "Eksperimen 2.1: Nilai Kalori Makanan",
     description:

@@ -14,6 +14,7 @@ import ElectrolysisSimulatorPage from "./ElectrolysisSimulatorPage";
 import EndocrineSystemSimulatorPage from "./EndocrineSystemSimulatorPage";
 import InertiaMassSimulatorPage from "./InertiaMassSimulatorPage";
 import MudPressureRescueSimulatorPage from "./MudPressureRescueSimulatorPage";
+import MacronutrientExperimentPage from "./MacronutrientExperimentPage";
 import NitrogenCycleSimulatorPage from "./NitrogenCycleSimulatorPage";
 import NuclearEnergySimulatorPage from "./NuclearEnergySimulatorPage";
 import OpticsLensSimulatorPage from "./OpticsLensSimulatorPage";
@@ -196,6 +197,14 @@ export default function SimulatorPage({ onOpenSimulator }) {
     return (
       <NitrogenCycleSimulatorPage
         reviewPanel={getReviewPanel("kitar-nitrogen")}
+      />
+    );
+  }
+
+  if (path === "/simulator/kesan-kekurangan-makronutrien") {
+    return (
+      <MacronutrientExperimentPage
+        reviewPanel={getReviewPanel("kesan-kekurangan-makronutrien")}
       />
     );
   }

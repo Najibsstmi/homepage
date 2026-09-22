@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "assets:kalori": "node scripts/convert-nilai-kalori-assets.mjs",
+    "assets:macronutrients": "node scripts/process-macronutrient-assets.mjs",
     "create:share": "node scripts/create-share-page.mjs",
     "create:share:template": "powershell -ExecutionPolicy Bypass -File scripts/new-share-page.ps1"
   },

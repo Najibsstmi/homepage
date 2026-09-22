@@ -216,13 +216,13 @@
   transform-origin: 50% 57.7%;
   transition: opacity 850ms linear, transform 850ms linear;
 }
-.macro-plant--root { clip-path: inset(57% 18% 0 18%); }
-.macro-plant--foliage { clip-path: inset(0 0 42% 0); }
+.macro-plant--root { overflow: visible; }
+.macro-plant--root img { clip-path: inset(52% 12% 0 12%); }
+.macro-plant--foliage { clip-path: none; }
 .macro-lab__set--front .macro-plant--root {
-  opacity: .78;
-  filter: saturate(.72) contrast(1.06);
-  mix-blend-mode: multiply;
-  clip-path: inset(57% 21% 4% 21%);
+  opacity: 1;
+  z-index: 1;
+  filter: saturate(.88) contrast(1.2) brightness(.88);
 }
 
 .macro-bubbles {

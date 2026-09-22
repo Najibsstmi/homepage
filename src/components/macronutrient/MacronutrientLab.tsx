@@ -60,6 +60,10 @@ export function PlantVisual({
   const blend = getPlantBlend(solution, day);
   const mix = reducedMotion ? (blend.mix >= 0.5 ? 1 : 0) : blend.mix;
   const fallback = getPlantAsset(solution, 0);
+  const growthScale = day > 0 ? 1.14 + (Math.min(day, 14) / 14) * 0.08 : 1;
+  const rootStretch = variant === "root" && day > 0 ? 2 : 1;
+  const previousScale = growthScale * (1 + mix * 0.012);
+  const nextScale = growthScale * (0.988 + mix * 0.012);
 
   return (
     <div className={`macro-plant macro-plant--${variant}`} aria-hidden={variant === "root"}>
@@ -68,7 +72,10 @@ export function PlantVisual({
         source={blend.previous}
         fallback={fallback}
         alt={variant === "foliage" ? label : ""}
-        style={{ opacity: 1 - mix, transform: `scale(${1 + mix * 0.012})` }}
+        style={{
+          opacity: 1 - mix,
+          transform: `scale(${previousScale}, ${previousScale * rootStretch})`,
+        }}
       />
       {blend.next !== blend.previous ? (
         <SafePlantImage
@@ -76,7 +83,10 @@ export function PlantVisual({
           source={blend.next}
           fallback={blend.previous}
           alt=""
-          style={{ opacity: mix, transform: `scale(${0.988 + mix * 0.012})` }}
+          style={{
+            opacity: mix,
+            transform: `scale(${nextScale}, ${nextScale * rootStretch})`,
+          }}
         />
       ) : null}
     </div>
@@ -183,7 +193,7 @@ export default function MacronutrientLab({
               <PlantVisual
                 solution={solution}
                 day={plantDay}
-                label={`Bahagian daun pokok jagung Set ${setId}`}
+                label={`Pokok jagung Set ${setId}, termasuk daun dan akar`}
                 reducedMotion={reducedMotion}
                 variant="foliage"
               />

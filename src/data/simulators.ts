@@ -17,6 +17,29 @@ export interface SimulatorMetadata {
 
 export const SIMULATORS: readonly SimulatorMetadata[] = [
   {
+    id: "bridge-building-3d",
+    title: "Bridge Building 3D",
+    description:
+      "Bina jambatan lidi sate dalam 3D, urus bahan dan gam, sahkan peraturan, kemudian jalankan ujian beban dan analisis daya.",
+    tingkatan: 5,
+    bab: "STEM: Kejuruteraan Struktur",
+    topik: "Bina • Uji • Analisis • Baiki",
+    keywords: [
+      "bridge building",
+      "jambatan lidi",
+      "lidi sate",
+      "kejuruteraan",
+      "truss",
+      "tension",
+      "compression",
+      "buckling",
+      "ujian beban",
+      "STEM",
+      "3D",
+    ],
+    path: "/simulator/bridge-building-3d",
+  },
+  {
     id: "jatuh-bebas",
     title: "Jatuh Bebas",
     description: "Siasat kesan kehadiran udara terhadap masa jatuh objek melalui pendekatan IBSE.",

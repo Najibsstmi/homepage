@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import SimulatorCard from "../components/SimulatorCard";
 import LinearMotionSimulator from "../components/LinearMotionSimulator";
 import SimulatorReviewPanel from "../components/reviews/SimulatorReviewPanel";
@@ -25,6 +25,7 @@ import { SimulatorSearch } from "../components/SimulatorSearch";
 import { SIMULATORS } from "../data/simulators";
 
 const SIMULATORS_PER_PAGE = 6;
+const BridgeBuilding3DPage = lazy(() => import("./BridgeBuilding3DPage"));
 
 function StaticHtmlSimulatorFrame({ src, title }) {
   const frameRef = useRef(null);
@@ -206,6 +207,16 @@ export default function SimulatorPage({ onOpenSimulator }) {
       <MacronutrientExperimentPage
         reviewPanel={getReviewPanel("kesan-kekurangan-makronutrien")}
       />
+    );
+  }
+
+  if (path === "/simulator/bridge-building-3d") {
+    return (
+      <Suspense fallback={<main className="simulatorPage"><p>Memuatkan studio 3D…</p></main>}>
+        <BridgeBuilding3DPage
+          reviewPanel={getReviewPanel("bridge-building-3d")}
+        />
+      </Suspense>
     );
   }
 

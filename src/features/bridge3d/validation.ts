@@ -1,14 +1,22 @@
 import { distance3 } from "./model";
+import {
+  getEffectiveClearanceZones,
+  OFFICIAL_PIPE_CLEARANCE_ID,
+  OFFICIAL_PLATE_CLEARANCE_ID,
+} from "./profile";
 import type {
   BridgeDesign,
   BridgeMember,
-  CompetitionProfile,
   RestrictedBoxZone,
   RestrictedCylinderZone,
+  RestrictedZone,
   ValidationItem,
   ValidationReport,
   Vector3Data,
 } from "./types";
+
+const CLEARANCE_TOLERANCE_CM = 1e-4;
+export const APPLIED_GLUE_RADIUS_CM = 0.5;
 
 function bounds(points: Vector3Data[]) {
   if (!points.length) return { minX: 0, maxX: 0, minY: 0, maxY: 0, minZ: 0, maxZ: 0 };
@@ -32,47 +40,120 @@ export function getBridgeDimensions(design: BridgeDesign) {
   };
 }
 
-function pointInBox(point: Vector3Data, zone: RestrictedBoxZone) {
-  return Math.abs(point.x - zone.centre.x) <= zone.size.x / 2
-    && Math.abs(point.y - zone.centre.y) <= zone.size.y / 2
-    && Math.abs(point.z - zone.centre.z) <= zone.size.z / 2;
+function segmentIntersectsExpandedBox(
+  a: Vector3Data,
+  b: Vector3Data,
+  radius: number,
+  zone: RestrictedBoxZone,
+) {
+  let minimumT = 0;
+  let maximumT = 1;
+  const expansion = Math.max(0, radius - CLEARANCE_TOLERANCE_CM);
+  for (const axis of ["x", "y", "z"] as const) {
+    const halfExtent = zone.size[axis] / 2 + expansion;
+    const minimum = zone.centre[axis] - halfExtent;
+    const maximum = zone.centre[axis] + halfExtent;
+    const direction = b[axis] - a[axis];
+    if (Math.abs(direction) < 1e-10) {
+      if (a[axis] < minimum || a[axis] > maximum) return false;
+      continue;
+    }
+    const first = (minimum - a[axis]) / direction;
+    const second = (maximum - a[axis]) / direction;
+    minimumT = Math.max(minimumT, Math.min(first, second));
+    maximumT = Math.min(maximumT, Math.max(first, second));
+    if (minimumT > maximumT) return false;
+  }
+  return true;
 }
 
-function pointInCylinder(point: Vector3Data, zone: RestrictedCylinderZone) {
-  const delta = {
-    x: point.x - zone.centre.x,
-    y: point.y - zone.centre.y,
-    z: point.z - zone.centre.z,
-  };
-  const axial = Math.abs(delta[zone.axis]);
-  const radial = zone.axis === "x"
-    ? Math.hypot(delta.y, delta.z)
-    : zone.axis === "y"
-      ? Math.hypot(delta.x, delta.z)
-      : Math.hypot(delta.x, delta.y);
-  return axial <= zone.lengthCm / 2 && radial <= zone.diameterCm / 2;
+function segmentIntersectsExpandedCylinder(
+  a: Vector3Data,
+  b: Vector3Data,
+  radius: number,
+  zone: RestrictedCylinderZone,
+) {
+  const radialAxes = (["x", "y", "z"] as const).filter((axis) => axis !== zone.axis);
+  const axialStart = a[zone.axis] - zone.centre[zone.axis];
+  const axialDirection = b[zone.axis] - a[zone.axis];
+  const axialLimit = zone.lengthCm / 2 + Math.max(0, radius - CLEARANCE_TOLERANCE_CM);
+  let minimumT = 0;
+  let maximumT = 1;
+  if (Math.abs(axialDirection) < 1e-10) {
+    if (Math.abs(axialStart) > axialLimit) return false;
+  } else {
+    const first = (-axialLimit - axialStart) / axialDirection;
+    const second = (axialLimit - axialStart) / axialDirection;
+    minimumT = Math.max(minimumT, Math.min(first, second));
+    maximumT = Math.min(maximumT, Math.max(first, second));
+    if (minimumT > maximumT) return false;
+  }
+
+  const radialStart = radialAxes.map((axis) => a[axis] - zone.centre[axis]);
+  const radialDirection = radialAxes.map((axis) => b[axis] - a[axis]);
+  const denominator = radialDirection[0] ** 2 + radialDirection[1] ** 2;
+  const closestT = denominator < 1e-12
+    ? minimumT
+    : Math.min(maximumT, Math.max(minimumT,
+      -(radialStart[0] * radialDirection[0] + radialStart[1] * radialDirection[1]) / denominator));
+  const radialDistance = Math.hypot(
+    radialStart[0] + radialDirection[0] * closestT,
+    radialStart[1] + radialDirection[1] * closestT,
+  );
+  const radialLimit = zone.diameterCm / 2 + Math.max(0, radius - CLEARANCE_TOLERANCE_CM);
+  return radialDistance < radialLimit;
+}
+
+function segmentIntersectsZone(a: Vector3Data, b: Vector3Data, radius: number, zone: RestrictedZone) {
+  return zone.kind === "box"
+    ? segmentIntersectsExpandedBox(a, b, radius, zone)
+    : segmentIntersectsExpandedCylinder(a, b, radius, zone);
 }
 
 export function memberIntersectsRestrictedZone(
   member: BridgeMember,
   design: BridgeDesign,
-  zone: CompetitionProfile["restrictedZones"][number],
+  zone: RestrictedZone,
+  memberRadius = design.profileSnapshot.materialRules.skewerDiameterCm / 2,
 ) {
   const a = design.nodes.find((node) => node.id === member.nodeA)?.position;
   const b = design.nodes.find((node) => node.id === member.nodeB)?.position;
   if (!a || !b) return false;
-  const length = distance3(a, b);
-  const samples = Math.max(3, Math.ceil(length / 0.5));
-  for (let index = 0; index <= samples; index += 1) {
-    const ratio = index / samples;
-    const point = {
-      x: a.x + (b.x - a.x) * ratio,
-      y: a.y + (b.y - a.y) * ratio,
-      z: a.z + (b.z - a.z) * ratio,
-    };
-    if (zone.kind === "box" ? pointInBox(point, zone) : pointInCylinder(point, zone)) return true;
-  }
-  return false;
+  return segmentIntersectsZone(a, b, memberRadius, zone);
+}
+
+function glueIntersectsRestrictedZone(position: Vector3Data, zone: RestrictedZone) {
+  return segmentIntersectsZone(position, position, APPLIED_GLUE_RADIUS_CM, zone);
+}
+
+function clearanceItem(
+  design: BridgeDesign,
+  zone: RestrictedZone,
+  id: string,
+  label: string,
+  clearDetail: string,
+  memberRadius: number,
+): ValidationItem {
+  const members = design.members.filter((member) =>
+    memberIntersectsRestrictedZone(member, design, zone, memberRadius));
+  const nodeById = new Map(design.nodes.map((node) => [node.id, node.position]));
+  const joints = design.joints.filter((joint) => {
+    const position = nodeById.get(joint.nodeId);
+    return joint.glueUsedCm > 0 && !!position && glueIntersectsRestrictedZone(position, zone);
+  });
+  const parts = [
+    members.length ? `${members.length} batang` : "",
+    joints.length ? `${joints.length} sambungan gam` : "",
+  ].filter(Boolean);
+  return {
+    id,
+    severity: parts.length ? "error" : "pass",
+    label,
+    detail: parts.length ? `TERHALANG oleh ${parts.join(" dan ")}.` : clearDetail,
+    relatedIds: parts.length
+      ? [...members.map((member) => member.id), ...joints.map((joint) => joint.id)]
+      : undefined,
+  };
 }
 
 function overlapLength(
@@ -176,19 +257,59 @@ export function validateBridge(design: BridgeDesign, profile = design.profileSna
     detail: `${baseLayerCount} lapisan digunakan daripada maksimum ${profile.bridgeRules.maxBaseLayers}.`,
   });
 
-  const obstructions = profile.restrictedZones.flatMap((zone) =>
-    design.members.filter((member) => memberIntersectsRestrictedZone(member, design, zone))
-      .map((member) => ({ zone, member })),
-  );
-  items.push({
-    id: "clearance",
-    severity: obstructions.length ? "error" : "pass",
-    label: "Zon kelegaan",
-    detail: obstructions.length
-      ? `${obstructions[0].zone.label} terhalang oleh ${obstructions.length} batang.`
-      : "Ruang tengah dan laluan paip tidak terhalang.",
-    relatedIds: obstructions.map(({ member }) => member.id),
-  });
+  const clearanceZones = getEffectiveClearanceZones(profile);
+  const plateZone = clearanceZones.find((zone) => zone.id === OFFICIAL_PLATE_CLEARANCE_ID);
+  const pipeZone = clearanceZones.find((zone) => zone.id === OFFICIAL_PIPE_CLEARANCE_ID);
+  const memberRadius = profile.materialRules.skewerDiameterCm / 2;
+  if (plateZone) {
+    items.push(clearanceItem(
+      design,
+      plateZone,
+      "plate-clearance",
+      "Zon Plate Pengujian",
+      `${profile.bridgeRules.centralClearanceWidthCm} × ${profile.bridgeRules.centralClearanceHeightCm} cm — CLEAR.`,
+      memberRadius,
+    ));
+  }
+  if (pipeZone) {
+    items.push(clearanceItem(
+      design,
+      pipeZone,
+      "pipe-clearance",
+      "Laluan Paip",
+      `Ø${profile.bridgeRules.pipeClearanceDiameterCm} cm — CLEAR.`,
+      memberRadius,
+    ));
+  }
+  clearanceZones
+    .filter((zone) => zone.id !== OFFICIAL_PLATE_CLEARANCE_ID && zone.id !== OFFICIAL_PIPE_CLEARANCE_ID)
+    .forEach((zone) => {
+      if (zone.restriction === "clearance") {
+        items.push(clearanceItem(
+          design,
+          zone,
+          `clearance-${zone.id}`,
+          zone.label,
+          "Zon kelegaan custom — CLEAR.",
+          memberRadius,
+        ));
+        return;
+      }
+      const nodeById = new Map(design.nodes.map((node) => [node.id, node.position]));
+      const violatingJoints = design.joints.filter((joint) => {
+        const position = nodeById.get(joint.nodeId);
+        return joint.glueUsedCm > 0 && !!position && glueIntersectsRestrictedZone(position, zone);
+      });
+      items.push({
+        id: `no-glue-${zone.id}`,
+        severity: violatingJoints.length ? "error" : "pass",
+        label: zone.label,
+        detail: violatingJoints.length
+          ? `TERHALANG oleh ${violatingJoints.length} sambungan gam.`
+          : "Tiada gam dalam zon custom ini.",
+        relatedIds: violatingJoints.length ? violatingJoints.map((joint) => joint.id) : undefined,
+      });
+    });
 
   const maximumOverlap = profile.materialRules.skewerLengthCm * profile.bridgeRules.maxOverlapRatio;
   const excessiveOverlap: string[] = [];

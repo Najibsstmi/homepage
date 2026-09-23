@@ -1,6 +1,9 @@
-import type { CompetitionProfile } from "./types";
+import type { CompetitionProfile, RestrictedBoxZone, RestrictedCylinderZone, RestrictedZone } from "./types";
 
 export const OFFICIAL_2026_PROFILE_ID = "bridge-building-2026";
+export const OFFICIAL_PLATE_CLEARANCE_ID = "central-plate-clearance";
+export const OFFICIAL_PIPE_CLEARANCE_ID = "pipe-clearance";
+const MINIMUM_PIPE_GUIDE_LENGTH_CM = 45;
 
 const timeScoreTable = Array.from({ length: 10 }, (_, index) => ({
   second: index + 1,
@@ -52,27 +55,47 @@ export const OFFICIAL_2026_PROFILE: CompetitionProfile = {
     youngModulusMPa: null,
     jointCalibration: [],
   },
-  restrictedZones: [
-    {
-      id: "central-plate-clearance",
-      kind: "box",
-      label: "Ruang tengah untuk plat ujian",
-      centre: { x: 0, y: 2.5, z: 0 },
-      size: { x: 5, y: 5, z: 5 },
-      restriction: "clearance",
-    },
-    {
-      id: "pipe-clearance",
-      kind: "cylinder",
-      label: "Laluan paip Ø5.5 cm",
-      axis: "x",
-      centre: { x: 0, y: -3.2, z: 0 },
-      lengthCm: 45,
-      diameterCm: 5.5,
-      restriction: "clearance",
-    },
-  ],
+  restrictedZones: [],
 };
+
+function formatCm(value: number) {
+  return Number.isInteger(value) ? String(value) : String(Number(value.toFixed(2)));
+}
+
+/**
+ * Returns the two official clearance volumes derived from bridgeRules, followed
+ * by any custom zones. Stored zones using an official ID are deliberately
+ * ignored so an older saved profile cannot keep stale official dimensions.
+ */
+export function getEffectiveClearanceZones(profile: CompetitionProfile): RestrictedZone[] {
+  const width = Math.max(0, profile.bridgeRules.centralClearanceWidthCm);
+  const height = Math.max(0, profile.bridgeRules.centralClearanceHeightCm);
+  const pipeDiameter = Math.max(0, profile.bridgeRules.pipeClearanceDiameterCm);
+  const skewerRadius = Math.max(0, profile.materialRules.skewerDiameterCm) / 2;
+  const pipeRadius = pipeDiameter / 2;
+
+  const plateZone: RestrictedBoxZone = {
+    id: OFFICIAL_PLATE_CLEARANCE_ID,
+    kind: "box",
+    label: `Zon Plate Pengujian — minimum ${formatCm(width)} cm × ${formatCm(height)} cm`,
+    centre: { x: 0, y: height / 2, z: 0 },
+    size: { x: width, y: height, z: width },
+    restriction: "clearance",
+  };
+  const pipeZone: RestrictedCylinderZone = {
+    id: OFFICIAL_PIPE_CLEARANCE_ID,
+    kind: "cylinder",
+    label: `Laluan Paip — Ø${formatCm(pipeDiameter)} cm`,
+    axis: "x",
+    centre: { x: 0, y: skewerRadius + pipeRadius, z: 0 },
+    lengthCm: Math.max(MINIMUM_PIPE_GUIDE_LENGTH_CM, profile.bridgeRules.maxLengthCm),
+    diameterCm: pipeDiameter,
+    restriction: "clearance",
+  };
+  const customZones = profile.restrictedZones.filter((zone) =>
+    zone.id !== OFFICIAL_PLATE_CLEARANCE_ID && zone.id !== OFFICIAL_PIPE_CLEARANCE_ID);
+  return [plateZone, pipeZone, ...customZones];
+}
 
 export function cloneProfile(profile: CompetitionProfile): CompetitionProfile {
   return structuredClone(profile);

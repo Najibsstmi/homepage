@@ -3,6 +3,8 @@ import { Canvas, useThree, type ThreeEvent } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+import { getEffectiveClearanceZones } from "../../features/bridge3d/profile";
+import { APPLIED_GLUE_RADIUS_CM } from "../../features/bridge3d/validation";
 import type {
   BridgeDesign,
   BridgeMember,
@@ -196,9 +198,10 @@ function MemberMesh({
 }
 
 function RestrictedZones({ design }: { design: BridgeDesign }) {
+  const zones = getEffectiveClearanceZones(design.profileSnapshot);
   return (
     <group>
-      {design.profileSnapshot.restrictedZones.map((zone) => zone.kind === "box" ? (
+      {zones.map((zone) => zone.kind === "box" ? (
         <mesh key={zone.id} position={[zone.centre.x, zone.centre.y, zone.centre.z]}>
           <boxGeometry args={[zone.size.x, zone.size.y, zone.size.z]} />
           <meshBasicMaterial color="#ef8e51" transparent opacity={0.1} wireframe />
@@ -416,14 +419,13 @@ function Scene(props: BridgeCanvasProps) {
             </mesh>
             {joint?.glueUsedCm ? (
               <mesh
-                scale={[1.15, 0.8, 1.15]}
                 onClick={(event) => {
                   event.stopPropagation();
                   if (props.tool === "glue") props.onSelect({ kind: "node", id: node.id });
                   else props.onSelect({ kind: "joint", id: joint.id });
                 }}
               >
-                <sphereGeometry args={[0.42, 12, 8]} />
+                <sphereGeometry args={[APPLIED_GLUE_RADIUS_CM, 12, 8]} />
                 <meshPhysicalMaterial color="#f1dfb6" transparent opacity={0.5} roughness={0.42} />
               </mesh>
             ) : null}
@@ -460,6 +462,7 @@ function Scene(props: BridgeCanvasProps) {
 }
 
 export default function BridgeCanvas(props: BridgeCanvasProps) {
+  const clearanceZones = getEffectiveClearanceZones(props.design.profileSnapshot);
   return (
     <div className="bridge3d-canvas" aria-label="Ruang kerja pembinaan jambatan 3D">
       <Canvas
@@ -470,6 +473,11 @@ export default function BridgeCanvas(props: BridgeCanvasProps) {
       >
         <Scene {...props} />
       </Canvas>
+      {props.showClearance ? (
+        <div className="bridge3d-clearance-legend" aria-label="Petunjuk zon kelegaan">
+          {clearanceZones.slice(0, 2).map((zone) => <span key={zone.id}>{zone.label}</span>)}
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { getOfficialValue, OFFICIAL_2026_PROFILE_ID } from "../../features/bridge3d/profile";
+import {
+  getEffectiveClearanceZones,
+  getOfficialValue,
+  OFFICIAL_2026_PROFILE_ID,
+  OFFICIAL_PIPE_CLEARANCE_ID,
+  OFFICIAL_PLATE_CLEARANCE_ID,
+} from "../../features/bridge3d/profile";
 import type { CompetitionProfile } from "../../features/bridge3d/types";
 
 function NumericField({
@@ -84,8 +90,11 @@ export default function CompetitionSetup({
       onChange={(value) => setPath(`${section}.${key}`, value)}
     />
   ));
-  const centralBox = profile.restrictedZones.find((zone) => zone.id === "central-plate-clearance" && zone.kind === "box");
-  const pipe = profile.restrictedZones.find((zone) => zone.id === "pipe-clearance" && zone.kind === "cylinder");
+  const clearanceZones = getEffectiveClearanceZones(profile);
+  const centralBox = clearanceZones.find((zone) => zone.id === OFFICIAL_PLATE_CLEARANCE_ID && zone.kind === "box");
+  const pipe = clearanceZones.find((zone) => zone.id === OFFICIAL_PIPE_CLEARANCE_ID && zone.kind === "cylinder");
+  const customZones = clearanceZones.filter((zone) =>
+    zone.id !== OFFICIAL_PLATE_CLEARANCE_ID && zone.id !== OFFICIAL_PIPE_CLEARANCE_ID);
 
   return (
     <div className="bridge3d-modal-backdrop" role="presentation">
@@ -180,13 +189,20 @@ export default function CompetitionSetup({
           </details>
           <details>
             <summary>Zon Kelegaan</summary>
-            <p className="bridge3d-settings-note">Nilai ini ialah geometri panduan 3D. Ia tidak dilabel sebagai zon larangan gam kecuali profil menyatakannya.</p>
-            <div className="bridge3d-settings-grid">
-              {centralBox?.kind === "box" ? <>
-                <NumericField label="Ruang plat: saiz X" path="restrictedZones.central.size.x" value={centralBox.size.x} unit="cm" onChange={(value) => onChange({ ...profile, modified: true, restrictedZones: profile.restrictedZones.map((zone) => zone.id === centralBox.id && zone.kind === "box" ? { ...zone, size: { ...zone.size, x: value ?? 0 } } : zone) })} />
-                <NumericField label="Ruang plat: saiz Y" path="restrictedZones.central.size.y" value={centralBox.size.y} unit="cm" onChange={(value) => onChange({ ...profile, modified: true, restrictedZones: profile.restrictedZones.map((zone) => zone.id === centralBox.id && zone.kind === "box" ? { ...zone, size: { ...zone.size, y: value ?? 0 } } : zone) })} />
-              </> : null}
-              {pipe?.kind === "cylinder" ? <NumericField label="Diameter terowong paip" path="restrictedZones.pipe.diameterCm" value={pipe.diameterCm} unit="cm" onChange={(value) => onChange({ ...profile, modified: true, restrictedZones: profile.restrictedZones.map((zone) => zone.id === pipe.id && zone.kind === "cylinder" ? { ...zone, diameterCm: value ?? 0 } : zone) })} /> : null}
+            <p className="bridge3d-settings-note">Geometri rasmi dijana terus daripada nilai “Ukuran Jambatan” di atas. Panduan ini tidak menambah jisim dan gam hanya melanggar syarat jika bentuknya memasuki ruang kelegaan.</p>
+            <div className="bridge3d-clearance-preview">
+              {centralBox?.kind === "box" ? <article>
+                <b>{centralBox.label}</b>
+                <span>Pusat Y {centralBox.centre.y.toFixed(2)} cm · bermula dari aras tapak</span>
+              </article> : null}
+              {pipe?.kind === "cylinder" ? <article>
+                <b>{pipe.label}</b>
+                <span>Paksi X · pusat Y {pipe.centre.y.toFixed(2)} cm · Z = {pipe.centre.z.toFixed(0)}</span>
+              </article> : null}
+              <article>
+                <b>Zon custom / masa hadapan</b>
+                <span>{customZones.length} zon tambahan dalam profil ini</span>
+              </article>
             </div>
           </details>
           <details>

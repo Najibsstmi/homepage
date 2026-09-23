@@ -2,7 +2,13 @@ import { describe, expect, it } from "vitest";
 import { calculateBridgeMass, consumeStickSegment, createStickInventory } from "../inventory";
 import { getNextLoadKg, isHoldCycleComplete } from "../loadTest";
 import { addMember, applyGlue, createEmptyDesign, createStarterDesign } from "../model";
-import { cloneProfile, OFFICIAL_2026_PROFILE } from "../profile";
+import {
+  cloneProfile,
+  getEffectiveClearanceZones,
+  OFFICIAL_2026_PROFILE,
+  OFFICIAL_PIPE_CLEARANCE_ID,
+  OFFICIAL_PLATE_CLEARANCE_ID,
+} from "../profile";
 import { calculateEfficiency, calculateTestingScore } from "../scoring";
 import { analyseBridge } from "../solver";
 import { validateBridge } from "../validation";
@@ -96,10 +102,10 @@ describe("Bridge Building 3D competition logic", () => {
     expect(glued.estimated).toBe(false);
   });
 
-  it("I. detects a member crossing a required clearance volume", () => {
+  it("I. detects a member crossing the testing-plate clearance", () => {
     let design = createEmptyDesign(cloneProfile(OFFICIAL_2026_PROFILE), "practice");
     design = addMember(design, { x: -10, y: 2.5, z: 0 }, { x: 10, y: 2.5, z: 0 }, "cross").design;
-    const clearance = validateBridge(design).items.find((item) => item.id === "clearance");
+    const clearance = validateBridge(design).items.find((item) => item.id === "plate-clearance");
     expect(clearance?.severity).toBe("error");
   });
 
@@ -131,11 +137,165 @@ describe("Bridge Building 3D competition logic", () => {
   it("keeps the guided starter bridge structurally stable for its first load stage", () => {
     const design = createStarterDesign(cloneProfile(OFFICIAL_2026_PROFILE));
     const report = validateBridge(design);
-    const clearance = report.items.find((item) => item.id === "clearance");
-    expect(clearance?.severity, JSON.stringify(clearance)).toBe("pass");
+    const plateClearance = report.items.find((item) => item.id === "plate-clearance");
+    const pipeClearance = report.items.find((item) => item.id === "pipe-clearance");
+    expect(plateClearance?.severity, JSON.stringify(plateClearance)).toBe("pass");
+    expect(pipeClearance?.severity, JSON.stringify(pipeClearance)).toBe("pass");
     expect(report.valid, JSON.stringify(report.items.filter((item) => item.severity === "error"))).toBe(true);
     const analysis = analyseBridge(design, 5);
     expect(analysis.stable).toBe(true);
     expect(analysis.firstFailure, JSON.stringify(analysis.firstFailure)).toBeNull();
+  });
+});
+
+describe("Bridge Building 3D official clearance geometry", () => {
+  const zoneById = (profile: typeof OFFICIAL_2026_PROFILE, id: string) =>
+    getEffectiveClearanceZones(profile).find((zone) => zone.id === id);
+  const item = (design: ReturnType<typeof createEmptyDesign>, id: string) =>
+    validateBridge(design).items.find((entry) => entry.id === id);
+
+  it("1. uses a default pipe diameter of 5.5 cm", () => {
+    expect(OFFICIAL_2026_PROFILE.bridgeRules.pipeClearanceDiameterCm).toBe(5.5);
+    const pipe = zoneById(OFFICIAL_2026_PROFILE, OFFICIAL_PIPE_CLEARANCE_ID);
+    expect(pipe?.kind).toBe("cylinder");
+    if (pipe?.kind === "cylinder") expect(pipe.diameterCm).toBe(5.5);
+  });
+
+  it("2. derives a 2.75 cm pipe radius", () => {
+    const pipe = zoneById(OFFICIAL_2026_PROFILE, OFFICIAL_PIPE_CLEARANCE_ID);
+    expect(pipe?.kind).toBe("cylinder");
+    if (pipe?.kind === "cylinder") expect(pipe.diameterCm / 2).toBe(2.75);
+  });
+
+  it("3. derives positive pipe centre Y from skewer radius plus pipe radius", () => {
+    const pipe = zoneById(OFFICIAL_2026_PROFILE, OFFICIAL_PIPE_CLEARANCE_ID);
+    const expected = OFFICIAL_2026_PROFILE.materialRules.skewerDiameterCm / 2
+      + OFFICIAL_2026_PROFILE.bridgeRules.pipeClearanceDiameterCm / 2;
+    expect(pipe?.centre.y).toBe(expected);
+    expect(pipe?.centre.y).toBe(2.95);
+  });
+
+  it("4. keeps the pipe above the base with its bottom tangent to the skewer surface", () => {
+    const pipe = zoneById(OFFICIAL_2026_PROFILE, OFFICIAL_PIPE_CLEARANCE_ID);
+    expect(pipe?.kind).toBe("cylinder");
+    if (pipe?.kind === "cylinder") {
+      const bottom = pipe.centre.y - pipe.diameterCm / 2;
+      expect(bottom).toBeCloseTo(OFFICIAL_2026_PROFILE.materialRules.skewerDiameterCm / 2, 8);
+      expect(bottom).toBeGreaterThan(0);
+    }
+  });
+
+  it("5. immediately applies a pipe diameter override to geometry and validation", () => {
+    const baseProfile = cloneProfile(OFFICIAL_2026_PROFILE);
+    let design = createEmptyDesign(baseProfile, "practice");
+    design = addMember(design, { x: 10, y: 6, z: 0 }, { x: 15, y: 6, z: 0 }, "cross").design;
+    expect(item(design, "pipe-clearance")?.severity).toBe("pass");
+
+    const override = cloneProfile(baseProfile);
+    override.bridgeRules.pipeClearanceDiameterCm = 6;
+    const pipe = zoneById(override, OFFICIAL_PIPE_CLEARANCE_ID);
+    expect(pipe?.kind).toBe("cylinder");
+    if (pipe?.kind === "cylinder") {
+      expect(pipe.diameterCm).toBe(6);
+      expect(pipe.centre.y).toBe(3.2);
+    }
+    design = { ...design, profileSnapshot: override };
+    expect(item(design, "pipe-clearance")?.severity).toBe("error");
+  });
+
+  it("6. immediately applies central width and height overrides to geometry and validation", () => {
+    const baseProfile = cloneProfile(OFFICIAL_2026_PROFILE);
+    let design = createEmptyDesign(baseProfile, "practice");
+    design = addMember(design, { x: 0, y: 6, z: -1 }, { x: 0, y: 6, z: 1 }, "cross").design;
+    expect(item(design, "plate-clearance")?.severity).toBe("pass");
+
+    const override = cloneProfile(baseProfile);
+    override.bridgeRules.centralClearanceWidthCm = 6;
+    override.bridgeRules.centralClearanceHeightCm = 7;
+    const plate = zoneById(override, OFFICIAL_PLATE_CLEARANCE_ID);
+    expect(plate?.kind).toBe("box");
+    if (plate?.kind === "box") {
+      expect(plate.size).toEqual({ x: 6, y: 7, z: 6 });
+      expect(plate.centre.y).toBe(3.5);
+    }
+    design = { ...design, profileSnapshot: override };
+    expect(item(design, "plate-clearance")?.severity).toBe("error");
+  });
+
+  it("7. ignores stale stored official zones so no second diameter source survives", () => {
+    const profile = cloneProfile(OFFICIAL_2026_PROFILE);
+    profile.bridgeRules.pipeClearanceDiameterCm = 6;
+    profile.restrictedZones.push({
+      id: OFFICIAL_PIPE_CLEARANCE_ID,
+      kind: "cylinder",
+      label: "stale",
+      axis: "x",
+      centre: { x: 0, y: -99, z: 0 },
+      lengthCm: 1,
+      diameterCm: 99,
+      restriction: "clearance",
+    });
+    const officialPipes = getEffectiveClearanceZones(profile)
+      .filter((zone) => zone.id === OFFICIAL_PIPE_CLEARANCE_ID);
+    expect(officialPipes).toHaveLength(1);
+    expect(officialPipes[0].kind).toBe("cylinder");
+    if (officialPipes[0].kind === "cylinder") expect(officialPipes[0].diameterCm).toBe(6);
+  });
+
+  it("8. fails plate clearance when a physical skewer body intrudes", () => {
+    let design = createEmptyDesign(cloneProfile(OFFICIAL_2026_PROFILE), "practice");
+    design = addMember(design, { x: -1, y: 2.5, z: 2.6 }, { x: 1, y: 2.5, z: 2.6 }, "cross").design;
+    expect(item(design, "plate-clearance")?.severity).toBe("error");
+  });
+
+  it("9. fails pipe clearance for a member in the longitudinal passage", () => {
+    let design = createEmptyDesign(cloneProfile(OFFICIAL_2026_PROFILE), "practice");
+    design = addMember(design, { x: 10, y: 2.95, z: 0 }, { x: 15, y: 2.95, z: 0 }, "cross").design;
+    expect(item(design, "pipe-clearance")?.severity).toBe("error");
+    expect(item(design, "plate-clearance")?.severity).toBe("pass");
+  });
+
+  it("10. passes both checks when a member is outside both volumes", () => {
+    let design = createEmptyDesign(cloneProfile(OFFICIAL_2026_PROFILE), "practice");
+    design = addMember(design, { x: 10, y: 8, z: 4 }, { x: 15, y: 8, z: 4 }, "cross").design;
+    expect(item(design, "plate-clearance")?.severity).toBe("pass");
+    expect(item(design, "pipe-clearance")?.severity).toBe("pass");
+  });
+
+  it("allows a base member that is exactly tangent to the pipe guide", () => {
+    let design = createEmptyDesign(cloneProfile(OFFICIAL_2026_PROFILE), "practice");
+    design = addMember(design, { x: 10, y: 0, z: -4 }, { x: 10, y: 0, z: 4 }, "base", "baseBinding").design;
+    expect(item(design, "pipe-clearance")?.severity).toBe("pass");
+  });
+
+  it("11. keeps the Warren starter clear of both official volumes", () => {
+    const design = createStarterDesign(cloneProfile(OFFICIAL_2026_PROFILE));
+    expect(item(design, "plate-clearance")?.severity).toBe("pass");
+    expect(item(design, "pipe-clearance")?.severity).toBe("pass");
+  });
+
+  it("12. never adds clearance guides to bridge mass", () => {
+    const design = createStarterDesign(cloneProfile(OFFICIAL_2026_PROFILE));
+    const glueUsed = design.joints.reduce((sum, joint) => sum + joint.glueUsedCm, 0);
+    const before = calculateBridgeMass(design.sticks, glueUsed, design.profileSnapshot);
+    getEffectiveClearanceZones(design.profileSnapshot);
+    const after = calculateBridgeMass(design.sticks, glueUsed, design.profileSnapshot);
+    expect(after).toEqual(before);
+  });
+
+  it("flags applied glue when its physical sphere obstructs a clearance volume", () => {
+    const design = createEmptyDesign(cloneProfile(OFFICIAL_2026_PROFILE), "practice");
+    design.nodes.push({ id: "glue-node", position: { x: 0, y: 2.5, z: 0 } });
+    design.joints.push({
+      id: "glue-joint",
+      nodeId: "glue-node",
+      connectedMemberIds: [],
+      glueUsedCm: 0.5,
+      glueMassGram: null,
+      state: "glued",
+    });
+    const plate = item(design, "plate-clearance");
+    expect(plate?.severity).toBe("error");
+    expect(plate?.relatedIds).toContain("glue-joint");
   });
 });

@@ -97,7 +97,9 @@
 .bridge3d-dimension-chips span { padding:5px 7px; border-radius:7px; letter-spacing:0; }
 .bridge3d-dimension-chips .is-valid { color:#176b4b; background:#e0f2e8; }
 .bridge3d-dimension-chips .is-invalid { color:#a24036; background:#f9e4df; }
-.bridge3d-canvas { width:100%; height:100%; touch-action:none; }
+.bridge3d-canvas { position:relative; width:100%; height:100%; touch-action:none; }
+.bridge3d-clearance-legend { position:absolute; z-index:4; top:58px; left:12px; display:grid; gap:5px; max-width:min(420px,calc(100% - 24px)); pointer-events:none; }
+.bridge3d-clearance-legend span { width:max-content; max-width:100%; padding:6px 9px; border:1px solid #e6b08f; border-radius:7px; color:#873e25; background:#fff8f0e8; backdrop-filter:blur(6px); font-size:.62rem; font-weight:850; }
 .bridge3d-viewport-status { position:absolute; z-index:5; right:10px; bottom:10px; left:10px; display:flex; justify-content:space-between; gap:10px; padding:7px 10px; border-radius:8px; color:#47616d; background:#ffffffdf; backdrop-filter:blur(8px); font-size:.65rem; }
 
 .bridge3d-inspector { display:flex; flex-direction:column; gap:10px; max-height:min(72vh,760px); padding:12px; border-radius:14px; overflow:auto; }
@@ -225,6 +227,10 @@
 .bridge3d-settings-field small { color:#8b9ba1; font-size:.53rem; }
 .bridge3d-settings-field .bridge3d-restore-value { justify-self:start; min-height:28px; padding:4px 7px; border:1px solid #bfd1d4; border-radius:6px; color:#176d72; background:#edf7f5; font-size:.58rem; font-weight:800; }
 .bridge3d-settings-note { margin:10px 12px 0; padding:8px; border-radius:7px; color:#6d6353; background:#fff5df; font-size:.67rem; }
+.bridge3d-clearance-preview { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; padding:12px; }
+.bridge3d-clearance-preview article { display:grid; gap:4px; padding:10px; border:1px solid #d3e0e2; border-radius:8px; background:#f7faf9; }
+.bridge3d-clearance-preview b { color:#244e59; font-size:.7rem; }
+.bridge3d-clearance-preview span { color:#6c8088; font-size:.6rem; line-height:1.45; }
 .bridge3d-score-table { display:grid; grid-template-columns:repeat(10,1fr); gap:4px; padding:0 12px 12px; }
 .bridge3d-score-table label { display:grid; gap:3px; color:#71868e; font-size:.56rem; text-align:center; }
 .bridge3d-score-table input { min-width:0; width:100%; padding:5px 2px; border:1px solid #c6d5d8; border-radius:5px; text-align:center; }
@@ -276,6 +282,7 @@
   .bridge3d-viewport-status span:last-child { display:none; }
   .bridge3d-settings__profilebar { grid-template-columns:1fr; align-items:stretch; }
   .bridge3d-settings-grid { grid-template-columns:repeat(2,1fr); }
+  .bridge3d-clearance-preview { grid-template-columns:1fr; }
   .bridge3d-score-table { grid-template-columns:repeat(5,1fr); }
   .bridge3d-result-grid { grid-template-columns:repeat(2,1fr); }
   .bridge3d-learning-grid { grid-template-columns:1fr; }

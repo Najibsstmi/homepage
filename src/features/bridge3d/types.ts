@@ -10,11 +10,15 @@ export type CompetitionMode = "competition" | "practice";
 
 export interface BridgeNode {
   id: string;
+  displayNumber?: number;
   position: Vector3Data;
 }
 
 export interface BridgeMember {
   id: string;
+  displayNumber?: number;
+  /** Analytical spans of one uncut physical piece share this identity. */
+  physicalPieceId?: string;
   nodeA: string;
   nodeB: string;
   sourceStickId: string;
@@ -32,6 +36,7 @@ export interface GlueCurvePoint {
 
 export interface BridgeJoint {
   id: string;
+  displayNumber?: number;
   nodeId: string;
   connectedMemberIds: string[];
   glueUsedCm: number;

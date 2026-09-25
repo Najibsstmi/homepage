@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState, type ReactNode } from "react";
 import BridgeCanvas, {
   type CameraView,
   type VisibilityMode,
@@ -14,13 +14,12 @@ import CompetitionSetup from "../components/bridge3d/CompetitionSetup";
 import { calculateBridgeMass, getInventorySummary } from "../features/bridge3d/inventory";
 import { getNextLoadKg, hasReachedMaximumLoad } from "../features/bridge3d/loadTest";
 import {
-  addMember,
   applyGlue,
   createEmptyDesign,
   createStarterDesign,
   deleteMember,
   mirrorSide,
-  moveNode,
+  tryMoveNode,
   replaceMember,
 } from "../features/bridge3d/model";
 import {
@@ -53,6 +52,8 @@ import type {
 } from "../features/bridge3d/types";
 import { useBridgeHistory } from "../features/bridge3d/useBridgeHistory";
 import { validateBridge } from "../features/bridge3d/validation";
+import { connectTargets, coordinates, initialInteraction, interactionReducer, type SnapTarget, type DragConstraint } from "../features/bridge3d/interaction";
+import { displayLabel } from "../features/bridge3d/displayLabels";
 import "./BridgeBuilding3DPage.css";
 
 type WorkflowStage = "welcome" | "build" | "validate" | "test" | "result" | "analysis";
@@ -110,10 +111,14 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
   const { design, commit, replace, undo, redo, canUndo, canRedo } = history;
 
   const [stage, setStage] = useState<WorkflowStage>("welcome");
-  const [tool, setTool] = useState<BuildTool>("select");
+  const [interaction, dispatchInteraction] = useReducer(interactionReducer, initialInteraction);
+  const { tool, addMode, pending: pendingStart } = interaction;
+  const [crossConstraint, setCrossConstraint] = useState<DragConstraint>("xy");
+  const [interactionNonce, setInteractionNonce] = useState(0);
+  const [freeCandidate, setFreeCandidate] = useState<SnapTarget | null>(null);
+  const [showGuidance, setShowGuidance] = useState(false);
   const [plane, setPlane] = useState<BuildPlane>("left");
   const [selection, setSelection] = useState<Selection>(null);
-  const [pendingStart, setPendingStart] = useState<Vector3Data | null>(null);
   const [cameraView, setCameraView] = useState<CameraView>("perspective");
   const [cameraNonce, setCameraNonce] = useState(0);
   const [visibility, setVisibility] = useState<VisibilityMode>("all");
@@ -124,7 +129,7 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
   const [savedDesigns, setSavedDesigns] = useState<BridgeDesign[]>(loadSavedDesigns);
   const [saveName, setSaveName] = useState(design.name);
   const [feedback, setFeedback] = useState("Pilih satah binaan dan alat Tambah Lidi untuk bermula.");
-  const [snapInfo, setSnapInfo] = useState("Grid 1 cm aktif");
+  const [snapInfo, setSnapInfo] = useState("Ketik nod atau lidi untuk memilih.");
   const [glueAmount, setGlueAmount] = useState(0.5);
   const [mirrorDirection, setMirrorDirection] = useState<"leftToRight" | "rightToLeft" | null>(null);
 
@@ -149,23 +154,55 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
 
   const showFeedback = (message: string) => setFeedback(message);
 
-  const handlePoint = (point: Vector3Data, label: string) => {
+  const cancelPending = useCallback(() => {
+    dispatchInteraction({ type: "cancel" });
+    setFreeCandidate(null);
+    setInteractionNonce((value) => value + 1);
+    setSnapInfo("");
+  }, []);
+  const changeTool = (next: BuildTool) => {
+    cancelPending();
+    dispatchInteraction({ type: "tool", tool: next });
+    showFeedback(next === "add" ? "Pilih nod pertama." : next === "move" ? "Pilih nod dan seret. Atau pilih lidi, kemudian pilih hujungnya." : "Ketik nod atau lidi.");
+  };
+  useEffect(() => {
+    const cancel = (event: KeyboardEvent) => {
+      if (event.key === "Escape") { cancelPending(); setFeedback("Tindakan dibatalkan."); }
+    };
+    window.addEventListener("keydown", cancel);
+    return () => window.removeEventListener("keydown", cancel);
+  }, [cancelPending]);
+
+  const acceptPoint = (target: SnapTarget | null) => {
     if (tool !== "add") return;
-    setSnapInfo(label);
+    if (!target || (addMode === "nodes" && target.kind === "grid")) {
+      const message = "Pilih nod atau sambungan yang sah. Gunakan Titik Bebas untuk ruang kosong.";
+      showFeedback(message); setSnapInfo(message); return;
+    }
+    setFreeCandidate(null);
     if (!pendingStart) {
-      setPendingStart(point);
-      showFeedback("Titik mula dipilih. Gerakkan penuding dan pilih titik akhir.");
+      dispatchInteraction({ type: "pending", target });
+      setSnapInfo("");
+      showFeedback("Titik 1 dipilih — pilih titik 2.");
       return;
     }
-    const result = addMember(design, pendingStart, point, plane);
+    const result = connectTargets(design, pendingStart, target, addMode, plane);
     if (!result.ok) {
       showFeedback(result.reason ?? "Lidi tidak dapat ditambah.");
+      setSnapInfo(result.reason ?? "Lidi tidak dapat ditambah.");
       return;
     }
     commit(result.design);
-    setPendingStart(null);
-    setSelection(result.member ? { kind: "member", id: result.member.id } : null);
-    showFeedback(`Lidi ${result.member?.lengthCm.toFixed(1)} cm ditambah daripada ${result.member?.sourceStickId}.`);
+    cancelPending();
+    setSelection(result.selection);
+    const message = `Lidi ditambah: ${result.member?.lengthCm.toFixed(1)} cm`;
+    showFeedback(message); setSnapInfo(message);
+  };
+  const handlePoint = (target: SnapTarget | null) => {
+    if (target?.kind === "grid") {
+      setFreeCandidate(target);
+      setSnapInfo(`${target.label} · Tekan Sahkan titik.`);
+    } else acceptPoint(target);
   };
 
   const handleSelect = (next: Selection) => {
@@ -181,6 +218,7 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
       return;
     }
     setSelection(next);
+    if (tool === "move" && next?.kind === "member") showFeedback("Pilih hujung lidi yang hendak dialih.");
   };
 
   const handleGlue = (jointId: string) => {
@@ -196,13 +234,16 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
   };
 
   const updateNodePosition = (nodeId: string, position: Vector3Data) => {
-    const next = moveNode(design, nodeId, position);
-    if (next === design) {
-      showFeedback("Nod tidak dapat dialih: kedudukan bertindih atau bahan lidi tidak mencukupi.");
+    const result = tryMoveNode(design, nodeId, position);
+    if (!result.ok) {
+      showFeedback(result.reason ?? "Kedudukan tidak sah.");
+      setSnapInfo(result.reason ?? "Kedudukan tidak sah.");
       return;
     }
-    commit(next);
-    showFeedback("Nod dialih dan penggunaan segmen lidi dikira semula.");
+    if (result.design !== design) commit(result.design);
+    setSelection({ kind: "node", id: nodeId });
+    showFeedback("Nod dialih.");
+    setSnapInfo(`${displayLabel(result.design, "node", nodeId)} · ${coordinates(position)}`);
   };
 
   const handleReplaceMember = (memberId: string) => {
@@ -218,8 +259,8 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
 
   const changePlane = (next: BuildPlane) => {
     setPlane(next);
-    setPendingStart(null);
-    const viewMap: Record<BuildPlane, CameraView> = { left: "front", right: "rear", base: "top", cross: "perspective" };
+    cancelPending();
+    const viewMap: Record<BuildPlane, CameraView> = { left: "rear", right: "front", base: "top", cross: "perspective" };
     setCameraView(viewMap[next]);
     setCameraNonce((value) => value + 1);
   };
@@ -393,6 +434,7 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
   };
 
   const openDesign = (nextDesign: BridgeDesign) => {
+    cancelPending();
     replace(nextDesign);
     setSaveName(nextDesign.name);
     if (!profiles.some((profile) => profile.id === nextDesign.profileId)) {
@@ -409,8 +451,8 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
         <a href="/simulator" aria-label="Kembali ke senarai simulator" className="bridge3d-brand"><span>B3</span><div><b>EduSim</b><small>Engineering Studio</small></div></a>
         <div className="bridge3d-title"><span>BRIDGE BUILDING 3D</span><h1>Bina <i>•</i> Uji <i>•</i> Analisis <i>•</i> Baiki</h1></div>
         <div className="bridge3d-header__actions">
-          <button type="button" onClick={() => setFilesOpen(true)}>▣ Reka bentuk</button>
-          <button type="button" onClick={() => setSettingsOpen(true)}>⚙ Peraturan</button>
+          <button type="button" onClick={() => { cancelPending(); setFilesOpen(true); }}>▣ Reka bentuk</button>
+          <button type="button" onClick={() => { cancelPending(); setSettingsOpen(true); }}>⚙ Peraturan</button>
         </div>
       </header>
 
@@ -421,6 +463,7 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
             key={item}
             className={(stage === item || (stage === "result" && item === "analysis")) ? "is-active" : ""}
             onClick={() => {
+              cancelPending();
               if (item === "build") setStage("build");
               if (item === "validate") setStage("validate");
               if (item === "test" && (validation.valid || design.mode === "practice")) beginTest();
@@ -431,7 +474,7 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
       </nav>
 
       {stage === "welcome" ? <Welcome
-        onStarter={() => { const starter = createStarterDesign(activeProfile); replace(starter); setStage("build"); setSaveName(starter.name); }}
+        onStarter={() => { const starter = createStarterDesign(activeProfile); replace(starter); setStage("build"); setSaveName(starter.name); setShowGuidance(true); cancelPending(); }}
         onEmpty={() => { const empty = createEmptyDesign(activeProfile); replace(empty); setStage("build"); setSaveName(empty.name); }}
       /> : null}
 
@@ -447,18 +490,22 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
               showClearance={showClearance}
               canUndo={canUndo}
               canRedo={canRedo}
-              onTool={(next) => { setTool(next); setPendingStart(null); }}
+              onTool={changeTool}
               onPlane={changePlane}
-              onView={(view) => { setCameraView(view); setCameraNonce((value) => value + 1); }}
+              onView={(view) => { cancelPending(); setCameraView(view); setCameraNonce((value) => value + 1); }}
               onVisibility={setVisibility}
               onGhost={() => setGhostOtherSide((value) => !value)}
               onClearance={() => setShowClearance((value) => !value)}
-              onUndo={() => { undo(); setSelection(null); }}
-              onRedo={() => { redo(); setSelection(null); }}
-              onFit={() => setCameraNonce((value) => value + 1)}
+              onUndo={() => { cancelPending(); undo(); setSelection(null); }}
+              onRedo={() => { cancelPending(); redo(); setSelection(null); }}
+              onFit={() => { cancelPending(); setCameraNonce((value) => value + 1); }}
             />
           ) : null}
 
+          {showGuidance && stage === "build" ? <div className="bridge3d-guidance">
+            <span>Tambah lidi → ketik nod pertama → nod kedua. Untuk membetulkan bentuk, pilih Alih dan seret nod. Reka bentuk kosong: pilih Titik Bebas.</span>
+            <button type="button" aria-label="Tutup panduan binaan" onClick={() => setShowGuidance(false)}>×</button>
+          </div> : null}
           <section className="bridge3d-viewport-shell">
             <div className="bridge3d-viewport-topbar">
               <div><span>{stage === "build" || stage === "validate" ? "3D WORKBENCH" : stage === "test" ? "3D TEST RIG" : "FORCE ANALYSIS"}</span><b>{design.name}</b></div>
@@ -474,6 +521,11 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
               plane={plane}
               selection={selection}
               pendingStart={pendingStart}
+              addMode={addMode}
+              crossConstraint={crossConstraint}
+              interactionNonce={interactionNonce}
+              interactionEnabled={stage === "build" && !settingsOpen && !filesOpen && !mirrorDirection}
+              onMoveNode={updateNodePosition}
               cameraView={cameraView}
               cameraNonce={cameraNonce}
               visibility={visibility}
@@ -487,7 +539,25 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
               onSelect={handleSelect}
               onHoverInfo={setSnapInfo}
             />
-            <div className="bridge3d-viewport-status"><span>{snapInfo}</span><b>1 unit = 1 cm</b><span>{pendingStart ? "Pilih titik akhir" : "Orbit: seret · Zum: roda tetikus"}</span></div>
+            {stage === "build" ? <div className="bridge3d-interaction-panel">
+              {tool === "add" ? <>
+                <div className="bridge3d-context-buttons" aria-label="Cara tambah lidi">
+                  <button type="button" aria-pressed={addMode === "nodes"} onClick={() => { cancelPending(); dispatchInteraction({ type: "mode", mode: "nodes" }); }}>Sambung Nod</button>
+                  <button type="button" aria-pressed={addMode === "free"} onClick={() => { cancelPending(); dispatchInteraction({ type: "mode", mode: "free" }); }}>Titik Bebas</button>
+                  {pendingStart || freeCandidate ? <button type="button" onClick={() => { cancelPending(); showFeedback("Tindakan dibatalkan."); }}>Batal titik</button> : null}
+                </div>
+                <b>{pendingStart ? `Titik 1: ${pendingStart.label} · Pilih titik akhir` : "Pilih titik mula"}</b>
+                {addMode === "free" ? <small>Satah {plane === "left" ? "Truss kiri" : plane === "right" ? "Truss kanan" : plane === "base" ? "Tapak XZ" : crossConstraint.toUpperCase()} · grid 1 cm · ketik, kemudian sahkan.</small> : null}
+                {freeCandidate ? <div><span>{coordinates(freeCandidate.position)}</span><button type="button" onClick={() => acceptPoint(freeCandidate)}>Sahkan titik</button></div> : null}
+              </> : tool === "move" ? <b>Seret nod untuk mengalih. Ketik lidi untuk memilih hujungnya.</b> : null}
+              {(tool === "move" || (tool === "add" && addMode === "free")) && plane === "cross" ? <label>Satah gerakan
+                <select aria-label="Satah gerakan" value={crossConstraint} onChange={(event) => { cancelPending(); setCrossConstraint(event.target.value as DragConstraint); }}>
+                  <option value="xy">XY — kunci Z</option><option value="xz">XZ — kunci Y</option><option value="yz">YZ — kunci X</option>
+                </select>
+              </label> : null}
+              <p role="status" aria-live="polite">{snapInfo || feedback}</p>
+            </div> : null}
+            <div className="bridge3d-viewport-status"><span>Seret ruang kosong: orbit · Cubit / roda: zum</span><b>1 unit = 1 cm</b></div>
           </section>
 
           {stage === "build" || stage === "validate" || stage === "analysis" ? (
@@ -503,6 +573,7 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
               onRole={updateMemberRole}
               onGlue={handleGlue}
               onInventoryMode={(mode) => commit({ ...design, selectedInventoryMode: mode })}
+              onSelectNode={(id) => { changeTool("move"); setSelection({ kind: "node", id }); }}
               readOnly={stage === "analysis"}
             />
           ) : null}
@@ -534,7 +605,7 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
               <button type="button" onClick={() => setMirrorDirection("leftToRight")}>Mirror kiri → kanan</button>
               <button type="button" onClick={() => setMirrorDirection("rightToLeft")}>Mirror kanan → kiri</button>
             </div>
-            <div><span>{feedback}</span><button type="button" className="bridge3d-primary" onClick={() => setStage("validate")}>READY TO TEST →</button></div>
+            <div><span>{feedback}</span><button type="button" className="bridge3d-primary" onClick={() => { cancelPending(); setStage("validate"); }}>READY TO TEST →</button></div>
           </footer> : null}
         </div>
       ) : null}
@@ -542,6 +613,7 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
       {stage === "validate" ? <ValidationPanel report={validation} competitionMode={design.mode === "competition"} onTest={beginTest} onClose={() => setStage("build")} /> : null}
       {stage === "result" && testResult ? <TestResultPanel
         result={testResult}
+        failureLabel={testResult.firstFailure ? displayLabel(design, testResult.firstFailure.kind, testResult.firstFailure.id) : ""}
         onReplay={() => { setStage("test"); setDeformed(false); window.setTimeout(() => setDeformed(true), 120); }}
         onAnalysis={() => setStage("analysis")}
         onBuild={() => setStage("build")}

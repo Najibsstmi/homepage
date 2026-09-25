@@ -124,12 +124,14 @@ export function LoadTestPanel({
 
 export function TestResultPanel({
   result,
+  failureLabel,
   onReplay,
   onAnalysis,
   onBuild,
   onRetry,
 }: {
   result: TestResult;
+  failureLabel: string;
   onReplay: () => void;
   onAnalysis: () => void;
   onBuild: () => void;
@@ -150,7 +152,7 @@ export function TestResultPanel({
       {result.firstFailure ? (
         <article className="bridge3d-first-failure">
           <span>FIRST FAILURE</span>
-          <h3>{result.firstFailure.id}</h3>
+          <h3>{failureLabel}</h3>
           <b>{result.firstFailure.mode}</b>
           <p>{Number.isFinite(result.firstFailure.utilization)
             ? `Utilisasi ${(result.firstFailure.utilization * 100).toFixed(0)}%`

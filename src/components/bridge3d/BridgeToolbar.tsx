@@ -75,13 +75,13 @@ export default function BridgeToolbar({
       </div>
       <div className="bridge3d-toolbar__group">
         <span>SATAH BINAAN</span>
-        <select value={plane} onChange={(event) => onPlane(event.target.value as BuildPlane)}>
+        <select aria-label="Satah binaan" value={plane} onChange={(event) => onPlane(event.target.value as BuildPlane)}>
           {PLANES.map((item) => <option value={item.id} key={item.id}>{item.label}</option>)}
         </select>
       </div>
       <div className="bridge3d-toolbar__group bridge3d-toolbar__compact">
         <span>PANDANGAN</span>
-        <select value={cameraView} onChange={(event) => onView(event.target.value as CameraView)}>
+        <select aria-label="Pandangan" value={cameraView} onChange={(event) => onView(event.target.value as CameraView)}>
           <option value="perspective">Perspektif</option>
           <option value="front">Hadapan</option>
           <option value="rear">Belakang</option>
@@ -94,7 +94,7 @@ export default function BridgeToolbar({
       </div>
       <div className="bridge3d-toolbar__group bridge3d-toolbar__compact">
         <span>VISUAL</span>
-        <select value={visibility} onChange={(event) => onVisibility(event.target.value as VisibilityMode)}>
+        <select aria-label="Paparan struktur" value={visibility} onChange={(event) => onVisibility(event.target.value as VisibilityMode)}>
           <option value="all">Show All</option>
           <option value="hideFront">Hide Front</option>
           <option value="hideRear">Hide Rear</option>

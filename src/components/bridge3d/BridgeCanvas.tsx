@@ -1,10 +1,12 @@
 import { ContactShadows, Line, OrbitControls } from "@react-three/drei";
 import { Canvas, useThree, type ThreeEvent } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
+import { useEffect, useMemo, useRef, type RefObject } from "react";
 import * as THREE from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { getEffectiveClearanceZones } from "../../features/bridge3d/profile";
 import { APPLIED_GLUE_RADIUS_CM } from "../../features/bridge3d/validation";
+import { buildPlaneOrigin, movementPlane, type AddMode, type DragConstraint, type SnapTarget } from "../../features/bridge3d/interaction";
+import { useBridgePointerInteraction } from "./useBridgePointerInteraction";
 import type {
   BridgeDesign,
   BridgeMember,
@@ -23,7 +25,12 @@ interface BridgeCanvasProps {
   tool: BuildTool;
   plane: BuildPlane;
   selection: Selection;
-  pendingStart: Vector3Data | null;
+  pendingStart: SnapTarget | null;
+  addMode: AddMode;
+  crossConstraint: DragConstraint;
+  interactionNonce: number;
+  interactionEnabled: boolean;
+  onMoveNode: (id: string, position: Vector3Data) => void;
   cameraView: CameraView;
   cameraNonce: number;
   visibility: VisibilityMode;
@@ -33,7 +40,7 @@ interface BridgeCanvasProps {
   loadKg: number;
   analysis: StructuralResult | null;
   deformed: boolean;
-  onPoint: (point: Vector3Data, snapLabel: string) => void;
+  onPoint: (target: SnapTarget | null) => void;
   onSelect: (selection: Selection) => void;
   onHoverInfo: (text: string) => void;
 }
@@ -125,7 +132,6 @@ function MemberMesh({
   visibility,
   stage,
   deformed,
-  onSelect,
 }: {
   member: BridgeMember;
   design: BridgeDesign;
@@ -134,7 +140,6 @@ function MemberMesh({
   visibility: VisibilityMode;
   stage: BridgeCanvasProps["stage"];
   deformed: boolean;
-  onSelect: (selection: Selection) => void;
 }) {
   const nodeA = design.nodes.find((node) => node.id === member.nodeA);
   const nodeB = design.nodes.find((node) => node.id === member.nodeB);
@@ -177,21 +182,6 @@ function MemberMesh({
         color={selected ? "#ffca4f" : color}
         emissive={selected ? "#7d4f00" : "#000000"}
         opacity={opacity}
-        onClick={(event) => {
-          event.stopPropagation();
-          onSelect({ kind: "member", id: member.id });
-        }}
-      />
-      <CylinderBetween
-        start={start}
-        end={end}
-        radius={0.6}
-        color="#ffffff"
-        opacity={0.001}
-        onClick={(event) => {
-          event.stopPropagation();
-          onSelect({ kind: "member", id: member.id });
-        }}
       />
     </group>
   );
@@ -258,86 +248,30 @@ function TestRig({ design }: { design: BridgeDesign }) {
   );
 }
 
-function BuildPlaneSurface({
-  plane,
-  design,
-  active,
-  onHover,
-  onPoint,
-}: {
-  plane: BuildPlane;
-  design: BridgeDesign;
-  active: boolean;
-  onHover: (point: Vector3Data, snapLabel: string) => void;
-  onPoint: (point: Vector3Data, snapLabel: string) => void;
-}) {
-  const width = design.profileSnapshot.bridgeRules.maxWidthCm;
-  const position: [number, number, number] = plane === "left"
-    ? [0, 18, -width / 2]
-    : plane === "right"
-      ? [0, 18, width / 2]
-      : [0, 0, 0];
-  const rotation: [number, number, number] = plane === "base" || plane === "cross"
-    ? [-Math.PI / 2, 0, 0]
-    : [0, 0, 0];
-  const snap = (raw: THREE.Vector3) => {
-    let point = { x: Math.round(raw.x), y: Math.max(0, Math.round(raw.y)), z: Math.round(raw.z) };
-    if (plane === "left") point.z = -width / 2;
-    if (plane === "right") point.z = width / 2;
-    if (plane === "base") point.y = 0;
-    const nearest = design.nodes
-      .map((node) => ({ node, distance: Math.hypot(
-        node.position.x - point.x,
-        node.position.y - point.y,
-        node.position.z - point.z,
-      ) }))
-      .sort((a, b) => a.distance - b.distance)[0];
-    if (nearest && nearest.distance <= 1.4) {
-      point = { ...nearest.node.position };
-      return { point, label: `Snap: ${nearest.node.id.replace("node-", "Nod ").slice(0, 12)}` };
-    }
-    return { point, label: `Snap: Grid ${point.x}, ${point.y}, ${point.z} cm` };
-  };
-  if (!active) return null;
-  return (
-    <mesh
-      position={position}
-      rotation={rotation}
-      onPointerMove={(event) => {
-        event.stopPropagation();
-        const snapped = snap(event.point);
-        onHover(snapped.point, snapped.label);
-      }}
-      onClick={(event) => {
-        event.stopPropagation();
-        const snapped = snap(event.point);
-        onPoint(snapped.point, snapped.label);
-      }}
-    >
-      <planeGeometry args={[64, 42]} />
-      <meshBasicMaterial transparent opacity={0.001} side={THREE.DoubleSide} depthWrite={false} />
-    </mesh>
-  );
+function BuildPlaneSurface({ design, plane, cross }: { design: BridgeDesign; plane: BuildPlane; cross: DragConstraint }) {
+  const origin = buildPlaneOrigin(design, plane);
+  const normal = movementPlane(origin, plane, cross).normal;
+  const quaternion = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
+  return <mesh position={[origin.x, normal.y ? origin.y : 18, origin.z]} quaternion={quaternion}>
+    <planeGeometry args={[64, 42]} />
+    <meshBasicMaterial color="#21898b" transparent opacity={0.065} side={THREE.DoubleSide} depthWrite={false} />
+  </mesh>;
 }
 
 function Scene(props: BridgeCanvasProps) {
   const controls = useRef<OrbitControlsImpl>(null);
-  const [hoverPoint, setHoverPoint] = useState<Vector3Data | null>(null);
-  const handleHover = (point: Vector3Data, label: string) => {
-    setHoverPoint(point);
-    const liveLength = props.pendingStart
-      ? Math.hypot(
-        point.x - props.pendingStart.x,
-        point.y - props.pendingStart.y,
-        point.z - props.pendingStart.z,
-      )
-      : null;
-    props.onHoverInfo(liveLength === null ? label : `${label} · Panjang ${liveLength.toFixed(1)} cm`);
-  };
+  const { previewDesign, hover, draggingId } = useBridgePointerInteraction({
+    design: props.design, tool: props.tool, plane: props.plane, addMode: props.addMode,
+    crossConstraint: props.crossConstraint, visibility: props.visibility,
+    enabled: props.interactionEnabled, resetKey: props.interactionNonce,
+    onTarget: props.onPoint, onSelect: props.onSelect, onMoveNode: props.onMoveNode, onHoverInfo: props.onHoverInfo,
+  }, controls);
+  const selectedMember = props.selection?.kind === "member"
+    ? props.design.members.find((member) => member.id === props.selection?.id) : null;
   const sourceGhostMembers = props.ghostOtherSide
     ? props.design.members.filter((member) => member.side === (props.plane === "right" ? "left" : "right"))
     : [];
-  const nodeById = new Map(props.design.nodes.map((node) => [node.id, node]));
+  const nodeById = new Map(previewDesign.nodes.map((node) => [node.id, node]));
   return (
     <>
       <color attach="background" args={["#e8eef0"]} />
@@ -367,13 +301,12 @@ function Scene(props: BridgeCanvasProps) {
         <MemberMesh
           key={member.id}
           member={member}
-          design={props.design}
+          design={previewDesign}
           selected={props.selection?.kind === "member" && props.selection.id === member.id}
           analysis={props.analysis}
           visibility={props.visibility}
           stage={props.stage}
           deformed={props.deformed}
-          onSelect={props.onSelect}
         />
       ))}
 
@@ -392,8 +325,11 @@ function Scene(props: BridgeCanvasProps) {
         );
       })}
 
-      {props.design.nodes.map((node) => {
-        const selected = props.selection?.kind === "node" && props.selection.id === node.id;
+      {previewDesign.nodes.map((node) => {
+        const selected = (props.selection?.kind === "node" && props.selection.id === node.id)
+          || selectedMember?.nodeA === node.id || selectedMember?.nodeB === node.id || draggingId === node.id;
+        const pending = props.tool === "add" && props.pendingStart?.kind === "node" && props.pendingStart.id === node.id;
+        const targeted = hover?.kind === "node" && hover.id === node.id;
         const joint = props.design.joints.find((item) => item.nodeId === node.id);
         const displaced = props.deformed ? props.analysis?.displacements[node.id] : null;
         const position: [number, number, number] = [
@@ -404,27 +340,15 @@ function Scene(props: BridgeCanvasProps) {
         return (
           <group key={node.id} position={position}>
             <mesh>
-              <sphereGeometry args={[selected ? 0.46 : 0.31, 14, 10]} />
-              <meshStandardMaterial color={selected ? "#ffcc55" : "#5b4432"} roughness={0.6} />
+              <sphereGeometry args={[pending || targeted ? 0.48 : selected ? 0.42 : props.tool === "add" ? 0.36 : 0.31, 14, 10]} />
+              <meshStandardMaterial color={pending ? "#ffae19" : targeted ? "#2caed0" : selected ? "#ffcc55" : props.tool === "add" ? "#177d85" : "#5b4432"} roughness={0.6} />
             </mesh>
-            <mesh
-              onClick={(event) => {
-                event.stopPropagation();
-                if (props.tool === "add") props.onPoint(node.position, `Snap: ${node.id}`);
-                else props.onSelect({ kind: "node", id: node.id });
-              }}
-            >
-              <sphereGeometry args={[0.78, 10, 8]} />
-              <meshBasicMaterial transparent opacity={0.001} depthWrite={false} />
-            </mesh>
+            {pending || targeted || selected ? <mesh>
+              <sphereGeometry args={[0.7, 16, 12]} />
+              <meshBasicMaterial color={pending ? "#ffb21d" : "#23a5ba"} wireframe transparent opacity={0.4} depthWrite={false} />
+            </mesh> : null}
             {joint?.glueUsedCm ? (
-              <mesh
-                onClick={(event) => {
-                  event.stopPropagation();
-                  if (props.tool === "glue") props.onSelect({ kind: "node", id: node.id });
-                  else props.onSelect({ kind: "joint", id: joint.id });
-                }}
-              >
+              <mesh>
                 <sphereGeometry args={[APPLIED_GLUE_RADIUS_CM, 12, 8]} />
                 <meshPhysicalMaterial color="#f1dfb6" transparent opacity={0.5} roughness={0.42} />
               </mesh>
@@ -433,29 +357,21 @@ function Scene(props: BridgeCanvasProps) {
         );
       })}
 
-      {props.pendingStart && hoverPoint ? (
-        <CylinderBetween
-          start={props.pendingStart}
-          end={hoverPoint}
-          radius={props.design.profileSnapshot.materialRules.skewerDiameterCm / 2}
-          color="#2a9da5"
-          opacity={0.48}
-        />
+      {props.tool === "add" && props.pendingStart ? <mesh position={toVector(props.pendingStart.position)}>
+        <sphereGeometry args={[0.65, 16, 12]} />
+        <meshBasicMaterial color="#ffb21d" wireframe />
+      </mesh> : null}
+      {props.tool === "add" && props.pendingStart && hover
+        && toVector(props.pendingStart.position).distanceTo(toVector(hover.position)) > 0.01 ? (
+        <CylinderBetween start={props.pendingStart.position} end={hover.position}
+          radius={props.design.profileSnapshot.materialRules.skewerDiameterCm / 2} color="#2a9da5" opacity={0.48} />
       ) : null}
-      {hoverPoint && props.tool === "add" ? (
-        <mesh position={[hoverPoint.x, hoverPoint.y, hoverPoint.z]}>
-          <sphereGeometry args={[0.42, 12, 8]} />
-          <meshBasicMaterial color="#2a9da5" transparent opacity={0.72} />
-        </mesh>
-      ) : null}
-
-      <BuildPlaneSurface
-        plane={props.plane}
-        design={props.design}
-        active={props.tool === "add" && props.stage === "build"}
-        onHover={handleHover}
-        onPoint={props.onPoint}
-      />
+      {hover && props.tool === "add" ? <mesh position={toVector(hover.position)}>
+        <sphereGeometry args={[0.45, 12, 8]} />
+        <meshBasicMaterial color="#2a9da5" transparent opacity={0.72} />
+      </mesh> : null}
+      {props.tool === "add" && props.addMode === "free" && props.interactionEnabled
+        ? <BuildPlaneSurface design={props.design} plane={props.plane} cross={props.crossConstraint} /> : null}
       <ContactShadows position={[0, -1.45, 0]} opacity={0.24} scale={72} blur={2.6} far={20} />
     </>
   );
@@ -469,7 +385,6 @@ export default function BridgeCanvas(props: BridgeCanvasProps) {
         shadows
         dpr={[1, 1.75]}
         camera={{ position: [55, 32, 55], fov: 42, near: 0.1, far: 260 }}
-        onPointerMissed={() => props.onSelect(null)}
       >
         <Scene {...props} />
       </Canvas>

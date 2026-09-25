@@ -246,6 +246,22 @@
 .bridge3d-education-note { display:flex; align-items:center; gap:12px; max-width:1800px; margin:14px auto; padding:12px 15px; border:1px solid #c7d9d7; border-radius:12px; background:#e1f0ed; font-size:.76rem; }.bridge3d-education-note b{color:var(--b3-teal);white-space:nowrap}.bridge3d-education-note span{color:#4f6973}
 .bridge3d-review { max-width:1800px; margin:0 auto; }
 
+.bridge3d-guidance { grid-column:1/-1; display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; background:#d9eeeb; color:#225c63; font-size:.76rem; }
+.bridge3d-guidance button { flex:none; width:44px; height:44px; border:0; background:transparent; font-size:1.4rem; }
+.bridge3d-studio:has(.bridge3d-guidance) .bridge3d-toolbar { grid-row:2; }
+.bridge3d-studio:has(.bridge3d-guidance) .bridge3d-guidance { grid-row:1; }
+.bridge3d-interaction-panel { position:absolute; z-index:5; bottom:45px; left:10px; right:10px; display:grid; gap:6px; padding:10px; border:1px solid #c0d9d6; border-radius:10px; background:#fffffff2; font-size:.73rem; }
+.bridge3d-interaction-panel p { margin:0; color:#42666e; line-height:1.4; overflow-wrap:anywhere; }
+.bridge3d-interaction-panel button,.bridge3d-interaction-panel select { min-height:40px; padding:7px 10px; border:1px solid #b9d1d3; border-radius:7px; color:#21555e; background:white; font-weight:750; }
+.bridge3d-context-buttons { display:flex; flex-wrap:wrap; gap:5px; }
+.bridge3d-context-buttons [aria-pressed="true"] { color:white; background:var(--b3-teal); }
+.bridge3d-interaction-panel small { color:#57757d; }
+.bridge3d-interaction-panel label { display:flex; align-items:center; gap:10px; }
+.bridge3d-interaction-panel > div:has(> span) { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.bridge3d-precision summary { font-size:.7rem; cursor:pointer; margin-bottom:8px; }
+.bridge3d-precision p { margin-bottom:8px; }
+.bridge3d-actionbar > div:last-child span { white-space:normal; }
+
 @media (max-width: 1180px) {
   .bridge3d-studio { grid-template-columns:150px minmax(480px,1fr); }
   .bridge3d-studio.is-test .bridge3d-viewport-shell,
@@ -268,11 +284,18 @@
   .bridge3d-welcome__visual { min-height:220px; }
   .bridge3d-welcome h2 { font-size:2.1rem; }
   .bridge3d-studio { display:flex; flex-direction:column; }
-  .bridge3d-toolbar { order:2; display:flex; gap:12px; overflow-x:auto; }
-  .bridge3d-toolbar__group { flex:0 0 150px; border:0; }
-  .bridge3d-toolbar__history { flex:0 0 120px; align-content:center; }
+  .bridge3d-toolbar { order:0; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .bridge3d-toolbar__group { min-width:0; border:0; padding:0; }
+  .bridge3d-toolbar__group:first-child { grid-column:1/-1; }
+  .bridge3d-toolbar__tools { grid-template-columns:repeat(3,1fr); }
+  .bridge3d-toolbar__tools button { display:flex; justify-content:center; gap:5px; }
+  .bridge3d-toolbar button,.bridge3d-toolbar select { min-height:44px; width:100%; min-width:0; font-size:.75rem; }
+  .bridge3d-toolbar__history { align-content:center; }
+  .bridge3d-guidance { order:0; }
   .bridge3d-viewport-shell { order:1; min-height:480px; height:64vh; }
   .bridge3d-inspector,.bridge3d-test-panel { order:3; display:block; max-height:420px; }
+  .bridge3d-inspector button,.bridge3d-inspector input,.bridge3d-inspector select { min-height:44px; }
+  .bridge3d-interaction-panel button,.bridge3d-interaction-panel select { min-height:44px; }
   .bridge3d-inspector section { margin-bottom:10px; }
   .bridge3d-actionbar { order:4; display:flex; flex-direction:column; align-items:stretch; }
   .bridge3d-actionbar > div { justify-content:space-between !important; }
@@ -290,7 +313,7 @@
 @media (max-width: 480px) {
   .bridge3d-brand small { display:none; }
   .bridge3d-header__actions { gap:4px; }
-  .bridge3d-viewport-shell { min-height:420px; }
+  .bridge3d-viewport-shell { min-height:620px; }
   .bridge3d-viewport-topbar { align-items:flex-start; }
   .bridge3d-dimension-chips { display:grid; grid-template-columns:repeat(3,1fr); }
   .bridge3d-settings-grid { grid-template-columns:1fr; }

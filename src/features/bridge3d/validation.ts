@@ -1,4 +1,5 @@
 import { distance3 } from "./model";
+import { physicalPieceId } from "./inventory";
 import {
   getEffectiveClearanceZones,
   OFFICIAL_PIPE_CLEARANCE_ID,
@@ -231,8 +232,8 @@ export function validateBridge(design: BridgeDesign, profile = design.profileSna
   const baseLongitudinal = design.members.filter((member) => member.role === "baseLongitudinal");
   const baseBinding = design.members.filter((member) => member.role === "baseBinding");
   for (const [id, label, count, max] of [
-    ["base-longitudinal", "Lidi memanjang tapak", baseLongitudinal.length, profile.bridgeRules.maxBaseLongitudinalSticks],
-    ["base-binding", "Lidi pengikat tapak", baseBinding.length, profile.bridgeRules.maxBaseBindingSticks],
+    ["base-longitudinal", "Lidi memanjang tapak", new Set(baseLongitudinal.map(physicalPieceId)).size, profile.bridgeRules.maxBaseLongitudinalSticks],
+    ["base-binding", "Lidi pengikat tapak", new Set(baseBinding.map(physicalPieceId)).size, profile.bridgeRules.maxBaseBindingSticks],
   ] as const) {
     items.push({
       id,

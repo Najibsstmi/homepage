@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { calculateBridgeMass, getInventorySummary } from "../../features/bridge3d/inventory";
+import { displayLabel } from "../../features/bridge3d/displayLabels";
 import type {
   BridgeDesign,
   MemberRole,
@@ -28,7 +29,7 @@ function NodeEditor({
           />
         </label>
       ))}
-      <button type="button" onClick={() => onMove(draft)}>Alih nod</button>
+      <button type="button" onClick={() => onMove(draft)}>Gunakan koordinat</button>
     </div>
   );
 }
@@ -45,6 +46,7 @@ export default function BridgeInspector({
   onRole,
   onGlue,
   onInventoryMode,
+  onSelectNode,
   readOnly = false,
 }: {
   design: BridgeDesign;
@@ -58,6 +60,7 @@ export default function BridgeInspector({
   onRole: (memberId: string, role: MemberRole) => void;
   onGlue: (jointId: string) => void;
   onInventoryMode: (mode: BridgeDesign["selectedInventoryMode"]) => void;
+  onSelectNode: (id: string) => void;
   readOnly?: boolean;
 }) {
   const [showSticks, setShowSticks] = useState(false);
@@ -73,17 +76,26 @@ export default function BridgeInspector({
     : node ? design.joints.find((item) => item.nodeId === node.id) : null;
   const memberAnalysis = member ? analysis?.members.find((item) => item.memberId === member.id) : null;
   const jointAnalysis = joint ? analysis?.joints.find((item) => item.jointId === joint.id) : null;
+  const selectionLabel = selection?.kind === "node" ? "NOD"
+    : selection?.kind === "member" ? "LIDI"
+      : selection?.kind === "joint" ? "SAMBUNGAN" : "TIADA PILIHAN";
+  const sideLabels = { left: "Truss kiri", right: "Truss kanan", base: "Tapak", cross: "Cross bracing" };
 
   return (
     <aside className="bridge3d-inspector">
       <section>
-        <div className="bridge3d-section-title"><span>PEMERIKSA</span><b>{selection ? selection.kind.toUpperCase() : "TIADA PILIHAN"}</b></div>
+        <div className="bridge3d-section-title"><span>PEMERIKSA</span><b>{selectionLabel}</b></div>
         {!selection ? <p className="bridge3d-muted">Klik nod atau lidi pada model 3D untuk melihat butiran.</p> : null}
         {node ? (
           <div className="bridge3d-detail-card">
-            <h3>{node.id.replace("node-", "Nod ").slice(0, 18)}</h3>
+            <h3>{displayLabel(design, "node", node.id)}</h3>
             <p>{joint?.connectedMemberIds.length ?? 0} lidi bersambung</p>
-            {!readOnly ? <NodeEditor position={node.position} onMove={(position) => onMoveNode(node.id, position)} /> : null}
+            {!readOnly ? <details className="bridge3d-precision" open>
+              <summary>Koordinat tepat (lanjutan)</summary>
+              <p>Untuk alih dengan jari/mouse, pilih alat Alih pada ruang 3D.</p>
+              <NodeEditor key={`${node.id}:${node.position.x}:${node.position.y}:${node.position.z}`}
+                position={node.position} onMove={(position) => onMoveNode(node.id, position)} />
+            </details> : null}
             {joint && !readOnly ? (
               <button type="button" className="bridge3d-secondary" onClick={() => onGlue(joint.id)}>
                 Gunakan {glueAmount.toFixed(2)} cm gam
@@ -93,12 +105,12 @@ export default function BridgeInspector({
         ) : null}
         {member ? (
           <div className="bridge3d-detail-card">
-            <h3>{member.id.replace("member-", "Lidi ").slice(0, 18)}</h3>
+            <h3>{displayLabel(design, "member", member.id)}</h3>
             <dl>
               <div><dt>Panjang</dt><dd>{member.lengthCm.toFixed(2)} cm</dd></div>
-              <div><dt>Sumber</dt><dd>{member.sourceStickId}</dd></div>
-              <div><dt>Sisi</dt><dd>{member.side}</dd></div>
-              {memberAnalysis ? <><div><dt>Daya</dt><dd>{memberAnalysis.forceN.toFixed(1)} N</dd></div><div><dt>Mod</dt><dd>{memberAnalysis.mode}</dd></div><div><dt>Utilisasi</dt><dd>{(memberAnalysis.utilization * 100).toFixed(0)}%</dd></div></> : null}
+              <div><dt>Sumber</dt><dd>{member.sourceStickId.replace("stick-", "Lidi fizikal ")}</dd></div>
+              <div><dt>Bahagian</dt><dd>{sideLabels[member.side]}</dd></div>
+              {memberAnalysis ? <><div><dt>Daya</dt><dd>{memberAnalysis.forceN.toFixed(1)} N</dd></div><div><dt>Keadaan</dt><dd>{memberAnalysis.mode === "tension" ? "Tegangan" : memberAnalysis.mode === "compression" ? "Mampatan" : "Neutral"}</dd></div><div><dt>Utilisasi</dt><dd>{(memberAnalysis.utilization * 100).toFixed(0)}%</dd></div></> : null}
             </dl>
             <label>Peranan
               <select disabled={readOnly} value={member.role} onChange={(event) => onRole(member.id, event.target.value as MemberRole)}>
@@ -109,14 +121,18 @@ export default function BridgeInspector({
               </select>
             </label>
             {!readOnly ? <div className="bridge3d-member-actions">
+              <button type="button" onClick={() => onSelectNode(member.nodeA)}>Alih hujung A · {displayLabel(design, "node", member.nodeA)}</button>
+              <button type="button" onClick={() => onSelectNode(member.nodeB)}>Alih hujung B · {displayLabel(design, "node", member.nodeB)}</button>
               <button type="button" onClick={() => onReplaceMember(member.id)}>Ganti lidi</button>
               <button type="button" className="bridge3d-danger" onClick={() => onDeleteMember(member.id)}>Padam lidi</button>
             </div> : null}
+            {design.members.some((item) => item.id !== member.id && item.physicalPieceId === (member.physicalPieceId ?? member.id))
+              ? <p>Bahagian ini berkongsi satu lidi fizikal. Padam atau ganti akan melibatkan keseluruhan lidi asal.</p> : null}
           </div>
         ) : null}
         {joint && !node ? (
           <div className="bridge3d-detail-card">
-            <h3>{joint.id}</h3>
+            <h3>{displayLabel(design, "joint", joint.id)}</h3>
             <p>{joint.connectedMemberIds.length} lidi · {joint.glueUsedCm.toFixed(2)} cm gam</p>
             {jointAnalysis ? <p>Kapasiti {jointAnalysis.capacityN.toFixed(1)} N · Utilisasi {(jointAnalysis.utilization * 100).toFixed(0)}%</p> : null}
             {!readOnly ? <button type="button" onClick={() => onGlue(joint.id)}>Tambah gam</button> : null}

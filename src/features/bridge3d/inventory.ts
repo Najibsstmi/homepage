@@ -107,6 +107,42 @@ export function restoreMemberSegment(sticks: PhysicalStick[], member: BridgeMemb
   return next;
 }
 
+export const physicalPieceId = (member: BridgeMember) => member.physicalPieceId ?? member.id;
+
+/** Restore one uncut piece, rather than turning its analytical spans into offcuts. */
+export function restorePhysicalPiece(sticks: PhysicalStick[], members: BridgeMember[]): PhysicalStick[] {
+  const ids = new Set(members.map((member) => member.id));
+  return sticks.map((stick) => {
+    const usages = stick.usedSegments.filter((usage) => ids.has(usage.memberId));
+    if (!usages.length) return stick;
+    return {
+      ...stick,
+      usedSegments: stick.usedSegments.filter((usage) => !ids.has(usage.memberId)),
+      remainingSegments: [...stick.remainingSegments, {
+        id: `${usages[0].sourceSegmentId}-restored-${crypto.randomUUID()}`,
+        lengthCm: roundLength(usages.reduce((sum, usage) => sum + usage.lengthCm + usage.cutWasteCm, 0)),
+      }],
+    };
+  });
+}
+
+/** Repartition a single allocation after analytical splitting. No cutting takes place. */
+export function partitionPieceUsage(sticks: PhysicalStick[], originalMemberId: string, spans: BridgeMember[]): PhysicalStick[] {
+  return sticks.map((stick) => ({
+    ...stick,
+    usedSegments: stick.usedSegments.flatMap((usage) => {
+      if (usage.memberId !== originalMemberId) return [usage];
+      let assigned = 0;
+      return spans.map((span, index) => {
+        const lengthCm = index === spans.length - 1
+          ? roundLength(usage.lengthCm - assigned) : roundLength(span.lengthCm);
+        assigned += lengthCm;
+        return { ...usage, memberId: span.id, lengthCm, cutWasteCm: index === 0 ? usage.cutWasteCm : 0 };
+      });
+    }),
+  }));
+}
+
 export function getInventorySummary(sticks: PhysicalStick[]) {
   const sticksStarted = sticks.filter((stick) => stick.usedSegments.length > 0).length;
   const sticksUntouched = sticks.length - sticksStarted;

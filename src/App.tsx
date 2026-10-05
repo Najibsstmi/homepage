@@ -1,6 +1,8 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import emailjs from "@emailjs/browser";
+import CopyrightFooter from "./components/CopyrightFooter";
+import CopyrightPage from "./pages/CopyrightPage";
 import SimulatorPage from "./pages/SimulatorPage";
 
 const VISITOR_COUNT_FALLBACK = "1,000+";
@@ -62,6 +64,7 @@ export default function App() {
     | "rpm"
     | "plc"
     | "skasGuruSains"
+    | "copyright"
     | ManagementPageId
     | "simulator";
   type SharePlatform = "facebook" | "whatsapp" | "telegram" | "x";
@@ -271,6 +274,8 @@ export default function App() {
       const shouldOpenPlc = params.get("page") === "plc" || plcSectionIds.has(hashTarget);
       const shouldOpenSkas =
         params.get("page") === "skasGuruSains" || skasSectionIds.has(hashTarget);
+      const shouldOpenCopyright =
+        params.get("page") === "copyright" || pathName.replace(/\/+$/, "") === "/copyright";
       const requestedManagementPage = params.get("page") as Page | null;
       const shouldOpenManagementPage =
         requestedManagementPage !== null && managementPages.has(requestedManagementPage);
@@ -278,7 +283,9 @@ export default function App() {
         params.get("page") === "simulator" || pathName.startsWith("/simulator");
       let nextPage: Page = "home";
 
-      if (shouldOpenInovasi) {
+      if (shouldOpenCopyright) {
+        nextPage = "copyright";
+      } else if (shouldOpenInovasi) {
         nextPage = "inovasi";
       } else if (shouldOpenSimulator) {
         nextPage = "simulator";
@@ -463,6 +470,10 @@ export default function App() {
       return "/simulator";
     }
 
+    if (page === "copyright") {
+      return "/copyright";
+    }
+
     return `/?page=${page}`;
   };
 
@@ -514,6 +525,8 @@ export default function App() {
       } else if (page === "simulator") {
         pushNavigationEntry("/simulator");
         setSimulatorRouteVersion((version) => version + 1);
+      } else if (page === "copyright") {
+        pushNavigationEntry("/copyright");
       } else {
         const targetUrl = new URL(window.location.href);
         targetUrl.pathname = "/";
@@ -2156,10 +2169,15 @@ export default function App() {
       )}
 
       {currentPage === "simulator" ? (
-        <SimulatorPage
-          key={simulatorRouteVersion}
-          onOpenSimulator={openSimulator}
-        />
+        <>
+          <SimulatorPage
+            key={simulatorRouteVersion}
+            onOpenSimulator={openSimulator}
+          />
+          <CopyrightFooter onCopyrightClick={handlePageLinkClick("copyright")} />
+        </>
+      ) : currentPage === "copyright" ? (
+        <CopyrightPage onBackToEduSim={handlePageLinkClick("simulator")} />
       ) : currentPage === "inovasi" ? (
         /* ─────────────── PAGE INOVASI ─────────────── */
         <div className="inovasi-page">
@@ -5360,15 +5378,10 @@ export default function App() {
         </div>
       </section>
 
-      <footer className="footer">
-
-  <p>© 2026 Najib Jaafar • cikgustem.com</p>
-
-  <p>
-    STEM Educator • Innovation • Education Technology
-  </p>
-
-</footer>
+      <CopyrightFooter
+        showSiteDescriptor
+        onCopyrightClick={handlePageLinkClick("copyright")}
+      />
         </>
       )}
     </div>

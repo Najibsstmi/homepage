@@ -1000,6 +1000,7 @@ export default function App() {
   const copyrightImageBase = "/PERJALANAN/EDUSIM COPYRIGHT 2026";
   const copyrightImages = {
     hero: `${copyrightImageBase}/edusim-copyright-hero.webp`,
+    certificate: `${copyrightImageBase}/edusim-copyright-certificate-redacted.webp`,
     menu: `${copyrightImageBase}/myipo-copyright-menu.webp`,
     category: `${copyrightImageBase}/myipo-category-literary.webp`,
   };
@@ -3720,6 +3721,20 @@ export default function App() {
               </figcaption>
             </figure>
           </div>
+
+          <figure className="journey-post__galleryItem journey-post__certificate">
+            <img
+              src={copyrightImages.certificate}
+              alt="Sijil Pemberitahuan Hak Cipta MyIPO untuk EduSim - Platform Simulasi Sains Interaktif"
+              width={572}
+              height={851}
+              loading="lazy"
+            />
+            <figcaption>
+              Sijil Pemberitahuan Hak Cipta MyIPO bagi EduSim. Nombor pengenalan peribadi
+              ditutup untuk paparan awam.
+            </figcaption>
+          </figure>
 
           <ReadMore
             className="journey-post__readmore"

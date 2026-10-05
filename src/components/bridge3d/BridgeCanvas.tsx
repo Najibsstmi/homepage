@@ -41,6 +41,7 @@ interface BridgeCanvasProps {
   analysis: StructuralResult | null;
   deformed: boolean;
   onPoint: (target: SnapTarget | null) => void;
+  onConnect: (start: SnapTarget, end: SnapTarget) => void;
   onSelect: (selection: Selection) => void;
   onHoverInfo: (text: string) => void;
 }
@@ -260,14 +261,16 @@ function BuildPlaneSurface({ design, plane, cross }: { design: BridgeDesign; pla
 
 function Scene(props: BridgeCanvasProps) {
   const controls = useRef<OrbitControlsImpl>(null);
-  const { previewDesign, hover, draggingId } = useBridgePointerInteraction({
+  const { previewDesign, hover, draggingId, addDragStart } = useBridgePointerInteraction({
     design: props.design, tool: props.tool, plane: props.plane, addMode: props.addMode,
     crossConstraint: props.crossConstraint, visibility: props.visibility,
-    enabled: props.interactionEnabled, resetKey: props.interactionNonce,
-    onTarget: props.onPoint, onSelect: props.onSelect, onMoveNode: props.onMoveNode, onHoverInfo: props.onHoverInfo,
+    enabled: props.interactionEnabled, resetKey: props.interactionNonce, pendingStart: props.pendingStart,
+    onTarget: props.onPoint, onConnect: props.onConnect, onSelect: props.onSelect,
+    onMoveNode: props.onMoveNode, onHoverInfo: props.onHoverInfo,
   }, controls);
   const selectedMember = props.selection?.kind === "member"
     ? props.design.members.find((member) => member.id === props.selection?.id) : null;
+  const activeAddStart = props.pendingStart ?? addDragStart;
   const sourceGhostMembers = props.ghostOtherSide
     ? props.design.members.filter((member) => member.side === (props.plane === "right" ? "left" : "right"))
     : [];
@@ -328,7 +331,7 @@ function Scene(props: BridgeCanvasProps) {
       {previewDesign.nodes.map((node) => {
         const selected = (props.selection?.kind === "node" && props.selection.id === node.id)
           || selectedMember?.nodeA === node.id || selectedMember?.nodeB === node.id || draggingId === node.id;
-        const pending = props.tool === "add" && props.pendingStart?.kind === "node" && props.pendingStart.id === node.id;
+        const pending = props.tool === "add" && activeAddStart?.kind === "node" && activeAddStart.id === node.id;
         const targeted = hover?.kind === "node" && hover.id === node.id;
         const joint = props.design.joints.find((item) => item.nodeId === node.id);
         const displaced = props.deformed ? props.analysis?.displacements[node.id] : null;
@@ -357,13 +360,13 @@ function Scene(props: BridgeCanvasProps) {
         );
       })}
 
-      {props.tool === "add" && props.pendingStart ? <mesh position={toVector(props.pendingStart.position)}>
+      {props.tool === "add" && activeAddStart ? <mesh position={toVector(activeAddStart.position)}>
         <sphereGeometry args={[0.65, 16, 12]} />
         <meshBasicMaterial color="#ffb21d" wireframe />
       </mesh> : null}
-      {props.tool === "add" && props.pendingStart && hover
-        && toVector(props.pendingStart.position).distanceTo(toVector(hover.position)) > 0.01 ? (
-        <CylinderBetween start={props.pendingStart.position} end={hover.position}
+      {props.tool === "add" && activeAddStart && hover
+        && toVector(activeAddStart.position).distanceTo(toVector(hover.position)) > 0.01 ? (
+        <CylinderBetween start={activeAddStart.position} end={hover.position}
           radius={props.design.profileSnapshot.materialRules.skewerDiameterCm / 2} color="#2a9da5" opacity={0.48} />
       ) : null}
       {hover && props.tool === "add" ? <mesh position={toVector(hover.position)}>

@@ -60,6 +60,35 @@ export function buildPlaneOrigin(design: BridgeDesign, plane: BuildPlane): Vecto
   return { x: 0, y: 0, z: (plane === "left" ? -1 : 1) * defaultWidth / 2 };
 }
 
+/** Keep free construction easy to square without taking control away from the user. */
+export function alignFreeTarget(
+  start: Vector3Data,
+  target: SnapTarget | null,
+  plane: BuildPlane,
+  cross: DragConstraint,
+): SnapTarget | null {
+  if (!target || target.kind !== "grid") return target;
+  const locked = constraintAxis(plane, cross);
+  const axes = (["x", "y", "z"] as const).filter((axis) => axis !== locked);
+  const [axisA, axisB] = axes;
+  const deltaA = target.position[axisA] - start[axisA];
+  const deltaB = target.position[axisB] - start[axisB];
+  const tolerance = Math.max(1, Math.hypot(deltaA, deltaB) * 0.18);
+  const candidates = [
+    { lockedAxis: axisA, travelAxis: axisB, error: Math.abs(deltaA) },
+    { lockedAxis: axisB, travelAxis: axisA, error: Math.abs(deltaB) },
+  ].filter(({ travelAxis, error }) => error <= tolerance
+    && Math.abs(target.position[travelAxis] - start[travelAxis]) >= 0.5)
+    .sort((a, b) => a.error - b.error);
+  const best = candidates[0];
+  if (!best) return target;
+  const position = { ...target.position, [best.lockedAxis]: start[best.lockedAxis] };
+  const alignment = locked === "z" && best.lockedAxis === "x" ? "Kunci tegak"
+    : locked === "z" && best.lockedAxis === "y" ? "Kunci mendatar"
+      : `Selari paksi ${best.travelAxis.toUpperCase()}`;
+  return { ...target, position, label: `Grid: ${coordinates(position)} · ${alignment}` };
+}
+
 export interface SnapCandidate { target: SnapTarget; pixels: number; depth: number }
 /** Explicit ranking means an invisible plane or broad member hitbox cannot steal a node. */
 export function rankSnapCandidates(candidates: SnapCandidate[], mode: AddMode): SnapTarget | null {

@@ -94,6 +94,13 @@ export default function App() {
   const kidPgJourneyCardTitle = "EduSim di Karnival Inovasi Daerah Pasir Gudang 2026";
   const kidPgJourneyDescription =
     "Catatan perjalanan Mohd Najib bin Jaafar membawa inovasi EduSim ke Karnival Inovasi Daerah Pasir Gudang 2026 sehingga memenangi Anugerah 3 Minutes Pitching Terbaik dan Anugerah Inovasi Terbaik.";
+  const copyrightJourneyId = "journey-edusim-copyright-myipo-2026";
+  const copyrightJourneySlug = "edusim-sijil-hak-cipta-myipo-2026";
+  const copyrightJourneyTitle =
+    "RM200, Sehari Mengurus MyDigital ID dan Dua Minggu Menunggu: Akhirnya EduSim Menerima Sijil Hak Cipta Pertamanya";
+  const copyrightJourneyCardTitle = "Sijil Hak Cipta Pertama EduSim";
+  const copyrightJourneyDescription =
+    "Catatan Mohd Najib bin Jaafar memohon Pemberitahuan Sukarela Hak Cipta MyIPO secara dalam talian sehingga EduSim - Platform Simulasi Sains Interaktif berstatus Registered.";
   const smartLabSectionIds = new Set([
     "smartlab-hero",
     "smartlab-pengenalan",
@@ -104,6 +111,7 @@ export default function App() {
     "smartlab-pengiktirafan",
   ]);
   const journeySectionIds = new Set([
+    copyrightJourneyId,
     mrccJourneyId,
     kidPgJourneyId,
     "journey-catatan-seorang-menantu",
@@ -173,6 +181,7 @@ export default function App() {
   const [eduSlotReadMore, setEduSlotReadMore] = useState(false);
   const [mrccReadMore, setMrccReadMore] = useState(false);
   const [kidPgReadMore, setKidPgReadMore] = useState(false);
+  const [copyrightReadMore, setCopyrightReadMore] = useState(false);
   const [canNativeShare, setCanNativeShare] = useState(false);
   const [shareNoticeByAnchor, setShareNoticeByAnchor] = useState<Record<string, string>>({});
   const [totalVisitors, setTotalVisitors] = useState<string>("...");
@@ -248,6 +257,8 @@ export default function App() {
         hashTarget === mrccJourneyId || pathName.includes(mrccJourneySlug);
       const isKidPgJourneyTarget =
         hashTarget === kidPgJourneyId || pathName.includes(kidPgJourneySlug);
+      const isCopyrightJourneyTarget =
+        hashTarget === copyrightJourneyId || pathName.includes(copyrightJourneySlug);
       const shouldOpenInovasi =
         params.get("page") === "inovasi" ||
         smartLabSectionIds.has(hashTarget) ||
@@ -322,6 +333,17 @@ export default function App() {
           .querySelector('link[rel="canonical"]')
           ?.setAttribute("href", `https://www.cikgustem.com/${kidPgJourneySlug}.html`);
       }
+
+      if (isCopyrightJourneyTarget) {
+        setCopyrightReadMore(true);
+        document.title = `${copyrightJourneyTitle} | CikguSTEM`;
+        document
+          .querySelector('meta[name="description"]')
+          ?.setAttribute("content", copyrightJourneyDescription);
+        document
+          .querySelector('link[rel="canonical"]')
+          ?.setAttribute("href", `https://www.cikgustem.com/${copyrightJourneySlug}.html`);
+      }
     };
 
     syncPageFromUrl();
@@ -385,7 +407,15 @@ export default function App() {
     }, 180);
 
     return () => window.clearTimeout(timer);
-  }, [currentPage, readMore, eduTrackReadMore, eduSlotReadMore, mrccReadMore, kidPgReadMore]);
+  }, [
+    currentPage,
+    readMore,
+    eduTrackReadMore,
+    eduSlotReadMore,
+    mrccReadMore,
+    kidPgReadMore,
+    copyrightReadMore,
+  ]);
 
   useEffect(() => {
     const fetchVisitorCount = async () => {
@@ -702,6 +732,8 @@ export default function App() {
       ? "share-catatan-seorang-menantu.html"
       : targetId === "journey-guru-cemerlang-ksl"
       ? "share-guru-cemerlang.html"
+      : targetId === copyrightJourneyId
+      ? `${copyrightJourneySlug}.html`
       : targetId === mrccJourneyId
       ? `${mrccJourneySlug}.html`
       : targetId === kidPgJourneyId
@@ -963,6 +995,23 @@ export default function App() {
     "Kecerdasan Buatan",
     "DELIMa",
     "Teknologi Pendidikan",
+  ];
+
+  const copyrightImageBase = "/PERJALANAN/EDUSIM COPYRIGHT 2026";
+  const copyrightImages = {
+    hero: `${copyrightImageBase}/edusim-copyright-hero.webp`,
+    menu: `${copyrightImageBase}/myipo-copyright-menu.webp`,
+    category: `${copyrightImageBase}/myipo-category-literary.webp`,
+  };
+
+  const copyrightTags = [
+    "EduSim",
+    "MyIPO",
+    "Hak Cipta",
+    "CVN CR1",
+    "Karya Literary",
+    "Inovasi Pendidikan",
+    "MyDigital ID",
   ];
 
   const mrccImageBase = "/PERJALANAN/MRCC/webp";
@@ -3582,6 +3631,255 @@ export default function App() {
             </p>
           </div>
         </div>
+
+        <article
+          id={copyrightJourneyId}
+          className="journey-post journey-post--latest journey-post--copyright"
+        >
+          <nav className="journey-post__breadcrumb" aria-label="Breadcrumb">
+            <button type="button" onClick={() => navigateTo("home")}>
+              Laman Utama
+            </button>
+            <span aria-hidden="true">/</span>
+            <button type="button" onClick={() => goToHomeSection("journey")}>
+              Perjalanan
+            </button>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">Sijil Hak Cipta Pertama EduSim</span>
+          </nav>
+
+          <div className="journey-post__header">
+            <div>
+              <span className="section-kicker">Catatan EduSim - 5 Oktober 2026</span>
+              <h3>{copyrightJourneyTitle}</h3>
+              <p className="journey-post__summary">
+                Catatan peribadi tentang proses memohon Pemberitahuan Sukarela Hak Cipta
+                MyIPO secara dalam talian sehingga EduSim - Platform Simulasi Sains
+                Interaktif direkodkan dengan status Registered.
+              </p>
+
+              <dl className="journey-post__metaGrid">
+                <div>
+                  <dt>Karya</dt>
+                  <dd>EduSim - Platform Simulasi Sains Interaktif</dd>
+                </div>
+                <div>
+                  <dt>Permohonan</dt>
+                  <dd>CVN (CR1) secara dalam talian</dd>
+                </div>
+                <div>
+                  <dt>Kategori</dt>
+                  <dd>Literary</dd>
+                </div>
+                <div>
+                  <dt>Status</dt>
+                  <dd>Registered</dd>
+                </div>
+              </dl>
+
+              <div className="journey-post__tags" aria-label="Tag artikel">
+                {copyrightTags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+
+              <ShareBar title={copyrightJourneyCardTitle} anchor={`#${copyrightJourneyId}`} />
+            </div>
+          </div>
+
+          <div className="journey-post__lead">
+            <div className="journey-post__text">
+              <p className="journey-post__dateLine">Sijil hak cipta pertama untuk EduSim.</p>
+              <p>
+                Ada satu perasaan yang sukar hendak digambarkan apabila hasil yang kita
+                bangunkan sedikit demi sedikit akhirnya menerima satu bentuk pengiktirafan
+                rasmi.
+              </p>
+              <p>Bagi saya, perasaan itu hadir melalui sebuah e-mel.</p>
+              <p>
+                Di dalamnya ada sijil yang sudah saya tunggu hampir dua minggu: Sijil
+                Pemberitahuan Sukarela Hak Cipta daripada MyIPO untuk
+                <strong> EduSim - Platform Simulasi Sains Interaktif</strong>.
+              </p>
+              <p>
+                Ini merupakan kali pertama saya menerima sijil hak cipta bagi inovasi yang
+                saya bangunkan sendiri.
+              </p>
+            </div>
+
+            <figure className="journey-post__heroImage journey-post__heroImage--copyright">
+              <img
+                src={copyrightImages.hero}
+                alt="Ilustrasi komputer riba dengan simulasi Sains dan folder sijil yang melambangkan pencapaian hak cipta EduSim"
+                width={1600}
+                height={837}
+              />
+              <figcaption>
+                Sebuah pencapaian yang lahir daripada idea, kandungan pembelajaran dan
+                baris-baris kod yang dibangunkan untuk EduSim.
+              </figcaption>
+            </figure>
+          </div>
+
+          <ReadMore
+            className="journey-post__readmore"
+            contentClassName="journey-post__more"
+            open={copyrightReadMore}
+            onToggle={() => setCopyrightReadMore((current) => !current)}
+            expandLabel="Baca Catatan Penuh"
+            collapseLabel="Lihat Ringkas"
+          >
+            <div className="journey-post__body">
+              <h4>Daripada idea kepada sebuah karya yang direkodkan</h4>
+              <p>
+                EduSim bukanlah sesuatu yang terhasil dalam masa sehari. Di sebalik paparan
+                simulasi yang digunakan oleh guru dan murid, ada begitu banyak masa yang
+                dihabiskan untuk memikirkan konsep, menyusun kandungan, mereka bentuk
+                pengalaman pembelajaran, menguji fungsi dan menulis baris demi baris kod.
+              </p>
+              <p>
+                Sebab itulah saya mula terfikir bahawa hasil ini perlu direkodkan dengan lebih
+                rasmi.
+              </p>
+
+              <h4>Memulakan permohonan secara dalam talian</h4>
+              <p>
+                Saya membuat keseluruhan permohonan secara dalam talian melalui portal MyIPO
+                IP Online. Pada mulanya, saya menjangkakan prosesnya mudah: daftar masuk, isi
+                borang, buat bayaran dan selesai.
+              </p>
+
+              <div className="journey-post__inlineVisual journey-post__inlineVisual--copyright-menu">
+                <img
+                  src={copyrightImages.menu}
+                  alt="Paparan menu Copyright dalam portal MyIPO dengan pilihan Apply for a CVN CR1"
+                  width={776}
+                  height={791}
+                  loading="lazy"
+                />
+                <div>
+                  <span className="section-kicker">Langkah permohonan</span>
+                  <h4>Memilih Apply for a CVN (CR1)</h4>
+                  <p>
+                    Selepas berjaya masuk ke dalam sistem, saya pergi ke bahagian Copyright
+                    dan memilih Apply for a CVN (CR1), iaitu permohonan Pemberitahuan Sukarela
+                    Hak Cipta.
+                  </p>
+                </div>
+              </div>
+
+              <p>
+                Rupa-rupanya, langkah pertama pun sudah mengambil masa. Saya perlu menyediakan
+                <strong> MyDigital ID</strong> terlebih dahulu. Proses itu sahaja mengambil masa
+                kira-kira sehari sebelum saya benar-benar dapat meneruskan permohonan.
+              </p>
+              <p>
+                Ada ketika saya tertanya-tanya sama ada berbaloi untuk meneruskannya, tetapi
+                saya fikir, saya sudah sampai ke tahap ini. Rugi pula jika berhenti di tengah
+                jalan.
+              </p>
+
+              <h4>Kenapa saya memilih kategori Literary?</h4>
+              <p>
+                Kemudian muncul satu bahagian yang membuatkan saya berhenti seketika: Category
+                of Work. Antara pilihannya ialah Artistic, Broadcast, Film, Literary, Musical,
+                Sound Recording dan Derivative. Saya membaca pilihan itu beberapa kali kerana
+                kebanyakannya terasa kurang tepat untuk EduSim.
+              </p>
+
+              <div className="journey-post__inlineVisual journey-post__inlineVisual--reverse journey-post__inlineVisual--copyright-category">
+                <img
+                  src={copyrightImages.category}
+                  alt="Senarai Category of Work dalam permohonan MyIPO yang mengandungi pilihan Literary"
+                  width={542}
+                  height={249}
+                  loading="lazy"
+                />
+                <div>
+                  <span className="section-kicker">Category of Work</span>
+                  <h4>Akhirnya saya memilih Literary.</h4>
+                  <p>
+                    EduSim dibangunkan melalui penulisan kandungan pembelajaran dan penulisan
+                    kod yang panjang. Kod-kod itulah yang menghidupkan simulasi, mengawal
+                    interaksi dan membolehkan sistem ini digunakan sebagai sebuah platform
+                    pembelajaran.
+                  </p>
+                </div>
+              </div>
+
+              <h4>RM200 dan fasa paling mencabar: menunggu</h4>
+              <p>
+                Saya melengkapkan maklumat yang diperlukan, memuat naik bahan berkaitan dan
+                membuat bayaran sebanyak <strong>RM200</strong>.
+              </p>
+              <p>
+                Selepas itu bermulalah bahagian yang paling mencabar: menunggu. Hari pertama,
+                saya masih tenang. Selepas beberapa hari, saya mula memeriksa e-mel dengan
+                lebih kerap. Ada kalanya saya tertanya-tanya sama ada permohonan saya sudah
+                diisi dengan betul, sama ada kategori yang dipilih sesuai, atau mungkin ada
+                dokumen yang tertinggal.
+              </p>
+
+              <blockquote className="journey-post__quote">
+                Hampir dua minggu kemudian, e-mel yang ditunggu-tunggu akhirnya tiba.
+              </blockquote>
+
+              <p>
+                Permohonan bagi EduSim - Platform Simulasi Sains Interaktif telah direkodkan
+                dengan status <strong>Registered</strong>, dan saya menerima Sijil
+                Pemberitahuan Sukarela Hak Cipta daripada MyIPO.
+              </p>
+              <p>
+                Walaupun ia hanya sekeping sijil dalam bentuk digital, nilainya kepada saya
+                jauh lebih besar daripada itu. Sijil ini menjadi satu lagi tanda perjalanan
+                EduSim - daripada sebuah idea, berkembang menjadi baris-baris kod, kemudian
+                menjadi sistem yang boleh digunakan, dan kini mempunyai rekod rasmi
+                pemberitahuan hak cipta.
+              </p>
+
+              <h4>Belajar menghargai hasil sendiri</h4>
+              <p>
+                Pengalaman ini mengingatkan saya bahawa sebagai pencipta, kita bukan sahaja
+                perlu berusaha menghasilkan sesuatu. Kita juga perlu belajar menghargai,
+                mendokumentasikan dan menjaga hasil usaha sendiri.
+              </p>
+              <p>
+                Prosesnya tidaklah terlalu sukar, tetapi memerlukan kesabaran. Saya mengambil
+                masa kira-kira sehari untuk menyediakan MyDigital ID, membayar RM200 bagi
+                permohonan CR1 secara dalam talian, dan menunggu hampir dua minggu sebelum
+                menerima sijil melalui e-mel.
+              </p>
+              <p>
+                Bagi orang lain, ini mungkin satu pencapaian kecil. Namun bagi saya, sijil hak
+                cipta pertama ini membawa makna yang besar. Ia menjadi bukti kepada satu
+                perjalanan yang panjang - dan pada masa yang sama, membuka lembaran baharu
+                untuk EduSim.
+              </p>
+              <p className="journey-post__prayer">
+                Alhamdulillah, satu lagi langkah kecil telah selesai. Perjalanan EduSim masih
+                panjang, tetapi hari ini saya mahu berhenti seketika untuk menghargai
+                pencapaian ini.
+              </p>
+            </div>
+
+            <div className="journey-post__shareFooter">
+              <div className="journey-post__closingActions">
+                <a
+                  className="secondary-btn"
+                  href="https://iponlineext.myipo.gov.my/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Buka Portal MyIPO
+                </a>
+                <button type="button" className="secondary-btn" onClick={() => goToHomeSection("journey")}>
+                  Kembali ke Perjalanan
+                </button>
+              </div>
+              <ShareBar title={copyrightJourneyCardTitle} anchor={`#${copyrightJourneyId}`} />
+            </div>
+          </ReadMore>
+        </article>
 
         <article id={mrccJourneyId} className="journey-post journey-post--latest journey-post--mrcc">
           <nav className="journey-post__breadcrumb" aria-label="Breadcrumb">

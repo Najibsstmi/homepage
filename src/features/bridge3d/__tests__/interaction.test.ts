@@ -4,7 +4,7 @@ import { addMember, createEmptyDesign, createStarterDesign, deleteMember, distan
 import { cloneProfile, OFFICIAL_2026_PROFILE } from "../profile";
 import { calculateBridgeMass, getInventorySummary, physicalPieceId } from "../inventory";
 import { displayLabel, withDisplayNumbers } from "../displayLabels";
-import { buildPlaneOrigin, connectTargets, constrainPosition, initialInteraction, interactionReducer, rankSnapCandidates, resolveSnapTarget, type SnapTarget } from "../interaction";
+import { alignFreeTarget, buildPlaneOrigin, connectTargets, constrainPosition, initialInteraction, interactionReducer, rankSnapCandidates, resolveSnapTarget, type SnapTarget } from "../interaction";
 import { historyReducer, type HistoryState } from "../history";
 import { validateBridge } from "../validation";
 import type { BridgeDesign } from "../types";
@@ -87,6 +87,17 @@ describe("safe building interactions", () => {
     expect(buildPlaneOrigin(design, "left").z).toBe(-4.5);
     expect(buildPlaneOrigin(design, "right").z).toBe(4.5);
     expect(buildPlaneOrigin(createEmptyDesign(OFFICIAL_2026_PROFILE), "right").z).toBe(4.5);
+  });
+  it("locks near-vertical and near-horizontal free targets", () => {
+    const start = { x: 0, y: 0, z: -4.5 };
+    const vertical = alignFreeTarget(start,
+      { kind: "grid", position: { x: 1, y: 10, z: -4.5 }, label: "Grid" }, "left", "xy");
+    const horizontal = alignFreeTarget(start,
+      { kind: "grid", position: { x: 10, y: 1, z: -4.5 }, label: "Grid" }, "left", "xy");
+    expect(vertical?.position).toEqual({ x: 0, y: 10, z: -4.5 });
+    expect(vertical?.label).toContain("Kunci tegak");
+    expect(horizontal?.position).toEqual({ x: 10, y: 0, z: -4.5 });
+    expect(horizontal?.label).toContain("Kunci mendatar");
   });
   it.each(["left", "right"] as const)("locks original truss Z while dragging on %s", (plane) => {
     const origin = { x: 1, y: 2, z: plane === "left" ? -4.5 : 4.5 };

@@ -173,6 +173,19 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
     return () => window.removeEventListener("keydown", cancel);
   }, [cancelPending]);
 
+  const completeConnection = (start: SnapTarget, target: SnapTarget) => {
+    const result = connectTargets(design, start, target, addMode, plane);
+    if (!result.ok) {
+      showFeedback(result.reason ?? "Lidi tidak dapat ditambah.");
+      setSnapInfo(result.reason ?? "Lidi tidak dapat ditambah.");
+      return;
+    }
+    commit(result.design);
+    cancelPending();
+    setSelection(result.selection);
+    const message = `Lidi ditambah: ${result.member?.lengthCm.toFixed(1)} cm`;
+    showFeedback(message); setSnapInfo(message);
+  };
   const acceptPoint = (target: SnapTarget | null) => {
     if (tool !== "add") return;
     if (!target || (addMode === "nodes" && target.kind === "grid")) {
@@ -186,17 +199,7 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
       showFeedback("Titik 1 dipilih — pilih titik 2.");
       return;
     }
-    const result = connectTargets(design, pendingStart, target, addMode, plane);
-    if (!result.ok) {
-      showFeedback(result.reason ?? "Lidi tidak dapat ditambah.");
-      setSnapInfo(result.reason ?? "Lidi tidak dapat ditambah.");
-      return;
-    }
-    commit(result.design);
-    cancelPending();
-    setSelection(result.selection);
-    const message = `Lidi ditambah: ${result.member?.lengthCm.toFixed(1)} cm`;
-    showFeedback(message); setSnapInfo(message);
+    completeConnection(pendingStart, target);
   };
   const handlePoint = (target: SnapTarget | null) => {
     if (target?.kind === "grid") {
@@ -536,6 +539,7 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
               analysis={analysis}
               deformed={deformed || stage === "analysis"}
               onPoint={handlePoint}
+              onConnect={completeConnection}
               onSelect={handleSelect}
               onHoverInfo={setSnapInfo}
             />
@@ -547,7 +551,7 @@ export default function BridgeBuilding3DPage({ reviewPanel }: { reviewPanel?: Re
                   {pendingStart || freeCandidate ? <button type="button" onClick={() => { cancelPending(); showFeedback("Tindakan dibatalkan."); }}>Batal titik</button> : null}
                 </div>
                 <b>{pendingStart ? `Titik 1: ${pendingStart.label} · Pilih titik akhir` : "Pilih titik mula"}</b>
-                {addMode === "free" ? <small>Satah {plane === "left" ? "Truss kiri" : plane === "right" ? "Truss kanan" : plane === "base" ? "Tapak XZ" : crossConstraint.toUpperCase()} · grid 1 cm · ketik, kemudian sahkan.</small> : null}
+                {addMode === "free" ? <small>Satah {plane === "left" ? "Truss kiri" : plane === "right" ? "Truss kanan" : plane === "base" ? "Tapak XZ" : crossConstraint.toUpperCase()} · grid 1 cm. Seret dan lepaskan untuk bina terus; hampir tegak atau mendatar akan dikunci automatik. Ketik sahaja jika mahu semak koordinat dahulu.</small> : null}
                 {freeCandidate ? <div><span>{coordinates(freeCandidate.position)}</span><button type="button" onClick={() => acceptPoint(freeCandidate)}>Sahkan titik</button></div> : null}
               </> : tool === "move" ? <b>Seret nod untuk mengalih. Ketik lidi untuk memilih hujungnya.</b> : null}
               {(tool === "move" || (tool === "add" && addMode === "free")) && plane === "cross" ? <label>Satah gerakan

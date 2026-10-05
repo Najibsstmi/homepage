@@ -5,7 +5,7 @@ import type { OrbitControls } from "three-stdlib";
 import { displayLabel } from "../../features/bridge3d/displayLabels";
 import { distance3 } from "../../features/bridge3d/model";
 import {
-  constrainPosition, constraintAxis, coordinates, movementPlane, resolveSnapTarget,
+  alignFreeTarget, constrainPosition, constraintAxis, coordinates, movementPlane, resolveSnapTarget,
   type AddMode, type DragConstraint, type SnapTarget,
 } from "../../features/bridge3d/interaction";
 import type { BridgeDesign, BuildPlane, BuildTool, Selection, Vector3Data } from "../../features/bridge3d/types";
@@ -13,7 +13,9 @@ import type { BridgeDesign, BuildPlane, BuildTool, Selection, Vector3Data } from
 export interface PointerOptions {
   design: BridgeDesign; tool: BuildTool; plane: BuildPlane; addMode: AddMode;
   crossConstraint: DragConstraint; visibility: string; enabled: boolean; resetKey: number;
+  pendingStart: SnapTarget | null;
   onTarget: (target: SnapTarget | null) => void;
+  onConnect: (start: SnapTarget, end: SnapTarget) => void;
   onSelect: (selection: Selection) => void;
   onMoveNode: (id: string, point: Vector3Data) => void;
   onHoverInfo: (message: string) => void;
@@ -23,18 +25,21 @@ export function useBridgePointerInteraction(options: PointerOptions, controls: R
   const { gl, camera } = useThree();
   const [preview, setPreview] = useState<{ id: string; position: Vector3Data } | null>(null);
   const [hover, setHover] = useState<SnapTarget | null>(null);
+  const [addDragStart, setAddDragStart] = useState<SnapTarget | null>(null);
   const targetCallback = useEffectEvent(options.onTarget);
+  const connectCallback = useEffectEvent(options.onConnect);
   const selectCallback = useEffectEvent(options.onSelect);
   const moveCallback = useEffectEvent(options.onMoveNode);
   const statusCallback = useEffectEvent(options.onHoverInfo);
-  const { design, tool, plane, addMode, crossConstraint, visibility, enabled, resetKey } = options;
+  const { design, tool, plane, addMode, crossConstraint, visibility, enabled, resetKey, pendingStart } = options;
 
   useEffect(() => {
     const canvas = gl.domElement;
     const raycaster = new Raycaster();
     const pointers = new Set<number>();
     let gesture: { pointerId: number; x: number; y: number; moved: boolean;
-      target: SnapTarget | null; origin?: Vector3Data; last?: Vector3Data; dragging: boolean } | null = null;
+      target: SnapTarget | null; origin?: Vector3Data; last?: Vector3Data;
+      lastTarget?: SnapTarget | null; dragging: boolean } | null = null;
     const ray = (event: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
       const pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top };
@@ -43,9 +48,11 @@ export function useBridgePointerInteraction(options: PointerOptions, controls: R
     };
     const resolve = (event: PointerEvent) => {
       const { rect, pointer } = ray(event);
-      return resolveSnapTarget({ design, camera, ray: raycaster.ray, pointer,
+      const target = resolveSnapTarget({ design, camera, ray: raycaster.ray, pointer,
         width: rect.width, height: rect.height, touch: event.pointerType !== "mouse",
         mode: tool === "add" ? addMode : "nodes", plane, cross: crossConstraint, visibility });
+      return tool === "add" && addMode === "free" && pendingStart
+        ? alignFreeTarget(pendingStart.position, target, plane, crossConstraint) : target;
     };
     const unblock = () => { if (controls.current) controls.current.enabled = true; };
     const release = () => {
@@ -54,6 +61,7 @@ export function useBridgePointerInteraction(options: PointerOptions, controls: R
       unblock();
       if (id !== undefined && canvas.hasPointerCapture(id)) canvas.releasePointerCapture(id);
       setPreview(null);
+      setAddDragStart(null);
     };
     const cancel = () => { release(); setHover(null); };
     const down = (event: PointerEvent) => {
@@ -65,6 +73,7 @@ export function useBridgePointerInteraction(options: PointerOptions, controls: R
       const dragging = enabled && tool === "move" && target?.kind === "node";
       gesture = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, moved: false,
         target, dragging, origin: dragging ? { ...target.position } : undefined };
+      if (enabled && tool === "add" && target) setAddDragStart(pendingStart ?? target);
       if (dragging || (enabled && tool === "add" && target)) {
         if (controls.current) controls.current.enabled = false;
         event.preventDefault();
@@ -103,6 +112,18 @@ export function useBridgePointerInteraction(options: PointerOptions, controls: R
           statusCallback(`Alih ${displayLabel(design, "node", gesture.target.id)} · ${coordinates(position)} · Lidi ${lengths.map((length) => length.toFixed(1)).join(" / ")} cm${near && distance3(near.position, position) < 0.1 ? " · Nod bertindih: pilih lokasi lain" : ""}`);
           return;
         }
+        if (gesture.moved && enabled && tool === "add" && gesture.target) {
+          event.preventDefault(); event.stopImmediatePropagation();
+          const target = addMode === "free"
+            ? alignFreeTarget((pendingStart ?? gesture.target).position, resolve(event), plane, crossConstraint)
+            : resolve(event);
+          gesture.lastTarget = target;
+          setHover(target);
+          statusCallback(target
+            ? `${target.label} · Lepaskan untuk bina lidi.`
+            : "Tiada titik sambungan dikesan.");
+          return;
+        }
         if (gesture.moved) { setHover(null); return; }
       }
       const target = resolve(event);
@@ -113,11 +134,19 @@ export function useBridgePointerInteraction(options: PointerOptions, controls: R
       pointers.delete(event.pointerId);
       if (!gesture || gesture.pointerId !== event.pointerId) return;
       const current = gesture;
-      const upTarget = current.moved ? null : resolve(event);
+      const upTarget = current.dragging ? null : resolve(event);
       release();
       if (current.dragging) {
         event.stopImmediatePropagation();
         if (current.moved && current.last && current.target?.kind === "node") moveCallback(current.target.id, current.last);
+      } else if (enabled && tool === "add" && pointers.size === 0) {
+        if (current.moved) {
+          event.stopImmediatePropagation();
+          const start = pendingStart ?? current.target;
+          const end = current.lastTarget ?? upTarget;
+          if (start && end) connectCallback(start, end);
+          else targetCallback(null);
+        } else targetCallback(upTarget);
       } else if (!current.moved && pointers.size === 0) {
         if (enabled && tool === "add") targetCallback(upTarget);
         else if (upTarget?.kind === "node" || upTarget?.kind === "member") {
@@ -149,9 +178,9 @@ export function useBridgePointerInteraction(options: PointerOptions, controls: R
       window.removeEventListener("keydown", escape);
       cancel();
     };
-  }, [gl, camera, controls, design, tool, plane, addMode, crossConstraint, visibility, enabled, resetKey]);
+  }, [gl, camera, controls, design, tool, plane, addMode, crossConstraint, visibility, enabled, resetKey, pendingStart]);
 
   const previewDesign = preview ? { ...design, nodes: design.nodes.map((node) =>
     node.id === preview.id ? { ...node, position: preview.position } : node) } : design;
-  return { previewDesign, hover, draggingId: preview?.id ?? null };
+  return { previewDesign, hover, draggingId: preview?.id ?? null, addDragStart };
 }

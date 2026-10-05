@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import SimulatorCard from "../components/SimulatorCard";
 import LinearMotionSimulator from "../components/LinearMotionSimulator";
 import SimulatorReviewPanel from "../components/reviews/SimulatorReviewPanel";
@@ -82,9 +82,37 @@ export default function SimulatorPage({ onOpenSimulator }) {
   const [currentPage, setCurrentPage] = useState(1);
   const gridRef = useRef(null);
   const hasChangedPage = useRef(false);
-  const totalPages = Math.ceil(SIMULATORS.length / SIMULATORS_PER_PAGE);
+  const sortedSimulators = useMemo(
+    () =>
+      SIMULATORS.map((simulator, originalIndex) => ({
+        simulator,
+        originalIndex,
+      }))
+        .sort((first, second) => {
+          const firstSummary = summaries[first.simulator.id];
+          const secondSummary = summaries[second.simulator.id];
+          const reviewCountDifference =
+            Number(secondSummary?.count || 0) - Number(firstSummary?.count || 0);
+
+          if (reviewCountDifference !== 0) {
+            return reviewCountDifference;
+          }
+
+          const averageDifference =
+            Number(secondSummary?.average || 0) - Number(firstSummary?.average || 0);
+
+          if (averageDifference !== 0) {
+            return averageDifference;
+          }
+
+          return first.originalIndex - second.originalIndex;
+        })
+        .map(({ simulator }) => simulator),
+    [summaries],
+  );
+  const totalPages = Math.ceil(sortedSimulators.length / SIMULATORS_PER_PAGE);
   const pageStart = (currentPage - 1) * SIMULATORS_PER_PAGE;
-  const visibleSimulators = SIMULATORS.slice(
+  const visibleSimulators = sortedSimulators.slice(
     pageStart,
     pageStart + SIMULATORS_PER_PAGE,
   );

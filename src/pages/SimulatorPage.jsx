@@ -21,6 +21,7 @@ import OpticsLensSimulatorPage from "./OpticsLensSimulatorPage";
 import PollutionDetectiveSimulatorPage from "./PollutionDetectiveSimulatorPage";
 import ReactionRateSimulatorPage from "./ReactionRateSimulatorPage";
 import WaterEvaporationSimulatorPage from "./WaterEvaporationSimulatorPage";
+import LightRefractionSimulatorPage from "./LightRefractionSimulatorPage";
 import PascalHydraulicSimulator from "../components/PascalHydraulicSimulator";
 import { SimulatorSearch } from "../components/SimulatorSearch";
 import { SIMULATORS } from "../data/simulators";
@@ -157,6 +158,14 @@ export default function SimulatorPage({ onOpenSimulator }) {
     return (
       <WaterEvaporationSimulatorPage
         reviewPanel={getReviewPanel("penyejatan-air")}
+      />
+    );
+  }
+
+  if (path === "/simulator/pembiasan-cahaya") {
+    return (
+      <LightRefractionSimulatorPage
+        reviewPanel={getReviewPanel("pembiasan-cahaya")}
       />
     );
   }

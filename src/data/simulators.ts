@@ -17,6 +17,31 @@ export interface SimulatorMetadata {
 
 export const SIMULATORS: readonly SimulatorMetadata[] = [
   {
+    id: "pembiasan-cahaya",
+    title: "Pembiasan Cahaya",
+    description:
+      "Seret lampu suluh dan teroka bagaimana cahaya berubah arah apabila bergerak dari udara ke air atau kaca.",
+    tingkatan: 1,
+    bab: "Kurikulum 2027 · Cahaya dan Optik",
+    topik: "Udara → Air dan Udara → Kaca",
+    keywords: [
+      "pembiasan cahaya",
+      "cahaya",
+      "optik",
+      "udara",
+      "air",
+      "kaca",
+      "garis normal",
+      "sudut tuju",
+      "sudut biasan",
+      "Hukum Snell",
+      "Tingkatan 1",
+      "Kurikulum 2027",
+    ],
+    path: "/simulator/pembiasan-cahaya",
+    image: "/PEMBIASAN%20CAHAYA/background.webp",
+  },
+  {
     id: "penyejatan-air",
     title: "Penyejatan Air",
     description:

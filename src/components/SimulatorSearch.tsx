@@ -17,6 +17,7 @@ interface SimulatorSearchProps {
 const FILTERS: ReadonlyArray<{ label: string; value: SimulatorFilter }> = [
   { label: "Semua", value: "all" },
   { label: "Eksperimen Wajib", value: "required" },
+  { label: "Tingkatan 1", value: 1 },
   { label: "Tingkatan 4", value: 4 },
   { label: "Tingkatan 5", value: 5 },
 ];

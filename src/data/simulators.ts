@@ -1,6 +1,6 @@
 import nitrogenBackgroundUrl from "../assets/kitar-nitrogen/kitar-nitrogen.webp";
 
-export type SimulatorLevel = 4 | 5;
+export type SimulatorLevel = 1 | 4 | 5;
 
 export interface SimulatorMetadata {
   id: string;
@@ -16,6 +16,31 @@ export interface SimulatorMetadata {
 }
 
 export const SIMULATORS: readonly SimulatorMetadata[] = [
+  {
+    id: "penyejatan-air",
+    title: "Penyejatan Air",
+    description:
+      "Teroka kesan suhu, kelembapan, pergerakan udara dan luas permukaan terhadap kadar penyejatan air.",
+    tingkatan: 1,
+    bab: "KP2027 · Topik 6.0 Air dan Larutan",
+    topik: "Faktor yang Mempengaruhi Kadar Penyejatan",
+    keywords: [
+      "penyejatan",
+      "air",
+      "wap air",
+      "suhu",
+      "kelembapan",
+      "angin",
+      "pergerakan udara",
+      "luas permukaan",
+      "zarah air",
+      "molekul H2O",
+      "Tingkatan 1",
+      "KP2027",
+    ],
+    path: "/simulator/penyejatan-air",
+    image: "/penyejatan/background.webp",
+  },
   {
     id: "bridge-building-3d",
     title: "Bridge Building 3D",

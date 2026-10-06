@@ -20,6 +20,7 @@ import NuclearEnergySimulatorPage from "./NuclearEnergySimulatorPage";
 import OpticsLensSimulatorPage from "./OpticsLensSimulatorPage";
 import PollutionDetectiveSimulatorPage from "./PollutionDetectiveSimulatorPage";
 import ReactionRateSimulatorPage from "./ReactionRateSimulatorPage";
+import WaterEvaporationSimulatorPage from "./WaterEvaporationSimulatorPage";
 import PascalHydraulicSimulator from "../components/PascalHydraulicSimulator";
 import { SimulatorSearch } from "../components/SimulatorSearch";
 import { SIMULATORS } from "../data/simulators";
@@ -151,6 +152,14 @@ export default function SimulatorPage({ onOpenSimulator }) {
       </div>
     );
   };
+
+  if (path === "/simulator/penyejatan-air") {
+    return (
+      <WaterEvaporationSimulatorPage
+        reviewPanel={getReviewPanel("penyejatan-air")}
+      />
+    );
+  }
 
   if (path === "/simulator/jatuh-bebas") {
     return <FreeFallSimulatorPage reviewPanel={getReviewPanel("jatuh-bebas")} />;
@@ -305,7 +314,7 @@ export default function SimulatorPage({ onOpenSimulator }) {
         <span className="simulatorHero__kicker">Simulator Sains</span>
         <h1>Simulator Eksperimen Sains KSSM</h1>
         <p>
-          Koleksi simulator eksperimen Sains Tingkatan 4 dan Tingkatan 5 untuk
+          Koleksi simulator eksperimen Sains Tingkatan 1, Tingkatan 4 dan Tingkatan 5 untuk
           membantu murid meneroka konsep abstrak secara visual, interaktif dan
           lebih dekat dengan konteks pembelajaran KSSM.
         </p>

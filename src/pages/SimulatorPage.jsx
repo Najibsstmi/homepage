@@ -22,6 +22,7 @@ import PollutionDetectiveSimulatorPage from "./PollutionDetectiveSimulatorPage";
 import ReactionRateSimulatorPage from "./ReactionRateSimulatorPage";
 import WaterEvaporationSimulatorPage from "./WaterEvaporationSimulatorPage";
 import LightRefractionSimulatorPage from "./LightRefractionSimulatorPage";
+import SoundWaveSimulatorPage from "./SoundWaveSimulatorPage";
 import PascalHydraulicSimulator from "../components/PascalHydraulicSimulator";
 import { SimulatorSearch } from "../components/SimulatorSearch";
 import { SIMULATORS } from "../data/simulators";
@@ -166,6 +167,14 @@ export default function SimulatorPage({ onOpenSimulator }) {
     return (
       <LightRefractionSimulatorPage
         reviewPanel={getReviewPanel("pembiasan-cahaya")}
+      />
+    );
+  }
+
+  if (path === "/simulator/gelombang-bunyi") {
+    return (
+      <SoundWaveSimulatorPage
+        reviewPanel={getReviewPanel("gelombang-bunyi")}
       />
     );
   }

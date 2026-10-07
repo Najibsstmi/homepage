@@ -17,6 +17,31 @@ export interface SimulatorMetadata {
 
 export const SIMULATORS: readonly SimulatorMetadata[] = [
   {
+    id: "gelombang-bunyi",
+    title: "Gelombang Bunyi",
+    description:
+      "Ubah amplitud dan frekuensi untuk melihat bentuk gelombang serta mendengar perubahan kekuatan dan nada bunyi.",
+    tingkatan: 1,
+    bab: "Kurikulum 2027 · Bunyi",
+    topik: "Amplitud, Frekuensi, Kekuatan Bunyi dan Nada",
+    keywords: [
+      "gelombang bunyi",
+      "bunyi",
+      "amplitud",
+      "frekuensi",
+      "kuat",
+      "perlahan",
+      "nada tinggi",
+      "nada rendah",
+      "hertz",
+      "Hz",
+      "Tingkatan 1",
+      "Kurikulum 2027",
+    ],
+    path: "/simulator/gelombang-bunyi",
+    image: "/bunyi/statik-utama.webp",
+  },
+  {
     id: "pembiasan-cahaya",
     title: "Pembiasan Cahaya",
     description:

@@ -1,0 +1,580 @@
+.pbdPage {
+  min-height: 100vh;
+  scroll-margin-top: 88px;
+  padding: 112px clamp(18px, 4vw, 64px) 72px;
+  background:
+    radial-gradient(circle at 8% 5%, rgba(41, 196, 215, 0.14), transparent 27rem),
+    radial-gradient(circle at 92% 18%, rgba(255, 190, 37, 0.12), transparent 24rem),
+    #f5f8f8;
+  color: #10243a;
+}
+
+.pbdArticle {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.pbdHero,
+.pbdSplit,
+.pbdEvidence,
+.pbdMethods,
+.pbdQuality {
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(330px, 0.96fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: center;
+}
+
+.pbdHero {
+  min-height: 680px;
+  padding: clamp(28px, 5vw, 68px);
+  border: 1px solid rgba(18, 72, 95, 0.1);
+  border-radius: 34px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #071c33 0%, #0a3150 58%, #0d6071 100%);
+  box-shadow: 0 28px 70px rgba(9, 37, 56, 0.17);
+  color: #fff;
+}
+
+.pbdHero__copy h1 {
+  max-width: 720px;
+  margin: 14px 0 18px;
+  font-size: clamp(2.7rem, 6vw, 5.6rem);
+  line-height: 0.96;
+  letter-spacing: -0.055em;
+}
+
+.pbdArticle .pbdHero__lead {
+  max-width: 680px;
+  margin: 0;
+  color: #d5eaf0;
+  font-size: clamp(1.03rem, 1.9vw, 1.33rem);
+  line-height: 1.7;
+}
+
+.pbdEyebrow,
+.pbdPracticeLabel {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 8px 13px;
+  border-radius: 999px;
+  background: #f3bc2d;
+  color: #10243a;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pbdHero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 26px 0;
+}
+
+.pbdHero__meta span {
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e7f5f7;
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.pbdHero .share-row {
+  margin-top: 14px;
+}
+
+.pbdHero .share-row__label {
+  color: #d9edf1;
+}
+
+.pbdSourceFigure {
+  margin: 0;
+}
+
+.pbdSourceFigure a {
+  display: block;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 18px 44px rgba(20, 52, 66, 0.14);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.pbdSourceFigure a:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 54px rgba(20, 52, 66, 0.2);
+}
+
+.pbdSourceFigure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pbdSourceFigure figcaption {
+  margin-top: 12px;
+  color: #5c6f7e;
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.pbdHero .pbdSourceFigure a {
+  transform: rotate(1.5deg);
+  border: 9px solid rgba(255, 255, 255, 0.9);
+}
+
+.pbdHero .pbdSourceFigure a:hover {
+  transform: rotate(0deg) translateY(-4px);
+}
+
+.pbdHero .pbdSourceFigure figcaption {
+  color: #c5e0e6;
+}
+
+.pbdOpening,
+.pbdBlock,
+.pbdManagement,
+.pbdClosing {
+  margin-top: clamp(48px, 8vw, 100px);
+}
+
+.pbdOpening {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 820px);
+  gap: 24px;
+  justify-content: center;
+}
+
+.pbdSectionNumber {
+  color: #139ab3;
+  font-size: 0.82rem;
+  font-weight: 950;
+  letter-spacing: 0.13em;
+}
+
+.pbdArticle h2 {
+  margin: 6px 0 18px;
+  color: #0b2943;
+  font-size: clamp(1.9rem, 3.6vw, 3.1rem);
+  line-height: 1.08;
+  letter-spacing: -0.038em;
+}
+
+.pbdArticle h3 {
+  color: #0d304c;
+}
+
+.pbdArticle p,
+.pbdArticle li {
+  color: #425767;
+  font-size: 1rem;
+  line-height: 1.78;
+}
+
+.pbdArticle blockquote {
+  margin: 28px 0 0;
+  padding: 22px 26px;
+  border-left: 5px solid #efb92d;
+  border-radius: 0 18px 18px 0;
+  background: #fff;
+  color: #15344e;
+  font-size: clamp(1.05rem, 2vw, 1.32rem);
+  font-weight: 800;
+  line-height: 1.58;
+  box-shadow: 0 12px 30px rgba(20, 52, 66, 0.08);
+}
+
+.pbdSplit,
+.pbdEvidence,
+.pbdMethods,
+.pbdQuality {
+  margin-top: clamp(60px, 10vw, 126px);
+}
+
+.pbdSplit--reverse {
+  grid-template-columns: minmax(330px, 0.96fr) minmax(0, 1.04fr);
+}
+
+.pbdSplit__copy,
+.pbdEvidence__text,
+.pbdMethods__copy,
+.pbdQuality__copy {
+  min-width: 0;
+}
+
+.pbdNote,
+.pbdCallout {
+  margin-top: 24px;
+  padding: 20px 22px;
+  border: 1px solid rgba(19, 154, 179, 0.2);
+  border-radius: 18px;
+  background: #eaf6f7;
+}
+
+.pbdNote strong,
+.pbdCallout strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #0c7185;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pbdNote p,
+.pbdCallout p {
+  margin: 0;
+}
+
+.pbdHeading {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 880px);
+  gap: 24px;
+  justify-content: center;
+}
+
+.pbdRoleGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 32px;
+}
+
+.pbdRoleGrid article {
+  padding: 26px;
+  border: 1px solid rgba(19, 73, 96, 0.1);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(20, 52, 66, 0.07);
+}
+
+.pbdRoleGrid article > span {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 50%;
+  background: #102e49;
+  color: #67d9e6;
+  font-size: 0.75rem;
+  font-weight: 950;
+}
+
+.pbdRoleGrid h3 {
+  margin: 18px 0 7px;
+  font-size: 1.12rem;
+}
+
+.pbdRoleGrid p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.68;
+}
+
+.pbdSteps {
+  display: grid;
+  gap: 12px;
+  margin: 24px 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: pbd-step;
+}
+
+.pbdSteps li {
+  position: relative;
+  padding: 14px 16px 14px 52px;
+  border-radius: 14px;
+  background: #fff;
+  counter-increment: pbd-step;
+  box-shadow: 0 8px 20px rgba(19, 59, 76, 0.06);
+}
+
+.pbdSteps li::before {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  display: grid;
+  width: 25px;
+  height: 25px;
+  place-items: center;
+  border-radius: 50%;
+  background: #1aa9bf;
+  color: #fff;
+  content: counter(pbd-step);
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.pbdEvidence {
+  padding: clamp(28px, 5vw, 58px);
+  border-radius: 30px;
+  background: #09263f;
+}
+
+.pbdEvidence h2,
+.pbdEvidence p {
+  color: #fff;
+}
+
+.pbdEvidence p {
+  color: #d2e5ea;
+}
+
+.pbdEvidence .pbdCallout {
+  border-color: rgba(87, 213, 227, 0.23);
+  background: rgba(72, 200, 216, 0.11);
+}
+
+.pbdEvidence .pbdCallout p {
+  color: #fff;
+}
+
+.pbdEvidence .pbdSourceFigure figcaption {
+  color: #bcd7dd;
+}
+
+.pbdPromptList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 24px;
+}
+
+.pbdPromptList span {
+  padding: 9px 12px;
+  border-radius: 999px;
+  background: #dff2f4;
+  color: #0b687a;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.pbdMethods {
+  padding: clamp(28px, 5vw, 58px);
+  border: 1px solid rgba(239, 185, 45, 0.25);
+  border-radius: 30px;
+  background: #fffaf0;
+}
+
+.pbdMethodCards,
+.pbdQualityGrid {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.pbdMethodCards article,
+.pbdQualityGrid article {
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(20, 52, 66, 0.06);
+}
+
+.pbdMethodCards strong,
+.pbdQualityGrid strong {
+  color: #0f7186;
+}
+
+.pbdMethodCards span,
+.pbdQualityGrid span {
+  color: #536775;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.pbdManagement {
+  padding: clamp(26px, 5vw, 54px);
+  border-radius: 30px;
+  background: #fff;
+  box-shadow: 0 20px 55px rgba(18, 56, 72, 0.09);
+}
+
+.pbdPracticeLabel {
+  margin-bottom: 10px;
+  background: #dff3f5;
+  color: #08788d;
+}
+
+.pbdTableWrap {
+  margin-top: 30px;
+  overflow-x: auto;
+  border: 1px solid #dbe6e9;
+  border-radius: 18px;
+}
+
+.pbdTableWrap table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.pbdTableWrap th,
+.pbdTableWrap td {
+  padding: 16px 18px;
+  border-bottom: 1px solid #e6edef;
+  text-align: left;
+  vertical-align: top;
+}
+
+.pbdTableWrap thead th {
+  background: #102e49;
+  color: #fff;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pbdTableWrap tbody th {
+  width: 28%;
+  color: #0b6377;
+  font-size: 0.9rem;
+}
+
+.pbdTableWrap td {
+  color: #425767;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.pbdTableWrap tbody tr:last-child th,
+.pbdTableWrap tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.pbdQuality {
+  align-items: start;
+}
+
+.pbdQuality__figures {
+  display: grid;
+  gap: 24px;
+}
+
+.pbdQuality__figures .pbdSourceFigure:nth-child(2) {
+  margin-left: 10%;
+}
+
+.pbdQuality__figures .pbdSourceFigure:nth-child(3) {
+  margin-right: 10%;
+}
+
+.pbdClosing {
+  padding: clamp(34px, 6vw, 72px);
+  border-radius: 34px;
+  background: linear-gradient(145deg, #09263f, #0e5365);
+  color: #fff;
+}
+
+.pbdClosing h2 {
+  max-width: 850px;
+  color: #fff;
+}
+
+.pbdClosing > p {
+  max-width: 850px;
+  color: #d5e7eb;
+}
+
+.pbdClosing blockquote {
+  max-width: 900px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  box-shadow: none;
+}
+
+.pbdClosing .pbdSource {
+  margin-top: 30px;
+  color: #bcd5db;
+  font-size: 0.86rem;
+}
+
+.pbdClosing__share {
+  margin-top: 26px;
+}
+
+.pbdClosing .share-row__label {
+  color: #d9edf1;
+}
+
+@media (max-width: 900px) {
+  .pbdHero,
+  .pbdSplit,
+  .pbdSplit--reverse,
+  .pbdEvidence,
+  .pbdMethods,
+  .pbdQuality {
+    grid-template-columns: 1fr;
+  }
+
+  .pbdHero {
+    min-height: 0;
+  }
+
+  .pbdRoleGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pbdSplit--reverse .pbdSourceFigure {
+    order: 2;
+  }
+
+  .pbdQuality__figures .pbdSourceFigure:nth-child(n) {
+    margin: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .pbdPage {
+    padding: 88px 12px 44px;
+  }
+
+  .pbdHero {
+    padding: 24px 18px;
+    border-radius: 24px;
+  }
+
+  .pbdHero__copy h1 {
+    font-size: clamp(2.6rem, 15vw, 4rem);
+  }
+
+  .pbdOpening,
+  .pbdHeading {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .pbdRoleGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .pbdEvidence,
+  .pbdMethods,
+  .pbdManagement,
+  .pbdClosing {
+    padding: 24px 18px;
+    border-radius: 24px;
+  }
+
+  .pbdSourceFigure a {
+    border-radius: 16px;
+  }
+
+  .pbdArticle p,
+  .pbdArticle li {
+    font-size: 0.95rem;
+  }
+
+  .pbdTableWrap th,
+  .pbdTableWrap td {
+    min-width: 150px;
+    padding: 13px 14px;
+  }
+}

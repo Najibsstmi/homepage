@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import emailjs from "@emailjs/browser";
 import CopyrightFooter from "./components/CopyrightFooter";
 import CopyrightPage from "./pages/CopyrightPage";
+import PbdKacaMataPage from "./pages/PbdKacaMataPage";
 import SimulatorPage from "./pages/SimulatorPage";
 
 const VISITOR_COUNT_FALLBACK = "1,000+";
@@ -64,6 +65,7 @@ export default function App() {
     | "rpm"
     | "plc"
     | "skasGuruSains"
+    | "pbdKacaMata"
     | "copyright"
     | ManagementPageId
     | "simulator";
@@ -129,6 +131,7 @@ export default function App() {
   const rpmSectionIds = new Set(["rpm-2026-2035"]);
   const plcSectionIds = new Set(["plc-guru-sains"]);
   const skasSectionIds = new Set(["skas-guru-sains"]);
+  const pbdSectionIds = new Set(["pbd-kaca-mata-kp-sains"]);
   const scienceManagementPageIds: ScienceManagementPageId[] = [
     "sains-carta-organisasi",
     "sains-perancangan-program",
@@ -274,6 +277,8 @@ export default function App() {
       const shouldOpenPlc = params.get("page") === "plc" || plcSectionIds.has(hashTarget);
       const shouldOpenSkas =
         params.get("page") === "skasGuruSains" || skasSectionIds.has(hashTarget);
+      const shouldOpenPbd =
+        params.get("page") === "pbdKacaMata" || pbdSectionIds.has(hashTarget);
       const shouldOpenCopyright =
         params.get("page") === "copyright" || pathName.replace(/\/+$/, "") === "/copyright";
       const requestedManagementPage = params.get("page") as Page | null;
@@ -297,6 +302,8 @@ export default function App() {
         nextPage = "plc";
       } else if (shouldOpenSkas) {
         nextPage = "skasGuruSains";
+      } else if (shouldOpenPbd) {
+        nextPage = "pbdKacaMata";
       } else if (shouldOpenManagementPage) {
         nextPage = requestedManagementPage;
       } else if (shouldOpenBankSoalan) {
@@ -407,6 +414,11 @@ export default function App() {
     }
 
     const timer = window.setTimeout(() => {
+      if (hashTarget === "pbd-kaca-mata-kp-sains") {
+        window.scrollTo({ top: 0, behavior: "auto" });
+        return;
+      }
+
       document.getElementById(hashTarget)?.scrollIntoView({
         behavior: "smooth",
         block: "start",
@@ -706,6 +718,7 @@ export default function App() {
     const isRpmTarget = rpmSectionIds.has(targetId);
     const isPlcTarget = plcSectionIds.has(targetId);
     const isSkasTarget = skasSectionIds.has(targetId);
+    const isPbdTarget = pbdSectionIds.has(targetId);
 
     const appUrl = new URL(publicSiteUrl);
     appUrl.hash = "";
@@ -725,6 +738,10 @@ export default function App() {
 
     if (isSkasTarget) {
       appUrl.searchParams.set("page", "skasGuruSains");
+    }
+
+    if (isPbdTarget) {
+      appUrl.searchParams.set("page", "pbdKacaMata");
     }
 
     if (targetId) {
@@ -757,6 +774,8 @@ export default function App() {
       ? "share-plc-guru-sains.html"
       : isSkasTarget
       ? "share-skas-guru-sains.html"
+      : isPbdTarget
+      ? "share-pbd-kaca-mata-kp-sains.html"
       : isJourneyTarget
       ? "share-journey.html"
       : "";
@@ -2071,7 +2090,7 @@ export default function App() {
             }}
           >
             <button
-              className={`navDropdownTrigger${currentPage === "modul" || currentPage === "banksoalan" || currentPage === "rpm" || currentPage === "plc" || currentPage === "skasGuruSains" ? " navDropdownTrigger--active" : ""}`}
+              className={`navDropdownTrigger${currentPage === "modul" || currentPage === "banksoalan" || currentPage === "rpm" || currentPage === "plc" || currentPage === "skasGuruSains" || currentPage === "pbdKacaMata" ? " navDropdownTrigger--active" : ""}`}
               type="button"
               aria-haspopup="true"
               aria-expanded={modulMenuOpen}
@@ -2091,6 +2110,7 @@ export default function App() {
                 <a href={pageHref("rpm")} onClick={handlePageLinkClick("rpm")}>RPM2026-2035</a>
                 <a href={pageHref("plc")} onClick={handlePageLinkClick("plc")}>PLC Kit</a>
                 <a href={pageHref("skasGuruSains")} onClick={handlePageLinkClick("skasGuruSains")}>SK@S dan Guru Sains</a>
+                <a href={pageHref("pbdKacaMata")} onClick={handlePageLinkClick("pbdKacaMata")}>PBD: Kaca Mata KP Sains</a>
               </div>
             )}
           </div>
@@ -2747,6 +2767,15 @@ export default function App() {
             <p>STEM Educator &bull; Innovation &bull; Education Technology</p>
           </footer>
         </main>
+      ) : currentPage === "pbdKacaMata" ? (
+        <PbdKacaMataPage
+          shareBar={
+            <ShareBar
+              title="PBD: Kaca Mata KP Sains"
+              anchor="#pbd-kaca-mata-kp-sains"
+            />
+          }
+        />
       ) : currentPage === "skasGuruSains" ? (
         <main id="skas-guru-sains" className="skasPage">
           <article className="skasArticle" aria-labelledby="skas-title">

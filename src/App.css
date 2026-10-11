@@ -2,6 +2,308 @@
   box-sizing: border-box;
 }
 
+/* ─── KAJIAN TINDAKAN EDUSIM · KPPAL 2026 ───────── */
+.kppal-study {
+  position: relative;
+  order: -2;
+  width: min(100% - 32px, 1320px);
+  margin: 40px auto 88px;
+  overflow: hidden;
+  border: 1px solid rgba(125, 211, 252, 0.18);
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at 92% 4%, rgba(37, 99, 235, 0.2), transparent 28%),
+    linear-gradient(145deg, rgba(8, 47, 73, 0.55), rgba(2, 6, 23, 0.96) 34%);
+  box-shadow: 0 30px 90px rgba(2, 6, 23, 0.5);
+}
+
+.kppal-study__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.7fr);
+  gap: clamp(36px, 5vw, 72px);
+  align-items: center;
+  padding: clamp(36px, 6vw, 76px);
+}
+
+.kppal-study__intro h1 {
+  max-width: 850px;
+  margin: 14px 0 22px;
+  color: #f8fafc;
+  font-size: clamp(2.4rem, 5.1vw, 4.8rem);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.kppal-study__lead {
+  max-width: 760px;
+  margin: 0;
+  color: #cbd5e1;
+  font-size: clamp(1.05rem, 1.8vw, 1.28rem);
+  line-height: 1.75;
+}
+
+.kppal-study__summary {
+  max-width: 800px;
+  margin: 26px 0 0;
+  color: #cbd5e1;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.kppal-study__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.kppal-study__stat {
+  min-height: 116px;
+  padding: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.68);
+}
+
+.kppal-study__stat strong,
+.kppal-study__stat span {
+  display: block;
+}
+
+.kppal-study__stat strong {
+  color: #f8fafc;
+  font-size: clamp(1.9rem, 3vw, 2.65rem);
+  line-height: 1;
+}
+
+.kppal-study__stat span {
+  margin-top: 10px;
+  color: #94a3b8;
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+
+.kppal-study__stat--accent {
+  border-color: rgba(34, 211, 238, 0.38);
+  background: linear-gradient(145deg, rgba(8, 145, 178, 0.22), rgba(15, 23, 42, 0.78));
+}
+
+.kppal-study__stat--accent strong {
+  color: #67e8f9;
+}
+
+.kppal-study__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.kppal-study__actions .btn--secondary {
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  background: rgba(15, 23, 42, 0.42);
+}
+
+.kppal-study__poster {
+  margin: 0;
+}
+
+.kppal-study__poster img {
+  width: 100%;
+  display: block;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
+}
+
+.kppal-study__poster figcaption,
+.kppal-study__visual figcaption {
+  margin-top: 12px;
+  color: #94a3b8;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.kppal-study__preview {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 36px;
+  align-items: start;
+  padding: 42px clamp(28px, 6vw, 76px);
+  border-top: 1px solid rgba(148, 163, 184, 0.14);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  background: rgba(15, 23, 42, 0.5);
+}
+
+.kppal-study__preview h2,
+.kppal-study__copy h2,
+.kppal-study__reflection h2 {
+  margin: 10px 0 0;
+  color: #f8fafc;
+  font-size: clamp(1.55rem, 2.6vw, 2.3rem);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.kppal-study__preview > p,
+.kppal-study__copy p,
+.kppal-study__reflection p {
+  margin: 0 0 16px;
+  color: #cbd5e1;
+  font-size: 1.02rem;
+  line-height: 1.85;
+}
+
+.kppal-study__readmore {
+  padding: 0 clamp(18px, 4vw, 48px) 36px;
+}
+
+.kppal-study__content {
+  padding-top: 28px;
+}
+
+.kppal-study__story,
+.kppal-study__results,
+.kppal-study__character {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(30px, 5vw, 64px);
+  align-items: center;
+  padding: 52px 12px;
+  border-top: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.kppal-study__story:first-child {
+  border-top: 0;
+}
+
+.kppal-study__story--reverse {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+}
+
+.kppal-study__copy h2 {
+  margin-bottom: 20px;
+}
+
+.kppal-study__visual {
+  margin: 0;
+}
+
+.kppal-study__visual img {
+  width: 100%;
+  display: block;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.36);
+}
+
+.kppal-study__visual--portrait {
+  max-width: 540px;
+  justify-self: center;
+}
+
+.kppal-study__results,
+.kppal-study__character {
+  grid-template-columns: 1fr;
+}
+
+.kppal-study__results .kppal-study__copy,
+.kppal-study__character .kppal-study__copy {
+  max-width: 900px;
+}
+
+.kppal-study__visual--wide {
+  width: min(100%, 1120px);
+  margin: 0 auto;
+}
+
+.kppal-study__reflection {
+  margin: 36px 0 8px;
+  padding: clamp(28px, 5vw, 58px);
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  border-radius: 24px;
+  background: linear-gradient(140deg, rgba(8, 145, 178, 0.13), rgba(15, 23, 42, 0.68));
+}
+
+.kppal-study__reflection h2 {
+  margin-bottom: 22px;
+}
+
+.kppal-study__reflection blockquote {
+  margin: 30px 0 0;
+  padding: 22px 26px;
+  border-left: 4px solid #22d3ee;
+  border-radius: 0 16px 16px 0;
+  background: rgba(2, 6, 23, 0.46);
+  color: #e0f2fe;
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  font-weight: 650;
+  line-height: 1.65;
+}
+
+@media (max-width: 900px) {
+  .kppal-study__hero,
+  .kppal-study__preview,
+  .kppal-study__story,
+  .kppal-study__story--reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .kppal-study__poster {
+    width: min(100%, 500px);
+    margin: 0 auto;
+  }
+
+  .kppal-study__story--reverse .kppal-study__visual {
+    order: 2;
+  }
+
+  .kppal-study__story--reverse .kppal-study__copy {
+    order: 1;
+  }
+}
+
+@media (max-width: 620px) {
+  .kppal-study {
+    width: min(100% - 20px, 1320px);
+    margin-top: 18px;
+    border-radius: 22px;
+  }
+
+  .kppal-study__hero {
+    padding: 34px 20px;
+  }
+
+  .kppal-study__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .kppal-study__stat {
+    min-height: 0;
+  }
+
+  .kppal-study__preview {
+    gap: 20px;
+    padding: 32px 20px;
+  }
+
+  .kppal-study__readmore {
+    padding-inline: 10px;
+  }
+
+  .kppal-study__story,
+  .kppal-study__results,
+  .kppal-study__character {
+    padding: 38px 8px;
+  }
+
+  .kppal-study__reflection {
+    padding: 26px 20px;
+  }
+}
+
 /* Pascal hydraulic simulator */
 .pascalPage {
   --pascal-navy: #0b2c4c;

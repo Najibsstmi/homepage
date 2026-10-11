@@ -106,6 +106,7 @@ export default function App() {
   const copyrightJourneyCardTitle = "Sijil Hak Cipta Pertama EduSim";
   const copyrightJourneyDescription =
     "Catatan Mohd Najib bin Jaafar memohon Pemberitahuan Sukarela Hak Cipta MyIPO secara dalam talian sehingga EduSim - Platform Simulasi Sains Interaktif berstatus Registered.";
+  const kppalStudyId = "edusim-kppal-2026";
   const smartLabSectionIds = new Set([
     "smartlab-hero",
     "smartlab-pengenalan",
@@ -128,6 +129,7 @@ export default function App() {
   ]);
   const eduTrackSectionIds = new Set(["edutrack-post"]);
   const eduSlotSectionIds = new Set(["eduslot-post"]);
+  const kppalSectionIds = new Set([kppalStudyId]);
   const rpmSectionIds = new Set(["rpm-2026-2035"]);
   const plcSectionIds = new Set(["plc-guru-sains"]);
   const skasSectionIds = new Set(["skas-guru-sains"]);
@@ -185,6 +187,7 @@ export default function App() {
   const [readMore, setReadMore] = useState(false);
   const [eduTrackReadMore, setEduTrackReadMore] = useState(false);
   const [eduSlotReadMore, setEduSlotReadMore] = useState(false);
+  const [kppalReadMore, setKppalReadMore] = useState(false);
   const [mrccReadMore, setMrccReadMore] = useState(false);
   const [kidPgReadMore, setKidPgReadMore] = useState(false);
   const [copyrightReadMore, setCopyrightReadMore] = useState(false);
@@ -269,7 +272,8 @@ export default function App() {
         params.get("page") === "inovasi" ||
         smartLabSectionIds.has(hashTarget) ||
         eduTrackSectionIds.has(hashTarget) ||
-        eduSlotSectionIds.has(hashTarget);
+        eduSlotSectionIds.has(hashTarget) ||
+        kppalSectionIds.has(hashTarget);
       const shouldOpenAbout = params.get("page") === "about" || hashTarget === "about";
       const shouldOpenModul = params.get("page") === "modul";
       const shouldOpenBankSoalan = params.get("page") === "banksoalan";
@@ -2201,6 +2205,226 @@ export default function App() {
       ) : currentPage === "inovasi" ? (
         /* ─────────────── PAGE INOVASI ─────────────── */
         <div className="inovasi-page">
+
+          {/* ── KAJIAN TINDAKAN EDUSIM AI · KPPAL 2026 ── */}
+          <section id={kppalStudyId} className="kppal-study">
+            <div className="kppal-study__hero">
+              <div className="kppal-study__intro">
+                <p className="section__label">Kajian Tindakan · Menuju KPPAL 2026</p>
+                <h1>EduSim AI: Dari Bilik Darjah Menuju Pentas Kolokium</h1>
+                <p className="kppal-study__lead">
+                  Sebuah kajian tindakan tentang penggunaan simulasi digital untuk membantu
+                  murid Tingkatan 5 memahami konsep atom, molekul dan sebatian melalui
+                  penerokaan, maklum balas segera dan pembetulan berasaskan bukti.
+                </p>
+
+                <div className="kppal-study__stats" aria-label="Ringkasan dapatan kajian">
+                  <div className="kppal-study__stat">
+                    <strong>13</strong>
+                    <span>murid terlibat</span>
+                  </div>
+                  <div className="kppal-study__stat">
+                    <strong>12</strong>
+                    <span>murid meningkat</span>
+                  </div>
+                  <div className="kppal-study__stat kppal-study__stat--accent">
+                    <strong>92.3%</strong>
+                    <span>meningkat sekurang-kurangnya satu tahap</span>
+                  </div>
+                </div>
+
+                <p className="kppal-study__summary">
+                  Sebelum intervensi, kesemua 13 murid berada pada TP3. Selepas penggunaan
+                  EduSim AI, lapan murid mencapai TP4, empat murid mencapai TP5 dan seorang
+                  murid kekal pada TP3. Dapatan ini menunjukkan perubahan positif selepas
+                  intervensi, tanpa mendakwa EduSim AI sebagai satu-satunya faktor penyebab.
+                </p>
+
+                <div className="kppal-study__actions">
+                  <a
+                    className="btn btn--primary"
+                    href="/kajian-tindakan-edusim-atom-molekul.pdf"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Baca Kajian Tindakan
+                  </a>
+                  <a className="btn btn--secondary" href="#kppal-kisah">
+                    Lihat Sinopsis
+                  </a>
+                </div>
+                <ShareBar
+                  title="EduSim AI: Dari Bilik Darjah Menuju KPPAL 2026"
+                  anchor={`#${kppalStudyId}`}
+                />
+              </div>
+
+              <figure className="kppal-study__poster">
+                <img
+                  src="/kppal-2026-poster.jpg"
+                  alt="Poster Kolokium Penyelidikan Pendidikan Antarabangsa Labuan 2026"
+                />
+                <figcaption>
+                  KPPAL 2026 mengetengahkan tema Digitalisasi: Pembentukan Karakter dan
+                  Kecerdasan Buatan dalam Pendidikan.
+                </figcaption>
+              </figure>
+            </div>
+
+            <div id="kppal-kisah" className="kppal-study__preview">
+              <div>
+                <p className="section__label">Sinopsis Kajian</p>
+                <h2>Daripada konsep abstrak kepada pengalaman pembelajaran interaktif</h2>
+              </div>
+              <p>
+                EduSim AI membolehkan murid memilih atom, membina model molekul atau
+                sebatian, meneliti formula dan menyemak binaan melalui panel analisis.
+                Apabila sesuatu ikatan tidak memenuhi peraturan valensi, sistem menerangkan
+                kesilapan supaya murid dapat membetulkan binaan dan mencuba semula.
+              </p>
+            </div>
+
+            <ReadMore
+              open={kppalReadMore}
+              onToggle={() => setKppalReadMore((prev) => !prev)}
+              expandLabel="Baca Selanjutnya"
+              collapseLabel="Lihat Ringkas"
+              className="kppal-study__readmore"
+              contentClassName="kppal-study__content"
+            >
+              <div className="kppal-study__story">
+                <div className="kppal-study__copy">
+                  <p className="section__label">Mengapa kajian ini dijalankan</p>
+                  <h2>Masalah sebenar yang bermula di dalam kelas</h2>
+                  <p>
+                    Konsep atom, molekul dan sebatian sukar difahami kerana prosesnya
+                    berlaku pada aras mikroskopik dan tidak dapat diperhatikan secara
+                    langsung. Murid mungkin dapat mengingati formula, tetapi masih
+                    memerlukan bimbingan untuk menghubungkan susunan atom, jenis ikatan,
+                    valensi, kestabilan struktur dan bahan yang terhasil.
+                  </p>
+                  <p>
+                    Keadaan ini mendorong saya melaksanakan kajian tindakan bertajuk
+                    <em> Makmal Sains Pintar: Meningkatkan Penguasaan Konsep Atom, Molekul
+                    dan Sebatian melalui EduSim AI dalam Kalangan Murid Tingkatan 5</em>.
+                  </p>
+                </div>
+                <figure className="kppal-study__visual kppal-study__visual--portrait">
+                  <img
+                    src="/edusim-kppal-paparan-utama.png"
+                    alt="Paparan utama Simulator Atom, Molekul dan Sebatian dalam EduSim AI"
+                  />
+                  <figcaption>
+                    Paparan utama EduSim AI untuk membina dan menganalisis model zarah.
+                  </figcaption>
+                </figure>
+              </div>
+
+              <div className="kppal-study__story kppal-study__story--reverse">
+                <figure className="kppal-study__visual">
+                  <img
+                    src="/edusim-kppal-maklum-balas-valensi.png"
+                    alt="Maklum balas EduSim apabila ikatan tidak memenuhi peraturan valensi"
+                  />
+                  <figcaption>
+                    Maklum balas segera memberi peluang kepada murid mengenal pasti
+                    kesilapan, membetulkan binaan dan mencuba semula.
+                  </figcaption>
+                </figure>
+                <div className="kppal-study__copy">
+                  <p className="section__label">Peranan AI yang dijelaskan dengan telus</p>
+                  <h2>AI membantu pembangunan; murid menggunakan simulator berasaskan peraturan</h2>
+                  <p>
+                    AI generatif digunakan oleh saya sebagai alat sokongan semasa
+                    penghasilan dan semakan kod. Murid tidak berinteraksi dengan chatbot
+                    atau tutor AI generatif. Semasa pembelajaran, mereka menggunakan
+                    simulator berasaskan peraturan yang telah dibangunkan, diuji dan
+                    disemak oleh guru.
+                  </p>
+                  <p>
+                    Pemisahan peranan ini penting supaya teknologi digunakan secara telus,
+                    terkawal dan bertanggungjawab serta dapatan kajian tidak disalah tafsir.
+                  </p>
+                </div>
+              </div>
+
+              <div className="kppal-study__results">
+                <div className="kppal-study__copy">
+                  <p className="section__label">Dapatan Kajian</p>
+                  <h2>Perubahan tahap penguasaan selepas intervensi</h2>
+                  <p>
+                    Selepas intervensi, 12 daripada 13 murid meningkat sekurang-kurangnya
+                    satu tahap penguasaan. Kajian ini bersifat deskriptif, melibatkan satu
+                    kelas kecil dan tidak mempunyai kumpulan perbandingan. Oleh itu,
+                    dapatan dilaporkan sebagai perubahan yang berlaku selepas intervensi
+                    dan selari dengan penggunaan EduSim AI, bukan bukti hubungan sebab
+                    akibat yang mutlak.
+                  </p>
+                </div>
+                <figure className="kppal-study__visual kppal-study__visual--wide">
+                  <img
+                    src="/edusim-kppal-dapatan-pbd.png"
+                    alt="Jadual dan graf perubahan tahap penguasaan 13 murid sebelum dan selepas intervensi"
+                  />
+                  <figcaption>
+                    Lapan murid mencapai TP4, empat mencapai TP5 dan seorang kekal pada TP3.
+                  </figcaption>
+                </figure>
+              </div>
+
+              <div className="kppal-study__character">
+                <div className="kppal-study__copy">
+                  <p className="section__label">AI dan Pembentukan Karakter</p>
+                  <h2>Karakter dibina melalui cara murid belajar</h2>
+                  <p>
+                    Reka bentuk aktiviti menyediakan ruang untuk pembelajaran kendiri,
+                    ketekunan, tanggungjawab, pemikiran kritis dan integriti dalam semakan.
+                    Murid membuat pilihan, menerima maklum balas, menilai bukti dan
+                    membetulkan kesilapan. Namun, kajian ini tidak menggunakan instrumen
+                    khusus untuk mengukur perubahan karakter. Aspek ini diterangkan sebagai
+                    potensi pedagogi yang disokong oleh aktiviti, bukan sebagai dakwaan
+                    bahawa sahsiah murid telah berubah.
+                  </p>
+                </div>
+                <figure className="kppal-study__visual kppal-study__visual--wide">
+                  <img
+                    src="/edusim-kppal-pembentukan-karakter.png"
+                    alt="Jadual potensi sokongan intervensi EduSim AI terhadap pembentukan karakter"
+                  />
+                  <figcaption>
+                    Hubungan antara ciri aktiviti EduSim AI dengan elemen karakter serta
+                    batas tafsirannya.
+                  </figcaption>
+                </figure>
+              </div>
+
+              <div className="kppal-study__reflection">
+                <p className="section__label">Menuju KPPAL 2026</p>
+                <h2>Membawa pengalaman bilik darjah ke ruang perkongsian profesional</h2>
+                <p>
+                  Kini, saya sedang membuat persediaan untuk mengetengahkan kajian ini
+                  sebagai pembentang dalam Kolokium Penyelidikan Pendidikan Antarabangsa
+                  Labuan 2026. Proses ini memberi ruang kepada saya untuk menyusun
+                  pengalaman bilik darjah secara lebih sistematik, menilai kekuatan dan
+                  batas intervensi secara jujur serta berkongsi amalan yang boleh ditambah
+                  baik oleh pendidik lain.
+                </p>
+                <p>
+                  Kajian ini menepati subtema <em>Pengajaran dan Pembelajaran Digital
+                  Berteraskan AI dan Pembentukan Karakter</em>. Bagi saya, hubungan antara
+                  AI dengan pembentukan karakter tidak terletak pada penggunaan teknologi
+                  semata-mata, tetapi pada cara guru mereka bentuk pengalaman yang mengajak
+                  murid berfikir, membuat keputusan, bertanggungjawab terhadap pilihan dan
+                  membetulkan kesilapan berdasarkan bukti.
+                </p>
+                <blockquote>
+                  Inovasi bukan sekadar menghasilkan aplikasi baharu, tetapi membina
+                  penyelesaian yang berpunca daripada keperluan murid, diuji melalui
+                  amalan guru dan ditambah baik berdasarkan data.
+                </blockquote>
+              </div>
+            </ReadMore>
+          </section>
 
           {/* ── HERO ── */}
           <div id="smartlab-hero" className="inovasi-page__hero">

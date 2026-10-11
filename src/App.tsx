@@ -716,7 +716,8 @@ export default function App() {
     const isInovasiTarget =
       smartLabSectionIds.has(targetId) ||
       eduTrackSectionIds.has(targetId) ||
-      eduSlotSectionIds.has(targetId);
+      eduSlotSectionIds.has(targetId) ||
+      kppalSectionIds.has(targetId);
 
     const isJourneyTarget = journeySectionIds.has(targetId);
     const isRpmTarget = rpmSectionIds.has(targetId);
@@ -756,7 +757,9 @@ export default function App() {
     shareLandingUrl.hash = "";
     shareLandingUrl.search = "";
 
-    const landingFile = eduTrackSectionIds.has(targetId)
+    const landingFile = kppalSectionIds.has(targetId)
+      ? "share-edusim-kppal-2026.html"
+      : eduTrackSectionIds.has(targetId)
       ? "share-edutrack.html"
       : eduSlotSectionIds.has(targetId)
       ? "share-eduslot.html"

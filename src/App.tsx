@@ -1906,9 +1906,12 @@ export default function App() {
   const activeScienceMaterials = sainsManagementActive
     ? panitiaSainsMaterialsByPage[currentPage as ScienceManagementPageId] ?? []
     : [];
+  const isAtomMoleculeSimulator =
+    typeof window !== "undefined" &&
+    window.location.pathname === "/simulator/atom-molekul-sebatian";
 
   return (
-    <div className="page">
+    <div className={`page${isAtomMoleculeSimulator ? " page--atom-mosaic" : ""}`}>
       <nav className="navbar">
         <a
           href={pageHref("home")}

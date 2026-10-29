@@ -2449,6 +2449,17 @@ a {
   color: #ffffff;
 }
 
+.page.page--atom-mosaic {
+  background-color: #f8fafc;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.2) 1px, transparent 1px),
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.96), transparent 32%),
+    linear-gradient(135deg, #ffffff 0%, #f8fafc 52%, #eef2f7 100%);
+  background-size: 76px 76px, 76px 76px, 100% 100%, 100% 100%;
+  background-attachment: scroll;
+}
+
 /* NAVBAR */
 .navbar {
   position: sticky;

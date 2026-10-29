@@ -1,4 +1,7 @@
 import {
+  lazy,
+  Suspense,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -23,6 +26,8 @@ import {
   type MatterAnalysis,
 } from "../../utils/atomSimulator/ClassificationEngine";
 import ChemicalFormula from "./ChemicalFormula";
+
+const AtomStructure3DModal = lazy(() => import("./AtomStructure3DModal"));
 
 type Position = {
   x: number;
@@ -81,12 +86,19 @@ export default function BuildBoard({
 }: BuildBoardProps) {
   const boardRef = useRef<HTMLDivElement | null>(null);
   const deleteRef = useRef<HTMLDivElement | null>(null);
+  const threeDButtonRef = useRef<HTMLButtonElement | null>(null);
   const dragStateRef = useRef<DragState | null>(null);
   const [boardSize, setBoardSize] = useState({ width: 0, height: 0 });
   const [ignoredPairs, setIgnoredPairs] = useState<Set<string>>(() => new Set());
   const [draggingGroup, setDraggingGroup] = useState<string[]>([]);
   const [deleteHover, setDeleteHover] = useState(false);
   const [moveMode, setMoveMode] = useState<MoveMode>("atom");
+  const [show3D, setShow3D] = useState(false);
+
+  const close3D = useCallback(() => {
+    setShow3D(false);
+    window.requestAnimationFrame(() => threeDButtonRef.current?.focus());
+  }, []);
 
   const atomMap = useMemo(() => new Map(atoms.map((atom) => [atom.id, atom])), [atoms]);
 
@@ -324,6 +336,16 @@ export default function BuildBoard({
           </div>
         </div>
         <div className="atomBuildPanel__actions">
+          <button
+            ref={threeDButtonRef}
+            type="button"
+            className="atom3DButton"
+            onClick={() => setShow3D(true)}
+            disabled={!atoms.length}
+            aria-haspopup="dialog"
+          >
+            Paparan 3D
+          </button>
           <div className="atomMoveMode" aria-label="Mod gerakan atom">
             <button
               type="button"
@@ -476,6 +498,18 @@ export default function BuildBoard({
       >
         {deleteHover ? "Lepaskan sekarang untuk buang" : "Seret atom atau molekul ke sini untuk buang"}
       </div>
+
+      {show3D ? (
+        <Suspense fallback={<div className="atom3DLoading" role="status">Menyediakan paparan 3D...</div>}>
+          <AtomStructure3DModal
+            atoms={atoms}
+            bonds={bonds}
+            formula={analysis.formula}
+            name={analysis.name}
+            onClose={close3D}
+          />
+        </Suspense>
+      ) : null}
     </section>
   );
 }

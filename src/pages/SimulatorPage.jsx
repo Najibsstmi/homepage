@@ -18,6 +18,7 @@ import MacronutrientExperimentPage from "./MacronutrientExperimentPage";
 import NitrogenCycleSimulatorPage from "./NitrogenCycleSimulatorPage";
 import NuclearEnergySimulatorPage from "./NuclearEnergySimulatorPage";
 import OpticsLensSimulatorPage from "./OpticsLensSimulatorPage";
+import PulseDetectorPage from "./PulseDetectorPage";
 import PollutionDetectiveSimulatorPage from "./PollutionDetectiveSimulatorPage";
 import ReactionRateSimulatorPage from "./ReactionRateSimulatorPage";
 import WaterEvaporationSimulatorPage from "./WaterEvaporationSimulatorPage";
@@ -28,6 +29,7 @@ import { SimulatorSearch } from "../components/SimulatorSearch";
 import { SIMULATORS } from "../data/simulators";
 
 const SIMULATORS_PER_PAGE = 6;
+const FEATURED_SIMULATOR_IDS = new Set(["pengesan-denyutan-nadi"]);
 const BridgeBuilding3DPage = lazy(() => import("./BridgeBuilding3DPage"));
 
 function StaticHtmlSimulatorFrame({ src, title }) {
@@ -92,6 +94,13 @@ export default function SimulatorPage({ onOpenSimulator }) {
         originalIndex,
       }))
         .sort((first, second) => {
+          const firstFeatured = FEATURED_SIMULATOR_IDS.has(first.simulator.id);
+          const secondFeatured = FEATURED_SIMULATOR_IDS.has(second.simulator.id);
+
+          if (firstFeatured !== secondFeatured) {
+            return firstFeatured ? -1 : 1;
+          }
+
           const firstSummary = summaries[first.simulator.id];
           const secondSummary = summaries[second.simulator.id];
           const reviewCountDifference =
@@ -322,6 +331,14 @@ export default function SimulatorPage({ onOpenSimulator }) {
     return (
       <OpticsLensSimulatorPage
         reviewPanel={getReviewPanel("cahaya-optik-kanta")}
+      />
+    );
+  }
+
+  if (path === "/simulator/pengesan-denyutan-nadi") {
+    return (
+      <PulseDetectorPage
+        reviewPanel={getReviewPanel("pengesan-denyutan-nadi")}
       />
     );
   }

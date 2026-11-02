@@ -85,3 +85,17 @@ powershell -ExecutionPolicy Bypass -File scripts/new-share-page.ps1 -slug 'post-
 - Butang share hanya menghantar URL.
 - Preview Facebook dan Telegram bergantung pada metadata dalam fail share HTML.
 - Jika mahu preview khas untuk sesuatu post, post itu perlu ada share page tersendiri.
+# EduSim Pulse Detector
+
+Simulator kamera PPG tersedia di
+`/simulator/pengesan-denyutan-nadi`. Ia memproses bingkai kamera secara setempat,
+tidak memuat naik video dan hanya memaparkan BPM apabila semakan isyarat lulus.
+
+Jalankan projek dengan `npm install` dan `npm run dev`. Akses kamera memerlukan
+`localhost` atau sambungan HTTPS. Ujian pemprosesan deterministik dijalankan
+dengan `npm run test`; bina pengeluaran dengan `npm run build`.
+
+Untuk pengesahan perkakasan sebenar, lihat
+[`docs/pulse-detector-validation.md`](docs/pulse-detector-validation.md).
+
+> Prototip ini untuk pendidikan Sains Tingkatan 4 dan bukan peranti perubatan.

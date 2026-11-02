@@ -17,6 +17,32 @@ export interface SimulatorMetadata {
 
 export const SIMULATORS: readonly SimulatorMetadata[] = [
   {
+    id: "pengesan-denyutan-nadi",
+    title: "EduSim Pulse Detector",
+    description:
+      "Ukur kadar denyutan nadi sebenar menggunakan kamera telefon dan kaji kesan aktiviti fizikal melalui isyarat PPG.",
+    tingkatan: 4,
+    bab: "Bab 3: Teknik Mengukur Parameter Kesihatan Badan",
+    topik: "Kadar Denyutan Nadi dan Aktiviti Fizikal",
+    requiredExperimentTopics: [
+      "Kesan aktiviti fizikal terhadap kadar denyutan nadi",
+    ],
+    keywords: [
+      "pulse",
+      "pulse detector",
+      "pengesan denyutan nadi",
+      "denyutan nadi",
+      "kadar denyutan nadi",
+      "BPM",
+      "PPG",
+      "kamera",
+      "aktiviti fizikal",
+      "kesihatan badan",
+      "tingkatan 4",
+    ],
+    path: "/simulator/pengesan-denyutan-nadi",
+  },
+  {
     id: "gelombang-bunyi",
     title: "Gelombang Bunyi",
     description:

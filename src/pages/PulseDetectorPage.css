@@ -1,0 +1,284 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+.pulsePage { --navy:#040d18; --panel:#0a1725; --line:#1a3447; --cyan:#4be4f4; --red:#ff4f65; --muted:#8ea7b7; min-height:100vh; background:radial-gradient(circle at 75% 8%,rgba(17,91,116,.18),transparent 28%),var(--navy); color:#eef8fb; font-family:Manrope,system-ui,sans-serif; padding:0 max(18px,calc((100vw - 1180px)/2)); overflow:hidden; }
+.pulsePage * { box-sizing:border-box; }
+.pulseHeader { min-height:78px; display:flex; align-items:center; gap:24px; border-bottom:1px solid rgba(99,156,180,.2); }
+.pulseBack { color:#91aab9; text-decoration:none; font-size:.78rem; letter-spacing:.06em; }
+.pulseHeader__brand { display:flex; align-items:center; gap:12px; margin-right:auto; }
+.pulseBrandMark { width:34px; height:34px; display:grid; place-items:center; border:1px solid var(--cyan); color:var(--cyan); font-weight:800; transform:rotate(45deg); }
+.pulseBrandMark::first-letter { transform:rotate(-45deg); }
+.pulseHeader__brand div { display:flex; flex-direction:column; }
+.pulseHeader__brand strong { font-size:.95rem; letter-spacing:.01em; }
+.pulseHeader__brand span { color:var(--muted); font-size:.68rem; }
+.pulseClassTag,.pulseEyebrow,.pulsePanelHeading span,.pulseReadout__top,.pulseWaveTitle,.pulseSectionTitle p,.pulseVariables span,.pulseResult>div>span { font:500 .67rem DM Mono,monospace; letter-spacing:.13em; text-transform:uppercase; }
+.pulseClassTag { color:#94aebb; border:1px solid var(--line); padding:8px 12px; }
+.pulseHero { padding:58px 0 38px; display:grid; grid-template-columns:1fr 350px; gap:50px; align-items:end; }
+.pulseEyebrow { color:var(--cyan); display:flex; align-items:center; gap:9px; }
+.pulseEyebrow i { display:block; width:21px; height:1px; background:var(--cyan); }
+.pulseHero h1 { margin:16px 0 18px; max-width:680px; font-size:clamp(2.65rem,6.4vw,5.8rem); line-height:.96; letter-spacing:-.062em; font-weight:700; }
+.pulseHero h1 em { font-style:normal; color:transparent; -webkit-text-stroke:1px var(--cyan); }
+.pulseHero>div>p { color:#9ab0bd; max-width:590px; line-height:1.7; font-size:.95rem; }
+.pulsePrivacy { border:1px solid var(--line); border-left:2px solid var(--cyan); background:rgba(8,25,38,.8); padding:18px; display:flex; gap:14px; }
+.pulsePrivacy svg { width:26px; fill:var(--cyan); flex:none; }
+.pulsePrivacy div { display:flex; flex-direction:column; gap:4px; }
+.pulsePrivacy strong { font-size:.8rem; }.pulsePrivacy span { color:var(--muted); font-size:.72rem; line-height:1.55; }
+.pulseInstrument { border:1px solid #173347; background:linear-gradient(145deg,rgba(13,30,45,.96),rgba(5,15,26,.98)); display:grid; grid-template-columns:minmax(300px,.86fr) minmax(390px,1.14fr); box-shadow:0 24px 80px rgba(0,0,0,.3); }
+.pulseCameraPanel,.pulseReadout { padding:25px; min-width:0; }
+.pulseCameraPanel { border-right:1px solid var(--line); }
+.pulsePanelHeading,.pulseReadout__top,.pulseWaveTitle,.pulseProgress>div { display:flex; justify-content:space-between; align-items:center; gap:15px; }
+.pulsePanelHeading>div { display:flex; flex-direction:column; gap:4px; }.pulsePanelHeading span,.pulseReadout__top>span:first-child,.pulseWaveTitle>span { color:#7691a1; }.pulsePanelHeading strong { font-size:.85rem; }
+.pulseLive { color:#718796!important; }.pulseLive i { width:7px; height:7px; display:inline-block; border-radius:50%; background:#516574; }.pulseLive--active { color:var(--red)!important; }.pulseLive--active i { background:var(--red); box-shadow:0 0 12px var(--red); animation:pulseBlink 1.2s infinite; }
+.pulseCameraFrame { margin-top:18px; aspect-ratio:4/3; background:#02070d; position:relative; overflow:hidden; border:1px solid #213a4c; }
+.pulseCameraFrame video { width:100%; height:100%; object-fit:cover; }
+.pulseCameraEmpty { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:15px; color:#607584; text-align:center; padding:28px; font-size:.72rem; line-height:1.5; }.pulseCameraEmpty svg { width:48px; fill:#203748; }
+.pulseRoi { position:absolute; left:50%; top:50%; width:42%; aspect-ratio:1; transform:translate(-50%,-50%); border:1px solid rgba(75,228,244,.8); box-shadow:inset 0 0 24px rgba(75,228,244,.08); display:grid; place-items:end center; }.pulseRoi span { font:500 .58rem DM Mono; text-transform:uppercase; color:var(--cyan); background:rgba(2,13,22,.8); padding:5px 7px; transform:translateY(50%); }
+.pulseScanLines { pointer-events:none; position:absolute; inset:0; opacity:.16; background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(134,226,244,.12) 4px); }
+.pulseStatusMessage { display:flex; min-height:58px; align-items:center; gap:12px; padding:12px 2px 0; }.pulseStatusMessage p { margin:0; font-size:.73rem; line-height:1.45; color:#a4bac6; }.pulseStatusDot { flex:none; width:8px; height:8px; border-radius:50%; background:#536a78; }.pulseStatusDot--measuring,.pulseStatusDot--stabilizing,.pulseStatusDot--result { background:var(--cyan); box-shadow:0 0 10px var(--cyan); }.pulseStatusDot--low_signal,.pulseStatusDot--error { background:var(--red); }
+.pulseTorch { width:100%; border:1px solid var(--line); background:#08121d; color:#8da8b7; font-size:.68rem; padding:9px; cursor:pointer; }.pulseTorch:disabled { cursor:not-allowed; opacity:.65; }
+.pulseReadout { display:flex; flex-direction:column; }.qualityPill { padding:6px 10px; border:1px solid #715f2d; color:#eecf62!important; }.qualityPill--baik { color:#72ead5!important; border-color:#27695f; }.qualityPill--lemah { color:#ff8694!important; border-color:#713541; }
+.pulseBpm { min-height:205px; display:flex; align-items:center; justify-content:center; gap:20px; border-bottom:1px solid var(--line); }.pulseBpm strong { font:500 clamp(5rem,11vw,8.8rem)/1 DM Mono,monospace; letter-spacing:-.09em; color:#f5fbfd; text-shadow:0 0 30px rgba(75,228,244,.09); }.pulseBpm>span:last-child { font:500 .75rem DM Mono; color:#6e8795; align-self:flex-end; margin:0 0 46px -10px; }.pulseHeart { width:32px; color:#48313a; }.pulseHeart svg { fill:currentColor; }.pulseHeart--beating { color:var(--red); filter:drop-shadow(0 0 8px rgba(255,79,101,.7)); animation:heartBeat .9s infinite; }
+.pulseWavePanel { padding:18px 0 8px; }.pulseWaveTitle small { color:#5e7989; font-size:.62rem; }.pulseWaveform { width:100%; height:150px; display:block; margin-top:10px; border:1px solid rgba(44,85,104,.45); }
+.pulseProgress { margin-top:auto; padding-top:13px; }.pulseProgress>div { font-size:.7rem; color:#829baa; margin-bottom:8px; }.pulseProgress strong { font:500 .74rem DM Mono; color:var(--cyan); }.pulseProgress progress { width:100%; height:4px; border:0; display:block; background:#132535; }.pulseProgress progress::-webkit-progress-bar { background:#132535; }.pulseProgress progress::-webkit-progress-value { background:linear-gradient(90deg,#1a9fb5,var(--cyan)); box-shadow:0 0 10px var(--cyan); }.pulseProgress progress::-moz-progress-bar { background:var(--cyan); }
+.pulseActions { display:flex; align-items:center; flex-wrap:wrap; gap:10px; padding:18px 0 48px; }.pulseButton { min-height:44px; padding:0 18px; border:1px solid #274354; color:#a8bfca; background:#0b1825; font:600 .71rem Manrope; letter-spacing:.03em; cursor:pointer; transition:.2s; }.pulseButton:hover:not(:disabled) { border-color:var(--cyan); color:#e8fcff; }.pulseButton:disabled { opacity:.35; cursor:not-allowed; }.pulseButton--primary { background:var(--cyan); color:#02131c; border-color:var(--cyan); font-weight:800; }.pulseButton--primary:hover:not(:disabled) { color:#02131c; transform:translateY(-1px); box-shadow:0 7px 25px rgba(75,228,244,.18); }.pulseButton--primary span { color:var(--red); margin-right:7px; }.pulseButton--stop { border-color:#823a47; color:#ff8492; }.pulseSaved { color:#62dac6; font-size:.72rem; margin-left:auto; }
+.pulseResult { border:1px solid rgba(75,228,244,.35); background:linear-gradient(90deg,rgba(25,103,117,.15),rgba(7,20,31,.6)); display:grid; grid-template-columns:1fr 1.5fr; padding:28px; margin-bottom:54px; gap:25px; }.pulseResult>div>span { color:var(--cyan); }.pulseResult h2 { margin:7px 0 0; font:500 3.8rem DM Mono; }.pulseResult h2 small { font-size:.8rem; color:#718e9d; }.pulseResult dl { display:grid; grid-template-columns:repeat(3,1fr); margin:0; gap:1px; background:var(--line); }.pulseResult dl div { background:#071522; padding:15px; }.pulseResult dt { color:#6e8796; font-size:.65rem; }.pulseResult dd { margin:6px 0 0; font-weight:700; font-size:.78rem; }.pulseResult>p { grid-column:1/-1; margin:0; color:#829aa8; font-size:.68rem; }
+.pulseHowTo,.pulseExperiment { padding:62px 0; border-top:1px solid rgba(82,130,150,.22); }.pulseSectionTitle { display:flex; gap:18px; align-items:flex-start; margin-bottom:34px; }.pulseSectionTitle>span { font:500 .68rem DM Mono; color:var(--cyan); border:1px solid #22505e; padding:7px; }.pulseSectionTitle p { margin:0 0 7px; color:var(--cyan); }.pulseSectionTitle h2 { margin:0; font-size:clamp(1.45rem,3vw,2.25rem); letter-spacing:-.035em; }
+.pulseTips { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }.pulseTips article { min-height:145px; background:#071521; padding:22px; display:flex; gap:14px; }.pulseTips article>span { color:#315464; font:500 1.5rem DM Mono; }.pulseTips h3 { margin:4px 0 9px; font-size:.83rem; }.pulseTips p { margin:0; color:#78919f; font-size:.72rem; line-height:1.6; }
+.pulseExperiment__intro { color:#89a2af; max-width:760px; font-size:.82rem; line-height:1.7; margin:-16px 0 25px; }.pulseConditionTabs { display:flex; gap:1px; background:var(--line); border:1px solid var(--line); max-width:680px; }.pulseConditionTabs button { flex:1; min-height:42px; color:#819aa8; border:0; background:#081522; cursor:pointer; }.pulseConditionTabs button.active { background:#153747; color:var(--cyan); box-shadow:inset 0 -2px var(--cyan); }.pulseExperimentMeasure { margin:12px 0 28px; }
+.pulseExperimentGrid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }.pulseTableWrap,.pulseChart { border:1px solid var(--line); background:#071421; padding:18px; }.pulseTableWrap table { width:100%; border-collapse:collapse; font-size:.75rem; }.pulseTableWrap th { color:#6f8a99; text-align:left; font:500 .62rem DM Mono; letter-spacing:.08em; padding:11px 8px; border-bottom:1px solid var(--line); }.pulseTableWrap td { padding:13px 8px; border-bottom:1px solid rgba(41,73,89,.45); }.pulseTableWrap td:nth-child(2) { font:500 .9rem DM Mono; color:var(--cyan); }.pulseTableWrap details { margin-top:14px; color:#7f9aa9; font-size:.7rem; }.pulseTableWrap summary { cursor:pointer; }.pulseManual { display:grid; grid-template-columns:1fr 75px 60px; align-items:center; gap:7px; margin-top:9px; }.pulseManual input { width:100%; background:#040e18; border:1px solid var(--line); color:white; padding:7px; }.pulseManual button { background:#173746; color:var(--cyan); border:0; height:31px; cursor:pointer; }
+.pulseChart { display:flex; flex-direction:column; justify-content:center; gap:25px; }.pulseBarRow { display:grid; grid-template-columns:105px 1fr 35px; gap:10px; align-items:center; color:#8ba3af; font-size:.68rem; }.pulseBarRow>div { height:18px; background:#0e2332; }.pulseBarRow i { height:100%; display:block; background:linear-gradient(90deg,#16869b,var(--cyan)); box-shadow:0 0 12px rgba(75,228,244,.16); transition:width .5s; }.pulseBarRow strong { font:500 .75rem DM Mono; color:#d4eef4; text-align:right; }
+.pulseVariables { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:18px; }.pulseVariables article { border:1px solid var(--line); padding:16px; }.pulseVariables span { color:#668391; font-size:.58rem; }.pulseVariables p { margin:7px 0 0; font-size:.76rem; }.pulseScienceNotes { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:12px; }.pulseScienceNotes label { color:#8da6b3; font-size:.72rem; }.pulseScienceNotes textarea { display:block; resize:vertical; width:100%; min-height:95px; margin-top:7px; background:#071421; border:1px solid var(--line); color:#dceef2; padding:12px; font:400 .72rem Manrope; }
+.pulseSafety { border:1px solid #364a54; border-left:3px solid #e7bb56; background:#101923; padding:24px; display:grid; grid-template-columns:1.6fr 1fr; gap:35px; margin:22px 0 55px; }.pulseSafety strong { color:#f0cc72; font-size:.8rem; }.pulseSafety p,.pulseSafety li { color:#879ba7; font-size:.7rem; line-height:1.7; }.pulseSafety ul { margin:0; padding-left:18px; }
+.pulseFooter { border-top:1px solid rgba(75,118,137,.25); min-height:70px; display:flex; justify-content:space-between; align-items:center; color:#506a78; font:500 .61rem DM Mono; letter-spacing:.04em; }
+@keyframes pulseBlink { 50% { opacity:.35; } } @keyframes heartBeat { 0%,45%,100%{transform:scale(1)} 15%{transform:scale(1.18)} 28%{transform:scale(.96)} }
+@media (max-width:800px) { .pulsePage { padding:0 14px; }.pulseHeader { min-height:65px; }.pulseBack { display:none; }.pulseClassTag { display:none; }.pulseHero { grid-template-columns:1fr; padding:38px 0 25px; gap:20px; }.pulseHero h1 { font-size:clamp(2.75rem,14vw,4.5rem); }.pulsePrivacy { max-width:none; }.pulseInstrument { grid-template-columns:1fr; }.pulseCameraPanel { border-right:0; border-bottom:1px solid var(--line); }.pulseCameraPanel,.pulseReadout { padding:17px; }.pulseBpm { min-height:170px; }.pulseBpm strong { font-size:5.5rem; }.pulseWaveform { height:130px; }.pulseTips { grid-template-columns:1fr 1fr; }.pulseExperimentGrid,.pulseSafety { grid-template-columns:1fr; }.pulseVariables,.pulseScienceNotes { grid-template-columns:1fr; }.pulseResult { grid-template-columns:1fr; }.pulseResult dl { grid-template-columns:1fr; }.pulseActions { padding-bottom:35px; }.pulseSaved { width:100%; margin:3px 0 0; }.pulseFooter { flex-direction:column; justify-content:center; gap:7px; text-align:center; } }
+@media (max-width:480px) { .pulseHeader__brand strong { font-size:.82rem; }.pulseHero h1 { font-size:2.8rem; }.pulseHero>div>p { font-size:.82rem; }.pulseTips { grid-template-columns:1fr; }.pulseActions .pulseButton { flex:1; padding:0 10px; }.pulseBpm { gap:12px; }.pulseBpm strong { font-size:4.65rem; }.pulseHeart { width:26px; }.pulseConditionTabs { flex-direction:column; }.pulseExperimentMeasure { width:100%; }.pulseBarRow { grid-template-columns:82px 1fr 30px; }.pulseResult dl { display:block; }.pulseResult dl div+div { margin-top:1px; }.pulseSafety { gap:10px; } }
+@media (prefers-reduced-motion:reduce) { .pulsePage * { animation-duration:.01ms!important; animation-iteration-count:1!important; scroll-behavior:auto!important; } }
+
+/* Palet bantuan kecemasan: putih, merah dan tulisan hitam. */
+.pulsePage { --navy:#fff; --panel:#fff; --line:#dedede; --cyan:#d71920; --red:#d71920; --muted:#555; background:#fff; color:#111; }
+.pulseHeader { border-color:#e2e2e2; background:#fff; }
+.pulseBack,.pulseHeader__brand span,.pulseHero>div>p,.pulsePrivacy span { color:#444; }
+.pulseBrandMark { border-color:#d71920; color:#d71920; }
+.pulseHeader__brand strong { color:#111; }
+.pulseClassTag { color:#111; border-color:#d3d3d3; background:#fff; }
+.pulseEyebrow { color:#d71920; }
+.pulseEyebrow i { background:#d71920; }
+.pulseHero h1 { color:#111; }
+.pulseHero h1 em { -webkit-text-stroke:1.5px #d71920; }
+.pulsePrivacy { border-color:#ddd; border-left-color:#d71920; background:#fff; box-shadow:0 8px 30px rgba(0,0,0,.06); }
+.pulsePrivacy svg { fill:#d71920; }
+.pulsePrivacy strong { color:#111; }
+.pulseInstrument { border-color:#d8d8d8; background:#fff; box-shadow:0 18px 50px rgba(0,0,0,.08); }
+.pulseCameraPanel,.pulseReadout { background:#fff; }
+.pulseCameraPanel { border-color:#ddd; }
+.pulsePanelHeading span,.pulseReadout__top>span:first-child,.pulseWaveTitle>span { color:#333; }
+.pulsePanelHeading strong { color:#111; }
+.pulseLive { color:#555!important; }
+.pulseLive i { background:#aaa; }
+.pulseLive--active { color:#d71920!important; }
+.pulseLive--active i { background:#d71920; box-shadow:0 0 10px rgba(215,25,32,.45); }
+.pulseCameraFrame { background:#fff; border-color:#ccc; }
+.pulseCameraEmpty { color:#444; background:#fff; }
+.pulseCameraEmpty svg { fill:#d71920; opacity:.8; }
+.pulseRoi { border-color:#d71920; box-shadow:inset 0 0 20px rgba(215,25,32,.08); }
+.pulseRoi span { color:#fff; background:#d71920; }
+.pulseScanLines { background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(215,25,32,.1) 4px); }
+.pulseStatusMessage p { color:#222; }
+.pulseStatusDot { background:#777; }
+.pulseStatusDot--measuring,.pulseStatusDot--stabilizing,.pulseStatusDot--result { background:#d71920; box-shadow:0 0 8px rgba(215,25,32,.4); }
+.pulseStatusDot--low_signal,.pulseStatusDot--error { background:#d71920; }
+.pulseTorch { border-color:#ddd; background:#fff; color:#333; }
+.qualityPill,.qualityPill--baik,.qualityPill--lemah { color:#d71920!important; border-color:#d71920; background:#fff; }
+.pulseBpm { border-color:#e1e1e1; }
+.pulseBpm strong { color:#111; text-shadow:none; }
+.pulseBpm>span:last-child { color:#333; }
+.pulseHeart { color:#ddd; }
+.pulseHeart--beating { color:#d71920; filter:drop-shadow(0 0 6px rgba(215,25,32,.35)); }
+.pulseWaveTitle small { color:#555; }
+.pulseWaveform { border-color:#ddd; }
+.pulseProgress>div { color:#333; }
+.pulseProgress strong { color:#d71920; }
+.pulseProgress progress,.pulseProgress progress::-webkit-progress-bar { background:#ededed; }
+.pulseProgress progress::-webkit-progress-value { background:#d71920; box-shadow:none; }
+.pulseProgress progress::-moz-progress-bar { background:#d71920; }
+.pulseButton { border-color:#c9c9c9; color:#111; background:#fff; }
+.pulseButton:hover:not(:disabled) { border-color:#d71920; color:#d71920; }
+.pulseButton--primary { background:#d71920; color:#fff; border-color:#d71920; }
+.pulseButton--primary:hover:not(:disabled) { color:#fff; box-shadow:0 7px 22px rgba(215,25,32,.18); }
+.pulseButton--primary span { color:#fff; }
+.pulseButton--stop { border-color:#d71920; color:#d71920; }
+.pulseSaved { color:#111; }
+.pulseResult { border-color:#d71920; background:#fff; box-shadow:0 10px 35px rgba(215,25,32,.08); }
+.pulseResult>div>span { color:#d71920; }
+.pulseResult dl { background:#ddd; }
+.pulseResult dl div { background:#fff; }
+.pulseResult dt,.pulseResult>p { color:#444; }
+.pulseResult dd { color:#111; }
+.pulseHowTo,.pulseExperiment { border-color:#e1e1e1; }
+.pulseSectionTitle>span { color:#d71920; border-color:#d71920; }
+.pulseSectionTitle p { color:#d71920; }
+.pulseSectionTitle h2 { color:#111; }
+.pulseTips { background:#ddd; border-color:#ddd; }
+.pulseTips article { background:#fff; }
+.pulseTips article>span { color:#d71920; }
+.pulseTips h3 { color:#111; }
+.pulseTips p,.pulseExperiment__intro { color:#444; }
+.pulseConditionTabs { background:#ddd; border-color:#ddd; }
+.pulseConditionTabs button { color:#333; background:#fff; }
+.pulseConditionTabs button.active { color:#fff; background:#d71920; box-shadow:none; }
+.pulseTableWrap,.pulseChart { border-color:#ddd; background:#fff; }
+.pulseTableWrap th { color:#333; border-color:#ddd; }
+.pulseTableWrap td { color:#111; border-color:#eee; }
+.pulseTableWrap td:nth-child(2) { color:#d71920; }
+.pulseTableWrap details { color:#333; }
+.pulseManual input { background:#fff; border-color:#bbb; color:#111; }
+.pulseManual button { background:#d71920; color:#fff; }
+.pulseBarRow { color:#333; }
+.pulseBarRow>div { background:#eee; }
+.pulseBarRow i { background:#d71920; box-shadow:none; }
+.pulseBarRow strong { color:#111; }
+.pulseVariables article { border-color:#ddd; background:#fff; }
+.pulseVariables span { color:#d71920; }
+.pulseVariables p { color:#111; }
+.pulseScienceNotes label { color:#111; }
+.pulseScienceNotes textarea { background:#fff; border-color:#ccc; color:#111; }
+.pulseSafety { border-color:#ddd; border-left-color:#d71920; background:#fff; box-shadow:0 8px 28px rgba(0,0,0,.05); }
+.pulseSafety strong { color:#d71920; }
+.pulseSafety p,.pulseSafety li { color:#333; }
+.pulseFooter { border-color:#ddd; color:#333; }
+
+body:has(.pulsePage),
+.page:has(.pulsePage) { background:#fff; }
+body:has(.pulsePage) .navbar { background:rgba(255,255,255,.96); border-bottom-color:#ddd; box-shadow:0 2px 14px rgba(0,0,0,.05); }
+body:has(.pulsePage) .navbar__brand { color:#d71920; }
+body:has(.pulsePage) .navbar__linkBtn,
+body:has(.pulsePage) .navDropdownTrigger { color:#111; }
+body:has(.pulsePage) .navDropdownTrigger,
+body:has(.pulsePage) .navDropdownTrigger:hover { background:#fff; color:#d71920; border:1px solid #d71920; box-shadow:none; }
+body:has(.pulsePage) .navbar__linkBtn::after { background:#d71920; }
+body:has(.pulsePage) .navbar__linkBtn:hover,
+body:has(.pulsePage) .navbar__linkBtn--active,
+body:has(.pulsePage) .navDropdownTrigger:hover { color:#d71920; }
+body:has(.pulsePage) .navbar__edusim-btn,
+body:has(.pulsePage) .navbar__edusim-btn:hover,
+body:has(.pulsePage) .navbar__edusim-btn--active { background:#d71920; color:#fff; box-shadow:none; }
+body:has(.pulsePage) .navbar__inovasi-btn { background:#fff; color:#d71920; border:1px solid #d71920; box-shadow:none; }
+body:has(.pulsePage) .navbar__toggle span { background:#d71920; }
+
+.pulseModeSwitcher { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:0 0 26px; }
+.pulseModeSwitcher button { min-height:92px; display:flex; align-items:center; gap:16px; padding:18px 20px; text-align:left; border:1px solid #d7d7d7; background:#fff; color:#111; cursor:pointer; transition:.2s ease; }
+.pulseModeSwitcher button>span { width:38px; height:38px; flex:none; display:grid; place-items:center; border:1px solid #c8c8c8; color:#555; font:500 .68rem DM Mono,monospace; }
+.pulseModeSwitcher button div { display:flex; flex-direction:column; gap:4px; }
+.pulseModeSwitcher strong { font-size:.9rem; }
+.pulseModeSwitcher small { color:#555; font-size:.7rem; line-height:1.4; }
+.pulseModeSwitcher button:hover:not(:disabled) { border-color:#d71920; }
+.pulseModeSwitcher button.active { border-color:#d71920; background:#d71920; color:#fff; box-shadow:0 10px 28px rgba(215,25,32,.14); }
+.pulseModeSwitcher button.active>span { border-color:#fff; color:#fff; }
+.pulseModeSwitcher button.active small { color:#fff; }
+.pulseModeSwitcher button:disabled { cursor:not-allowed; opacity:.65; }
+.pulseExperimentSetup { margin:0 0 18px; padding:22px; border:1px solid #d71920; border-left-width:4px; background:#fff; display:grid; grid-template-columns:minmax(250px,.8fr) minmax(420px,1.2fr); gap:26px; align-items:center; }
+.pulseExperimentSetup>div:first-child>span { color:#d71920; font:500 .62rem DM Mono,monospace; letter-spacing:.12em; }
+.pulseExperimentSetup h2 { margin:6px 0 5px; color:#111; font-size:1.15rem; }
+.pulseExperimentSetup p { margin:0; color:#444; font-size:.72rem; line-height:1.55; }
+.pulseExperimentSetup .pulseConditionTabs { max-width:none; width:100%; }
+@media (max-width:700px) {
+  body:has(.pulsePage) .navbar__links { background:#fff; border-bottom-color:#ddd; }
+  body:has(.pulsePage) .navbar__drawerHeader { background:#fff; color:#111; }
+}
+@media (max-width:800px) {
+  .pulseModeSwitcher { grid-template-columns:1fr; gap:8px; }
+  .pulseModeSwitcher button { min-height:78px; padding:14px; }
+  .pulseExperimentSetup { grid-template-columns:1fr; padding:17px; gap:16px; }
+}
+
+/* Hero visual baharu: komposisi instrumen pendidikan dengan telefon lutsinar. */
+.pulseHeader { margin-top:14px; padding:14px 20px; min-height:72px; border:1px solid #e3e7ed; border-radius:18px; box-shadow:0 10px 30px rgba(23,55,91,.06); }
+.pulseHero { position:relative; min-height:570px; padding:46px 0 18px; grid-template-columns:minmax(0,1.08fr) minmax(430px,.92fr); align-items:center; gap:24px; overflow:visible; }
+.pulseHero__copy { position:relative; z-index:3; padding-left:2px; }
+.pulseHero h1 { max-width:760px; margin:22px 0 20px; font-size:clamp(3.8rem,5.25vw,5.35rem); line-height:.94; letter-spacing:-.067em; }
+.pulseHero h1 span,.pulseHero h1 em { display:block; white-space:nowrap; }
+.pulseHero h1 em { color:#d71920; -webkit-text-stroke:0; }
+.pulseHero__copy>p { max-width:660px; color:#253147; font-size:clamp(.95rem,1.25vw,1.12rem); line-height:1.65; }
+.pulseHero__actions { display:flex; flex-wrap:wrap; gap:14px; margin-top:30px; }
+.pulseHeroButton { min-height:56px; display:inline-flex; align-items:center; justify-content:center; gap:11px; padding:0 26px; border:2px solid #0c2854; border-radius:14px; color:#0a2146; background:#fff; text-decoration:none; font-weight:800; font-size:.9rem; box-shadow:0 8px 24px rgba(15,39,75,.06); transition:.2s ease; }
+.pulseHeroButton:hover { transform:translateY(-2px); border-color:#d71920; color:#d71920; }
+.pulseHeroButton--primary { border-color:#d71920; color:#fff; background:#d71920; box-shadow:0 12px 28px rgba(215,25,32,.2); }
+.pulseHeroButton--primary:hover { color:#fff; background:#bd1118; }
+.pulseHeroVisual { position:relative; align-self:stretch; min-height:520px; display:flex; align-items:flex-end; justify-content:center; isolation:isolate; }
+.pulseHeroVisual__halo { position:absolute; width:520px; height:470px; right:-70px; top:34px; border-radius:48% 0 0 48%; overflow:hidden; background:radial-gradient(circle at 42% 45%,rgba(255,255,255,.98) 0 12%,rgba(255,224,225,.9) 38%,rgba(215,25,32,.16) 70%,rgba(215,25,32,.08) 100%),linear-gradient(rgba(215,25,32,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(215,25,32,.08) 1px,transparent 1px); background-size:auto,34px 34px,34px 34px; z-index:-1; }
+.pulseHeroVisual__halo svg { position:absolute; width:245px; right:24px; top:92px; fill:none; stroke:#d71920; stroke-width:3; opacity:.2; filter:drop-shadow(0 0 10px rgba(215,25,32,.25)); }
+.pulseHeroVisual>img { position:relative; z-index:2; width:min(100%,500px); max-height:555px; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 24px 28px rgba(9,25,48,.2)); }
+.pulseHeroVisual__caption { position:absolute; z-index:3; right:12px; bottom:18px; padding:5px 8px; border-radius:999px; background:rgba(255,255,255,.9); color:#666; font:500 .56rem DM Mono,monospace; letter-spacing:.06em; text-transform:uppercase; }
+.pulseModeSwitcher { grid-template-columns:1.08fr 1fr .88fr; margin-top:2px; }
+.pulseModePrivacy { min-height:92px; display:flex; align-items:center; gap:15px; padding:18px 20px; border:1px solid #d7d7d7; background:#fff; color:#111; box-shadow:0 8px 24px rgba(15,39,75,.05); }
+.pulseModePrivacy svg { width:34px; flex:none; fill:#d71920; }
+.pulseModePrivacy div { display:flex; flex-direction:column; gap:4px; }
+.pulseModePrivacy strong { font-size:.88rem; }
+.pulseModePrivacy small { color:#444; font-size:.68rem; line-height:1.45; }
+#pulse-instrument,#pulse-guide { scroll-margin-top:96px; }
+
+@media (max-width:1040px) {
+  .pulseHero { grid-template-columns:minmax(0,1fr) minmax(340px,.72fr); min-height:520px; }
+  .pulseHero h1 { font-size:clamp(3.4rem,7vw,5rem); }
+  .pulseHeroVisual { min-height:450px; }
+  .pulseHeroVisual>img { max-height:470px; }
+  .pulseHeroVisual__halo { width:430px; height:410px; }
+  .pulseModeSwitcher { grid-template-columns:1fr 1fr; }
+  .pulseModePrivacy { grid-column:1/-1; min-height:76px; }
+}
+
+@media (max-width:800px) {
+  .pulseHeader { margin-top:8px; padding:10px 12px; min-height:62px; border-radius:12px; }
+  .pulseHero { grid-template-columns:1fr; min-height:0; padding:38px 0 12px; gap:0; }
+  .pulseHero h1 { font-size:clamp(3.1rem,14vw,4.5rem); line-height:.92; }
+  .pulseHero h1 span,.pulseHero h1 em { white-space:normal; }
+  .pulseHero__copy>p { font-size:.86rem; }
+  .pulseHero__actions { margin-top:22px; }
+  .pulseHeroButton { flex:1 1 180px; min-height:50px; padding:0 14px; font-size:.78rem; }
+  .pulseHeroVisual { min-height:390px; margin-top:12px; }
+  .pulseHeroVisual>img { width:min(100%,365px); max-height:410px; }
+  .pulseHeroVisual__halo { width:360px; height:340px; right:-90px; top:32px; }
+  .pulseHeroVisual__halo svg { width:180px; top:70px; right:72px; }
+  .pulseModeSwitcher { grid-template-columns:1fr; margin-top:6px; }
+  .pulseModePrivacy { grid-column:auto; min-height:78px; padding:14px; }
+}
+
+/* Kebolehbacaan instrumen: elakkan label terlalu kecil pada laptop dan projektor. */
+.pulseModeSwitcher button>span { width:46px; height:46px; font-size:13px; }
+.pulseModeSwitcher strong { font-size:18px; line-height:1.25; }
+.pulseModeSwitcher small { font-size:14px; line-height:1.5; }
+.pulseModePrivacy svg { width:39px; }
+.pulseModePrivacy strong { font-size:18px; }
+.pulseModePrivacy small { font-size:14px; line-height:1.5; }
+.pulsePanelHeading span { font-size:14px; letter-spacing:.08em; }
+.pulsePanelHeading strong { margin-top:4px; font-size:17px; line-height:1.35; }
+.pulseLive { font-size:14px!important; letter-spacing:.06em!important; }
+.pulseCameraEmpty { font-size:15px; line-height:1.6; }
+.pulseCameraEmpty svg { width:58px; }
+.pulseRoi span { font-size:12px; }
+.pulseStatusMessage { min-height:66px; gap:14px; }
+.pulseStatusMessage p { font-size:15px; line-height:1.55; }
+.pulseStatusDot { width:10px; height:10px; }
+.pulseTorch { font-size:14px; padding:12px; }
+.pulseReadout__top { font-size:14px; letter-spacing:.08em; }
+.qualityPill { font-size:13px; padding:8px 13px; }
+.pulseBpm>span:last-child { font-size:15px; }
+.pulseWaveTitle>span { font-size:14px; letter-spacing:.08em; }
+.pulseWaveTitle small { font-size:13px; }
+.pulseProgress>div { font-size:14px; }
+.pulseProgress strong { font-size:14px; }
+.pulseButton { min-height:50px; padding:0 22px; font-size:14px; }
+.pulseSaved { font-size:14px; }
+.pulseResult dt { font-size:.75rem; }
+.pulseResult dd { font-size:.9rem; }
+
+@media (max-width:800px) {
+  .pulseModeSwitcher strong { font-size:17px; }
+  .pulseModeSwitcher small { font-size:14px; }
+  .pulsePanelHeading span { font-size:12.5px; }
+  .pulsePanelHeading strong { font-size:16px; }
+  .pulseCameraEmpty { font-size:14px; }
+  .pulseStatusMessage p { font-size:14px; }
+  .pulseReadout__top,.pulseWaveTitle>span { font-size:12.5px; }
+  .pulseWaveTitle small { font-size:12px; }
+}

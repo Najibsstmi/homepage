@@ -1,0 +1,290 @@
+[
+  {
+    "id": "Skull",
+    "nameMs": "Tengkorak",
+    "nameEn": "Skull",
+    "category": "axial",
+    "group": "Kepala",
+    "side": "midline"
+  },
+  {
+    "id": "VertebralColumn",
+    "nameMs": "Turus vertebra",
+    "nameEn": "Vertebral column",
+    "category": "axial",
+    "group": "Batang tubuh",
+    "side": "midline"
+  },
+  {
+    "id": "Sternum",
+    "nameMs": "Sternum",
+    "nameEn": "Sternum",
+    "category": "axial",
+    "group": "Dada",
+    "side": "midline"
+  },
+  {
+    "id": "RibCage",
+    "nameMs": "Tulang rusuk",
+    "nameEn": "Ribs",
+    "category": "axial",
+    "group": "Dada",
+    "side": "midline"
+  },
+  {
+    "id": "Clavicle_L",
+    "nameMs": "Klavikel",
+    "nameEn": "Clavicle",
+    "category": "appendicular",
+    "group": "Lengkungan pektoral",
+    "side": "left"
+  },
+  {
+    "id": "Clavicle_R",
+    "nameMs": "Klavikel",
+    "nameEn": "Clavicle",
+    "category": "appendicular",
+    "group": "Lengkungan pektoral",
+    "side": "right"
+  },
+  {
+    "id": "Scapula_L",
+    "nameMs": "Skapula",
+    "nameEn": "Scapula",
+    "category": "appendicular",
+    "group": "Lengkungan pektoral",
+    "side": "left"
+  },
+  {
+    "id": "Scapula_R",
+    "nameMs": "Skapula",
+    "nameEn": "Scapula",
+    "category": "appendicular",
+    "group": "Lengkungan pektoral",
+    "side": "right"
+  },
+  {
+    "id": "Humerus_L",
+    "nameMs": "Humerus",
+    "nameEn": "Humerus",
+    "category": "appendicular",
+    "group": "Anggota atas",
+    "side": "left"
+  },
+  {
+    "id": "Humerus_R",
+    "nameMs": "Humerus",
+    "nameEn": "Humerus",
+    "category": "appendicular",
+    "group": "Anggota atas",
+    "side": "right"
+  },
+  {
+    "id": "Radius_L",
+    "nameMs": "Radius",
+    "nameEn": "Radius",
+    "category": "appendicular",
+    "group": "Anggota atas",
+    "side": "left"
+  },
+  {
+    "id": "Radius_R",
+    "nameMs": "Radius",
+    "nameEn": "Radius",
+    "category": "appendicular",
+    "group": "Anggota atas",
+    "side": "right"
+  },
+  {
+    "id": "Ulna_L",
+    "nameMs": "Ulna",
+    "nameEn": "Ulna",
+    "category": "appendicular",
+    "group": "Anggota atas",
+    "side": "left"
+  },
+  {
+    "id": "Ulna_R",
+    "nameMs": "Ulna",
+    "nameEn": "Ulna",
+    "category": "appendicular",
+    "group": "Anggota atas",
+    "side": "right"
+  },
+  {
+    "id": "Carpals_L",
+    "nameMs": "Karpus",
+    "nameEn": "Carpals",
+    "category": "appendicular",
+    "group": "Anggota atas",
+    "side": "left"
+  },
+  {
+    "id": "Carpals_R",
+    "nameMs": "Karpus",
+    "nameEn": "Carpals",
+    "category": "appendicular",
+    "group": "Anggota atas",
+    "side": "right"
+  },
+  {
+    "id": "Metacarpals_L",
+    "nameMs": "Metakarpus",
+    "nameEn": "Metacarpals",
+    "category": "appendicular",
+    "group": "Anggota atas",
+    "side": "left"
+  },
+  {
+    "id": "Metacarpals_R",
+    "nameMs": "Metakarpus",
+    "nameEn": "Metacarpals",
+    "category": "appendicular",
+    "group": "Anggota atas",
+    "side": "right"
+  },
+  {
+    "id": "HandPhalanges_L",
+    "nameMs": "Falanks tangan",
+    "nameEn": "Hand phalanges",
+    "category": "appendicular",
+    "group": "Anggota atas",
+    "side": "left"
+  },
+  {
+    "id": "HandPhalanges_R",
+    "nameMs": "Falanks tangan",
+    "nameEn": "Hand phalanges",
+    "category": "appendicular",
+    "group": "Anggota atas",
+    "side": "right"
+  },
+  {
+    "id": "HipBone_L",
+    "nameMs": "Tulang punggung",
+    "nameEn": "Hip bone",
+    "category": "appendicular",
+    "group": "Lengkungan pelvis",
+    "side": "left"
+  },
+  {
+    "id": "HipBone_R",
+    "nameMs": "Tulang punggung",
+    "nameEn": "Hip bone",
+    "category": "appendicular",
+    "group": "Lengkungan pelvis",
+    "side": "right"
+  },
+  {
+    "id": "Femur_L",
+    "nameMs": "Femur",
+    "nameEn": "Femur",
+    "category": "appendicular",
+    "group": "Anggota bawah",
+    "side": "left"
+  },
+  {
+    "id": "Femur_R",
+    "nameMs": "Femur",
+    "nameEn": "Femur",
+    "category": "appendicular",
+    "group": "Anggota bawah",
+    "side": "right"
+  },
+  {
+    "id": "Patella_L",
+    "nameMs": "Patela",
+    "nameEn": "Patella",
+    "category": "appendicular",
+    "group": "Anggota bawah",
+    "side": "left"
+  },
+  {
+    "id": "Patella_R",
+    "nameMs": "Patela",
+    "nameEn": "Patella",
+    "category": "appendicular",
+    "group": "Anggota bawah",
+    "side": "right"
+  },
+  {
+    "id": "Tibia_L",
+    "nameMs": "Tibia",
+    "nameEn": "Tibia",
+    "category": "appendicular",
+    "group": "Anggota bawah",
+    "side": "left"
+  },
+  {
+    "id": "Tibia_R",
+    "nameMs": "Tibia",
+    "nameEn": "Tibia",
+    "category": "appendicular",
+    "group": "Anggota bawah",
+    "side": "right"
+  },
+  {
+    "id": "Fibula_L",
+    "nameMs": "Fibula",
+    "nameEn": "Fibula",
+    "category": "appendicular",
+    "group": "Anggota bawah",
+    "side": "left"
+  },
+  {
+    "id": "Fibula_R",
+    "nameMs": "Fibula",
+    "nameEn": "Fibula",
+    "category": "appendicular",
+    "group": "Anggota bawah",
+    "side": "right"
+  },
+  {
+    "id": "Tarsals_L",
+    "nameMs": "Tarsus",
+    "nameEn": "Tarsals",
+    "category": "appendicular",
+    "group": "Anggota bawah",
+    "side": "left"
+  },
+  {
+    "id": "Tarsals_R",
+    "nameMs": "Tarsus",
+    "nameEn": "Tarsals",
+    "category": "appendicular",
+    "group": "Anggota bawah",
+    "side": "right"
+  },
+  {
+    "id": "Metatarsals_L",
+    "nameMs": "Metatarsus",
+    "nameEn": "Metatarsals",
+    "category": "appendicular",
+    "group": "Anggota bawah",
+    "side": "left"
+  },
+  {
+    "id": "Metatarsals_R",
+    "nameMs": "Metatarsus",
+    "nameEn": "Metatarsals",
+    "category": "appendicular",
+    "group": "Anggota bawah",
+    "side": "right"
+  },
+  {
+    "id": "FootPhalanges_L",
+    "nameMs": "Falanks kaki",
+    "nameEn": "Foot phalanges",
+    "category": "appendicular",
+    "group": "Anggota bawah",
+    "side": "left"
+  },
+  {
+    "id": "FootPhalanges_R",
+    "nameMs": "Falanks kaki",
+    "nameEn": "Foot phalanges",
+    "category": "appendicular",
+    "group": "Anggota bawah",
+    "side": "right"
+  }
+]

@@ -31,6 +31,7 @@ import { SIMULATORS } from "../data/simulators";
 const SIMULATORS_PER_PAGE = 6;
 const FEATURED_SIMULATOR_IDS = new Set(["pengesan-denyutan-nadi"]);
 const BridgeBuilding3DPage = lazy(() => import("./BridgeBuilding3DPage"));
+const HumanSkeletonBuilderPage = lazy(() => import("./HumanSkeletonBuilderPage"));
 
 function StaticHtmlSimulatorFrame({ src, title }) {
   const frameRef = useRef(null);
@@ -163,6 +164,10 @@ export default function SimulatorPage({ onOpenSimulator }) {
       </div>
     );
   };
+
+  if (path === "/simulator/human-skeleton-builder-3d") {
+    return <Suspense fallback={<main className="simulatorPage">Memuatkan modul rangka…</main>}><HumanSkeletonBuilderPage /></Suspense>;
+  }
 
   if (path === "/simulator/penyejatan-air") {
     return (

@@ -1,0 +1,7 @@
+{
+  "source": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/partof_BP3D_4.0_obj_99.zip (BodyParts3D 4.0 PART-OF, 99% reduction)",
+  "creator": "The Database Center for Life Science (DBCLS)",
+  "license": "CC BY-SA 2.1 Japan (per downloaded OBJ headers); current database notice also states CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.1/jp/",
+  "modifications": "Selected, grouped and transformed meshes into 36 learning components; excluded eye structures and duplicate hyoid; draft pending anatomical review."
+}

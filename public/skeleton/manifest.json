@@ -1,0 +1,914 @@
+{
+  "version": 1,
+  "coordinateSpace": "scene",
+  "components": [
+    {
+      "id": "Skull",
+      "nameMs": "Tengkorak",
+      "nameEn": "Skull",
+      "category": "axial",
+      "group": "Kepala",
+      "side": "midline",
+      "targetPosition": [
+        -0.0006764984130859113,
+        0.7460549507141112,
+        -0.022605506896972494
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 23
+    },
+    {
+      "id": "VertebralColumn",
+      "nameMs": "Turus vertebra",
+      "nameEn": "Vertebral column",
+      "category": "axial",
+      "group": "Batang tubuh",
+      "side": "midline",
+      "targetPosition": [
+        -0.000704648971557591,
+        0.349238452911377,
+        -0.05465287971496575
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 48
+    },
+    {
+      "id": "Sternum",
+      "nameMs": "Sternum",
+      "nameEn": "Sternum",
+      "category": "axial",
+      "group": "Dada",
+      "side": "midline",
+      "targetPosition": [
+        -0.000010498046874973799,
+        0.46173994827270515,
+        0.06329499435424817
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 3
+    },
+    {
+      "id": "RibCage",
+      "nameMs": "Tulang rusuk",
+      "nameEn": "Ribs",
+      "category": "axial",
+      "group": "Dada",
+      "side": "midline",
+      "targetPosition": [
+        -0.0006640014648437238,
+        0.406374927520752,
+        -0.0005927966833113724
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 38
+    },
+    {
+      "id": "Clavicle_L",
+      "nameMs": "Klavikel",
+      "nameEn": "Clavicle",
+      "category": "appendicular",
+      "group": "Lengkungan pektoral",
+      "side": "left",
+      "targetPosition": [
+        0.07614986753463748,
+        0.5489599800109863,
+        -0.00828875160217274
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Clavicle_R",
+      "nameMs": "Klavikel",
+      "nameEn": "Clavicle",
+      "category": "appendicular",
+      "group": "Lengkungan pektoral",
+      "side": "right",
+      "targetPosition": [
+        -0.0774798192977905,
+        0.5491349067687987,
+        -0.008341255187988159
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Scapula_L",
+      "nameMs": "Skapula",
+      "nameEn": "Scapula",
+      "category": "appendicular",
+      "group": "Lengkungan pektoral",
+      "side": "left",
+      "targetPosition": [
+        0.11175220489501957,
+        0.48400990676879885,
+        -0.06013720273971546
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Scapula_R",
+      "nameMs": "Skapula",
+      "nameEn": "Scapula",
+      "category": "appendicular",
+      "group": "Lengkungan pektoral",
+      "side": "right",
+      "targetPosition": [
+        -0.11176939964294431,
+        0.48401491165161126,
+        -0.06013487696647633
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Humerus_L",
+      "nameMs": "Humerus",
+      "nameEn": "Humerus",
+      "category": "appendicular",
+      "group": "Anggota atas",
+      "side": "left",
+      "targetPosition": [
+        0.1904059982299805,
+        0.3999699287414551,
+        -0.03337905502319327
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Humerus_R",
+      "nameMs": "Humerus",
+      "nameEn": "Humerus",
+      "category": "appendicular",
+      "group": "Anggota atas",
+      "side": "right",
+      "targetPosition": [
+        -0.19047599792480466,
+        0.3999749336242675,
+        -0.03339245223999014
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Radius_L",
+      "nameMs": "Radius",
+      "nameEn": "Radius",
+      "category": "appendicular",
+      "group": "Anggota atas",
+      "side": "left",
+      "targetPosition": [
+        0.24947900390625002,
+        0.13769145584106446,
+        -0.014660854339599572
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Radius_R",
+      "nameMs": "Radius",
+      "nameEn": "Radius",
+      "category": "appendicular",
+      "group": "Anggota atas",
+      "side": "right",
+      "targetPosition": [
+        -0.24969449615478514,
+        0.13754747390747069,
+        -0.015016204833984345
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Ulna_L",
+      "nameMs": "Ulna",
+      "nameEn": "Ulna",
+      "category": "appendicular",
+      "group": "Anggota atas",
+      "side": "left",
+      "targetPosition": [
+        0.2219954986572266,
+        0.14584791946411124,
+        -0.025105854034423794
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Ulna_R",
+      "nameMs": "Ulna",
+      "nameEn": "Ulna",
+      "category": "appendicular",
+      "group": "Anggota atas",
+      "side": "right",
+      "targetPosition": [
+        -0.22204049682617186,
+        0.14591640090942382,
+        -0.024874902725219694
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Carpals_L",
+      "nameMs": "Karpus",
+      "nameEn": "Carpals",
+      "category": "appendicular",
+      "group": "Anggota atas",
+      "side": "left",
+      "targetPosition": [
+        0.2567975082397461,
+        0.013573932647705012,
+        0.015059497833251959
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 8
+    },
+    {
+      "id": "Carpals_R",
+      "nameMs": "Karpus",
+      "nameEn": "Carpals",
+      "category": "appendicular",
+      "group": "Anggota atas",
+      "side": "right",
+      "targetPosition": [
+        -0.2568494873046875,
+        0.013646442413330018,
+        0.015074497222900399
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 8
+    },
+    {
+      "id": "Metacarpals_L",
+      "nameMs": "Metakarpus",
+      "nameEn": "Metacarpals",
+      "category": "appendicular",
+      "group": "Anggota atas",
+      "side": "left",
+      "targetPosition": [
+        0.2674370040893555,
+        -0.024670574188232486,
+        0.02407449722290038
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 5
+    },
+    {
+      "id": "Metacarpals_R",
+      "nameMs": "Metakarpus",
+      "nameEn": "Metacarpals",
+      "category": "appendicular",
+      "group": "Anggota atas",
+      "side": "right",
+      "targetPosition": [
+        -0.26739999389648433,
+        -0.024840587615966858,
+        0.024071990966796866
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 5
+    },
+    {
+      "id": "HandPhalanges_L",
+      "nameMs": "Falanks tangan",
+      "nameEn": "Hand phalanges",
+      "category": "appendicular",
+      "group": "Anggota atas",
+      "side": "left",
+      "targetPosition": [
+        0.2714039993286133,
+        -0.07262754440307617,
+        0.05556750106811524
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 14
+    },
+    {
+      "id": "HandPhalanges_R",
+      "nameMs": "Falanks tangan",
+      "nameEn": "Hand phalanges",
+      "category": "appendicular",
+      "group": "Anggota atas",
+      "side": "right",
+      "targetPosition": [
+        -0.27141500091552734,
+        -0.07276255416870125,
+        0.05573899459838867
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 14
+    },
+    {
+      "id": "HipBone_L",
+      "nameMs": "Tulang punggung",
+      "nameEn": "Hip bone",
+      "category": "appendicular",
+      "group": "Lengkungan pelvis",
+      "side": "left",
+      "targetPosition": [
+        0.07374165582656864,
+        0.07212544631958007,
+        -0.038816532850265484
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "HipBone_R",
+      "nameMs": "Tulang punggung",
+      "nameEn": "Hip bone",
+      "category": "appendicular",
+      "group": "Lengkungan pelvis",
+      "side": "right",
+      "targetPosition": [
+        -0.07384164500236509,
+        0.07211595535278315,
+        -0.03895261484384535
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Femur_L",
+      "nameMs": "Femur",
+      "nameEn": "Femur",
+      "category": "appendicular",
+      "group": "Anggota bawah",
+      "side": "left",
+      "targetPosition": [
+        0.09109110164642337,
+        -0.1817475547790528,
+        -0.028142402648925813
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Femur_R",
+      "nameMs": "Femur",
+      "nameEn": "Femur",
+      "category": "appendicular",
+      "group": "Anggota bawah",
+      "side": "right",
+      "targetPosition": [
+        -0.09102464962005613,
+        -0.18169405746459966,
+        -0.028160402297973675
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Patella_L",
+      "nameMs": "Patela",
+      "nameEn": "Patella",
+      "category": "appendicular",
+      "group": "Anggota bawah",
+      "side": "left",
+      "targetPosition": [
+        0.08139775085449222,
+        -0.4017650566101075,
+        0.0028044967651366243
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Patella_R",
+      "nameMs": "Patela",
+      "nameEn": "Patella",
+      "category": "appendicular",
+      "group": "Anggota bawah",
+      "side": "right",
+      "targetPosition": [
+        -0.08146489906311033,
+        -0.40175407028198246,
+        0.0028379936218260876
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Tibia_L",
+      "nameMs": "Tibia",
+      "nameEn": "Tibia",
+      "category": "appendicular",
+      "group": "Anggota bawah",
+      "side": "left",
+      "targetPosition": [
+        0.07223410224914553,
+        -0.5990117268562318,
+        -0.0257729530334474
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Tibia_R",
+      "nameMs": "Tibia",
+      "nameEn": "Tibia",
+      "category": "appendicular",
+      "group": "Anggota bawah",
+      "side": "right",
+      "targetPosition": [
+        -0.07229499626159666,
+        -0.5989536347389222,
+        -0.025567554473877083
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Fibula_L",
+      "nameMs": "Fibula",
+      "nameEn": "Fibula",
+      "category": "appendicular",
+      "group": "Anggota bawah",
+      "side": "left",
+      "targetPosition": [
+        0.10230800247192386,
+        -0.6159248552322388,
+        -0.04569500160217299
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Fibula_R",
+      "nameMs": "Fibula",
+      "nameEn": "Fibula",
+      "category": "appendicular",
+      "group": "Anggota bawah",
+      "side": "right",
+      "targetPosition": [
+        -0.10226524734497068,
+        -0.6159600143432618,
+        -0.04569340324401869
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 1
+    },
+    {
+      "id": "Tarsals_L",
+      "nameMs": "Tarsus",
+      "nameEn": "Tarsals",
+      "category": "appendicular",
+      "group": "Anggota bawah",
+      "side": "left",
+      "targetPosition": [
+        0.08006150245666507,
+        -0.8155546056032181,
+        -0.02665860462188739
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 7
+    },
+    {
+      "id": "Tarsals_R",
+      "nameMs": "Tarsus",
+      "nameEn": "Tarsals",
+      "category": "appendicular",
+      "group": "Anggota bawah",
+      "side": "right",
+      "targetPosition": [
+        -0.0799908981323242,
+        -0.8155849463939667,
+        -0.026765451431274595
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 7
+    },
+    {
+      "id": "Metatarsals_L",
+      "nameMs": "Metatarsus",
+      "nameEn": "Metatarsals",
+      "category": "appendicular",
+      "group": "Anggota bawah",
+      "side": "left",
+      "targetPosition": [
+        0.11359550094604495,
+        -0.8269555130004884,
+        0.03174519348144515
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 5
+    },
+    {
+      "id": "Metatarsals_R",
+      "nameMs": "Metatarsus",
+      "nameEn": "Metatarsals",
+      "category": "appendicular",
+      "group": "Anggota bawah",
+      "side": "right",
+      "targetPosition": [
+        -0.11358284378051756,
+        -0.826967212677002,
+        0.03176055145263655
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 5
+    },
+    {
+      "id": "FootPhalanges_L",
+      "nameMs": "Falanks kaki",
+      "nameEn": "Foot phalanges",
+      "category": "appendicular",
+      "group": "Anggota bawah",
+      "side": "left",
+      "targetPosition": [
+        0.12802015304565434,
+        -0.8439111099243165,
+        0.08332549667358381
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 14
+    },
+    {
+      "id": "FootPhalanges_R",
+      "nameMs": "Falanks kaki",
+      "nameEn": "Foot phalanges",
+      "category": "appendicular",
+      "group": "Anggota bawah",
+      "side": "right",
+      "targetPosition": [
+        -0.12800379562377928,
+        -0.8437955627441407,
+        0.08335599899291975
+      ],
+      "targetQuaternion": [
+        -0.7071067811865475,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "targetScale": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "meshCount": 14
+    }
+  ],
+  "attribution": {
+    "source": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/partof_BP3D_4.0_obj_99.zip (BodyParts3D 4.0 PART-OF, 99% reduction)",
+    "creator": "The Database Center for Life Science (DBCLS)",
+    "license": "CC BY-SA 2.1 Japan (per downloaded OBJ headers); current database notice also states CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.1/jp/",
+    "modifications": "Selected, grouped and transformed meshes into 36 learning components; excluded eye structures and duplicate hyoid; draft pending anatomical review."
+  },
+  "inputFile": "draft-indexed.glb"
+}

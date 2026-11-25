@@ -1,0 +1,591 @@
+{
+  "status": "preliminary: not anatomically validated",
+  "groups": {
+    "Skull": {
+      "sourceNames": [
+        "skull"
+      ],
+      "elementIds": [
+        "FJ3199",
+        "FJ3200",
+        "FJ3201",
+        "FJ3263",
+        "FJ3265",
+        "FJ3269",
+        "FJ3272",
+        "FJ3273",
+        "FJ3274",
+        "FJ3281",
+        "FJ3287",
+        "FJ3289",
+        "FJ3309",
+        "FJ3369",
+        "FJ3371",
+        "FJ3375",
+        "FJ3378",
+        "FJ3379",
+        "FJ3380",
+        "FJ3386",
+        "FJ3392",
+        "FJ3394",
+        "FJ3395"
+      ]
+    },
+    "VertebralColumn": {
+      "sourceNames": [
+        "vertebral column"
+      ],
+      "elementIds": [
+        "FJ3154",
+        "FJ3155",
+        "FJ3156",
+        "FJ3157",
+        "FJ3158",
+        "FJ3159",
+        "FJ3160",
+        "FJ3161",
+        "FJ3162",
+        "FJ3163",
+        "FJ3164",
+        "FJ3165",
+        "FJ3166",
+        "FJ3167",
+        "FJ3168",
+        "FJ3169",
+        "FJ3170",
+        "FJ3171",
+        "FJ3172",
+        "FJ3173",
+        "FJ3174",
+        "FJ3175",
+        "FJ3176",
+        "FJ3177",
+        "FJ3202",
+        "FJ3203",
+        "FJ3204",
+        "FJ3205",
+        "FJ3206",
+        "FJ3207",
+        "FJ3208",
+        "FJ3209",
+        "FJ3210",
+        "FJ3211",
+        "FJ3212",
+        "FJ3213",
+        "FJ3214",
+        "FJ3215",
+        "FJ3216",
+        "FJ3217",
+        "FJ3218",
+        "FJ3219",
+        "FJ3220",
+        "FJ3221",
+        "FJ3222",
+        "FJ3223",
+        "FJ3224",
+        "FJ3393"
+      ]
+    },
+    "Sternum": {
+      "sourceNames": [
+        "sternum"
+      ],
+      "elementIds": [
+        "FJ3153",
+        "FJ3178",
+        "FJ3290"
+      ]
+    },
+    "RibCage": {
+      "sourceNames": [
+        "rib cage"
+      ],
+      "elementIds": [
+        "FJ3225",
+        "FJ3226",
+        "FJ3227",
+        "FJ3228",
+        "FJ3229",
+        "FJ3230",
+        "FJ3231",
+        "FJ3232",
+        "FJ3233",
+        "FJ3234",
+        "FJ3235",
+        "FJ3236",
+        "FJ3239",
+        "FJ3242",
+        "FJ3245",
+        "FJ3248",
+        "FJ3251",
+        "FJ3254",
+        "FJ3255",
+        "FJ3330",
+        "FJ3331",
+        "FJ3332",
+        "FJ3333",
+        "FJ3334",
+        "FJ3335",
+        "FJ3336",
+        "FJ3337",
+        "FJ3338",
+        "FJ3339",
+        "FJ3340",
+        "FJ3341",
+        "FJ3342",
+        "FJ3343",
+        "FJ3344",
+        "FJ3345",
+        "FJ3346",
+        "FJ3347",
+        "FJ3348"
+      ]
+    },
+    "Clavicle_L": {
+      "sourceNames": [
+        "left clavicle"
+      ],
+      "elementIds": [
+        "FJ3237"
+      ]
+    },
+    "Scapula_L": {
+      "sourceNames": [
+        "left scapula"
+      ],
+      "elementIds": [
+        "FJ3279"
+      ]
+    },
+    "Humerus_L": {
+      "sourceNames": [
+        "left humerus"
+      ],
+      "elementIds": [
+        "FJ3262"
+      ]
+    },
+    "Radius_L": {
+      "sourceNames": [
+        "left radius"
+      ],
+      "elementIds": [
+        "FJ3277"
+      ]
+    },
+    "Ulna_L": {
+      "sourceNames": [
+        "left ulna"
+      ],
+      "elementIds": [
+        "FJ3286"
+      ]
+    },
+    "HipBone_L": {
+      "sourceNames": [
+        "left hip bone"
+      ],
+      "elementIds": [
+        "FJ3288"
+      ]
+    },
+    "Femur_L": {
+      "sourceNames": [
+        "left femur"
+      ],
+      "elementIds": [
+        "FJ3259"
+      ]
+    },
+    "Patella_L": {
+      "sourceNames": [
+        "left patella"
+      ],
+      "elementIds": [
+        "FJ3275"
+      ]
+    },
+    "Tibia_L": {
+      "sourceNames": [
+        "left tibia"
+      ],
+      "elementIds": [
+        "FJ3282"
+      ]
+    },
+    "Fibula_L": {
+      "sourceNames": [
+        "left fibula"
+      ],
+      "elementIds": [
+        "FJ3260"
+      ]
+    },
+    "Carpals_L": {
+      "sourceNames": [
+        "left scaphoid",
+        "left lunate",
+        "left triquetral",
+        "left pisiform",
+        "left trapezium",
+        "left trapezoid",
+        "left capitate",
+        "left hamate"
+      ],
+      "elementIds": [
+        "FJ3257",
+        "FJ3261",
+        "FJ3268",
+        "FJ3276",
+        "FJ3278",
+        "FJ3283",
+        "FJ3284",
+        "FJ3285"
+      ]
+    },
+    "Tarsals_L": {
+      "sourceNames": [
+        "left talus",
+        "left calcaneus",
+        "left cuboid bone",
+        "left medial cuneiform bone",
+        "left intermediate cuneiform bone",
+        "left lateral cuneiform bone",
+        "navicular bone of left foot"
+      ],
+      "elementIds": [
+        "FJ3256",
+        "FJ3258",
+        "FJ3264",
+        "FJ3267",
+        "FJ3271",
+        "FJ3280",
+        "FJ3307"
+      ]
+    },
+    "Metacarpals_L": {
+      "sourceNames": [
+        "left first metacarpal bone",
+        "left second metacarpal bone",
+        "left third metacarpal bone",
+        "left fourth metacarpal bone",
+        "left fifth metacarpal bone"
+      ],
+      "elementIds": [
+        "FJ3240",
+        "FJ3243",
+        "FJ3246",
+        "FJ3249",
+        "FJ3252"
+      ]
+    },
+    "Metatarsals_L": {
+      "sourceNames": [
+        "left first metatarsal bone",
+        "left second metatarsal bone",
+        "left third metatarsal bone",
+        "left fourth metatarsal bone",
+        "left fifth metatarsal bone"
+      ],
+      "elementIds": [
+        "FJ3241",
+        "FJ3244",
+        "FJ3247",
+        "FJ3250",
+        "FJ3253"
+      ]
+    },
+    "HandPhalanges_L": {
+      "sourceNames": [
+        "middle phalanx of left index finger",
+        "middle phalanx of left middle finger",
+        "middle phalanx of left ring finger",
+        "middle phalanx of left little finger",
+        "distal phalanx of left thumb",
+        "distal phalanx of left index finger",
+        "distal phalanx of left middle finger",
+        "distal phalanx of left ring finger",
+        "distal phalanx of left little finger",
+        "proximal phalanx of left thumb",
+        "proximal phalanx of left little finger",
+        "proximal phalanx of left middle finger",
+        "proximal phalanx of left index finger",
+        "proximal phalanx of left ring finger"
+      ],
+      "elementIds": [
+        "FJ3183",
+        "FJ3184",
+        "FJ3186",
+        "FJ3187",
+        "FJ3188",
+        "FJ3291",
+        "FJ3296",
+        "FJ3297",
+        "FJ3299",
+        "FJ3313",
+        "FJ3314",
+        "FJ3316",
+        "FJ3317",
+        "FJ3318"
+      ]
+    },
+    "FootPhalanges_L": {
+      "sourceNames": [
+        "proximal phalanx of left second toe",
+        "proximal phalanx of left third toe",
+        "proximal phalanx of left fourth toe",
+        "proximal phalanx of left little toe",
+        "middle phalanx of left second toe",
+        "middle phalanx of left third toe",
+        "middle phalanx of left fourth toe",
+        "distal phalanx of left big toe",
+        "distal phalanx of left second toe",
+        "distal phalanx of left third toe",
+        "distal phalanx of left fourth toe",
+        "distal phalanx of left little toe",
+        "proximal phalanx of left big toe",
+        "middle phalanx of left little toe"
+      ],
+      "elementIds": [
+        "FJ3179",
+        "FJ3180",
+        "FJ3181",
+        "FJ3182",
+        "FJ3185",
+        "FJ3293",
+        "FJ3294",
+        "FJ3295",
+        "FJ3298",
+        "FJ3311",
+        "FJ3312",
+        "FJ3315",
+        "FJ3328",
+        "FJ3329"
+      ]
+    },
+    "Clavicle_R": {
+      "sourceNames": [
+        "right clavicle"
+      ],
+      "elementIds": [
+        "FJ3362"
+      ]
+    },
+    "Scapula_R": {
+      "sourceNames": [
+        "right scapula"
+      ],
+      "elementIds": [
+        "FJ3384"
+      ]
+    },
+    "Humerus_R": {
+      "sourceNames": [
+        "right humerus"
+      ],
+      "elementIds": [
+        "FJ3368"
+      ]
+    },
+    "Radius_R": {
+      "sourceNames": [
+        "right radius"
+      ],
+      "elementIds": [
+        "FJ3349"
+      ]
+    },
+    "Ulna_R": {
+      "sourceNames": [
+        "right ulna"
+      ],
+      "elementIds": [
+        "FJ3391"
+      ]
+    },
+    "HipBone_R": {
+      "sourceNames": [
+        "right hip bone"
+      ],
+      "elementIds": [
+        "FJ3152"
+      ]
+    },
+    "Femur_R": {
+      "sourceNames": [
+        "right femur"
+      ],
+      "elementIds": [
+        "FJ3365"
+      ]
+    },
+    "Patella_R": {
+      "sourceNames": [
+        "right patella"
+      ],
+      "elementIds": [
+        "FJ3381"
+      ]
+    },
+    "Tibia_R": {
+      "sourceNames": [
+        "right tibia"
+      ],
+      "elementIds": [
+        "FJ3387"
+      ]
+    },
+    "Fibula_R": {
+      "sourceNames": [
+        "right fibula"
+      ],
+      "elementIds": [
+        "FJ3366"
+      ]
+    },
+    "Carpals_R": {
+      "sourceNames": [
+        "right scaphoid",
+        "right lunate",
+        "right triquetral",
+        "right pisiform",
+        "right trapezium",
+        "right trapezoid",
+        "right capitate",
+        "right hamate"
+      ],
+      "elementIds": [
+        "FJ3361",
+        "FJ3367",
+        "FJ3374",
+        "FJ3382",
+        "FJ3383",
+        "FJ3388",
+        "FJ3389",
+        "FJ3390"
+      ]
+    },
+    "Tarsals_R": {
+      "sourceNames": [
+        "right talus",
+        "right calcaneus",
+        "right cuboid bone",
+        "right medial cuneiform bone",
+        "right intermediate cuneiform bone",
+        "right lateral cuneiform bone",
+        "navicular bone of right foot"
+      ],
+      "elementIds": [
+        "FJ3308",
+        "FJ3360",
+        "FJ3364",
+        "FJ3370",
+        "FJ3373",
+        "FJ3377",
+        "FJ3385"
+      ]
+    },
+    "Metacarpals_R": {
+      "sourceNames": [
+        "right first metacarpal bone",
+        "right second metacarpal bone",
+        "right third metacarpal bone",
+        "right fourth metacarpal bone",
+        "right fifth metacarpal bone"
+      ],
+      "elementIds": [
+        "FJ3350",
+        "FJ3352",
+        "FJ3354",
+        "FJ3356",
+        "FJ3358"
+      ]
+    },
+    "Metatarsals_R": {
+      "sourceNames": [
+        "right first metatarsal bone",
+        "right second metatarsal bone",
+        "right third metatarsal bone",
+        "right fourth metatarsal bone",
+        "right fifth metatarsal bone"
+      ],
+      "elementIds": [
+        "FJ3351",
+        "FJ3353",
+        "FJ3355",
+        "FJ3357",
+        "FJ3359"
+      ]
+    },
+    "HandPhalanges_R": {
+      "sourceNames": [
+        "proximal phalanx of right thumb",
+        "proximal phalanx of right index finger",
+        "proximal phalanx of right middle finger",
+        "proximal phalanx of right ring finger",
+        "proximal phalanx of right little finger",
+        "middle phalanx of right index finger",
+        "middle phalanx of right middle finger",
+        "middle phalanx of right ring finger",
+        "middle phalanx of right little finger",
+        "distal phalanx of right thumb",
+        "distal phalanx of right index finger",
+        "distal phalanx of right middle finger",
+        "distal phalanx of right ring finger",
+        "distal phalanx of right little finger"
+      ],
+      "elementIds": [
+        "FJ3193",
+        "FJ3194",
+        "FJ3196",
+        "FJ3197",
+        "FJ3198",
+        "FJ3292",
+        "FJ3303",
+        "FJ3304",
+        "FJ3306",
+        "FJ3322",
+        "FJ3323",
+        "FJ3325",
+        "FJ3326",
+        "FJ3327"
+      ]
+    },
+    "FootPhalanges_R": {
+      "sourceNames": [
+        "proximal phalanx of right second toe",
+        "proximal phalanx of right third toe",
+        "proximal phalanx of right fourth toe",
+        "proximal phalanx of right little toe",
+        "middle phalanx of right second toe",
+        "middle phalanx of right third toe",
+        "middle phalanx of right fourth toe",
+        "distal phalanx of right big toe",
+        "distal phalanx of right second toe",
+        "distal phalanx of right third toe",
+        "distal phalanx of right fourth toe",
+        "distal phalanx of right little toe",
+        "proximal phalanx of right big toe",
+        "middle phalanx of right little toe"
+      ],
+      "elementIds": [
+        "FJ3189",
+        "FJ3190",
+        "FJ3191",
+        "FJ3192",
+        "FJ3195",
+        "FJ3300",
+        "FJ3301",
+        "FJ3302",
+        "FJ3305",
+        "FJ3310",
+        "FJ3319",
+        "FJ3320",
+        "FJ3321",
+        "FJ3324"
+      ]
+    }
+  },
+  "missing": [],
+  "overlaps": []
+}

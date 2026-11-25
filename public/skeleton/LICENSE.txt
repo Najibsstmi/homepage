@@ -1,0 +1,7 @@
+BodyParts3D, © The Database Center for Life Science, licensed under CC Attribution-Share Alike 2.1 Japan.
+Source: https://dbarchive.biosciencedbc.jp/en/bodyparts3d/download.html
+License: https://creativecommons.org/licenses/by-sa/2.1/jp/
+Current database license notice: https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html
+Source dataset: BodyParts3D 4.0, PART-OF tree, 99% polygon reduction.
+Changes: selected skeletal elements, removed eye structures and duplicate hyoid, grouped elements into 36 learning components, converted axes/units and indexed duplicate vertices. This is a preliminary model pending anatomical review.
+The derivative model is provided under CC BY-SA 2.1 Japan.

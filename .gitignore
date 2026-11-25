@@ -25,3 +25,7 @@ public/PERJALANAN/KID PASIR GUDANG 2026/*.mp4
 *.njsproj
 *.sln
 *.sw?
+
+# Source downloads and development-only skeleton previews (published model is in public/skeleton).
+tmp/bodyparts3d/
+tmp/bodyparts3d-parts.txt

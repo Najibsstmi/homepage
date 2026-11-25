@@ -17,6 +17,16 @@ export interface SimulatorMetadata {
 
 export const SIMULATORS: readonly SimulatorMetadata[] = [
   {
+    id: "human-skeleton-builder-3d",
+    title: "Human Skeleton Builder 3D (Dalam Pembangunan)",
+    description: "Terokai model awal 36 komponen rangka manusia. Aktiviti pemasangan masih dalam pembangunan.",
+    tingkatan: 4,
+    bab: "Bab 6: Sokongan, Pergerakan dan Pertumbuhan",
+    topik: "Sistem Rangka Manusia",
+    keywords: ["rangka", "skeleton", "tulang", "anatomi", "tingkatan 4"],
+    path: "/simulator/human-skeleton-builder-3d",
+  },
+  {
     id: "pengesan-denyutan-nadi",
     title: "EduSim Pulse Detector",
     description:

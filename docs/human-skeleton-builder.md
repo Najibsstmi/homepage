@@ -1,6 +1,6 @@
 # Human Skeleton Builder 3D — status pembangunan
 
-Modul berdaftar pada `/simulator/human-skeleton-builder-3d` dan ditandakan **Dalam Pembangunan**. Viewer menggunakan model BodyParts3D sebenar yang dikumpulkan kepada 36 komponen. Model dan aplikasi ini belum memenuhi kriteria simulasi lengkap: belum ada aktiviti pemasangan atau pengesahan anatomi manusia.
+Modul berdaftar pada `/simulator/human-skeleton-builder-3d` dan menyediakan mod Bina Rangka serta Terokai Rangka. Viewer dan pemasangan menggunakan model BodyParts3D sebenar yang dikumpulkan kepada 36 komponen. Model masih memerlukan pengesahan anatomi manusia dan ujian menyeluruh pada peranti sentuh.
 
 ## Kurikulum
 
@@ -32,4 +32,4 @@ Pratonton yang dijana disimpan di `tmp/bodyparts3d/previews/` (hadapan, belakang
 
 ## Fungsi dan kerja yang masih diperlukan
 
-Viewer asas memuatkan GLB sebenar, membolehkan putaran/zoom/pan, memilih dan mewarnakan komponen serta menapis kategori. Senarai dan maklumat asas tersedia; fungsi tulang, thumbnail, label dan exploded view belum dibina. Penempatan dan toleransi mempunyai fungsi serta ujian unit asas, tetapi belum disambungkan kepada UI. Drag-and-drop, sentuhan untuk memasang, empat mod, petunjuk, animasi snap, undo/reset UI, penilaian, LocalStorage, mod siap, QA mobile dan semakan anatomi penuh masih diperlukan. Jangan menggambarkan modul sebagai simulasi pemasangan yang lengkap.
+Mod Bina Rangka menyediakan inventori dengan thumbnail mesh, panduan separa telus, seretan atau ketikan untuk memasang, semakan kedudukan dan sisi, petunjuk, undo, reset, statistik, penyimpanan tempatan dan paparan selepas lengkap. Mod Terokai Rangka mengekalkan putaran, zoom, pemilihan dan pengelasan. Fungsi tulang, label dan exploded view belum dibina. Ketepatan postur dan struktur kecil masih memerlukan semakan manusia; uji sentuhan dan semua 36 pemasangan pada peranti sebenar sebelum menganggapnya siap sepenuhnya.

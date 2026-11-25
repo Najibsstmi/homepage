@@ -19,7 +19,7 @@ export const SIMULATORS: readonly SimulatorMetadata[] = [
   {
     id: "human-skeleton-builder-3d",
     title: "Human Skeleton Builder 3D (Dalam Pembangunan)",
-    description: "Terokai model awal 36 komponen rangka manusia. Aktiviti pemasangan masih dalam pembangunan.",
+    description: "Bina dan terokai rangka manusia 3D menggunakan 36 komponen pembelajaran. Model masih dalam semakan anatomi.",
     tingkatan: 4,
     bab: "Bab 6: Sokongan, Pergerakan dan Pertumbuhan",
     topik: "Sistem Rangka Manusia",

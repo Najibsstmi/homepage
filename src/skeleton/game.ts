@@ -16,6 +16,16 @@ export function validatePlacement(actual: Transform, target: Transform, position
   return new Vector3(...actual.position).distanceTo(new Vector3(...target.position)) <= positionTolerance && a.normalize().angleTo(b.normalize()) <= rotationTolerance;
 }
 
+/** Target positions and the supplied position are expressed in the same scene space. */
+export function isPlacementAtTarget(id: string, position: Vector3, targets: ReadonlyMap<string, { world: Vector3 }>): boolean {
+  const target = targets.get(id);
+  if (!target || ![position.x, position.y, position.z].every(Number.isFinite)) return false;
+  const opposite = id.endsWith('_L') ? id.slice(0, -2) + '_R' : id.endsWith('_R') ? id.slice(0, -2) + '_L' : '';
+  const other = targets.get(opposite);
+  const tolerance = other ? Math.min(0.055, Math.max(0.009, target.world.distanceTo(other.world) * 0.42)) : 0.06;
+  return position.distanceTo(target.world) <= tolerance;
+}
+
 export function attemptPlacement(state: GameState, id: string, validIds: readonly string[], success: boolean): GameState {
   if (!validIds.includes(id) || state.installed.includes(id) || state.mode === 'explore') return state;
   return { ...state, attempts: state.attempts + 1, mistakes: state.mistakes + (success ? 0 : 1), installed: success ? [...state.installed, id] : state.installed };

@@ -1,0 +1,16 @@
+import { describe, expect, it } from 'vitest'
+import { exercises } from './exercises'
+import { calibrate, calibrateWindow, elapsedAt, hasReliableCoverage, movement, stageAt, stageResults, totalDuration } from './movement'
+import { addVoice, emptyVoice, measureAudio } from './audio'
+const rules=exercises[0].feedbackRules
+const stage={instruction:'A',duration:5,objectives:['a'],transition:'abrupt' as const}
+describe('exercise content',()=>{it('defines reviewable activities and valid stages',()=>{for(const e of exercises){expect(e.id).toBeTruthy();expect(e.curriculum).toContain('1.1.1');expect(e.validation).toBe('perlu semakan guru');expect(e.instructions.length).toBeGreaterThan(0);for(const s of e.stages??[]){expect(s.duration).toBeGreaterThan(0);expect(s.objectives.length).toBeGreaterThan(0)}}expect(new Set(exercises.map(e=>e.id)).size).toBe(exercises.length)})})
+describe('face movement',()=>{
+ it('averages neutral observations and requires enough samples',()=>{expect(calibrate([{a:1}])).toBeNull();expect(calibrate([{a:0},{a:1},{a:0},{a:1},{a:0}])).toEqual({a:.4})})
+ it('requires all target coefficients',()=>{expect(movement({a:.5},{a:.2},['a'])).toBeCloseTo(.3);expect(movement({a:.5},{a:.2},['a','missing'])).toBeNull()})
+ it('rejects a calibration with long tracking gaps',()=>{const full=Array.from({length:20},(_,i)=>({time:i*.1,values:{a:.2}}));expect(calibrateWindow(full)).toEqual({a:expect.closeTo(.2)});expect(calibrateWindow(full.filter(x=>x.time<.6||x.time>1.4))).toBeNull()})
+ it('suppresses feedback for concentrated samples or large gaps',()=>{const sparse=Array.from({length:8},(_,i)=>({time:i*.1,values:{a:i*.02}}));const r=stageResults([stage],sparse,{a:0})[0];expect(r.onset).not.toBeNull();expect(hasReliableCoverage(r,5,rules)).toBe(false);expect(hasReliableCoverage(r,1,rules)).toBe(true)})
+ it('does not estimate cue response when tracking starts late',()=>{const late=Array.from({length:40},(_,i)=>({time:1+i*.1,values:{a:.2}}));const r=stageResults([stage],late,{a:0})[0];expect(r.cueObserved).toBe(false);expect(r.onset).toBeNull();expect(r.transitionOnset).toBeNull()})
+})
+describe('stage clock',()=>{const stages=[{instruction:'A',duration:5,objectives:['a'],transition:'gradual' as const},{instruction:'B',duration:4,objectives:['a'],transition:'abrupt' as const}];it('advances at boundaries',()=>{expect(totalDuration(stages)).toBe(9);expect(stageAt(stages,4.99)).toBe(0);expect(stageAt(stages,5)).toBe(1)});it('resumes from accumulated pause time',()=>{const paused=elapsedAt(0,1000,3500);expect(paused).toBe(2.5);expect(elapsedAt(paused,10000,11500)).toBe(4)})})
+describe('audio signal',()=>{it('distinguishes silence and clipping',()=>{const silence=measureAudio(new Float32Array(2048),48000,0);expect(silence.hz).toBeNull();expect(silence.clipping).toBe(false);const samples=new Float32Array(2048);samples[10]=1;expect(measureAudio(samples,48000,0).clipping).toBe(true)});it('counts silence and voiced duration from samples',()=>{let s=emptyVoice();s=addVoice(s,{rms:.1,db:-20,hz:220,clipping:false,voiced:true},1,0,true);s=addVoice(s,{rms:0,db:-100,hz:null,clipping:false,voiced:false},.5,0,false);expect(s.voiced).toBe(1);expect(s.silence).toBe(.5);expect(s.pauses).toBe(1)})})

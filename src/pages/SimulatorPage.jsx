@@ -27,10 +27,12 @@ import SoundWaveSimulatorPage from "./SoundWaveSimulatorPage";
 import PascalHydraulicSimulator from "../components/PascalHydraulicSimulator";
 import { SimulatorSearch } from "../components/SimulatorSearch";
 import { SIMULATORS } from "../data/simulators";
+import "./TheatreCatalogue.css";
 
 const SIMULATORS_PER_PAGE = 6;
 const FEATURED_SIMULATOR_IDS = new Set(["pengesan-denyutan-nadi"]);
 const BridgeBuilding3DPage = lazy(() => import("./BridgeBuilding3DPage"));
+const TheatreStudio = lazy(() => import("./TheatreStudio"));
 const HumanSkeletonBuilderPage = lazy(() => import("./HumanSkeletonBuilderPage"));
 
 function StaticHtmlSimulatorFrame({ src, title }) {
@@ -86,6 +88,7 @@ export default function SimulatorPage({ onOpenSimulator }) {
   const path = typeof window === "undefined" ? "/simulator" : window.location.pathname;
   const { refresh, status: ratingStatus, summaries } = useRatingSummaries();
   const [currentPage, setCurrentPage] = useState(1);
+  const [category, setCategory] = useState("all");
   const gridRef = useRef(null);
   const hasChangedPage = useRef(false);
   const sortedSimulators = useMemo(
@@ -164,6 +167,10 @@ export default function SimulatorPage({ onOpenSimulator }) {
       </div>
     );
   };
+
+  if (path === "/simulator/steam-theatre" || path.startsWith("/simulator/steam-theatre/")) {
+    return <Suspense fallback={<main className="simulatorPage">Memuatkan studio…</main>}><TheatreStudio /></Suspense>;
+  }
 
   if (path === "/simulator/human-skeleton-builder-3d") {
     return <Suspense fallback={<main className="simulatorPage">Memuatkan modul rangka…</main>}><HumanSkeletonBuilderPage /></Suspense>;
@@ -363,6 +370,11 @@ export default function SimulatorPage({ onOpenSimulator }) {
         </div>
       </section>
 
+      <nav className="steam-category" aria-label="Kategori pembelajaran">
+        {[["all", "Semua"], ["stem", "STEM"], ["steam", "STEAM"]].map(([id, label]) => <button key={id} type="button" aria-pressed={category === id} onClick={() => setCategory(id)}>{label}</button>)}
+      </nav>
+      {category !== "stem" && <section className="steam-catalogue"><small>STEAM CREATIVE STUDIOS</small><h2>STEAM Theatre – AI Acting Studio</h2><p>Teroka ekspresi, transisi dan teknik vokal dalam ruang latihan teater.</p><a href="/simulator/steam-theatre">Masuk studio →</a></section>}
+      {category !== "steam" && <>
       <section
         ref={gridRef}
         className="simulatorGrid"
@@ -400,6 +412,8 @@ export default function SimulatorPage({ onOpenSimulator }) {
           Seterusnya
         </button>
       </nav>
+      </>}
     </main>
   );
 }
+

@@ -25,3 +25,16 @@ body:has(.theatre-work){min-width:0}
 body:has(.theatre){min-width:0}
 .theatre-tabs{flex-wrap:wrap}
 @media(max-width:767px){.theatre-instruction select{flex:1 1 14ch;min-width:min(100%,14ch)}}
+/* The video keeps its intrinsic shape; the canvas uses the same contained rectangle. */
+.theatre-stage video{object-fit:contain}
+.theatre-stage.face-stage{width:min(100%,var(--face-desktop-width),var(--face-max-width));margin-inline:auto}
+.face-position-guide{position:absolute;pointer-events:none;left:50%;top:50%;width:min(40%,150px);height:70%;transform:translate(-50%,-50%);border:2px dashed #e8c993;border-radius:50%;opacity:.8}
+.face-calibration{margin:8px 0;padding:9px 11px;border:1px solid #9f7d4e;border-radius:8px;background:#2a2424;display:grid;gap:3px;color:#f5f3f5;font-size:.82rem;line-height:1.35}
+.face-calibration strong{color:#f2d29a;font-size:.92rem}.face-calibration small{color:#d5ccd2;font-size:.75rem}.face-calibration progress{width:100%;height:8px;accent-color:#d8b477}.face-calibration--success{border-color:#69c5a5;background:#1c302b}.face-calibration--success strong{color:#a8e9d1}
+.face-observations{display:grid;gap:7px}.face-observations>div{display:grid;grid-template-columns:20px 1fr;gap:1px 6px;border:1px solid #4b3d47;border-radius:8px;padding:8px}.face-observations>div>span:first-child{color:#d8b477;grid-row:span 2}.face-observations>div>span:last-child{font-size:.82rem;color:#d5cbd3}.face-work details{border-top:1px solid #51414a;padding-top:9px}.face-work summary{cursor:pointer;min-height:44px;padding:10px 0}
+@media(min-width:768px){.face-work .theatre-layout{grid-template-columns:minmax(0,680px) minmax(240px,300px)}.face-work .theatre-side{min-height:0}}
+@media(max-width:767px){.theatre-stage.face-stage{width:min(100%,var(--face-mobile-width),var(--face-max-width))}.face-calibration{padding:7px 9px;font-size:.76rem}.face-calibration strong{font-size:.84rem}.face-calibration small{font-size:.7rem}}
+@media(max-height:500px) and (orientation:landscape){.theatre-stage.face-stage{width:min(100%,var(--face-landscape-width),var(--face-max-width))}.face-calibration{grid-column:1;margin:0;padding:5px 7px}.face-position-guide{height:75%}}
+.face-observations meter{grid-column:2;width:100%;height:10px;accent-color:#d8b477}
+.face-result-actions{display:flex;flex-wrap:wrap;gap:8px}.face-result-actions small{display:block;width:100%;color:#d5cbd3}.face-calibration-instruction{display:none}
+@media(max-height:500px) and (orientation:landscape){.face-calibration-instruction{display:block}}
